@@ -37,3 +37,8 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
 
 ### 6. GUI-Mockups für die Web-App
 (todo)
+
+### 7. Kostenschätzung
+
+ca 90€ für den Protoyp
+ca 150€ für die normale version
