@@ -43,8 +43,6 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
   - Echtzeitkommunikation zwischen Web-App und Mischgerät.
   - Stabile API-Schnittstelle für Befehle und Statusupdates.
 
----
-
 ### 2. User Story: Als Gastgeber will ich meine verfügbaren Zutaten eingeben können, damit ich weiß, welche Getränke gemischt werden können.
 - **Beschreibung:** Der Gastgeber gibt die aktuell verfügbaren Zutaten in der Web-App ein, sodass die App die passenden Rezepte anzeigt.
 - **Akzeptanzkriterien:**
@@ -54,8 +52,6 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
 - **Technische Anforderungen:**
   - Datenbank zur Speicherung der verfügbaren Zutaten.
   - Dynamische Filterfunktion für Rezepte basierend auf den eingegebenen Zutaten.
-
----
 
 ### 3. User Story: Als Admin will ich neue Getränke (mit KI) zur Auswahl hinzufügen können. Auch will ich die Optionen löschen oder bearbeiten können.
 - **Beschreibung:** Der Admin kann Rezepte hinzufügen, löschen oder bearbeiten und KI-gestützte Vorschläge für neue Getränke integrieren.
@@ -68,8 +64,6 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
   - KI-Modul für Rezeptvorschläge.
   - Benutzerrollenverwaltung (Admin-Rechte).
 
----
-
 ### 4. User Story: Als Admin will ich eine Statistik haben, die zeigt, welche Getränke am meisten bestellt werden.
 - **Beschreibung:** Eine Statistikfunktion gibt dem Admin Einblick, welche Getränke am häufigsten verwendet wurden.
 - **Akzeptanzkriterien:**
@@ -79,8 +73,6 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
 - **Technische Anforderungen:**
   - Tracking- und Logging-Funktion für Getränkebestellungen.
   - Visualisierungsbibliothek für Diagramme und Tabellen.
-
----
 
 ### 5. User Story: Als Gastgeber will ich in der Web-App sehen, wenn ich eine Zutat nachfüllen muss.
 - **Beschreibung:** Die Web-App benachrichtigt den Gastgeber, wenn eine Zutat fast aufgebraucht ist.
