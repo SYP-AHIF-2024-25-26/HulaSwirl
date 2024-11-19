@@ -19,9 +19,6 @@ Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den Hula 
 ### 3.1 Skizze
 (todo)
 
-### 3.2 Mindmap
-(todo)
-
 ## 4. Chancen und Risiken
 
 ### 4.1 Risiken
