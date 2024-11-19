@@ -14,7 +14,7 @@ Stellen wir uns vor, wir sind auf einer Sommerparty und möchten das perfekte Er
 Es besteht ein Bedarf an einer automatischen Mischmaschine, mit der man über ein Interface automatisch perfekte Getränke herstellen kann. Außerdem erscheinen oft neue Rezepte, die man erst lernen muss, bevor man sie verwenden kann. Eine automatische Rezeptfunktion auf einem Interface wäre daher sehr nützlich.
 
 ## 3. Zielsetzung
-Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den Hula Swirl entwickeln. Der Hula Swirl ist ein automatischer Getränkemischer, der 10 flüssige Zutaten halten kann und damit die perfekten Erfrischungsgetränke oder Smoothies in den richtigen Mengen zubereitet. Über eine Web-App teilt man dem Gerät mit, welches Getränk man möchte. Zusätzlich soll es möglich sein, Rezepte aus dem Internet mithilfe von KI zu formatieren und in den Hula Swirl zu importieren.
+Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den Hula Swirl entwickeln. Der Hula Swirl ist ein automatischer Getränkemischer, der 10 flüssige Zutaten halten kann und damit die perfekten Erfrischungsgetränke oder Smoothies in den richtigen Mengen zubereitet. Über eine Web-App teilt man dem Gerät mit, welches Getränk man möchte.
 
 ### 3.1 Skizze
 (todo)
