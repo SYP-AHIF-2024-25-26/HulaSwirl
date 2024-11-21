@@ -33,12 +33,11 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
 
 ## 5. User Stories
 ### 1. User Story: Als Nutzer will ich mir ein Getränk über die Web-App auslassen können.
-- **Beschreibung:** Der Nutzer kann über die Web-App ein Getränk auswählen und den Mischvorgang starten.
+- **Beschreibung:** Der Nutzer kann über die Web-App ein Getränk auswählen und sich ein getränk machen lassen.
 - **Akzeptanzkriterien:**
   - Die Web-App zeigt eine Liste verfügbarer Getränke an.
   - Der Nutzer kann ein Getränk auswählen und mit einem Klick den Mischvorgang starten.
   - Der Hula Swirl beginnt automatisch mit der Zubereitung.
-  - Eine Fortschrittsanzeige zeigt, wie weit der Vorgang abgeschlossen ist.
 - **Technische Anforderungen:**
   - Echtzeitkommunikation zwischen Web-App und Mischgerät.
   - Stabile API-Schnittstelle für Befehle und Statusupdates.
@@ -47,21 +46,20 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
 - **Beschreibung:** Der Gastgeber gibt die aktuell verfügbaren Zutaten in der Web-App ein, sodass die App die passenden Rezepte anzeigt.
 - **Akzeptanzkriterien:**
   - Eine Übersichtsliste zeigt die verfügbaren Zutaten an.
-  - Der Gastgeber kann Zutaten hinzufügen, entfernen oder als „ausverkauft“ markieren.
+  - Der Gastgeber kann Zutaten hinzufügen und entfernen.
+  - Der Gastgeber kann Zutaten als "Leer" makieren, sodass rezepte, die diese benötigen nicht mehr angezeigt werden.
   - Die Liste der auswählbaren Getränke wird automatisch aktualisiert.
 - **Technische Anforderungen:**
   - Datenbank zur Speicherung der verfügbaren Zutaten.
   - Dynamische Filterfunktion für Rezepte basierend auf den eingegebenen Zutaten.
 
-### 3. User Story: Als Admin will ich neue Getränke (mit KI) zur Auswahl hinzufügen können. Auch will ich die Optionen löschen oder bearbeiten können.
-- **Beschreibung:** Der Admin kann Rezepte hinzufügen, löschen oder bearbeiten und KI-gestützte Vorschläge für neue Getränke integrieren.
+### 3. User Story: Als Admin will ich neue Getränke zur Auswahl hinzufügen können. Auch will ich die Optionen löschen oder bearbeiten können.
+- **Beschreibung:** Der Admin kann Rezepte hinzufügen, löschen oder bearbeiten.
 - **Akzeptanzkriterien:**
   - Der Admin kann über die Web-App ein neues Getränkerezept erstellen und speichern.
   - Bestehende Rezepte können editiert oder entfernt werden.
-  - KI-Integration schlägt automatisch neue Rezepte vor, basierend auf beliebten Zutaten oder Trends.
 - **Technische Anforderungen:**
   - Backend-Funktionalität für CRUD (Create, Read, Update, Delete) von Rezepten.
-  - KI-Modul für Rezeptvorschläge.
   - Benutzerrollenverwaltung (Admin-Rechte).
 
 ### 4. User Story: Als Admin will ich eine Statistik haben, die zeigt, welche Getränke am meisten bestellt werden.
@@ -74,22 +72,10 @@ Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischg
   - Tracking- und Logging-Funktion für Getränkebestellungen.
   - Visualisierungsbibliothek für Diagramme und Tabellen.
 
-### 5. User Story: Als Gastgeber will ich in der Web-App sehen, wenn ich eine Zutat nachfüllen muss.
-- **Beschreibung:** Die Web-App benachrichtigt den Gastgeber, wenn eine Zutat fast aufgebraucht ist.
-- **Akzeptanzkriterien:**
-  - Die App zeigt an, wenn der Füllstand einer Zutat unter einen bestimmten Schwellenwert fällt.
-  - Ein Warnsymbol oder eine Benachrichtigung weist darauf hin.
-  - Der Gastgeber kann die Warnung manuell zurücksetzen, nachdem die Zutat nachgefüllt wurde.
-- **Technische Anforderungen:**
-  - Sensoren im Mischgerät zur Überwachung der Füllstände.
-  - Echtzeitdatenübertragung zur Web-App.
-  - Schwellenwerteinstellungen für Warnungen.
-
-
 ## 6. GUI-Mockups für die Web-App
 (todo)
 
 ### 7. Kostenschätzung
 
-ca 90€ für den Protoyp
+ca 120€ für den Protoyp
 ca 150€ für die normale version
