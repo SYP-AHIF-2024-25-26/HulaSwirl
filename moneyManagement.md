@@ -1,0 +1,10 @@
+| Produkt                 | Link                                      | Preis | Mo       | Caro   | Leo     | Status       |
+|-------------------------|-------------------------------------------|-------|----------|--------|---------|--------------|
+| 3D Printer filament     | [Amazon](https://www.amazon.de/dp/B0BS3MTXG7?ref=ppx_yo2ov_dt_b_fed_asin_title) | 18    | <b>6</b> | <b>6</b>        | 6       | in besitz    |
+| Motor Treiber           | [Amazon](https://www.amazon.de/Hailege-DRV8871-Breakout-H-Bridge-6-5V-45V/dp/B0CJY3K2N3) | 14    | 4.67     | 4.67   | 4.67    | zu bestellen |
+| usb stepdown            | [Amazon](https://www.amazon.de/-/en/APKLVSR-DC-DC-Converter-Supply-Module/dp/B0D1K83XRZ?crid=M3EJAHQRT0WA&dib=eyJ2IjoiMSJ9.U7kQ8FCjaEDrkj6UiXrClcBf7gS7zkX0SHVCfBrw8Whm3G53t1WVsPFeg0HLntIaB7H0H6V0xpNWMkp-icBpbjc2bsIurk0BbjRVrWHNA0HYa26e-GeEpFH6Fo1a2dKvvfe_JrqgplwecA9-a1EWBZmyRW_Z7Sphlj0ATo3vJv5le56xOtlFo0VPkUuhrRKQiqba_N3IKwZw-6TEFvqYUktZZCg5QQ6ewAs-w1WUvxw.4WTfFs9qJrQcFlfTfYSrt6lhg56Hx-MhK0Eg9oBd2Bc&dib_tag=se&keywords=usb+step+down&nsdOptOutParam=true&qid=1732031967&sprefix=usb+step+down%2Caps%2C104&sr=8-9) | 9,06     | 2.33     | 2.33   | 2.33    | zu bestellen |
+| clambs                  | [Amazon](https://www.amazon.de/-/en/Flintronic-Connectors-Actuation-Electrical-Connection/dp/B0BCNTVV4S) | 8     | 2.67     | 2.67   | 2.67    | zu bestellen |
+| wire                    | [Amazon](https://www.amazon.de/-/en/Silicone-Electric-Stranded-Electrical-Applications/dp/B0C7QTH8TC) | 13.1  | 4.37     | 4.37   | 4.37    | zu bestellen |
+| powersupply             | [Amazon](https://www.amazon.de/-/en/Adapter-100-240-Transformer-Monitor-Amplifier-Power-supply-12-V-3/dp/B0BP66JZLX) | 13.1  | 4.37     | 4.37   | 4.37    | zu bestellen |
+| breadboard + jumperwire | [Amazon](https://www.amazon.de/-/en/HUAREW-Breadboard-Dupont-Points-Arduino/dp/B0B5TCKTQH) | 13.1  | 4.37     | 4.37   | 4.37    | zu bestellen |
+| Sum                     | -                                         | 86.3  | 22.77    | 22.77  | 28.77   | -            |

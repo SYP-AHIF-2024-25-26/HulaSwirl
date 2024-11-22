@@ -14,14 +14,13 @@ Stellen wir uns vor, wir sind auf einer Sommerparty und möchten das perfekte Er
 Es besteht ein Bedarf an einer automatischen Mischmaschine, mit der man über ein Interface automatisch perfekte Getränke herstellen kann. Außerdem erscheinen oft neue Rezepte, die man erst lernen muss, bevor man sie verwenden kann. Eine automatische Rezeptfunktion auf einem Interface wäre daher sehr nützlich.
 
 ## 3. Zielsetzung
-Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den Hula Swirl entwickeln. Der Hula Swirl ist ein automatischer Getränkemischer, der 10 flüssige Zutaten halten kann und damit die perfekten Erfrischungsgetränke oder Smoothies in den richtigen Mengen zubereitet. Über eine Web-App teilt man dem Gerät mit, welches Getränk man möchte. Zusätzlich soll es möglich sein, Rezepte aus dem Internet mithilfe von KI zu formatieren und in den Hula Swirl zu importieren.
+Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den Hula Swirl entwickeln. Der Hula Swirl ist ein automatischer Getränkemischer, der 10 flüssige Zutaten halten kann und damit die perfekten Erfrischungsgetränke oder Smoothies in den richtigen Mengen zubereitet. Über eine Web-App teilt man dem Gerät mit, welches Getränk man möchte.
 
 ### 3.1 Skizze
 (todo)
 
-### 3.2 Mindmap
+### 3.2 Schaltplan
 (todo)
-
 ## 4. Chancen und Risiken
 
 ### 4.1 Risiken
@@ -32,13 +31,51 @@ Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den Hula 
 ### 4.2 Chancen
 Der Hula Swirl bietet großes Marktpotenzial als automatisiertes Getränkemischgerät für private Anwender und kleinere Events. Mit KI-basierter Rezeptintegration und einfacher Bedienung hebt er sich von teureren Alternativen ab und ermöglicht eine gleichbleibende Getränkqualität. Die smarte, anpassbare Technik passt gut in moderne Haushalte und könnte durch Updates oder neue Funktionen erweitert werden, was das Nutzerinteresse zusätzlich steigern dürfte.
 
-### 5. User Stories
-(todo)
+## 5. User Stories
+### 1. User Story: Als Nutzer will ich mir ein Getränk über die Web-App auslassen können.
+- **Beschreibung:** Der Nutzer kann über die Web-App ein Getränk auswählen und sich ein getränk machen lassen.
+- **Akzeptanzkriterien:**
+  - Die Web-App zeigt eine Liste verfügbarer Getränke an.
+  - Der Nutzer kann ein Getränk auswählen und mit einem Klick den Mischvorgang starten.
+  - Der Hula Swirl beginnt automatisch mit der Zubereitung.
+- **Technische Anforderungen:**
+  - Echtzeitkommunikation zwischen Web-App und Mischgerät.
+  - Stabile API-Schnittstelle für Befehle und Statusupdates.
 
-### 6. GUI-Mockups für die Web-App
+### 2. User Story: Als Gastgeber will ich meine verfügbaren Zutaten eingeben können, damit ich weiß, welche Getränke gemischt werden können.
+- **Beschreibung:** Der Gastgeber gibt die aktuell verfügbaren Zutaten in der Web-App ein, sodass die App die passenden Rezepte anzeigt.
+- **Akzeptanzkriterien:**
+  - Eine Übersichtsliste zeigt die verfügbaren Zutaten an.
+  - Der Gastgeber kann Zutaten hinzufügen und entfernen.
+  - Der Gastgeber kann Zutaten als "Leer" makieren, sodass rezepte, die diese benötigen nicht mehr angezeigt werden.
+  - Die Liste der auswählbaren Getränke wird automatisch aktualisiert.
+- **Technische Anforderungen:**
+  - Datenbank zur Speicherung der verfügbaren Zutaten.
+  - Dynamische Filterfunktion für Rezepte basierend auf den eingegebenen Zutaten.
+
+### 3. User Story: Als Admin will ich neue Getränke zur Auswahl hinzufügen können. Auch will ich die Optionen löschen oder bearbeiten können.
+- **Beschreibung:** Der Admin kann Rezepte hinzufügen, löschen oder bearbeiten.
+- **Akzeptanzkriterien:**
+  - Der Admin kann über die Web-App ein neues Getränkerezept erstellen und speichern.
+  - Bestehende Rezepte können editiert oder entfernt werden.
+- **Technische Anforderungen:**
+  - Backend-Funktionalität für CRUD (Create, Read, Update, Delete) von Rezepten.
+  - Benutzerrollenverwaltung (Admin-Rechte).
+
+### 4. User Story: Als Admin will ich eine Statistik haben, die zeigt, welche Getränke am meisten bestellt werden.
+- **Beschreibung:** Eine Statistikfunktion gibt dem Admin Einblick, welche Getränke am häufigsten verwendet wurden.
+- **Akzeptanzkriterien:**
+  - Ein Dashboard zeigt die Anzahl der Bestellungen pro Getränk in einem bestimmten Zeitraum.
+  - Daten können nach Tag, Woche oder Monat gefiltert werden.
+  - Die Statistik ist visuell ansprechend (z. B. Balkendiagramme oder Tabellen).
+- **Technische Anforderungen:**
+  - Tracking- und Logging-Funktion für Getränkebestellungen.
+  - Visualisierungsbibliothek für Diagramme und Tabellen.
+
+## 6. GUI-Mockups für die Web-App
 (todo)
 
 ### 7. Kostenschätzung
 
-ca 90€ für den Protoyp
+ca 120€ für den Protoyp
 ca 150€ für die normale version

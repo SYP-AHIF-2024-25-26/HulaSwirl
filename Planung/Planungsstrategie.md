@@ -5,7 +5,7 @@ Dieses Dokument dient für uns zur orientierung und für unsere Lehrer als info.
 Wir verwenden die SCRUM Methode. 
 
 #### User Story:
-Unser projekt sieht nur eine User Story vor.
+Wir haben ein paar User Storys.
 
 #### SCRUM Reviews: 
 Werden wir mit unseren lehrern alle 1-2 Monate machen und mit Github Milestones Planen. Zu jedem Milestone werden wir mehrere Issues Machen.
