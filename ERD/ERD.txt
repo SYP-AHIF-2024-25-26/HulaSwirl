@@ -1,0 +1,55 @@
+//site for generating ERD: https://dbdiagram.io/d/Hula-Swirl-ERD-67404130e9daa85aca59e60e
+
+
+table recipe {
+  id int [primary key]
+  name varchar2(255)
+}
+
+table ingredient {
+  id int [primary key]
+  name varchar2(255)
+  recipe_id int
+}
+
+table maschine {
+  id int [primary key]
+
+
+  slot1_id int
+  slot2_id int
+  slot3_id int
+  slot4_id int
+  slot5_id int
+  slot6_id int
+  slot7_id int
+  slot8_id int
+  slot9_id int
+  slot10_id int
+}
+
+table slot {
+  id int [primary key]
+  ingredient_id int
+}
+
+table manager {
+  id int [primary key]
+  username varchar(255)
+  password varchar(255)
+}
+
+Ref: ingredient.id > recipe.id
+
+Ref: slot.id - maschine.slot1_id
+Ref: slot.id - maschine.slot2_id
+Ref: slot.id - maschine.slot3_id
+Ref: slot.id - maschine.slot4_id
+Ref: slot.id - maschine.slot5_id
+Ref: slot.id - maschine.slot6_id
+Ref: slot.id - maschine.slot7_id
+Ref: slot.id - maschine.slot8_id
+Ref: slot.id - maschine.slot9_id
+Ref: slot.id - maschine.slot10_id
+
+Ref: slot.ingredient_id - ingredient.id
