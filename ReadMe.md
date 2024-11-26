@@ -18,10 +18,10 @@ Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den "Hula
 
 
 ### 3.1 Skizze
-(todo)
+![](hardware/Skizze.jpg)
 
 ### 3.2 Schaltplan
-![](Schaltplan.jpg)
+![](hardware/Schaltplan.jpg)
 
 ## 4. Chancen und Risiken
 
