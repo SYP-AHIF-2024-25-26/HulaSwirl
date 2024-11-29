@@ -48,8 +48,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ### 2. User Story: Als Gastgeber will ich meine verfügbaren Zutaten eingeben können, damit ich weiß, welche Getränke gemischt werden können.
 - **Beschreibung:** Der Gastgeber gibt die aktuell verfügbaren Zutaten in der Web-App ein, sodass die App die passenden Rezepte anzeigt.
 - **Akzeptanzkriterien:**
-  - Eine Übersichtsliste zeigt die verfügbaren Zutaten an.
-  - Der Gastgeber kann Zutaten hinzufügen und entfernen.
+  - Eine Übersichtsliste zeigt alle Zutaten an(von alle rezepte.
   - Der Gastgeber kann Zutaten als "Leer" makieren, sodass Rezepte, die diese benötigen nicht mehr angezeigt werden.
   - Die Liste der auswählbaren Getränke wird automatisch aktualisiert.
 - **Technische Anforderungen:**
