@@ -67,9 +67,8 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ### 4. User Story: Als Admin will ich eine Statistik haben, die zeigt, welche Getränke am meisten bestellt werden.
 - **Beschreibung:** Eine Statistikfunktion gibt dem Admin Einblick, welche Getränke am häufigsten verwendet wurden.
 - **Akzeptanzkriterien:**
-  - Ein Dashboard zeigt die Anzahl der Bestellungen pro Getränk in einem bestimmten Zeitraum.
-  - Daten können nach Tag, Woche oder Monat gefiltert werden.
-  - Die Statistik ist visuell ansprechend (z. B. Balkendiagramme oder Tabellen).
+  - Ein Dashboard zeigt die Anzahl der Bestellungen pro stunde ( graph).
+  - Es Gibt eine all time most ordered Liste.
 - **Technische Anforderungen:**
   - Tracking- und Logging-Funktion für Getränkebestellungen.
   - Visualisierungsbibliothek für Diagramme und Tabellen.
