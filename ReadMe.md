@@ -18,10 +18,10 @@ Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den "Hula
 
 
 ### 3.1 Skizze
-![](hardware/Skizze.jpg)
+![](assets/Skizze.jpg)
 
 ### 3.2 Schaltplan
-![](hardware/Schaltplan.jpg)
+![](assets/Schaltplan.jpg)
 
 ## 4. Chancen und Risiken
 
@@ -88,6 +88,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 /Admin/Statistics		4.0
 
 ### 6.3 ERD Diagramm
+![](assets/ERD.png)
 
 ## 7. Kostenschätzung
 
