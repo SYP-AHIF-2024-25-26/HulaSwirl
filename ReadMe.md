@@ -35,7 +35,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 
 ## 5. User Stories
 ### 1. User Story: Als Nutzer will ich mir ein Getränk über die Web-App auslassen können.
-- **Beschreibung:** Der Nutzer kann über die Web-App ein Getränk auswählen und sich ein getränk machen lassen.
+- **Beschreibung:** Der Nutzer kann über die Web-App ein Getränk auswählen und es mischen lassen.
 - **Akzeptanzkriterien:**
   - Die Web-App zeigt eine Liste verfügbarer Getränke an.
   - Der Nutzer kann ein Getränk auswählen und mit einem Klick den Mischvorgang starten.
@@ -48,7 +48,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ### 2. User Story: Als Gastgeber will ich meine verfügbaren Zutaten eingeben können, damit ich weiß, welche Getränke gemischt werden können.
 - **Beschreibung:** Der Gastgeber gibt die aktuell verfügbaren Zutaten in der Web-App ein, sodass die App die passenden Rezepte anzeigt.
 - **Akzeptanzkriterien:**
-  - Eine Übersichtsliste zeigt alle Zutaten an(von alle rezepte.
+  - Eine Übersichtsliste zeigt alle Zutaten von allen Rezepten an
   - Der Gastgeber kann Zutaten als "Leer" makieren, sodass Rezepte, die diese benötigen nicht mehr angezeigt werden.
   - Die Liste der auswählbaren Getränke wird automatisch aktualisiert.
 - **Technische Anforderungen:**
@@ -67,8 +67,8 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ### 4. User Story: Als Admin will ich eine Statistik haben, die zeigt, welche Getränke am meisten bestellt werden.
 - **Beschreibung:** Eine Statistikfunktion gibt dem Admin Einblick, welche Getränke am häufigsten verwendet wurden.
 - **Akzeptanzkriterien:**
-  - Ein Dashboard zeigt die Anzahl der Bestellungen pro stunde ( graph).
-  - Es Gibt eine all time most ordered Liste.
+  - Ein Graph zeigt die Anzahl der Bestellungen pro Stunde.
+  - Es gibt eine all time most ordered Liste.
 - **Technische Anforderungen:**
   - Tracking- und Logging-Funktion für Getränkebestellungen.
   - Visualisierungsbibliothek für Diagramme und Tabellen.
