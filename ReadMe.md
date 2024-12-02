@@ -74,7 +74,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
   - Visualisierungsbibliothek für Diagramme und Tabellen.
 
 ## 6. GUI-Mockups für die Web-App
-(todo)
+[Figma](https://www.figma.com/design/Kv5zzkLDU8AcD5gaHvIsNp/HulaSwirl?node-id=3-4&t=TftDCDX82oTWYwnj-1)
 
 ### 7. Kostenschätzung
 
