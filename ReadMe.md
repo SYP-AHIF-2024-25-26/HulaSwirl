@@ -89,7 +89,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 
 ### 6.3 ERD Diagramm
 
-### 7. Kostenschätzung
+## 7. Kostenschätzung
 
 - Etwa 130€ für den Protoyp (Amazon Prime Day berücksichtigt)
 - Ca. 200€ für das Endprodukt
