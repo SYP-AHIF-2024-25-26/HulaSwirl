@@ -73,8 +73,21 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
   - Tracking- und Logging-Funktion für Getränkebestellungen.
   - Visualisierungsbibliothek für Diagramme und Tabellen.
 
-## 6. GUI-Mockups für die Web-App
+## 6. Web-App
+
+### 6.1 GUI-Mockups
 [Figma](https://www.figma.com/design/Kv5zzkLDU8AcD5gaHvIsNp/HulaSwirl?node-id=3-4&t=TftDCDX82oTWYwnj-1)
+
+### 6.2 Url Pfade zu den Mockups
+
+/Home				1.0
+/Home/{Recipe_id}		1.4
+/Admin/Recipes			2.0	
+/Admin/Recipes/{Recipe_id}	2.2
+/Admin/Ingredients		3.0
+/Admin/Statistics		4.0
+
+### 6.3 ERD Diagramm
 
 ### 7. Kostenschätzung
 
