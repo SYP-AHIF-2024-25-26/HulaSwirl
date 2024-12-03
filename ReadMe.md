@@ -60,6 +60,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 - **Akzeptanzkriterien:**
   - Der Admin kann über die Web-App ein neues Getränkerezept erstellen und speichern.
   - Bestehende Rezepte können editiert, verborgen oder entfernt werden.
+  - Max 50 cl In einem Getränk (Insgesampt
 - **Technische Anforderungen:**
   - Backend-Funktionalität für CRUD (Create, Read, Update, Delete) von Rezepten.
   - Benutzerrollenverwaltung (Admin-Rechte).
