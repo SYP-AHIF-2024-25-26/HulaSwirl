@@ -3,19 +3,29 @@
 
 table recipe {
   id int [primary key]
-  name varchar2(255)
+  name varchar2(20)
+  enabled bool
+  img image
+  toppings varchar2(255)
+}
+
+table recipe_ingredient{
+  recipe_id int [primary key]
+  ingredient_id int [primary key]
+  cl int 
 }
 
 table ingredient {
   id int [primary key]
-  name varchar2(255)
+  name varchar2(20)
   recipe_id int
+  full bool
 }
+
+
 
 table maschine {
   id int [primary key]
-
-
   slot1_id int
   slot2_id int
   slot3_id int
@@ -33,13 +43,16 @@ table slot {
   ingredient_id int
 }
 
-table manager {
+table order_log {
   id int [primary key]
-  username varchar(255)
-  password varchar(255)
+  recipe_id int 
+  order_date_time datetime
 }
 
-Ref: ingredient.id > recipe.id
+Ref: ingredient.id > recipe_ingredient.ingredient_id
+Ref: recipe.id > recipe_ingredient.recipe_id
+
+Ref: order_log.recipe_id > recipe.id
 
 Ref: slot.id - maschine.slot1_id
 Ref: slot.id - maschine.slot2_id

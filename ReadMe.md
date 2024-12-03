@@ -18,10 +18,10 @@ Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den "Hula
 
 
 ### 3.1 Skizze
-![](hardware/Skizze.jpg)
+![](assets/Skizze.jpg)
 
 ### 3.2 Schaltplan
-![](hardware/Schaltplan.jpg)
+![](assets/Schaltplan.jpg)
 
 ## 4. Chancen und Risiken
 
@@ -35,7 +35,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 
 ## 5. User Stories
 ### 1. User Story: Als Nutzer will ich mir ein Getränk über die Web-App auslassen können.
-- **Beschreibung:** Der Nutzer kann über die Web-App ein Getränk auswählen und sich ein getränk machen lassen.
+- **Beschreibung:** Der Nutzer kann über die Web-App ein Getränk auswählen und es mischen lassen.
 - **Akzeptanzkriterien:**
   - Die Web-App zeigt eine Liste verfügbarer Getränke an.
   - Der Nutzer kann ein Getränk auswählen und mit einem Klick den Mischvorgang starten.
@@ -48,8 +48,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ### 2. User Story: Als Gastgeber will ich meine verfügbaren Zutaten eingeben können, damit ich weiß, welche Getränke gemischt werden können.
 - **Beschreibung:** Der Gastgeber gibt die aktuell verfügbaren Zutaten in der Web-App ein, sodass die App die passenden Rezepte anzeigt.
 - **Akzeptanzkriterien:**
-  - Eine Übersichtsliste zeigt die verfügbaren Zutaten an.
-  - Der Gastgeber kann Zutaten hinzufügen und entfernen.
+  - Eine Übersichtsliste zeigt alle Zutaten von allen Rezepten an
   - Der Gastgeber kann Zutaten als "Leer" makieren, sodass Rezepte, die diese benötigen nicht mehr angezeigt werden.
   - Die Liste der auswählbaren Getränke wird automatisch aktualisiert.
 - **Technische Anforderungen:**
@@ -61,6 +60,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 - **Akzeptanzkriterien:**
   - Der Admin kann über die Web-App ein neues Getränkerezept erstellen und speichern.
   - Bestehende Rezepte können editiert, verborgen oder entfernt werden.
+  - Max 50 cl In einem Getränk (Insgesampt
 - **Technische Anforderungen:**
   - Backend-Funktionalität für CRUD (Create, Read, Update, Delete) von Rezepten.
   - Benutzerrollenverwaltung (Admin-Rechte).
@@ -68,17 +68,30 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ### 4. User Story: Als Admin will ich eine Statistik haben, die zeigt, welche Getränke am meisten bestellt werden.
 - **Beschreibung:** Eine Statistikfunktion gibt dem Admin Einblick, welche Getränke am häufigsten verwendet wurden.
 - **Akzeptanzkriterien:**
-  - Ein Dashboard zeigt die Anzahl der Bestellungen pro Getränk in einem bestimmten Zeitraum.
-  - Daten können nach Tag, Woche oder Monat gefiltert werden.
-  - Die Statistik ist visuell ansprechend (z. B. Balkendiagramme oder Tabellen).
+  - Ein Graph zeigt die Anzahl der Bestellungen pro Stunde.
+  - Es gibt eine all time most ordered Liste.
 - **Technische Anforderungen:**
   - Tracking- und Logging-Funktion für Getränkebestellungen.
   - Visualisierungsbibliothek für Diagramme und Tabellen.
 
-## 6. GUI-Mockups für die Web-App
-(todo)
+## 6. Web-App
 
-### 7. Kostenschätzung
+### 6.1 GUI-Mockups
+[Figma](https://www.figma.com/design/Kv5zzkLDU8AcD5gaHvIsNp/HulaSwirl?node-id=3-4&t=TftDCDX82oTWYwnj-1)
+
+### 6.2 Url Pfade zu den Mockups
+
+/Home				1.0\
+/Home/{Recipe_id}		1.4\
+/Admin/Recipes			2.0	\
+/Admin/Recipes/{Recipe_id}	2.2\
+/Admin/Ingredients		3.0\
+/Admin/Statistics		4.0
+
+### 6.3 ERD Diagramm
+![](assets/ERD.png)
+
+## 7. Kostenschätzung
 
 - Etwa 130€ für den Protoyp (Amazon Prime Day berücksichtigt)
 - Ca. 200€ für das Endprodukt
