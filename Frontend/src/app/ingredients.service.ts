@@ -33,6 +33,36 @@ export class IngredientsService {
       name: 'Apfelkuchen',
       slot: 4,
       remaining_liquid: 200
-    }];
+    }, {
+      name: 'Apfelkuchen',
+      slot: 4,
+      remaining_liquid: 200
+    }, {
+      name: 'Apfelkuchen',
+      slot: 4,
+      remaining_liquid: 200
+    }, {
+      name: 'Apfelkuchen',
+      slot: 4,
+      remaining_liquid: 200
+    }, {
+      name: 'Apfelkuchen',
+      slot: 4,
+      remaining_liquid: 200
+    }, {
+      name: 'Apfelkuchen',
+      slot: 4,
+      remaining_liquid: 200
+    }, {
+      name: 'Apfelkuchen',
+      slot: 4,
+      remaining_liquid: 200
+    }, {
+      name: 'Apfelkuchen',
+      slot: 4,
+      remaining_liquid: 200
+    }
+
+    ];
   }
 }

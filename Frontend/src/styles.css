@@ -3,6 +3,7 @@ body{
   font-family: JosefinSans, serif;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  cursor:default;
 }
 body::-webkit-scrollbar {
   display: none;
