@@ -1,0 +1,93 @@
+/*Nav bar*/
+.navbar {
+  align-items: center;
+  background: linear-gradient(to right, #F09400, #F135B9,#3493DC);
+  color: white;
+  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
+  z-index: 3;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  height: 10vh;
+}
+
+.Title {
+  margin-left:0.3vw;
+  font-size: 6vh;
+  font-weight: bold;
+  font-family: Katibeh,sans-serif;
+  padding-bottom: 1vh;
+}
+
+.TitleContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  cursor:pointer;
+}
+
+/* Burger-Menü */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: absolute;
+  top: 2.4vh;
+  right: 1.4vw;
+}
+
+.bar {
+  width: 2.5vw;
+  height: 0.4vh;
+  background-color: white;
+  margin: 0.4vh 0;
+  transition: 0.4s;
+}
+
+/* Menü Animation */
+.nav-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+#navLinksAdmin{
+  cursor: default;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.2em;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: lightgray;
+}
+
+.nav-links {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  background: linear-gradient(to bottom, #F29B6B, #F570A2);
+  width: 200px;
+  text-align: left;
+  padding: 10px;
+  border-radius: 0 0 0 10px;
+  margin:0;
+  top:8vh;
+  z-index: 2;
+}
+
+.nav-links.show {
+  display: flex;
+}
+

@@ -1,0 +1,26 @@
+
+<nav class="navbar">
+  <div class="TitleContainer" routerLink="/Home">
+    <img src="assets/images/Icon.png" alt="Icon" height="30vh" width="30vw">
+    <div class="Title">HulaSwirl</div>
+  </div>
+
+  <div class="menu-toggle" (click)="toggleMenu()">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+</nav>
+<ul class="nav-links" [ngClass]="{'show': menuOpen}">
+  <li></li>
+  <li><a routerLink="/Home">Home</a></li>
+  <li><a id = "navLinksAdmin">Administration:</a></li>
+  <li><a routerLink="Admin/Drinks">* Drinks</a></li>
+  <li><a routerLink="Admin/Ingredients">* Ingredients</a></li>
+  <li><a routerLink="Admin/Statistics">* Statistics</a></li>
+</ul>
+
+
+
+<router-outlet></router-outlet>

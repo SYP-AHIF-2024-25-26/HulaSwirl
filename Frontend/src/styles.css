@@ -1,0 +1,12 @@
+body{
+  margin:0;
+  font-family: josefin-semiBold, serif;
+}
+
+@font-face {
+  font-family: 'Katibeh';
+  src: url('assets/fonts/Katibeh-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* You can add global styles to this file, and also import other style files */
