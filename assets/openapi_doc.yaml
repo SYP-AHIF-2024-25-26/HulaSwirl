@@ -5,7 +5,7 @@ info:
 paths:
   /api/drinks:
     get:
-      summary: Liste aller verfügbaren Getränke
+      summary: Liste aller aktivierten Getränke
       responses:
         '200':
           description: Liste der Getränke
@@ -86,7 +86,44 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /api/admin/ingredients/{ingredient_name}:
+    patch:
+      summary: Zutat umbenennen
+      parameters:
+        - name: ingredient_name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                new_name:
+                  type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/RequestOK'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /api/admin/recipes:
+    get:
+      summary: Liste aller Getränke
+      responses:
+        '200':
+          description: Alle Getränke, egal ob aktiviert oder deaktiviert
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FullDrinkInfo'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     post:
       summary: Rezept hinzufügen
       requestBody:
@@ -188,6 +225,27 @@ components:
           type: string
         img:
           type: string
+        available:
+          type: boolean
+        toppings:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientAmount'
+    FullDrinkInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        img:
+          type: string
+        available:
+          type: boolean
+        enabled:
+          type: boolean
         toppings:
           type: string
         ingredients:
