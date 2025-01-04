@@ -82,9 +82,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ### 6.2 Url Pfade zu den Mockups
 
 /Home				1.0\
-/Home/{Recipe_id}		1.4\
-/Admin/Recipes			2.0	\
-/Admin/Recipes/{Recipe_id}	2.2\
+/Admin/Drinks			2.0	\
 /Admin/Ingredients		3.0\
 /Admin/Statistics		4.0
 
