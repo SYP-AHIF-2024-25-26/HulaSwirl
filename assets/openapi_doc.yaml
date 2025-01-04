@@ -5,7 +5,7 @@ info:
 paths:
   /api/drinks:
     get:
-      summary: Liste aller aktivierten Getränke
+      summary: Liste aller verfügbaren Getränke
       responses:
         '200':
           description: Liste der Getränke
@@ -29,8 +29,6 @@ paths:
       responses:
         '200':
           description: Getränk wird gemischt
-        '400':
-          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -51,8 +49,6 @@ paths:
           description: Getränk wird gemischt
         '400':
           $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /api/admin/ingredients:
@@ -106,16 +102,16 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/RequestOK'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/admin/recipes:
+  /api/admin/drinks:
     get:
       summary: Liste aller Getränke
       responses:
         '200':
-          description: Alle Getränke, egal ob aktiviert oder deaktiviert
+          description: Alle Getränke
           content:
             application/json:
               schema:
@@ -125,7 +121,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     post:
-      summary: Rezept hinzufügen
+      summary: Getränk hinzufügen
       requestBody:
         required: true
         content:
@@ -134,20 +130,20 @@ paths:
               $ref: '#/components/schemas/Recipe'
       responses:
         '201':
-          description: Rezept hinzugefügt
+          description: Getränk hinzugefügt
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Drink'
+                $ref: '#/components/schemas/FullDrinkInfo'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /api/admin/recipes/{recipe_id}:
+  /api/admin/drinks/{drink_id}:
     put:
-      summary: Rezept bearbeiten
+      summary: Getränk bearbeiten
       parameters:
-        - name: recipe_id
+        - name: drink_id
           in: path
           required: true
           schema:
@@ -160,11 +156,11 @@ paths:
               $ref: '#/components/schemas/Recipe'
       responses:
         '200':
-          description: Aktuallisiertes Rezept
+          description: Aktuallisiertes Getränk
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Drink'
+                $ref: '#/components/schemas/FullDrinkInfo'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -172,9 +168,9 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     delete:
-      summary: Rezept löschen
+      summary: Getränk löschen
       parameters:
-        - name: recipe_id
+        - name: drink_id
           in: path
           required: true
           schema:
@@ -225,8 +221,6 @@ components:
           type: string
         img:
           type: string
-        available:
-          type: boolean
         toppings:
           type: string
         ingredients:
@@ -242,8 +236,6 @@ components:
           type: string
         img:
           type: string
-        available:
-          type: boolean
         enabled:
           type: boolean
         toppings:

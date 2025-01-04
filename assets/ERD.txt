@@ -1,10 +1,10 @@
 Table order_log {
     id int [primary key]
-    recipe_id int
+    drink_id int
     order_date_time datetime
 }
 
-Table recipe {
+Table drink {
     id int [primary key]
     name varchar(100)
     enabled bool
@@ -12,8 +12,8 @@ Table recipe {
     toppings varchar(255)
 }
 
-Table recipe_ingredient {
-    recipe_id int [primary key]
+Table drink_ingredient {
+    drink_id int [primary key]
     ingredient_name string [primary key]
     cl int
 }
@@ -24,6 +24,6 @@ Table ingredient {
     remaining_liquid int
 }
 
-Ref: order_log.recipe_id > recipe.id
-Ref: recipe.id > recipe_ingredient.recipe_id
-Ref: ingredient.name > recipe_ingredient.ingredient_name
+Ref: order_log.drink_id > drink.id
+Ref: drink.id > drink_ingredient.drink_id
+Ref: ingredient.name > drink_ingredient.ingredient_name
