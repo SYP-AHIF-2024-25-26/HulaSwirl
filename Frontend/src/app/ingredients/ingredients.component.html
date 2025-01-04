@@ -1,8 +1,37 @@
 <div class="box_container">
-  <div class="big_box">
-
+  <div class="big_box1" id="1">
+    <p class="box_title">Available Ingredients:</p>
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="availableIngredients"
+      [cdkDropListConnectedTo]="[doneList]"
+      class="A_ingredients_container"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of availableIngredients; track item) {
+        <div class="A_ingredient" cdkDrag>
+          <div class="A_ingredient_function">
+            <div class="A_slot">{{item.slot}}.</div>
+            <div class="A_Name">{{item.name}}</div>
+          </div>
+          <div class="A_liqid">{{item.remaining_liquid}} cl  </div>
+        </div>
+      }
+    </div>
   </div>
   <div class="big_box">
+    <p class="box_title">Not available Ingredients:</p>
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="notAvailableIngredients"
+      [cdkDropListConnectedTo]="[todoList]"
+      class="NA_ingredients_container"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of notAvailableIngredients; track item) {
+        <div class="NA_ingredient" cdkDrag>{{item.name}}</div>
+      }
+    </div>
 
   </div>
 </div>

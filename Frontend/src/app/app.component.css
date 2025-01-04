@@ -33,7 +33,7 @@
   flex-direction: column;
   cursor: pointer;
   position: absolute;
-  top: 2.4vh;
+  top: 3.1vh;
   right: 1.4vw;
 }
 
@@ -59,17 +59,25 @@
 
 #navLinksAdmin{
   cursor: default;
+  text-decoration: none;
+  color: white;
+  font-size: 1.2em;
+  transition: 0.3s;
+  font-family: JosefinSans, serif;
 }
+
 
 .nav-links a {
   text-decoration: none;
   color: white;
   font-size: 1.2em;
   transition: 0.3s;
+  font-family: JosefinSans, serif;
 }
 
 .nav-links a:hover {
-  color: lightgray;
+  font-size: 1.3em;
+  font-family: JosefinSans, serif;
 }
 
 .nav-links {
@@ -77,7 +85,7 @@
   flex-direction: column;
   position: absolute;
   right: 0;
-  background: linear-gradient(to bottom, #F29B6B, #F570A2);
+  background: linear-gradient(to bottom, #9866cc, #e35b68);
   width: 200px;
   text-align: left;
   padding: 10px;

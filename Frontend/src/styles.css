@@ -1,6 +1,11 @@
 body{
   margin:0;
-  font-family: josefin-semiBold, serif;
+  font-family: JosefinSans, serif;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
 @font-face {
@@ -9,4 +14,10 @@ body{
   font-weight: normal;
   font-style: normal;
 }
-/* You can add global styles to this file, and also import other style files */
+
+@font-face {
+  font-family: 'JosefinSans';
+  src: url('assets/fonts/JosefinSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
