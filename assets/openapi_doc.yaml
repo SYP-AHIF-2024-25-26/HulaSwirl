@@ -29,17 +29,28 @@ paths:
       responses:
         '200':
           description: Getränk wird gemischt
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/drinks/order:
+    post:
+      summary: Konfiguriertes Getränk bestellen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientAmount'
+      responses:
+        '200':
+          description: Getränk wird gemischt
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -67,17 +78,10 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/IngredientUpdate'
+                $ref: '#/components/schemas/Ingredient'
       responses:
         '200':
-          description: Zutaten aktualisiert
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+          $ref: '#/components/responses/RequestOK'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -193,26 +197,15 @@ components:
     IngredientAmount:
       type: object
       properties:
-        ingredient_id:
-          type: integer
+        name:
+          type: string
         amount:
           type: integer
     Ingredient:
       type: object
       properties:
-        id:
-          type: integer
         name:
           type: string
-        slot:
-          type: integer
-        remaining_ml:
-          type: integer
-    IngredientUpdate:
-      type: object
-      properties:
-        id:
-          type: integer
         slot:
           type: integer
         remaining_ml:
@@ -233,8 +226,8 @@ components:
     OrderStatistic:
       type: object
       properties:
-        drink_id:
-          type: integer
+        name:
+          type: string
         count:
           type: integer
     OrderPerHour:

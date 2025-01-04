@@ -6,7 +6,7 @@ Table order_log {
 
 Table recipe {
     id int [primary key]
-    name varchar(20)
+    name varchar(100)
     enabled bool
     img image
     toppings varchar(255)
@@ -14,17 +14,16 @@ Table recipe {
 
 Table recipe_ingredient {
     recipe_id int [primary key]
-    ingredient_id int [primary key]
+    ingredient_name string [primary key]
     cl int
 }
 
 Table ingredient {
-    id int [primary key]
-    name varchar(20)
+    name varchar(100) [primary key]
     slot int
     remaining_liquid int
 }
 
 Ref: order_log.recipe_id > recipe.id
 Ref: recipe.id > recipe_ingredient.recipe_id
-Ref: ingredient.id > recipe_ingredient.ingredient_id
+Ref: ingredient.name > recipe_ingredient.ingredient_name
