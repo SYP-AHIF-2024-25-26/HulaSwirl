@@ -1,0 +1,30 @@
+Table order_log {
+    id int [primary key]
+    recipe_id int
+    order_date_time datetime
+}
+
+Table recipe {
+    id int [primary key]
+    name varchar(20)
+    enabled bool
+    img image
+    toppings varchar(255)
+}
+
+Table recipe_ingredient {
+    recipe_id int [primary key]
+    ingredient_id int [primary key]
+    cl int
+}
+
+Table ingredient {
+    id int [primary key]
+    name varchar(20)
+    slot int
+    remaining_liquid int
+}
+
+Ref: order_log.recipe_id > recipe.id
+Ref: recipe.id > recipe_ingredient.recipe_id
+Ref: ingredient.id > recipe_ingredient.ingredient_id
