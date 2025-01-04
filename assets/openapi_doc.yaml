@@ -1,0 +1,257 @@
+openapi: 3.0.0
+info:
+  title: Hula Swirl API
+  version: 1.0.0
+paths:
+  /api/drinks:
+    get:
+      summary: Liste aller verfügbaren Getränke
+      responses:
+        '200':
+          description: Liste der Getränke
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Drink'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/drinks/order/{drink_id}:
+    post:
+      summary: Getränk bestellen
+      parameters:
+        - name: drink_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Getränk wird gemischt
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/admin/ingredients:
+    get:
+      summary: Aktuelle Zutaten einsehen
+      responses:
+        '200':
+          description: Liste der Zutaten
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      summary: Zutaten aktualisieren
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IngredientUpdate'
+      responses:
+        '200':
+          description: Zutaten aktualisiert
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/admin/recipes:
+    post:
+      summary: Rezept hinzufügen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '201':
+          description: Rezept hinzugefügt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Drink'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/admin/recipes/{recipe_id}:
+    put:
+      summary: Rezept bearbeiten
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+      responses:
+        '200':
+          description: Aktuallisiertes Rezept
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Drink'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Rezept löschen
+      parameters:
+        - name: recipe_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          $ref: '#/components/responses/RequestOK'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/admin/statistics/most_ordered:
+    get:
+      summary: Meist bestellte Getränke
+      responses:
+        '200':
+          description: Meist bestellte Getränke
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderStatistic'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/admin/statistics/orders_per_hour:
+    get:
+      summary: Bestellungen pro Stunde
+      responses:
+        '200':
+          description: Bestellungen pro Stunde
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderPerHour'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    Drink:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        img:
+          type: string
+        toppings:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientAmount'
+    IngredientAmount:
+      type: object
+      properties:
+        ingredient_id:
+          type: integer
+        amount:
+          type: integer
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slot:
+          type: integer
+        remaining_ml:
+          type: integer
+    IngredientUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+        slot:
+          type: integer
+        remaining_ml:
+          type: integer
+    Recipe:
+      type: object
+      properties:
+        name:
+          type: string
+        img:
+          type: string
+        toppings:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientAmount'
+    OrderStatistic:
+      type: object
+      properties:
+        drink_id:
+          type: integer
+        count:
+          type: integer
+    OrderPerHour:
+      type: object
+      properties:
+        hour:
+          type: string
+        count:
+          type: integer
+  responses:
+    RequestOK:
+      description: OK
+    BadRequest:
+      description: Ungültige Anfrage
+    Unauthorized:
+      description: Keine Berechtigung
+    NotFound:
+      description: Ressource nicht gefunden
+    InternalServerError:
+      description: Serverfehler
