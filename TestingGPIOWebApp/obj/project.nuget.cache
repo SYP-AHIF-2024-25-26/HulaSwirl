@@ -1,8 +1,45 @@
 {
   "version": 2,
-  "dgSpecHash": "qFbnzqUK7MY=",
+  "dgSpecHash": "7J0EK+wL7eM=",
   "success": true,
-  "projectFilePath": "/home/admin/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "projectFilePath": "/Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj",
+  "expectedPackageFiles": [
+    "/Users/moritz/.nuget/packages/iot.device.bindings/3.2.0/iot.device.bindings.3.2.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/microsoft.extensions.logging.abstractions/7.0.1/microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/microsoft.win32.systemevents/6.0.0/microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/runtime.linux-arm.runtime.native.system.io.ports/5.0.0/runtime.linux-arm.runtime.native.system.io.ports.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/runtime.linux-arm64.runtime.native.system.io.ports/5.0.0/runtime.linux-arm64.runtime.native.system.io.ports.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/runtime.linux-x64.runtime.native.system.io.ports/5.0.0/runtime.linux-x64.runtime.native.system.io.ports.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/runtime.native.system.io.ports/5.0.1/runtime.native.system.io.ports.5.0.1.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/runtime.osx-x64.runtime.native.system.io.ports/5.0.0/runtime.osx-x64.runtime.native.system.io.ports.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.codedom/5.0.0/system.codedom.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.device.gpio/3.2.0/system.device.gpio.3.2.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.drawing.common/6.0.0/system.drawing.common.6.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.io.pipelines/7.0.0/system.io.pipelines.7.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.io.ports/5.0.1/system.io.ports.5.0.1.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.management/5.0.0/system.management.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.security.accesscontrol/5.0.0/system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.security.principal.windows/5.0.0/system.security.principal.windows.5.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.text.encodings.web/6.0.0/system.text.encodings.web.6.0.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/system.text.json/6.0.9/system.text.json.6.0.9.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/unitsnet/5.31.0/unitsnet.5.31.0.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
+    "/Users/moritz/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.11/microsoft.netcore.app.host.osx-arm64.8.0.11.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Text.Json' 6.0.9 has a known high severity vulnerability, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

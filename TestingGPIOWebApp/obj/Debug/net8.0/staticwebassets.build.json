@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "rjhPwO9ztGe/mR6ZoqTM3JlLgqm65Ay/ek8OAT6w8QQ=",
+  "Source": "TestingGPIOWebApp",
+  "BasePath": "_content/TestingGPIOWebApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
