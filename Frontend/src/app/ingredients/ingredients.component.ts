@@ -1,4 +1,4 @@
-import {Component, inject,signal} from '@angular/core';
+import {Component, inject, Signal, signal, WritableSignal} from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -20,7 +20,7 @@ export class IngredientsComponent {
   private readonly ingredientsService = inject(IngredientsService);
 
 
-  availableIngredients= signal< Ingredient[]>([]);
+  availableIngredients= signal<Ingredient[]>([]);
   notAvailableIngredients= signal<Ingredient[]>([]);
 
   async ngOnInit() {
@@ -33,19 +33,27 @@ export class IngredientsComponent {
     this.indexIngredients();
   }
 
-  drop(event: CdkDragDrop<signal<Ingredient[]>, any>) {
+  drop(event: CdkDragDrop<WritableSignal<Ingredient[]>, any, any>) {
+    const previousSignal = event.previousContainer.data as WritableSignal<Ingredient[]>;
+    const currentSignal = event.container.data as WritableSignal<Ingredient[]>;
+
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
+      previousSignal.set(
+        [...previousSignal()]
       );
+      moveItemInArray(previousSignal(), event.previousIndex, event.currentIndex);
+    } else {
+      const prevArray = [...previousSignal()];
+      const currArray = [...currentSignal()];
+
+      transferArrayItem(prevArray, currArray, event.previousIndex, event.currentIndex);
+
+      previousSignal.set(prevArray);
+      currentSignal.set(currArray);
     }
-  this.indexIngredients();
+    this.indexIngredients();
   }
+
   indexIngredients(){
     for (let i = 0; i < this.availableIngredients().length; i++) {
       this.availableIngredients()[i].slot=i+1;
