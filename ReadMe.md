@@ -92,13 +92,13 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 
 ##### 6.2.1 ERD Diagramm
 ![](assets/ERD.png)
-[a link](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/assets/ERD.txt)
+[ERD text](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/assets/ERD.txt)
 
 ##### 6.2.2 API endpoints
-[a link](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/assets/openapi_doc.yaml)
+[Swagger](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/assets/openapi_doc.yaml)
 
 ## 7. Kostenschätzung
 
 - Etwa 130€ für den Protoyp (Amazon Prime Day berücksichtigt)
 - Ca. 200€ für das Endprodukt
-[a link](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/hardware/SYP%20Projekt%20Money%20Managment.xlsx)
+  [Dokumentation](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/hardware/SYP%20Projekt%20Money%20Managment.xlsx)
