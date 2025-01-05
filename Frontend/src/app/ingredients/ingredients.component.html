@@ -1,6 +1,10 @@
 <div class="box_container">
   <div class="big_box left_box" id="1">
-    <p class="box_title">Available Ingredients:</p>
+    <div class="available_container">
+      <p class="box_title">Available Ingredients:</p>
+      <div class="button cancel">Cancel</div>
+      <div class="button submit">Submit</div>
+    </div>
     <div
       cdkDropList
       #todoList="cdkDropList"
@@ -8,19 +12,26 @@
       [cdkDropListConnectedTo]="[doneList]"
       class="ingredients_container"
       (cdkDropListDropped)="drop($event)">
-      @for (item of availableIngredients; track item) {
+      @for (item of availableIngredients(); track item;let idx = $index) {
         <div class="ingredient A_Ingredient" cdkDrag>
-          <div class="A_ingredient_function">
+          <div class="A_ingredient_function tooltip">
             <div class="A_slot">{{item.slot}}.</div>
-            <div class="A_Name">{{item.name}}</div>
+            <textarea class="A_Input A_Name" [(ngModel)]="availableIngredients()[idx].name"></textarea>
+            <span class="tooltiptext">Rename Ingredient</span>
           </div>
-          <div class="A_liqid A_Name">{{item.remaining_liquid}} cl  </div>
+          <div class="A_ingredient_function tooltip">
+            <textarea class="A_Input A_liqid">{{item.remaining_liquid}}</textarea>
+            <span class="tooltiptext">Change available Liquid amount</span>
+            <div class="A_CL">cl</div>
+          </div>
+
+
         </div>
       }
     </div>
   </div>
   <div class="big_box">
-    <p class="box_title">Not available Ingredients:</p>
+    <p class="box_title box_title_left">Not available Ingredients:</p>
     <div
       cdkDropList
       #doneList="cdkDropList"
@@ -28,7 +39,7 @@
       [cdkDropListConnectedTo]="[todoList]"
       class="ingredients_container"
       (cdkDropListDropped)="drop($event)">
-      @for (item of notAvailableIngredients; track item) {
+      @for (item of notAvailableIngredients(); track item) {
         <div class="ingredient NA_Ingredient" cdkDrag>{{item.name}}</div>
       }
     </div>

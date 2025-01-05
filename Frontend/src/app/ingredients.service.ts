@@ -15,7 +15,7 @@ export class IngredientsService {
   async getAllIngredients(): Promise<Ingredient[]> {
     return [{
       name: 'Gin',
-      slot: 0,
+      slot: 1,
       remaining_liquid: 200
     }, {
       name: 'Vodka',
@@ -55,11 +55,11 @@ export class IngredientsService {
       remaining_liquid: 200
     }, {
       name: 'Apfelkuchen',
-      slot: 4,
+      slot: 0,
       remaining_liquid: 200
     }, {
       name: 'Apfelkuchen',
-      slot: 4,
+      slot: 0,
       remaining_liquid: 200
     }
 
