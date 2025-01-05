@@ -1,30 +1,37 @@
 {
   "format": 1,
   "restore": {
-    "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj": {}
+    "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj": {}
   },
   "projects": {
-    "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj": {
+    "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
+        "projectUniqueName": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
-        "packagesPath": "/Users/moritz/.nuget/packages/",
-        "outputPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/obj/",
+        "projectPath": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\leoob\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/moritz/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\leoob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net9.0"
+          "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -40,8 +47,22 @@
         }
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -53,6 +74,28 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.Net.Sdk.Compilers.Toolset",
+              "version": "[9.0.100, 9.0.100]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -61,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

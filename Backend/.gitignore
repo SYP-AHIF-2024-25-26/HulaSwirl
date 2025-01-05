@@ -1,0 +1,52 @@
+# Ignore Visual Studio and .NET build artifacts
+bin/
+obj/
+.vscode/
+*.user
+*.suo
+*.bak
+*.ncb
+*.log
+*.cache
+*.pdb
+*.dbmdl
+*.jfm
+
+# Ignore Rider project files
+.idea/
+*.sln.iml
+
+# Ignore build outputs
+publish/
+out/
+TestResults/
+
+# Ignore dependencies
+node_modules/
+packages/
+
+# Ignore environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# Ignore secrets
+secrets.json
+appsettings.json
+appsettings.Development.json
+
+# Ignore logs
+*.log
+logs/
+log/
+
+# Ignore generated files
+*.g.dart
+*.generated.cs
+
+# Ignore database files
+*.mdf
+*.ldf
+*.sqlite
+*.db
