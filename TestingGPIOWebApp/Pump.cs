@@ -13,7 +13,7 @@ public class Pump {
     }
 
     public void SetSpeed(int percentage) {
-        if (percentage is > 0 and < 100) {
+        if (percentage is < 0 or > 100) {
             throw new Exception("percentage format -> between 0 - 100");
         }
 
