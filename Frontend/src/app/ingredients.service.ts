@@ -5,7 +5,7 @@ import {firstValueFrom} from 'rxjs';
 export interface Ingredient  {
   name:string,
   slot:number,
-  remaining_liquid:number
+  remainingMl:number
 }
 
 

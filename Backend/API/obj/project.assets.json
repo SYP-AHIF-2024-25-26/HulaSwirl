@@ -5359,19 +5359,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Carol\\.nuget\\packages\\": {}
+    "C:\\Users\\leoob\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\Carol\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\obj\\",
+      "projectPath": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\leoob\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Carol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\leoob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

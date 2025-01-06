@@ -8,7 +8,7 @@
       @for (ingredient of C_newIngredients();track ingredient;let idx = $index){
         <div class="C_singleIngredient">
           <div class="C_ingredientInfo">
-            <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[idx].remaining_liquid"></textarea>
+            <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[idx].remainingMl"></textarea>
             <p>cl    {{ingredient.name}}</p>
           </div>
             <i style="font-size:20px" class="fa">&#xf014;</i>
