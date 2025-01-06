@@ -17,7 +17,11 @@ import {FormsModule} from '@angular/forms';
 export class HomeComponent {
   private readonly ingredientService=inject(IngredientsService);
   C_isModalOpen = false;
-  C_ingredients=signal<Ingredient[]>([]);
+  C_newIngredients=signal<Ingredient[]>([]);
+  C_newLiquidAmount=signal('0');
+  allAvailableIngredients=signal<Ingredient[]>([]);
+  C_newIngredientName=signal('Choose Ingredient');
+
 
   C_openModal() {
     this.C_isModalOpen = true;
@@ -31,14 +35,14 @@ export class HomeComponent {
     }
   }
   C_cancel() {
-
+    this.C_closeModal();
   }
   C_Order() {
 
   }
 
   async ngOnInit(){
-    this.C_ingredients.set(await this.ingredientService.getAllIngredients());
-    console.log(this.C_ingredients());
+    this.allAvailableIngredients.set(await this.ingredientService.getAllIngredients());
+    this.C_newIngredients.set(await this.ingredientService.getAllIngredients());//kommt nacher weg
   }
 }

@@ -83,9 +83,8 @@
 }
 
 .A_Input{
-  background-color: #ffffff;
+  background-color: #efefef;
   border-radius: 5px;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.07));
   text-align: center;
   color:#575757;
   font-size: 1.5vw;
