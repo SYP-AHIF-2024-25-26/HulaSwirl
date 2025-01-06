@@ -3,6 +3,7 @@
   justify-content: space-evenly;
   align-items: start;
   margin-top:11vh;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.16));
 }
 
 .big_box{
@@ -141,8 +142,9 @@
   background: linear-gradient(90deg, rgba(255,212,150,1) 0%, rgba(255,154,191,1) 100%);
 }
 
-
-
+.button:hover{
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.16));
+}
 
 
 

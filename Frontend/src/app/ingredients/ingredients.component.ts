@@ -24,12 +24,7 @@ export class IngredientsComponent {
   notAvailableIngredients= signal<Ingredient[]>([]);
 
   async ngOnInit() {
-    let allIngredients: Ingredient[] = await this.ingredientsService.getAllIngredients();
-    allIngredients.forEach(ingredient => {
-      ingredient.slot===0 ?
-        this.notAvailableIngredients().push(ingredient)
-        : this.availableIngredients().push(ingredient);
-    });
+    this.loadIngredients()
     this.indexIngredients();
   }
 
@@ -61,6 +56,36 @@ export class IngredientsComponent {
     for (let i = 0; i < this.notAvailableIngredients().length; i++) {
       this.notAvailableIngredients()[i].slot=0;
     }
-    console.log(this.availableIngredients())
+  }
+
+  async loadIngredients(){
+    let allIngredients: Ingredient[] = await this.ingredientsService.getAllIngredients();
+    allIngredients.forEach(ingredient => {
+      ingredient.slot===0 ?
+        this.notAvailableIngredients().push(ingredient)
+        : this.availableIngredients().push(ingredient);
+    });
+  }
+
+  sumbit() {
+    this.ingredientsService.saveIngredients(this.availableIngredients().concat(this.notAvailableIngredients()))
+    console.log("Ingredients saved successfully.")
+  }
+
+  async cancel() {
+    let oldAvailabeIngredients:Ingredient[]=[];
+    let oldNotAvailabeIngredients:Ingredient[]=[];
+    let allIngredients: Ingredient[] = await this.ingredientsService.getAllIngredients();
+    allIngredients.forEach(ingredient => {
+      ingredient.slot===0 ?
+        oldNotAvailabeIngredients.push(ingredient)
+        : oldAvailabeIngredients.push(ingredient);
+    });
+
+
+    console.log(oldAvailabeIngredients)
+    this.availableIngredients.set(oldAvailabeIngredients);
+    this.notAvailableIngredients.set(oldNotAvailabeIngredients);
+    this.indexIngredients();
   }
 }
