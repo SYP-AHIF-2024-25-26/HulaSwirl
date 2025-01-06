@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj": {}
+    "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\TestingGPIOWebApp.csproj": {}
   },
   "projects": {
-    "/Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj": {
+    "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\TestingGPIOWebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj",
+        "projectUniqueName": "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\TestingGPIOWebApp.csproj",
         "projectName": "TestingGPIOWebApp",
-        "projectPath": "/Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj",
-        "packagesPath": "/Users/moritz/.nuget/packages/",
-        "outputPath": "/Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/obj/",
+        "projectPath": "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\TestingGPIOWebApp.csproj",
+        "packagesPath": "C:\\Users\\flyti\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/moritz/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\flyti\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -69,11 +69,15 @@
               "version": "[8.0.11, 8.0.11]"
             },
             {
-              "name": "Microsoft.NETCore.App.Host.osx-arm64",
+              "name": "Microsoft.NETCore.App.Host.win-x64",
               "version": "[8.0.11, 8.0.11]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
               "version": "[8.0.11, 8.0.11]"
             }
           ],
@@ -85,7 +89,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\flyti\\.dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

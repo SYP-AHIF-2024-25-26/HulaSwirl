@@ -1,4 +1,3 @@
-using API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,13 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetEnv;
 using API;
+using API.Services;
 
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = Env.GetString("DB_CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 29))));
-//app.Urls.Add("http://192.168.178.62:5000");
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -24,23 +23,14 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddControllers();
 var app = builder.Build();
+app.Urls.Add("http://192.168.178.62:5000");
+app.MapGet("/startPump", async (int slot, int ml) =>
+{
+    _ = Task.Run(() => PumpManager.Instance.StartPump(slot, ml));
+    
+    return Results.Ok($"Pump {slot} scheduled to run for {ml} ml.");
+});
+
 app.UseCors("AllowAll");
 app.MapControllers();
 app.Run();
-
-public class AppDbContext : DbContext
-{
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-    public DbSet<Drink> Drinks { get; set; }
-    public DbSet<Ingredient> Ingredients { get; set; }
-    public DbSet<DrinkIngredient> DrinkIngredients { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Drink>().HasKey(d => d.Id);
-        modelBuilder.Entity<Ingredient>().HasKey(i => i.Name);
-        modelBuilder.Entity<Drink>().Ignore("Ingredients");
-        modelBuilder.Entity<DrinkIngredient>().HasNoKey();
-        modelBuilder.Entity<Ingredient>().Property(i => i.RemainingMl).HasColumnName("remaining_liquid");
-    }
-}
