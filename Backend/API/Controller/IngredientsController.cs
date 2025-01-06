@@ -20,10 +20,7 @@ namespace API.Controller
         [HttpPut]
         public async Task<IActionResult> UpdateIngredients([FromBody] Ingredient[] ingredients)
         {
-            var ingredientNames = ingredients.Select(i => i.Name).ToList();
-            var existingIngredients = await _context.Ingredients.Where(i => ingredientNames.Contains(i.Name)).ToListAsync();
-
-            var slotMap = existingIngredients.ToDictionary(i => i.Name, i => i.Slot);
+            var existingIngredients = await _context.Ingredients.ToListAsync();
 
             foreach (var item in ingredients)
             {
@@ -33,6 +30,12 @@ namespace API.Controller
                     existingIngredient.Slot = item.Slot;
                     existingIngredient.RemainingMl = item.RemainingMl;
                 }
+            }
+
+            var slotCounts = existingIngredients.GroupBy(i => i.Slot).ToDictionary(g => g.Key, g => g.Count());
+            if (slotCounts.Any(kv => kv.Value > 1 && kv.Key != 0))
+            {
+                return BadRequest("Ein Slot kann nicht mehrfach vergeben werden.");
             }
 
             await _context.SaveChangesAsync();
