@@ -14,6 +14,14 @@ Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = Env.GetString("DB_CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 29))));
+//app.Urls.Add("http://192.168.178.62:5000");
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
 builder.Services.AddControllers();
 var app = builder.Build();
 app.UseCors("AllowAll");
