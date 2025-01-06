@@ -15,12 +15,12 @@ Table drink {
 Table drink_ingredient {
     drink_id int [primary key]
     ingredient_name string [primary key]
-    cl int
+    ml int
 }
 
 Table ingredient {
     name varchar(100) [primary key]
-    slot int
+    slot int [unique]
     remaining_liquid int
 }
 
