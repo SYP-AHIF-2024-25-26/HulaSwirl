@@ -1,6 +1,7 @@
 # Ignore Visual Studio and .NET build artifacts
 bin/
 obj/
+.vs
 .vscode/
 *.user
 *.suo
