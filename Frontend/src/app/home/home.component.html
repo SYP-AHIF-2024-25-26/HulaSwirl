@@ -1,1 +1,23 @@
-<p>home works!</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<button (click)="C_openModal()" class ="button">Order custom Drink</button>
+<div *ngIf="C_isModalOpen" class="C_modal" (click)="C_onOverlayClick($event)">
+  <div class="C_modal-content">
+    <span class="C_close" (click)="C_closeModal()">&times;</span>
+    <p>Konfigure Your own Drink</p>
+    <div class="C_ingredientContainer">
+      @for (ingredient of C_ingredients();track ingredient;let idx = $index){
+        <div class="C_singleIngredient">
+          <div class="C_ingredientInfo">
+            <textarea class="C_liquidInput" [(ngModel)]="C_ingredients()[idx].remaining_liquid"></textarea>
+            <p>cl    {{ingredient.name}}</p>
+          </div>
+            <i style="font-size:20px" class="fa">&#xf014;</i>
+        </div>
+      }
+    </div>
+    <div class="C_orderbuttons">
+      <div class="C_button C_buttonCancel" (click)="C_cancel()">Cancel</div>
+      <div class="C_button C_buttonOrder" (click)="C_Order()">Order</div>
+    </div>
+  </div>
+</div>

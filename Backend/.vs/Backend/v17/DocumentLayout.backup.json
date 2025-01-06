@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|c:\\users\\leoob\\onedrive - htbla leonding\\documents\\jg4\\syp\\hulaswirl\\backend\\api\\controller\\ingredientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|solutionrelative:api\\controller\\ingredientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|c:\\users\\leoob\\onedrive - htbla leonding\\documents\\jg4\\syp\\hulaswirl\\backend\\api\\controller\\drinkscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|solutionrelative:api\\controller\\drinkscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|c:\\users\\leoob\\onedrive - htbla leonding\\documents\\jg4\\syp\\hulaswirl\\backend\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|c:\\users\\leoob\\onedrive - htbla leonding\\documents\\jg4\\syp\\hulaswirl\\backend\\api\\.env||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|solutionrelative:api\\.env||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|c:\\users\\leoob\\onedrive - htbla leonding\\documents\\jg4\\syp\\hulaswirl\\backend\\api\\model\\ingredient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -27,8 +27,8 @@
       "RelativeMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|solutionrelative:api\\model\\drink.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|c:\\users\\leoob\\onedrive - htbla leonding\\documents\\jg4\\syp\\hulaswirl\\backend\\api\\controller\\ingredientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|solutionrelative:api\\controller\\ingredientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|c:\\users\\leoob\\onedrive - htbla leonding\\documents\\jg4\\syp\\hulaswirl\\backend\\api\\swirlmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{13A019FF-5081-414F-9757-66BC13FA6826}|API\\API.csproj|solutionrelative:api\\swirlmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,19 +38,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": ".env",
-              "DocumentMoniker": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\.env",
-              "RelativeDocumentMoniker": "API\\.env",
-              "ToolTip": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\.env",
-              "RelativeToolTip": "API\\.env",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-01-05T12:37:33.243Z"
+              "DocumentIndex": 6,
+              "Title": "SwirlManager.cs",
+              "DocumentMoniker": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\SwirlManager.cs",
+              "RelativeDocumentMoniker": "API\\SwirlManager.cs",
+              "ToolTip": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\SwirlManager.cs",
+              "RelativeToolTip": "API\\SwirlManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-06T13:07:04.937Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -62,7 +63,8 @@
               "RelativeToolTip": "API\\Model\\Ingredient.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T12:28:05.073Z"
+              "WhenOpened": "2025-01-05T12:28:05.073Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -74,7 +76,8 @@
               "RelativeToolTip": "API\\Model\\DrinkIngredient.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T12:28:02.025Z"
+              "WhenOpened": "2025-01-05T12:28:02.025Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -86,42 +89,44 @@
               "RelativeToolTip": "API\\Model\\Drink.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T11:58:37.412Z"
+              "WhenOpened": "2025-01-05T11:58:37.412Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "IngredientsController.cs",
               "DocumentMoniker": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\Controller\\IngredientsController.cs",
               "RelativeDocumentMoniker": "API\\Controller\\IngredientsController.cs",
               "ToolTip": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\Controller\\IngredientsController.cs",
               "RelativeToolTip": "API\\Controller\\IngredientsController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAYAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAmwBoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T10:36:26.477Z"
+              "WhenOpened": "2025-01-05T10:36:26.477Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "DrinksController.cs",
               "DocumentMoniker": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\Controller\\DrinksController.cs",
               "RelativeDocumentMoniker": "API\\Controller\\DrinksController.cs",
               "ToolTip": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\Controller\\DrinksController.cs",
               "RelativeToolTip": "API\\Controller\\DrinksController.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAxwBIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-05T10:35:53.733Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\Program.cs",
               "RelativeDocumentMoniker": "API\\Program.cs",
               "ToolTip": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\Program.cs",
               "RelativeToolTip": "API\\Program.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAxwAwAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABMAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-05T10:04:52.252Z",
               "EditorCaption": ""

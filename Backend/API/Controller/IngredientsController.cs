@@ -20,13 +20,21 @@ namespace API.Controller
         [HttpPut]
         public async Task<IActionResult> UpdateIngredients([FromBody] Ingredient[] ingredients)
         {
+            var ingredientNames = ingredients.Select(i => i.Name).ToList();
+            var existingIngredients = await _context.Ingredients.Where(i => ingredientNames.Contains(i.Name)).ToListAsync();
+
+            var slotMap = existingIngredients.ToDictionary(i => i.Name, i => i.Slot);
+
             foreach (var item in ingredients)
             {
-                var existingIngredient = await _context.Ingredients.FindAsync(item.Name);
-                if (existingIngredient == null) return NotFound();
-                existingIngredient.Slot = item.Slot;
-                existingIngredient.RemainingMl = item.RemainingMl;
+                var existingIngredient = existingIngredients.FirstOrDefault(i => i.Name == item.Name);
+                if (existingIngredient != null)
+                {
+                    existingIngredient.Slot = item.Slot;
+                    existingIngredient.RemainingMl = item.RemainingMl;
+                }
             }
+
             await _context.SaveChangesAsync();
             return Ok("Ingredients aktualisiert.");
         }

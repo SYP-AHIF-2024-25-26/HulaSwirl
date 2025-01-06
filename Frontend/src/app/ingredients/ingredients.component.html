@@ -2,8 +2,8 @@
   <div class="big_box left_box" id="1">
     <div class="available_container">
       <p class="box_title">Available Ingredients:</p>
-      <div class="button cancel">Cancel</div>
-      <div class="button submit">Submit</div>
+      <div class="button cancel" (click)="cancel()">Cancel</div>
+      <div class="button submit" (click)="sumbit()">Submit</div>
     </div>
     <div
       cdkDropList
@@ -20,12 +20,10 @@
             <span class="tooltiptext">Rename Ingredient</span>
           </div>
           <div class="A_ingredient_function tooltip">
-            <textarea class="A_Input A_liqid" [(ngModel)]=availableIngredients()[idx].remaining_liquid></textarea>
+            <textarea class="A_Input A_liqid" [(ngModel)]="availableIngredients()[idx].remaining_liquid"></textarea>
             <span class="tooltiptext">Change available Liquid amount</span>
             <div class="A_CL">cl</div>
           </div>
-
-
         </div>
       }
     </div>
