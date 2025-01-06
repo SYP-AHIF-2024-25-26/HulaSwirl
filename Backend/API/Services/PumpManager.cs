@@ -16,6 +16,10 @@ public class PumpManager {
 
 
     public async void StartPump(int slot, int ml) {
+        if (slot > _pumps.Length) {
+            
+        }
+        
         //testing show that at 20% a pump can output 13ml/s
         var timeInSec = ml / 13;
         var pump = _pumps[slot];

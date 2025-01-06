@@ -1,3 +1,0 @@
-### Start Pump Request
-GET http://localhost:5000/startPump?slot=1&ml=100
-Content-Type: application/json

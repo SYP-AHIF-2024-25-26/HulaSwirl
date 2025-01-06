@@ -28,7 +28,7 @@ namespace API.Controller
                 if (ingredient == null || ingredient.RemainingMl < item.Amount)
                     return BadRequest($"Nicht genug {item.Name} vorhanden.");
                 
-                _ = Task.Run(() => PumpManager.Instance.StartPump(1, 100));
+                _ = Task.Run(() => PumpManager.Instance.StartPump(ingredient.Slot, item.Amount));
                 
                 ingredient.RemainingMl -= item.Amount;
             }
