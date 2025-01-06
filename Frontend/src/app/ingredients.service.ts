@@ -1,4 +1,6 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {firstValueFrom} from 'rxjs';
 
 export interface Ingredient  {
   name:string,
@@ -11,23 +13,16 @@ export interface Ingredient  {
   providedIn: 'root'
 })
 export class IngredientsService {
-  private testIngredients:Ingredient[];
+  private readonly httpClient = inject(HttpClient);
   constructor() {
-    let testIngredients: Ingredient[];
-    this.testIngredients = [
-      {name: 'Gin', slot: 1, remaining_liquid: 200},
-      {name: 'Vodka', slot: 2, remaining_liquid: 200},
-      {name: 'Rakija', slot: 3, remaining_liquid: 200},
-      {name: 'Liqör', slot: 4, remaining_liquid: 200},
-    ];
-/*      {name: 'Wasser', slot: 5, remaining_liquid: 200},
-      {name: 'Apfelsaft', slot: 0, remaining_liquid: 200},*/
   }
 
   async getAllIngredients(): Promise<Ingredient[]> {
-    return Array.from(this.testIngredients);
+    let res = await firstValueFrom(this.httpClient.get<Ingredient[]>('https://localhost:7212/api/admin/ingredients'));
+    console.log(res);
+    return res;
   }
   async saveIngredients(ingredients:Ingredient[]){
-    this.testIngredients = Array.from(ingredients);
+
   }
 }

@@ -16,6 +16,7 @@ var connectionString = Env.GetString("DB_CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 29))));
 builder.Services.AddControllers();
 var app = builder.Build();
+app.UseCors("AllowAll");
 app.MapControllers();
 app.Run();
 
