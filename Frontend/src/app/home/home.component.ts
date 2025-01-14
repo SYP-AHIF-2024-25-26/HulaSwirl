@@ -1,7 +1,7 @@
 import {Component, inject, signal} from '@angular/core';
 import {NgIf} from '@angular/common';
 import {Ingredient, IngredientsService} from '../ingredients.service';
-import {single} from 'rxjs';
+import {firstValueFrom, single} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 
 @Component({
@@ -37,8 +37,13 @@ export class HomeComponent {
   C_cancel() {
     this.C_closeModal();
   }
-  C_Order() {
-
+  async C_Order() {
+    await this.ingredientService.postOrder(this.allAvailableIngredients().map((ingredient) => {
+      return {
+        Name: ingredient.name,
+        Amount: ingredient.remainingMl
+      }
+    }));
   }
 
   async ngOnInit(){

@@ -8,6 +8,11 @@ export interface Ingredient  {
   remainingMl:number
 }
 
+export interface Order {
+  Name: string;
+  Amount: number;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +23,16 @@ export class IngredientsService {
   }
 
   async getAllIngredients(): Promise<Ingredient[]> {
-    let res = await firstValueFrom(this.httpClient.get<Ingredient[]>('https://localhost:7212/api/admin/ingredients'));
+    let res = await firstValueFrom(this.httpClient.get<Ingredient[]>('http://172.18.4.108:5000/api/admin/ingredients'));
     console.log(res);
     return res;
   }
+
+  async postOrder(ingredients: Order[]): Promise<void> {
+    console.log(ingredients);
+    await firstValueFrom(this.httpClient.post('http://172.18.4.108:5000/api/drinks/order', ingredients));
+  }
+
   async saveIngredients(ingredients:Ingredient[]){
 
   }
