@@ -6319,32 +6319,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\leoob\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/moritz/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
+      "projectUniqueName": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\leoob\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\leoob\\OneDrive - HTBLA Leonding\\Documents\\JG4\\SYP\\HulaSwirl\\Backend\\API\\obj\\",
+      "projectPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
+      "packagesPath": "/Users/moritz/.nuget/packages/",
+      "outputPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\leoob\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/moritz/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -6406,19 +6398,11 @@
             "version": "[8.0.11, 8.0.11]"
           },
           {
-            "name": "Microsoft.Net.Sdk.Compilers.Toolset",
-            "version": "[9.0.100, 9.0.100]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
             "version": "[8.0.11, 8.0.11]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
             "version": "[8.0.11, 8.0.11]"
           }
         ],
@@ -6430,7 +6414,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

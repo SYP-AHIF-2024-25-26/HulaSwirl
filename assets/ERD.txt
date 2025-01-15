@@ -1,4 +1,4 @@
-Table order_log {
+Table order {
     id int [primary key]
     drink_id int
     order_date_time datetime
@@ -12,18 +12,25 @@ Table drink {
     toppings varchar(255)
 }
 
-Table drink_ingredient {
-    drink_id int [primary key]
-    ingredient_name string [primary key]
-    ml int
-}
-
 Table ingredient {
-    name varchar(100) [primary key]
-    slot int [unique]
-    remaining_liquid int
+    drink_id int [primary key]
+    drink_name varchar(100)
+    required_ml int
 }
 
-Ref: order_log.drink_id > drink.id
-Ref: drink.id > drink_ingredient.drink_id
-Ref: ingredient.name > drink_ingredient.ingredient_name
+Table bottle {
+    id int [primary key]
+    drink_name varchar(100) [unique]
+    remaining_ml int
+}
+
+Table Pump {
+  slot int [primary key]
+  bottle_id varchar(100)
+  active boolean
+}
+
+Ref: Pump.bottle_id - bottle.id
+Ref: order.drink_id > drink.id
+Ref: drink.id < ingredient.drink_id
+Ref: ingredient.drink_name - bottle.drink_name
