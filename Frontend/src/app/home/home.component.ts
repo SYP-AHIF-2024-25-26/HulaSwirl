@@ -37,13 +37,18 @@ export class HomeComponent {
   C_cancel() {
     this.C_closeModal();
   }
+
   async C_Order() {
-    await this.ingredientService.postOrder(this.allAvailableIngredients().map((ingredient) => {
-      return {
-        Name: ingredient.name,
-        Amount: ingredient.remainingMl
-      }
-    }));
+    try {
+      await this.ingredientService.postOrder(this.C_newIngredients().map((ingredient) => {
+        return {
+          Name: ingredient.name,
+          Amount: ingredient.remainingMl
+        }
+      }));
+    } catch (e) {
+      // console.error(e);
+    }
   }
 
   async ngOnInit(){

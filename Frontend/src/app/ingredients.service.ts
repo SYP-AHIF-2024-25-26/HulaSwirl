@@ -29,7 +29,6 @@ export class IngredientsService {
   }
 
   async postOrder(ingredients: Order[]): Promise<void> {
-    console.log(ingredients);
     await firstValueFrom(this.httpClient.post('http://172.18.4.108:5000/api/drinks/order', ingredients));
   }
 
