@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<button (click)="C_openModal()" class ="button">Order custom Drink</button>
+
+<!--Order Custom Drink Panel -->
 <div *ngIf="C_isModalOpen" class="C_modal" (click)="C_onOverlayClick($event)">
   <div class="C_modal-content">
     <span class="C_close" (click)="C_closeModal()">&times;</span>
@@ -36,5 +37,23 @@
       <div class="C_button C_buttonCancel" (click)="C_cancel()">Cancel</div>
       <div class="C_button C_buttonOrder" (click)="C_Order()">Order</div>
     </div>
+  </div>
+</div>
+
+<div class="H_Header">
+  <div class="H_left">
+    <img src="assets/images/H_Iconpng.png" alt="Drink" height="150" width="550" class="H_ICON">
+    <div class="H_motto">
+      Make your perfect<br>summer drinks<br> with Hula Swirl!
+    </div>
+    <div class = "H_miniMotto">
+      Mix it easy, mix it smart, mix it fast,<br> perfect for every moment
+    </div>
+    <button (click)="C_openModal()" class ="button H_headerButton">ORDER CUSTOM DRINK</button>
+    <button (click)="C_openModal()" class ="button H_headerButton2">ORDER CUSTOM DRINK</button>
+  </div>
+
+  <div class="H_imageSeperation">
+    <img src="assets/images/DrinkImage.png" alt="Drink" height="500" width="550" class="H_dringImage">
   </div>
 </div>

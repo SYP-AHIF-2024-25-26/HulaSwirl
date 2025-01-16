@@ -1,7 +1,7 @@
 /*Nav bar*/
 .navbar {
   align-items: center;
-  background: linear-gradient(to right, #F09400, #F135B9,#3493DC);
+  background: #0e2d3e;
   color: white;
   filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
   z-index: 3;
@@ -12,11 +12,11 @@
 }
 
 .Title {
-  margin-left:0.3vw;
   font-size: 6vh;
   font-weight: bold;
   font-family: Katibeh,sans-serif;
-  padding-bottom: 1vh;
+  color: #ef7f84;
+  padding-top:0.9vh;
 }
 
 .TitleContainer{
@@ -35,12 +35,13 @@
   position: absolute;
   top: 3.1vh;
   right: 1.4vw;
+
 }
 
 .bar {
   width: 2.5vw;
   height: 0.4vh;
-  background-color: white;
+  background-color: #ef7f84;
   margin: 0.4vh 0;
   transition: 0.4s;
 }
