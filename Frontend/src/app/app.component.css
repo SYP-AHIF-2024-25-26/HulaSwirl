@@ -1,6 +1,6 @@
 /*Nav bar*/
 .navbar {
-  align-items: center;
+  display:flex;
   background: #0e2d3e;
   color: white;
   filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
@@ -11,92 +11,42 @@
   height: 10vh;
 }
 
-.Title {
-  font-size: 6vh;
-  font-weight: bold;
-  font-family: Katibeh,sans-serif;
-  color: #ef7f84;
-  padding-top:0.9vh;
-}
-
 .TitleContainer{
   display: flex;
   align-items: center;
   justify-content: center;
   align-content: center;
   cursor:pointer;
+  margin-left:1vw;
 }
 
-/* Burger-Menü */
-.menu-toggle {
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  position: absolute;
-  top: 3.1vh;
-  right: 1.4vw;
-
+.H_ICON{
+  height:4.5vw;
+  margin:1vw;
 }
 
-.bar {
-  width: 2.5vw;
-  height: 0.4vh;
-  background-color: #ef7f84;
-  margin: 0.4vh 0;
-  transition: 0.4s;
-}
-
-/* Menü Animation */
-.nav-links {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links li {
-  display: inline;
-}
-
-#navLinksAdmin{
-  cursor: default;
+.link{
+  font-size: 1.7vw;
+  font-family: JosefinSans,sans-serif;
+  color: #ef7f84;
   text-decoration: none;
-  color: white;
-  font-size: 1.2em;
-  transition: 0.3s;
-  font-family: JosefinSans, serif;
 }
 
-
-.nav-links a {
-  text-decoration: none;
-  color: white;
-  font-size: 1.2em;
-  transition: 0.3s;
-  font-family: JosefinSans, serif;
+.linkHome{
+  font-weight: bold;
+  font-size: 3vw;
+  padding-top:0.17vw;
+  font-family: Katibeh,sans-serif;
 }
 
-.nav-links a:hover {
-  font-size: 1.3em;
-  font-family: JosefinSans, serif;
+.linkAdmin{
+  color: #fefde6;
+  font-weight: lighter;
+  padding-top:2vw;
 }
 
-.nav-links {
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  right: 0;
-  background: linear-gradient(to bottom, #9866cc, #e35b68);
-  width: 200px;
-  text-align: left;
-  padding: 10px;
-  border-radius: 0 0 0 10px;
-  margin:0;
-  top:8vh;
-  z-index: 2;
-}
-
-.nav-links.show {
+.H_LinkContainer{
   display: flex;
+gap: 3vw;
+  margin-left:2vw;
 }
-
