@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pomelo.EntityFrameworkCore.MySql;
 using System.Collections.Generic;
@@ -7,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using DotNetEnv;
 using API;
-using API.Services;
 
 Env.Load();
 

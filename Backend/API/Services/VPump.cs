@@ -1,12 +1,11 @@
-using System.Device.Gpio;
 using System.Device.Pwm.Drivers;
 
 namespace API.Services;
 
-public class Pump {
-    private SoftwarePwmChannel _channel1;
+public class VPump {
+    private readonly SoftwarePwmChannel _channel1;
 
-    public Pump(int in1, int in2) {
+    public VPump(int in1, int in2) {
         _channel1 = new SoftwarePwmChannel(in1, 20_000, 0);
 
         var manager = GpioManager.Instance.Controller;

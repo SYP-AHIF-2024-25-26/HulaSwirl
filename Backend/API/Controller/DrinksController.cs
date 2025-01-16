@@ -1,38 +1,30 @@
-﻿using API.Model;
-using API.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-namespace API.Controller
+﻿namespace API.Controller
 {
     [Route("api/drinks")]
     [ApiController]
-    public class DrinksController : ControllerBase
-    {
-        private readonly AppDbContext _context;
-        public DrinksController(AppDbContext context) { _context = context; }
-
+    public class DrinksController(AppDbContext context) : ControllerBase {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Drink>>> GetDrinks()
         {
-            var drinks = await _context.Drinks.ToListAsync();
+            var drinks = await context.Drinks.ToListAsync();
             return Ok(drinks);
         }
 
         [HttpPost("order")]
-        public async Task<IActionResult> OrderDrink([FromBody] List<DrinkIngredient> order)
+        public async Task<IActionResult> OrderDrink([FromBody] List<DrinkIngredient> orders)
         {
-            foreach (var item in order)
+            foreach (var order in orders)
             {
-                var ingredient = await _context.Ingredients.FindAsync(item.Name);
-                if (ingredient == null || ingredient.RemainingMl < item.Amount)
-                    return BadRequest($"Nicht genug {item.Name} vorhanden.");
+                var ingredient = await context.Ingredients.FindAsync(order.IngredientName);
+                if (ingredient is null || ingredient.RemainingMl < order.Ml)
+                    return BadRequest($"Nicht genug {order.IngredientName} vorhanden.");
                 
-                _ = Task.Run(() => PumpManager.Instance.StartPump(ingredient.Slot, item.Amount));
+                _ = Task.Run(() => PumpManager.Instance.StartPump(ingredient.Pump.Slot, order.Ml));
                 
-                ingredient.RemainingMl -= item.Amount;
+                ingredient.RemainingMl -= order.Ml;
             }
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+
             return Ok("Getränk gemischt.");
         }
     }

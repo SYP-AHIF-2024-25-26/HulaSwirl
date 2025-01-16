@@ -2,10 +2,10 @@ namespace API.Services;
 
 public class PumpManager {
     private static readonly Lazy<PumpManager> _lazy = new(() => new PumpManager());
-    private readonly Pump[] _pumps;
+    private readonly VPump[] _pumps;
 
     private PumpManager() {
-        _pumps = [new Pump(17, 27), new Pump(23, 24)];
+        _pumps = [new VPump(17, 27), new VPump(23, 24)];
         
         foreach (var pump in _pumps) {
             pump.SetSpeed(20);

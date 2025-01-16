@@ -1,9 +1,11 @@
-﻿namespace API.Model
-{
-    public class Ingredient
-    {
-        public string Name { get; set; }
-        public int Slot { get; set; }
-        public int RemainingMl { get; set; }
-    }
+namespace API.Model;
+
+public class Ingredient {
+    [Key] [MaxLength(100)] public string Name { get; set; }
+
+    public int RemainingMl { get; set; }
+
+    public virtual Pump Pump { get; set; }
+
+    public virtual ICollection<DrinkIngredient> DrinkIngredients { get; set; } = new List<DrinkIngredient>();
 }

@@ -1,5 +1,3 @@
-using System.Device.Gpio;
-
 namespace API.Services;
 
 public sealed class GpioManager {
