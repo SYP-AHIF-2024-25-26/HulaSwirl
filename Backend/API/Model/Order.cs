@@ -6,6 +6,4 @@ public class Order {
     [ForeignKey(nameof(Drink))] public int DrinkId { get; set; }
 
     public DateTime OrderDateTime { get; set; }
-
-    public virtual Drink Drink { get; set; }
 }
