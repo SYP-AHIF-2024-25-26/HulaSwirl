@@ -45,21 +45,49 @@
 }
 
 .button{
+  border-radius: 100px;
+  background: #fdfded;
+  color: #ffffff;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.29));
   text-align: center;
   padding: 0.8vw;
-  border-radius: 10px;
-  color:white;
   cursor:pointer;
-  background: #ef4d4f;
   margin-top:4vh;
   margin-left:2vw;
-  border:none;
+  border:3px solid #fc5d5b;
   height:3vw;
 }
 .H_headerButton{
   border-radius: 100px;
-  background: #fc5d5b;
+  background: #fdfded;
+  color:#fc5d5b;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
+  text-align: center;
+  padding: 0.8vw;
+  cursor:pointer;
+  margin-top:4vh;
+  margin-left:2vw;
+  border:3px solid #ffffff;
+  height:3vw;
 }
+
+.H_headerButton:hover{
+  border: 3px solid #fc5d5b;
+}
+
+.H_headerButton2{
+  border-radius: 100px;
+  background: #fc5d5b;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
+  border:3px solid #fc5d5b;
+}
+
+.H_headerButton2:hover{
+  filter: brightness(120%) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
+
+}
+
+
 
 .C_button{
   width:7vw;
@@ -79,9 +107,7 @@
   background: linear-gradient(90deg, rgba(255,212,150,1) 0%, rgba(255,154,191,1) 100%);
 }
 
-.button:hover{
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.16)) brightness(110%)
-}
+
 
 .C_ingredientContainer{
   max-width: 40vw;
@@ -177,20 +203,17 @@
   width: 100vw;
   height:75vh;
   margin-top:10vh;
-  background: linear-gradient(180deg, rgba(32,85,106,1) 0%, rgba(55,103,117,1) 24%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
-  display:flex;
+  background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);display:flex;
   justify-content: space-between;
-  padding-top:2vw;
+  filter:saturate(110%);
 }
 
 .H_dringImage{
-  margin-right:4vw;
-  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.48));
+  height:95%
 }
 
-.H_left{
-  margin-left:8vw;
-}
+
 .H_ICON{
   filter: drop-shadow(5px 5px 5px rgba(10, 17, 47, 0.27));
 
@@ -200,7 +223,7 @@
   color:#fefde6;
   font-size:3.5vw;
   filter: drop-shadow(0px 0px 5px rgba(10, 17, 47, 0.79));
-  margin-left: 2vw;
+  margin-left: 3vw;
   font-weight: bold;
   line-height: 1.1;
 }
@@ -209,7 +232,12 @@
   color:#fefde6;
   font-size:1.7vw;
   line-height: 1.3;
-  filter: drop-shadow(0px 0px 5px rgba(10, 17, 47, 0.79));
-  margin-left: 2vw;
+  filter: drop-shadow(0px 0px 5px rgba(10, 17, 47, 0.69));
+  margin-left: 2.5vw;
   margin-top:1.5vw;
+  font-weight: lighter;
+}
+
+H_Leaves{
+  height:100%
 }
