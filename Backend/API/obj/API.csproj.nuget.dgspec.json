@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\API.csproj": {}
+    "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\API.csproj": {
+    "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
+        "projectUniqueName": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\Carol\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Carol\\OneDrive\\Desktop\\SYP\\HulaSwirl\\Backend\\API\\obj\\",
+        "projectPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
+        "packagesPath": "/Users/moritz/.nuget/packages/",
+        "outputPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Carol\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/moritz/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -50,6 +47,10 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Iot.Device.Bindings": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.11, )"
@@ -57,6 +58,10 @@
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "System.Device.Gpio": {
+              "target": "Package",
+              "version": "[3.2.0, )"
             }
           },
           "imports": [
@@ -76,19 +81,11 @@
               "version": "[8.0.11, 8.0.11]"
             },
             {
-              "name": "Microsoft.Net.Sdk.Compilers.Toolset",
-              "version": "[9.0.100, 9.0.100]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "name": "Microsoft.NETCore.App.Host.osx-arm64",
               "version": "[8.0.11, 8.0.11]"
             },
             {
               "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.11, 8.0.11]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
               "version": "[8.0.11, 8.0.11]"
             }
           ],
@@ -100,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

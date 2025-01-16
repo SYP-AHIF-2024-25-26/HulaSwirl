@@ -1,10 +1,10 @@
-Table order_log {
+Table Orders {
     id int [primary key]
     drink_id int
     order_date_time datetime
 }
 
-Table drink {
+Table Drinks {
     id int [primary key]
     name varchar(100)
     enabled bool
@@ -12,18 +12,24 @@ Table drink {
     toppings varchar(255)
 }
 
-Table drink_ingredient {
+Table DrinkIngredients {
     drink_id int [primary key]
     ingredient_name string [primary key]
     ml int
 }
 
-Table ingredient {
+Table Ingredients {
     name varchar(100) [primary key]
-    slot int [unique]
     remaining_liquid int
 }
 
-Ref: order_log.drink_id > drink.id
-Ref: drink.id > drink_ingredient.drink_id
-Ref: ingredient.name > drink_ingredient.ingredient_name
+Table Pumps {
+  slot int [primary key]
+  ingredient_name string
+  active boolean
+}
+
+Ref: Orders.drink_id > Drinks.id
+Ref: Drinks.id > DrinkIngredients.drink_id
+Ref: Ingredients.name > DrinkIngredients.ingredient_name
+Ref: Ingredients.name - Pumps.ingredient_name

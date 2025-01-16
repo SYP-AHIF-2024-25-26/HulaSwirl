@@ -4,12 +4,12 @@
 <div *ngIf="C_isModalOpen" class="C_modal" (click)="C_onOverlayClick($event)">
   <div class="C_modal-content">
     <span class="C_close" (click)="C_closeModal()">&times;</span>
-    <p>Konfigure Your own Drink</p>
+    <p>Configure Your own Drink</p>
     <div class="C_ingredientContainer">
       @for (ingredient of C_newIngredients();track ingredient;let idx = $index){
         <div class="C_singleIngredient">
           <div class="C_ingredientInfo">
-            <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[idx].remaining_liquid"></textarea>
+            <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[idx].remainingMl"></textarea>
             <p>cl    {{ingredient.name}}</p>
           </div>
             <i style="font-size:20px" class="fa">&#xf014;</i>

@@ -1,4 +1,5 @@
 ﻿using API.Model;
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,9 @@ namespace API.Controller
                 var ingredient = await _context.Ingredients.FindAsync(item.Name);
                 if (ingredient == null || ingredient.RemainingMl < item.Amount)
                     return BadRequest($"Nicht genug {item.Name} vorhanden.");
+                
+                _ = Task.Run(() => PumpManager.Instance.StartPump(ingredient.Slot, item.Amount));
+                
                 ingredient.RemainingMl -= item.Amount;
             }
             await _context.SaveChangesAsync();

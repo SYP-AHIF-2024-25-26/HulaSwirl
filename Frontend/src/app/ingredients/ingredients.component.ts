@@ -61,9 +61,7 @@ export class IngredientsComponent {
   async loadIngredients(){
     let allIngredients: Ingredient[] = await this.ingredientsService.getAllIngredients();
     allIngredients.forEach(ingredient => {
-      ingredient.slot===0 ?
-        this.notAvailableIngredients().push(ingredient)
-        : this.availableIngredients().push(ingredient);
+       this.availableIngredients().push(ingredient);
     });
   }
 
