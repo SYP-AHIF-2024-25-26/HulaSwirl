@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
+import {environment} from '../environments/environment';
 
 export interface Ingredient  {
   name:string,
@@ -23,13 +24,13 @@ export class IngredientsService {
   }
 
   async getAllIngredients(): Promise<Ingredient[]> {
-    let res = await firstValueFrom(this.httpClient.get<Ingredient[]>('http://172.18.4.108:5000/api/admin/ingredients'));
+    let res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
     console.log(res);
     return res;
   }
 
   async postOrder(ingredients: Order[]): Promise<void> {
-    await firstValueFrom(this.httpClient.post('http://172.18.4.108:5000/api/drinks/order', ingredients));
+    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
   }
 
   async saveIngredients(ingredients:Ingredient[]){
