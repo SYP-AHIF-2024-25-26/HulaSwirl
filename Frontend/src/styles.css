@@ -4,10 +4,13 @@ body{
   -ms-overflow-style: none;
   scrollbar-width: none;
   cursor:default;
-  background:#fdfded;
+  background:#faeee1;
 }
 body::-webkit-scrollbar {
   display: none;
+}
+html::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
 }
 
 @font-face {
@@ -20,6 +23,13 @@ body::-webkit-scrollbar {
 @font-face {
   font-family: 'JosefinSans';
   src: url('assets/fonts/JosefinSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AdlamDisplay';
+  src: url('assets/fonts/ADLaMDisplay-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

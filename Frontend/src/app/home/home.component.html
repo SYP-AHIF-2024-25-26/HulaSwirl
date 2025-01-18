@@ -40,6 +40,10 @@
   </div>
 </div>
 
+<!--Order Drink Panel-->
+
+<!--Header Panlel-->
+
 <div class="H_Header">
   <img src="assets/images/sideLeafsLeft.png" class="H_Leaves">
   <div class="H_left">
@@ -52,11 +56,29 @@
     </div>
     <button  class ="button H_headerButton2">ORDER NOW</button>
     <button (click)="C_openModal()" class ="button H_headerButton">ORDER CUSTOM DRINK</button>
-
   </div>
-
   <div class="H_imageSeperation">
     <img src="assets/images/DrinkImage.png" alt="Drink"  class="H_dringImage">
   </div>
   <img src="assets/images/sideLeafs.png" class="H_Leaves">
+</div>
+
+<div class="bodyBackground">
+  <div class="backgroundWrapper"></div>
+
+  <p class="Lable">Our recommendations</p>
+  <!--Karusell--><div class="K_KarusellContainer">
+
+  <div class="carousel">
+    <button class="arrow left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
+    <div class="carousel-track">
+      <div class="carousel-item" *ngFor="let drink of drinks(); let i = index" [class.center]="getSlidePosition(i) === 'center'" [class.side]="getSlidePosition(i) === 'side'" [class.hidden]="getSlidePosition(i) === 'hidden'">
+        <img [src]="drink.img" [alt]="drink.name">
+        <p>{{ drink.name }}</p>
+      </div>
+    </div>
+    <button class="arrow right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
+  </div>
+</div>
+
 </div>

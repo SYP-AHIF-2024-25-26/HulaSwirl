@@ -4,7 +4,7 @@ import {NgClass, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgClass, RouterLink],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'

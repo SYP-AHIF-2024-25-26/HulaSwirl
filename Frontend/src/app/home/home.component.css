@@ -1,3 +1,20 @@
+.bodyBackground {
+  position: relative; /* Erforderlich für das absolute Positionieren der Wrapper */
+  height: 100vw; /* Containerhöhe */
+  overflow: hidden; /* Verhindert, dass der Hintergrund herausragt */
+}
+
+.backgroundWrapper {
+  background-image: url("/assets/images/background.png");
+  height: 100%;
+  width: 100%;
+  filter: drop-shadow(10px 10px 5px rgba(68, 47, 36, 0.34));
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Hintergrund bleibt unter dem Text */
+}
+
 .C_modal {
   display: flex;
   position: fixed;
@@ -37,7 +54,6 @@
   font-weight: bold;
   cursor: pointer;
 }
-
 .C_close:hover,
 .C_close:focus {
   color: #707070;
@@ -70,24 +86,30 @@
   border:3px solid #ffffff;
   height:3vw;
 }
-
 .H_headerButton:hover{
   border: 3px solid #fc5d5b;
 }
-
 .H_headerButton2{
   border-radius: 100px;
   background: #fc5d5b;
   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
   border:3px solid #fc5d5b;
 }
-
 .H_headerButton2:hover{
   filter: brightness(120%) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
 
 }
+.Lable{
+  color:#575757;
+  padding:1vw;
+  font-size:2.5vw;
+  text-align:center;
+  margin-bottom:8vw;
+  font-family: AdlamDisplay, serif;
+  margin-top: 2vw;
+  z-index: 1;
 
-
+}
 
 .C_button{
   width:7vw;
@@ -98,36 +120,27 @@
   margin:0;
   cursor:pointer;
 }
-
 .C_buttonCancel{
   background-color: #FD5E5E;
 }
-
 .C_buttonOrder{
   background: linear-gradient(90deg, rgba(255,212,150,1) 0%, rgba(255,154,191,1) 100%);
 }
-
-
-
 .C_ingredientContainer{
   max-width: 40vw;
   min-height: 67vh;
   background-color: #FBFBFB;
 }
-
 .C_orderbuttons{
   display: flex;
   justify-content: center;
   gap:1vw;
   margin-top:2vw;
 }
-
 .C_singleIngredient{
   background-color: #ffffff;
-  margin:1vw;
   padding:2vw;
-  margin-left:0;
-  margin-right:0;
+  margin: 1vw 0;
   border-radius:12px;
   font-size:1.3vw;
   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.16));
@@ -136,13 +149,11 @@
   justify-content: space-between;
   align-items: center;
 }
-
 .C_ingredientInfo > p{
   margin:0;
   margin-top:0.5vw;
   margin-left:0.5vw;
 }
-
 .C_liquidInput{
   background-color: #F6F6F6;
   border-radius: 5px;
@@ -157,11 +168,9 @@
   padding:0;
   margin:0;
 }
-
 .C_ingredientInfo{
   display: flex;
 }
-
 .C_newInputCircle{
   width:0.3vw;
   height:0.3vw;
@@ -175,18 +184,15 @@
   justify-content: center;
   margin-right: 1.3vw;
 }
-
 .C_newIngredient{
   padding:1.25vw;
 }
-
 .C_newIngredientLiquid {
   display: flex;
   align-items: center;
   justify-content: center;
   gap:1vw;
 }
-
 .C_newIngredient_Selection{
   width: 23vw;
   border: none;
@@ -200,20 +206,18 @@
 }
 
 .H_Header{
-  width: 100vw;
+  width: 100%;
   height:75vh;
   margin-top:10vh;
-  background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);display:flex;
+  background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
+  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
+  display:flex;
   justify-content: space-between;
-  filter:saturate(110%);
 }
-
 .H_dringImage{
   filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.48));
   height:95%
 }
-
-
 .H_ICON{
   filter: drop-shadow(5px 5px 5px rgba(10, 17, 47, 0.27));
 
@@ -227,7 +231,6 @@
   font-weight: bold;
   line-height: 1.1;
 }
-
 .H_miniMotto{
   color:#fefde6;
   font-size:1.7vw;
@@ -237,7 +240,143 @@
   margin-top:1.5vw;
   font-weight: lighter;
 }
-
 H_Leaves{
   height:100%
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.K_KarusellContainer{
+  width:60vw;
+  height:30vh;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom:10vw;
+  scale: 1.4;
+}
+
+
+
+.carousel {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+  justify-content: center;
+  padding-top:3vw;
+  padding-bottom:3vw;
+}
+
+.carousel-track {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  position: relative;
+}
+
+.carousel-item {
+  text-align: center;
+  flex: 0 0 33.33%; /* Ensure three items are visible */
+  opacity: 0.5; /* Default fade for all items */
+
+  width:5vw;
+  height:20vw;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
+  linear-gradient(to top left, #ea6b52 30%, #f5d273) border-box;
+  border-radius: 20px;
+  border: 4px solid transparent;
+  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.42)) saturate(110%);
+}
+
+.carousel-item img {
+  width:80%;
+}
+
+.carousel-item p {
+  margin-top: 10px;
+  font-weight: bold;
+  color:#575757;
+  font-size: 1.5vw;
+}
+
+/* Center (big) */
+.carousel-item.center {
+  opacity: 1; /* Fully visible */
+  transform: scale(1); /* Enlarged */
+  z-index: 3;
+}
+
+/* Side (small) */
+.carousel-item.side {
+  opacity: 0.8;
+  transform: scale(0.9);
+  z-index: 2;
+}
+
+.K_Image{
+
+}
+
+/* Hidden (out of view) */
+.carousel-item.hidden {
+  opacity: 0;
+  transform: scale(0.8);
+  z-index: 1;
+  display: none; /* Fully hide the out-of-view items */
+}
+
+/* Arrows */
+.arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #555;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
+  font-weight: bold ;
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+
+/* Disabled arrows */
+.arrow.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+button:disabled {
+  pointer-events: none;
 }
