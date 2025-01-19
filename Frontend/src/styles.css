@@ -12,6 +12,9 @@ body::-webkit-scrollbar {
 html::-webkit-scrollbar {
   display: none; /* For Chrome, Safari, and Edge */
 }
+html{
+  scroll-behavior: smooth;
+}
 
 @font-face {
   font-family: 'Katibeh';

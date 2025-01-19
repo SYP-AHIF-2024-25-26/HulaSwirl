@@ -1,9 +1,11 @@
 .bodyBackground {
   position: relative; /* Erforderlich für das absolute Positionieren der Wrapper */
-  height: 100vw; /* Containerhöhe */
+  min-height: 60vw; /* Containerhöhe */
   overflow: hidden; /* Verhindert, dass der Hintergrund herausragt */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
-
 .backgroundWrapper {
   background-image: url("/assets/images/background.png");
   height: 100%;
@@ -14,11 +16,82 @@
   left: 0;
   z-index: 0; /* Hintergrund bleibt unter dem Text */
 }
+.button{
+  border-radius: 100px;
+  background: #fdfded;
+  color: #ffffff;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.29));
+  text-align: center;
+  padding: 0.8vw;
+  cursor:pointer;
+  margin-top:4vh;
+  margin-left:2vw;
+  border:3px solid #fc5d5b;
+  height:3vw;
+}
+button:disabled {
+  pointer-events: none;
+}
+.H_headerButton{
+  border-radius: 100px;
+  background: #fdfded;
+  color:#fc5d5b;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
+  text-align: center;
+  padding: 0.8vw;
+  cursor:pointer;
+  border:3px solid #ffffff;
+  height:3vw;
+  margin: 4vh 0 0 2vw;
+}
+.H_headerButton:hover{
+  border: 3px solid #fc5d5b;
+
+}
+.H_headerButton2{
+  border-radius: 100px;
+  background: #fc5d5b;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
+  border:3px solid #fc5d5b;
+
+}
+.H_headerButton2:hover{
+  filter: brightness(120%) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
+  transform: scale(1.05);
+}
+.C_button{
+  width:7vw;
+  text-align: center;
+  padding: 0.8vw;
+  border-radius: 10px;
+  color:white;
+  margin:0;
+  cursor:pointer;
+}
+.C_buttonCancel{
+  background-color: #FD5E5E;
+}
+.C_buttonOrder{
+  background: linear-gradient(90deg, rgba(255,212,150,1) 0%, rgba(255,154,191,1) 100%);
+}
+.Lable{
+  color:#575757;
+  padding:1vw;
+  font-size:2.5vw;
+  text-align:center;
+  font-family: AdlamDisplay, serif;
+  margin-top: 2vw;
+  z-index: 1;
+  margin-bottom:1vw;
+}
+.K_Lable{
+  margin-bottom:8vw;
+}
 
 .C_modal {
   display: flex;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   left: 0;
   top: 0;
   width: 100%;
@@ -31,12 +104,13 @@
   padding: 20px;
   border: none;
   width: 80%;
+  height: 82%;
   max-width: 40vw;
   text-align: left;
   min-height:80vh;
-  margin-top:12vh;
+  margin-top:11vh;
   border-radius: 25px;
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.29));
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.55));
   font-size: 1.8vw;
 }
 .C_modal-content > p{
@@ -58,73 +132,6 @@
 .C_close:focus {
   color: #707070;
   text-decoration: none;
-}
-
-.button{
-  border-radius: 100px;
-  background: #fdfded;
-  color: #ffffff;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.29));
-  text-align: center;
-  padding: 0.8vw;
-  cursor:pointer;
-  margin-top:4vh;
-  margin-left:2vw;
-  border:3px solid #fc5d5b;
-  height:3vw;
-}
-.H_headerButton{
-  border-radius: 100px;
-  background: #fdfded;
-  color:#fc5d5b;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
-  text-align: center;
-  padding: 0.8vw;
-  cursor:pointer;
-  margin-top:4vh;
-  margin-left:2vw;
-  border:3px solid #ffffff;
-  height:3vw;
-}
-.H_headerButton:hover{
-  border: 3px solid #fc5d5b;
-}
-.H_headerButton2{
-  border-radius: 100px;
-  background: #fc5d5b;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
-  border:3px solid #fc5d5b;
-}
-.H_headerButton2:hover{
-  filter: brightness(120%) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
-
-}
-.Lable{
-  color:#575757;
-  padding:1vw;
-  font-size:2.5vw;
-  text-align:center;
-  margin-bottom:8vw;
-  font-family: AdlamDisplay, serif;
-  margin-top: 2vw;
-  z-index: 1;
-
-}
-
-.C_button{
-  width:7vw;
-  text-align: center;
-  padding: 0.8vw;
-  border-radius: 10px;
-  color:white;
-  margin:0;
-  cursor:pointer;
-}
-.C_buttonCancel{
-  background-color: #FD5E5E;
-}
-.C_buttonOrder{
-  background: linear-gradient(90deg, rgba(255,212,150,1) 0%, rgba(255,154,191,1) 100%);
 }
 .C_ingredientContainer{
   max-width: 40vw;
@@ -244,20 +251,6 @@ H_Leaves{
   height:100%
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .K_KarusellContainer{
   width:60vw;
   height:30vh;
@@ -265,13 +258,10 @@ H_Leaves{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom:10vw;
+  margin-bottom:4vw;
   scale: 1.4;
 }
-
-
-
-.carousel {
+.K_carousel {
   display: flex;
   align-items: center;
   position: relative;
@@ -282,74 +272,73 @@ H_Leaves{
   padding-top:3vw;
   padding-bottom:3vw;
 }
-
-.carousel-track {
+.K_carousel-track {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 80%;
   position: relative;
 }
-
-.carousel-item {
+.K_carousel-item {
   text-align: center;
-  flex: 0 0 33.33%; /* Ensure three items are visible */
-  opacity: 0.5; /* Default fade for all items */
-
-  width:5vw;
-  height:20vw;
+  flex: 0 0 33.33%;
+  opacity: 0.5;
+  width: 5vw;
+  height: 20vw;  /* Beibehaltung der ursprünglichen Größe */
   transition: transform 0.5s ease, opacity 0.5s ease;
-  display:flex;
+  display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   overflow: hidden;
   background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to top left, #ea6b52 30%, #f5d273) border-box;
+  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
   border-radius: 20px;
   border: 4px solid transparent;
   filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.42)) saturate(110%);
+  padding: 0; /* Entferne unnötige Innenabstände */
 }
-
-.carousel-item img {
-  width:80%;
+.K_carousel-item.side:hover{
+  transform: scale(93%);
 }
-
-.carousel-item p {
-  margin-top: 10px;
+.K_carousel-item.center:hover{
+  transform: scale(103%);
+}
+.K_carousel-item img {
+  width: 100%;
+  max-height: 15vw; /* Begrenzung der maximalen Höhe für gleichmäßige Anzeige */
+  object-fit: cover; /* Füllt den Container und verhindert Verzerrungen */
+  flex-grow: 1; /* Lässt das Bild den verfügbaren Platz einnehmen */
+}
+.K_carousel-item p {
+  margin: 10px 0;  /* Abstand zwischen Bild und Text */
   font-weight: bold;
-  color:#575757;
+  color: #575757;
   font-size: 1.5vw;
+  max-width: 90%;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.2;
+  word-wrap: break-word;
+  padding-top: 1vw;
 }
-
-/* Center (big) */
-.carousel-item.center {
-  opacity: 1; /* Fully visible */
-  transform: scale(1); /* Enlarged */
+.K_carousel-item.center {
+  opacity: 1;
+  transform: scale(1);
   z-index: 3;
 }
-
-/* Side (small) */
-.carousel-item.side {
+.K_carousel-item.side {
   opacity: 0.8;
   transform: scale(0.9);
   z-index: 2;
 }
-
-.K_Image{
-
-}
-
-/* Hidden (out of view) */
-.carousel-item.hidden {
+.K_carousel-item.hidden {
   opacity: 0;
   transform: scale(0.8);
   z-index: 1;
-  display: none; /* Fully hide the out-of-view items */
+  display: none;
 }
-
-/* Arrows */
-.arrow {
+.K_arrow {
   background: none;
   border: none;
   font-size: 2rem;
@@ -362,21 +351,122 @@ H_Leaves{
   filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
   font-weight: bold ;
 }
-
-.arrow.left {
+.K_arrow.left {
   left: 10px;
 }
-
-.arrow.right {
+.K_arrow.right {
   right: 10px;
 }
-
-/* Disabled arrows */
-.arrow.disabled {
+.K_arrow.disabled {
   color: #ccc;
   cursor: not-allowed;
 }
 
-button:disabled {
-  pointer-events: none;
+.O_Button{
+  align-self: center;
+  width: 30vw;
+  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.42)) saturate(110%);
+}
+
+.D_Container{
+  width:80vw;
+  min-height:30vh;
+  z-index: 2;
+  margin-bottom: 8vw;
+}
+.D_DrinksContainer  {
+  width:100%;
+  min-height:30vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
+.D_Drink{
+  width: 13vw;
+  height: 17vw;
+  margin:1vw;
+  border-radius: 25px;
+  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.15));
+  background-color: #FBFBFB;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+.D_Drink:hover{
+  transform: scale(1.05);
+}
+.D_img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.D_imgContainer {
+  width: 100%;
+  height: 12vw;
+  overflow: hidden;
+  background-color: transparent;
+}
+.D_DrinkText {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: auto;
+}
+
+.D_DrinksFilterSearchContainer {
+  width:95%;
+  height:8vh;
+  margin-bottom:3vh;
+}
+.D_FilterSearchWrapper {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+.D_SearchInput {
+  width: 50%;
+  padding: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
+  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
+  border-radius: 15px;
+  border: 3px solid transparent;
+  color: #333;
+  border-image-slice: 1;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.D_SearchInput::placeholder {
+  color: #aaa;
+}
+.D_FilterDropdown {
+  padding: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
+  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
+  border-radius: 15px;
+  border: 3px solid transparent;
+}
+.D_CustomOrderBtn {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: linear-gradient(to right, #f5d273, #ea6b52);
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.D_CustomOrderBtn:hover {
+  transform: scale(1.05);
 }

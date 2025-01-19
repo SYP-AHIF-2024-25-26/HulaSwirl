@@ -42,8 +42,7 @@
 
 <!--Order Drink Panel-->
 
-<!--Header Panlel-->
-
+<!--Header-->
 <div class="H_Header">
   <img src="assets/images/sideLeafsLeft.png" class="H_Leaves">
   <div class="H_left">
@@ -54,7 +53,7 @@
     <div class = "H_miniMotto">
       Mix it easy, mix it smart, mix it fast,<br> ideal for every moment
     </div>
-    <button  class ="button H_headerButton2">ORDER NOW</button>
+    <button (click)="scrollToElement()" class ="button H_headerButton2">ORDER NOW</button>
     <button (click)="C_openModal()" class ="button H_headerButton">ORDER CUSTOM DRINK</button>
   </div>
   <div class="H_imageSeperation">
@@ -63,22 +62,57 @@
   <img src="assets/images/sideLeafs.png" class="H_Leaves">
 </div>
 
-<div class="bodyBackground">
+<div class="bodyBackground" #targetElement>
   <div class="backgroundWrapper"></div>
-
-  <p class="Lable">Our recommendations</p>
-  <!--Karusell--><div class="K_KarusellContainer">
-
-  <div class="carousel">
-    <button class="arrow left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
-    <div class="carousel-track">
-      <div class="carousel-item" *ngFor="let drink of drinks(); let i = index" [class.center]="getSlidePosition(i) === 'center'" [class.side]="getSlidePosition(i) === 'side'" [class.hidden]="getSlidePosition(i) === 'hidden'">
+  <!--Karusell-->
+  <p class="Lable K_Lable" >Our recommendations</p>
+  <div class="K_KarusellContainer">
+  <div class="K_carousel">
+    <button class="K_arrow left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
+    <div class="K_carousel-track">
+      <div class="K_carousel-item" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
         <img [src]="drink.img" [alt]="drink.name">
         <p>{{ drink.name }}</p>
       </div>
     </div>
-    <button class="arrow right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
+    <button class="K_arrow right" (click)="K_nextSlide()" [disabled]="K_isNextDisabled()" [class.disabled]="K_isNextDisabled()">&#8250;</button>
   </div>
 </div>
 
+
+  <!--<img src="assets/images/Order_Custom_Drink_button.webp" class="O_Button">-->
+  <br><br><br><br><br>
+  <!--Alll Drinks-->
+  <p class="Lable">All Drinks</p>
+  <div class="D_Container">
+    <div class="D_DrinksFilterSearchContainer">
+      <div class="D_FilterSearchWrapper">
+        <button class="D_CustomOrderBtn" (click)="C_openModal()">Order Custom Drink</button>
+        <!-- Suchfeld für Getränkenamen -->
+        <input
+          type="text"
+          placeholder="🔍 Search for a drink..."
+          [(ngModel)]="searchQuery"
+          (input)="D_searchDrinks()"
+          class="D_SearchInput"
+        />
+
+        <!-- Dropdown für Zutatenfilter -->
+        <select [(ngModel)]="selectedIngredient" (change)="D_filterDrinks()" class="D_FilterDropdown">
+          <option value="">All Ingredients</option>
+          <option *ngFor="let ingredient of D_getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Getränkekarten -->
+    <div class="D_DrinksContainer">
+      <div class="D_Drink" *ngFor="let drink of filteredDrinks()">
+        <div class="D_imgContainer">
+          <img class="D_img" [src]="drink.img" [alt]="drink.name">
+        </div>
+        <p class="D_DrinkText">{{ drink.name }}</p>
+      </div>
+    </div>
+  </div>
 </div>

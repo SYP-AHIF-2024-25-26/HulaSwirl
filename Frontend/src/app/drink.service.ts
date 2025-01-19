@@ -18,37 +18,31 @@ const drinks: Drink[] = [
     id: 1,
     name: "Mojito",
     img: "https://images.lecker.de/klassischer-mojito-rezept,id=56ad8212,b=lecker,w=980,rm=sk.webp",
-    toppings: "Mint leaves",
+    toppings: "Mint leaves, Sugar Syrup",
     ingredients: [
       { name: "White Rum", amount: 50 },
       { name: "Lime Juice", amount: 25 },
-      { name: "Sugar Syrup", amount: 10 },
-      { name: "Soda Water", amount: 100 },
-      { name: "Mint Leaves", amount: 5 },
+      { name: "Soda Water", amount: 100 }
     ],
   },
   {
     id: 2,
     name: "Pina Colada",
-    img: "https://spirituosenworld.de/images/cocktails/pina-colada-cocktail.jpg.pagespeed.ce.BCJD1ClUsh.jpg",
-    toppings: "Pineapple slice",
+    img: "https://salimaskitchen.com/wp-content/uploads/2024/07/10-Minute-Pina-Colada-Recipe-A-Classic-Puerto-Rican-Cocktail-Salimas-Kitchen-4-3.jpg",
+    toppings: "Pineapple slice, Ice Cubes",
     ingredients: [
       { name: "White Rum", amount: 50 },
       { name: "Coconut Cream", amount: 60 },
-      { name: "Pineapple Juice", amount: 90 },
-      { name: "Ice Cubes", amount: 10 },
+      { name: "Pineapple Juice", amount: 90 }
     ],
   },
   {
     id: 3,
     name: "Strawberry Smoothie",
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGrMLZt3CWkuRK7KH6OwS4jZJLoqS5ZTZetA&s",
-    toppings: "Strawberry slices",
+    toppings: "Strawberry slices, Honey, Yogurt",
     ingredients: [
-      { name: "Strawberries", amount: 150 },
-      { name: "Milk", amount: 200 },
-      { name: "Honey", amount: 10 },
-      { name: "Yogurt", amount: 50 },
+      { name: "Milk", amount: 200 }
     ],
   },
   {
@@ -60,31 +54,27 @@ const drinks: Drink[] = [
       { name: "Vodka", amount: 50 },
       { name: "Espresso", amount: 30 },
       { name: "Coffee Liqueur", amount: 20 },
-      { name: "Sugar Syrup", amount: 5 },
     ],
   },
   {
     id: 5,
     name: "Matcha Latte",
     img: "https://www.einfachbacken.de/sites/einfachbacken.de/files/styles/full_width_tablet_4_3/public/2021-08/matcha_latte_2.jpg?h=4521fff0&itok=1MACEM-l",
-    toppings: "Frothed milk",
+    toppings: "Matcha Powder, Honey",
     ingredients: [
-      { name: "Matcha Powder", amount: 5 },
       { name: "Hot Water", amount: 50 },
-      { name: "Milk", amount: 200 },
-      { name: "Honey", amount: 10 },
+      { name: "Milk", amount: 200 }
     ],
   },
   {
     id: 6,
     name: "Margarita",
     img: "https://www.absolutdrinks.com/wp-content/uploads/recipe_margarita_1x1_27054dff46d6e7418e0a608f5beae5a4.jpg",
-    toppings: "Salted rim",
+    toppings: "Salted rim, Ice Cubes",
     ingredients: [
       { name: "Tequila", amount: 50 },
       { name: "Lime Juice", amount: 25 },
-      { name: "Triple Sec", amount: 20 },
-      { name: "Ice Cubes", amount: 10 },
+      { name: "Triple Sec", amount: 20 }
     ],
   },
   {
@@ -94,20 +84,16 @@ const drinks: Drink[] = [
     toppings: "Ice cubes",
     ingredients: [
       { name: "Espresso", amount: 50 },
-      { name: "Cold Water", amount: 150 },
-      { name: "Ice Cubes", amount: 10 },
+      { name: "Cold Water", amount: 150 }
     ],
   },
   {
     id: 8,
     name: "Hot Chocolate",
     img: "https://hips.hearstapps.com/hmg-prod/images/hot-chocolate-index-675c61bc88ba1.jpg?crop=0.502xw:1.00xh;0.232xw,0&resize=1200:*",
-    toppings: "Whipped cream",
+    toppings: "Whipped cream, Sugar,Cocoa Poweder, Whipped cream",
     ingredients: [
-      { name: "Cocoa Powder", amount: 20 },
-      { name: "Milk", amount: 250 },
-      { name: "Sugar", amount: 15 },
-      { name: "Whipped Cream", amount: 30 },
+      { name: "Milk", amount: 250 }
     ],
   },
 ];
