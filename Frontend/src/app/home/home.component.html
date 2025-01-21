@@ -12,20 +12,21 @@
             <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[idx].remainingMl"></textarea>
             <p>cl    {{ingredient.name}}</p>
           </div>
-            <i style="font-size:20px" class="fa">&#xf014;</i>
+          <i style="font-size:20px" class="fa" (click)="C_removeIngredientFromCustomOrderList(idx)">&#xf014;</i>
         </div>
       }
       <div class="C_singleIngredient C_newIngredient">
         <div class="C_newIngredientLiquid">
-          <div class="C_newInputCircle">
+          <div class="C_newInputCircle" (click)="C_addIngredientToCustomOderList()">
             <p class="C_addNewIngredient">+</p>
           </div>
           <textarea class="C_liquidInput C_newLiquidInput" [(ngModel)]="C_newLiquidAmount"></textarea>
           <p>cl</p>
           <form>
-          <select id="C_newIngredient" class="C_newIngredient_Selection" [(ngModel)]="C_newIngredientName">
+          <select id="C_newIngredient" class="C_newIngredient_Selection"  (change)="C_updateNewIngredientName($event)">
+            <option class="C_newIngredientOption" value="Choose Ingredient">Choose Ingredient</option>
             @for (ingredient of allAvailableIngredients();track ingredient){
-              <option class="C_newIngredientOption" value="{{ingredient}}">{{ingredient.name}}</option>
+              <option class="C_newIngredientOption" value="{{ingredient.name}}">{{ingredient.name}}</option>
             }
           </select>
         </form>

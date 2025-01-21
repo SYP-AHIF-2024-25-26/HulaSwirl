@@ -28,22 +28,29 @@ export class HomeComponent {
   K_bestDrinks = signal<Drink[]>([]);
   D_allDrinks = signal<Drink[]>([]);
   filteredDrinks = signal<Drink[]>(this.D_allDrinks());
+  K_currentSlide = signal(1);
   searchQuery: string = '';
   selectedIngredient: string = '';
 
   async ngOnInit() {
-    //this.allAvailableIngredients.set(await this.ingredientService.getAllIngredients());
+    this.allAvailableIngredients.set(await this.ingredientService.getAllIngredients());
     //this.C_newIngredients.set(await this.ingredientService.getAllIngredients());//kommt nacher weg
     this.K_bestDrinks.set(await this.drinkService.getDrinks());
     this.D_allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());
   }
+  @ViewChild('targetElement', { static: false }) targetElement!: ElementRef;
+  scrollToElement() {
+    this.targetElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   C_openModal() {
     this.C_isModalOpen = true;
+    document.body.classList.add('no-scroll');
   }
   C_closeModal() {
     this.C_isModalOpen = false;
+    document.body.classList.remove('no-scroll');
   }
   C_onOverlayClick(event: Event) {
     if (event.target === event.currentTarget) {
@@ -65,8 +72,28 @@ export class HomeComponent {
       // console.error(e);
     }
   }
+  C_addIngredientToCustomOderList() {
+    console.log(this.C_newLiquidAmount()+ "  "+ this.C_newIngredientName())
+    const exists = this.C_newIngredients().some(ingredient => ingredient.name === this.C_newIngredientName()  );
+    if (!exists &&this.C_newLiquidAmount() && this.C_newIngredientName() && this.C_newIngredientName() !== 'Choose Ingredient'&&parseFloat(this.C_newLiquidAmount())!==0) {
+      const newIngredient: Ingredient = {
+        name: this.C_newIngredientName(),
+        slot: 0,
+        remainingMl: parseFloat(this.C_newLiquidAmount())
+      };
+      this.C_newIngredients.set([...this.C_newIngredients(), newIngredient]);
 
-  K_currentSlide = signal(1);
+    }
+  }
+  C_removeIngredientFromCustomOrderList(index: number) {
+    const updatedIngredients = this.C_newIngredients().filter((_, idx) => idx !== index);
+    this.C_newIngredients.set(updatedIngredients);
+  }
+  C_updateNewIngredientName(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.C_newIngredientName.set(target.value);
+  }
+
   K_nextSlide(): void {
     if (this.K_currentSlide() < this.K_bestDrinks().length - 1) {
       this.K_currentSlide.set(this.K_currentSlide() + 1);
@@ -92,12 +119,6 @@ export class HomeComponent {
     return this.K_currentSlide() === this.K_bestDrinks().length - 1;
   }
 
-  @ViewChild('targetElement', { static: false }) targetElement!: ElementRef;
-
-  scrollToElement() {
-    this.targetElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
   D_searchDrinks() {
     this.filteredDrinks.set(
       this.D_allDrinks().filter(drink =>
@@ -105,8 +126,6 @@ export class HomeComponent {
       )
     );
   }
-
-  // Getränke nach Zutaten filtern
   D_filterDrinks() {
     if (this.selectedIngredient) {
       this.filteredDrinks.set(
@@ -118,8 +137,6 @@ export class HomeComponent {
       this.filteredDrinks.set(this.D_allDrinks());
     }
   }
-
-  // Eindeutige Zutaten für Dropdown extrahieren
   D_getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
     this.D_allDrinks().forEach(drink => {
