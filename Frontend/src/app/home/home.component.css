@@ -72,8 +72,13 @@ button:disabled {
   background-color: #FD5E5E;
 }
 .C_buttonOrder{
-  background: linear-gradient(90deg, rgba(255,212,150,1) 0%, rgba(255,154,191,1) 100%);
+  background: linear-gradient(90deg, rgba(255,212,150,1) 0%, rgb(255, 162, 154) 100%);
+  font-size: 1.8vw;
+  border:none;
+
 }
+
+
 .Lable{
   color:#575757;
   padding:1vw;
@@ -469,4 +474,109 @@ H_Leaves{
 }
 .D_CustomOrderBtn:hover {
   transform: scale(1.05);
+}
+
+
+
+.G_modal-content{
+  background-color: #FBFBFB;
+  padding: 20px;
+  border: none;
+  width: 55%;
+  height: 50%;
+  max-width: 60vw;
+  text-align: left;
+  min-height:70vh;
+  margin-top:17vh;
+  border-radius: 25px;
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.55));
+  font-size: 1.8vw;
+  z-index: 2;
+}
+
+.G_modal{
+  display: flex;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.24);
+  justify-content: center;
+}
+.G_drinkName{
+  font-family: AdlamDisplay, serif;
+  color: #3b3b3b;
+  margin:0;
+  margin-left:1vw;
+}
+.G_ingredientsList{
+  color:#727272;
+}
+
+.G_close{
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: -10vw;
+  z-index: 3;
+}
+.G_close:hover,
+.G_close:focus {
+  color: #707070;
+  text-decoration: none;
+  margin-bottom: -10vw;
+  z-index: 3;
+}
+
+
+.G_modal_bigbox{
+  width:100%;
+  height:94%;
+  display: flex;
+  gap:1vw;
+  align-content: end;
+}
+.G_moadal_left{
+  height:100%;
+  width:50%;
+}
+.G_moadal_right{
+  height:100%;
+  width:50%;
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  justify-content: space-between;
+  margin-top:2vw;
+}
+.G_imagecontainer{
+  height: 27.5vw;
+  width: 27.5vw;
+  overflow: hidden;
+}
+.G_drinkImage{
+  height:100%;
+  width:100%;
+  object-fit: cover;
+  object-position: center;
+}
+.G_toppingsTitle{
+  color:#575757;
+  margin-left:1vw;
+  margin-top:1vw;
+  margin-bottom:0;
+}
+.G_Toppings{
+  color:#727272;
+  margin-left:1vw;
+  margin-top:1vw;
+}
+
+.G_orderbutton{
+  align-self: end;
+  justify-self: end;
 }

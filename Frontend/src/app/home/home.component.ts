@@ -41,7 +41,7 @@ export class HomeComponent {
   }
   @ViewChild('targetElement', { static: false }) targetElement!: ElementRef;
   scrollToElement() {
-    this.targetElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    this.targetElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start',alignToTop:true });
   }
 
   C_openModal() {
@@ -144,4 +144,33 @@ export class HomeComponent {
     });
     return Array.from(ingredientsSet);
   }
+  G_isModalOpen = signal(false);
+  G_selectedDrink = signal<Drink>(this.D_allDrinks()[0]);
+
+  G_openModal(drink: Drink) {
+    this.G_selectedDrink.set(drink);
+    console.log(drink);
+    this.G_isModalOpen.set(true);
+    document.body.classList.add('no-scroll');
+  }
+
+  G_closeModal() {
+    this.G_isModalOpen.set(false);
+    document.body.classList.remove('no-scroll');
+  }
+
+  G_onOverlayClick(event: Event) {
+    if (event.target === event.currentTarget) {
+      this.G_closeModal();
+    }
+  }
+
+  /*async orderDrink() {
+    try {
+      await this.drinkService.orderDrink(this.G_selectedDrink().name);
+      alert('Your order has been placed!');
+      this.closeModal();
+    } catch (error) {
+      console.error('Order failed:', error);
+    }*/
 }

@@ -41,8 +41,41 @@
   </div>
 </div>
 
-<!--Order Drink Panel-->
+<!-- G_Modal - Order Drink Panel -->
+<div *ngIf="G_isModalOpen()" class="G_modal" (click)="G_onOverlayClick($event)">
+  <div class="G_modal-content">
+    <span class="G_close" (click)="G_closeModal()">&times;</span>
+    <div class="G_modal_bigbox">
+      <div class="G_moadal_left">
+        <div class="G_imagecontainer">
+          <img [src]="G_selectedDrink().img" alt="Drink Image" class="G_drinkImage">
+        </div>
+        <h3 class="G_toppingsTitle">Toppings:</h3>
+        <p class="G_Toppings">{{ G_selectedDrink().toppings }}</p>
+      </div>
+      <div class="G_moadal_right">
+        <div class="G_drinkInfo">
+          <h2 class="G_drinkName">{{ G_selectedDrink().name }}</h2>
+          <ul class="G_ingredientsList" *ngFor="let drink of G_selectedDrink().ingredients">
+            <li > {{ drink.name }}</li>
+          </ul>
+        </div>
+        <button class=" C_button C_buttonOrder G_orderbutton" >Order</button>
+      </div>
+    </div>
 
+    <!--<div class="G_drinkDetails">
+
+      <div class="G_drinkInfo">
+        <ul class="G_ingredientsList" *ngFor="let drink of G_selectedDrink().ingredients">
+          <li > {{ drink.name }}</li>
+        </ul>
+      </div>
+      <button class=" C_button C_buttonOrder" >Order</button>
+    </div>-->
+
+  </div>
+</div>
 <!--Header-->
 <div class="H_Header">
   <img src="assets/images/sideLeafsLeft.png" class="H_Leaves">
@@ -60,7 +93,7 @@
   <div class="H_imageSeperation">
     <img src="assets/images/DrinkImage.png" alt="Drink"  class="H_dringImage">
   </div>
-  <img src="assets/images/sideLeafs.png" class="H_Leaves">
+  <img src="assets/images/sideLeafs.png" class="H_Leaves" >
 </div>
 
 <div class="bodyBackground" #targetElement>
@@ -71,7 +104,7 @@
   <div class="K_carousel">
     <button class="K_arrow left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
     <div class="K_carousel-track">
-      <div class="K_carousel-item" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
+      <div class="K_carousel-item" (click)="G_openModal(drink)" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
         <img [src]="drink.img" [alt]="drink.name">
         <p>{{ drink.name }}</p>
       </div>
@@ -84,7 +117,7 @@
   <!--<img src="assets/images/Order_Custom_Drink_button.webp" class="O_Button">-->
   <br><br><br><br><br>
   <!--Alll Drinks-->
-  <p class="Lable">All Drinks</p>
+  <p class="Lable" >All Drinks</p>
   <div class="D_Container">
     <div class="D_DrinksFilterSearchContainer">
       <div class="D_FilterSearchWrapper">
@@ -108,7 +141,7 @@
 
     <!-- Getränkekarten -->
     <div class="D_DrinksContainer">
-      <div class="D_Drink" *ngFor="let drink of filteredDrinks()">
+      <div class="D_Drink" (click)="G_openModal(drink)" *ngFor="let drink of filteredDrinks()">
         <div class="D_imgContainer">
           <img class="D_img" [src]="drink.img" [alt]="drink.name">
         </div>

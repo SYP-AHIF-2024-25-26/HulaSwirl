@@ -18,7 +18,7 @@ const drinks: Drink[] = [
     id: 1,
     name: "Mojito",
     img: "https://images.lecker.de/klassischer-mojito-rezept,id=56ad8212,b=lecker,w=980,rm=sk.webp",
-    toppings: "Mint leaves, Sugar Syrup",
+    toppings: "Mint leaves, Sugar Syrup, Ice Cubes, abscd efghi jklmn",
     ingredients: [
       { name: "White Rum", amount: 50 },
       { name: "Lime Juice", amount: 25 },
