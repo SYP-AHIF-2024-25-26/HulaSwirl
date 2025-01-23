@@ -1,0 +1,13 @@
+:root {
+  --container-bg-color: #bc7c7c;
+}
+
+.container {
+  background-color: var(--container-bg-color);
+  height: 100%;
+  margin: 5px;
+}
+
+#ingredient-list {
+  width: 50%;
+}
