@@ -1,46 +1,11 @@
-<div class="box_container">
-  <div class="big_box left_box" id="1">
-    <div class="available_container">
-      <p class="box_title">Available Ingredients:</p>
-      <div class="button cancel" (click)="cancel()">Cancel</div>
-      <div class="button submit" (click)="sumbit()">Submit</div>
-    </div>
-    <div
-      cdkDropList
-      #todoList="cdkDropList"
-      [cdkDropListData]="availableIngredients"
-      [cdkDropListConnectedTo]="[doneList]"
-      class="ingredients_container"
-      (cdkDropListDropped)="drop($event)">
-      @for (item of availableIngredients(); track item;let idx = $index) {
-        <div class="ingredient A_Ingredient" cdkDrag>
-          <div class="A_ingredient_function tooltip">
-            <div class="A_slot">{{item.slot}}.</div>
-            <textarea class="A_Input A_Name" [(ngModel)]="availableIngredients()[idx].name"></textarea>
-            <span class="tooltiptext">Rename Ingredient</span>
-          </div>
-          <div class="A_ingredient_function tooltip">
-            <textarea class="A_Input A_liqid" [(ngModel)]="availableIngredients()[idx].remainingMl"></textarea>
-            <span class="tooltiptext">Change available Liquid amount</span>
-            <div class="A_CL">ml</div>
-          </div>
-        </div>
-      }
+<div id="ingredient-manager">
+  <div id="available-ingredients" class="container">
+    <h1>Available Ingredients</h1>
+    <div id="ingredient-list">
+      <div *ngFor="let ingredient of avIngredients" class="ingredient">
+      </div>
     </div>
   </div>
-  <div class="big_box">
-    <p class="box_title box_title_left">Not available Ingredients:</p>
-    <div
-      cdkDropList
-      #doneList="cdkDropList"
-      [cdkDropListData]="notAvailableIngredients"
-      [cdkDropListConnectedTo]="[todoList]"
-      class="ingredients_container"
-      (cdkDropListDropped)="drop($event)">
-      @for (item of notAvailableIngredients(); track item) {
-        <div class="ingredient NA_Ingredient" cdkDrag>{{item.name}}</div>
-      }
-    </div>
-
+  <div id="unavailable-ingredients" class="container">
   </div>
 </div>
