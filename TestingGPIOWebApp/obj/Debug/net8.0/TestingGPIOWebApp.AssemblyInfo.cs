@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TestingGPIOWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9571f1f81bca8a7e8e03d46b8990a79cc96be5f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ea23d192921fdb93481e70c62cf6d96a0565f6d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("TestingGPIOWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TestingGPIOWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

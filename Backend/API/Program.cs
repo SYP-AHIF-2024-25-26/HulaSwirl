@@ -20,8 +20,8 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddControllers();
 var app = builder.Build();
-// app.Urls.Add("http://192.168.178.62:5000");
 
+app.Urls.Add("http://192.168.178.62:5000");
 
 //Testing
 app.MapGet("/startPump", async (int slot, int ml) =>

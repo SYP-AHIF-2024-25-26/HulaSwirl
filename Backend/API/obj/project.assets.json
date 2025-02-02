@@ -6319,19 +6319,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/moritz/.nuget/packages/": {}
+    "/home/admin/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
+      "projectUniqueName": "/home/admin/HulaSwirl/Backend/API/API.csproj",
       "projectName": "API",
-      "projectPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/API.csproj",
-      "packagesPath": "/Users/moritz/.nuget/packages/",
-      "outputPath": "/Users/moritz/Documents/GitHub/HulaSwirl/Backend/API/obj/",
+      "projectPath": "/home/admin/HulaSwirl/Backend/API/API.csproj",
+      "packagesPath": "/home/admin/.nuget/packages/",
+      "outputPath": "/home/admin/HulaSwirl/Backend/API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/moritz/.nuget/NuGet/NuGet.Config"
+        "/home/admin/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -6353,9 +6353,8 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+        "auditMode": "direct"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -6393,20 +6392,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.osx-arm64",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -6415,20 +6400,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/admin/.dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Text.Json' 6.0.9 has a known high severity vulnerability, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
-      "libraryId": "System.Text.Json",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  }
 }

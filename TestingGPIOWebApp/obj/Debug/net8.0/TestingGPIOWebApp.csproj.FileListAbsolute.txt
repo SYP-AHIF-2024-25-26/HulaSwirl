@@ -52,3 +52,13 @@
 /Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.pdb
 /Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.genruntimeconfig.cache
 /Users/moritz/Documents/GitHub/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/ref/TestingGPIOWebApp.dll
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.csproj.AssemblyReference.cache
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.GeneratedMSBuildEditorConfig.editorconfig
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.AssemblyInfoInputs.cache
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.AssemblyInfo.cs
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.csproj.CoreCompileInputs.cache
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.MvcApplicationPartsAssemblyInfo.cache
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.sourcelink.json
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.dll
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/refint/TestingGPIOWebApp.dll
+/home/admin/HulaSwirl/TestingGPIOWebApp/obj/Debug/net8.0/TestingGPIOWebApp.pdb

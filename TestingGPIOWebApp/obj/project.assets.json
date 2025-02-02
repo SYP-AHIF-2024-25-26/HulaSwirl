@@ -1081,19 +1081,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\flyti\\.nuget\\packages\\": {}
+    "/home/admin/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\TestingGPIOWebApp.csproj",
+      "projectUniqueName": "/home/admin/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj",
       "projectName": "TestingGPIOWebApp",
-      "projectPath": "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\TestingGPIOWebApp.csproj",
-      "packagesPath": "C:\\Users\\flyti\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\flyti\\Documents\\GitHub\\HulaSwirl\\TestingGPIOWebApp\\obj\\",
+      "projectPath": "/home/admin/HulaSwirl/TestingGPIOWebApp/TestingGPIOWebApp.csproj",
+      "packagesPath": "/home/admin/.nuget/packages/",
+      "outputPath": "/home/admin/HulaSwirl/TestingGPIOWebApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\flyti\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/admin/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1115,7 +1115,7 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1142,24 +1142,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.11, 8.0.11]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -1168,20 +1150,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\flyti\\.dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/admin/.dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.Text.Json' 6.0.9 has a known high severity vulnerability, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
-      "libraryId": "System.Text.Json",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  }
 }
