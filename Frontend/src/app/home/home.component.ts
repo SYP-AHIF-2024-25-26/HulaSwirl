@@ -79,7 +79,8 @@ export class HomeComponent {
       const newIngredient: Ingredient = {
         name: this.C_newIngredientName(),
         slot: 0,
-        remainingMl: parseFloat(this.C_newLiquidAmount())
+        remainingMl: parseFloat(this.C_newLiquidAmount()),
+        maxMl: parseFloat(this.C_newLiquidAmount())
       };
       this.C_newIngredients.set([...this.C_newIngredients(), newIngredient]);
 

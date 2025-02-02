@@ -1,13 +1,146 @@
-:root {
-  --container-bg-color: #bc7c7c;
-}
-
 .container {
   background-color: var(--container-bg-color);
-  height: 100%;
   margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#ingredient-manager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 20px 10%;
+}
+
+#available-ingredients {
+  flex: 1;
+  min-width: 400px;
+}
+
+#unavailable-ingredients {
+  flex: 2;
+  min-width: 450px;
 }
 
 #ingredient-list {
-  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slot {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.slot.inactive .slot-num {
+  background-color: var(--pump-inactive-slot-bg);
+}
+
+.slot-num {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  background-color: var(--pump-active-slot-bg);
+  transition: background-color 0.2s ease;
+}
+
+.slot-ingredient {
+  flex: 1;
+  border: 2px solid var(--element-primary-outline);
+  border-radius: 8px;
+  height: 36px;
+  overflow: hidden;
+}
+
+.ingredient {
+  background-color: var(--ingredient-bg-color);
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 100px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.ingredient:active {
+}
+
+.dragging {
+  position: absolute;
+  pointer-events: none;
+  gap: 30px;
+  justify-content: center;
+  z-index: 100;
+}
+
+#ingredient-pool {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+#ingredient-pool .ingredient-name {
+  width: 100%;
+  text-align: center;
+}
+
+.liquid-bar {
+  position: absolute;
+  bottom: 0;
+  left: -2px;
+  height: 7px;
+  background: var(--remaining-liquid-bar-bg);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.ingredient-quantity {
+  display: flex;
+  align-items: end;
+  gap: 2px;
+}
+
+.ingredient-quantity input {
+  text-align: right;
+  border: none;
+  border-radius: 3px;
+  width: 35px;
+  background-color: var(--ingredient-quantity-bg-color);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.ingredient-quantity input:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 600px) {
+  #ingredient-manager {
+    margin: 20px;
+  }
+  #available-ingredients, #unavailable-ingredients {
+    min-width: 300px;
+  }
 }

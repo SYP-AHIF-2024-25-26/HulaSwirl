@@ -1,11 +1,44 @@
 <div id="ingredient-manager">
+  <!-- Bereich: Available Ingredients -->
   <div id="available-ingredients" class="container">
     <h1>Available Ingredients</h1>
     <div id="ingredient-list">
-      <div *ngFor="let ingredient of avIngredients()" class="ingredient">
+      <div *ngFor="let _ of [].constructor(ingredientSlots); let i = index" class="slot" [class.inactive]="!activeSlots[i]">
+        <div class="slot-num" (click)="toggleSlot(i)">
+          {{ i + 1 }}
+        </div>
+        <div class="slot-ingredient" (dragover)="dragOver($event)" (drop)="availableDrop($event, i)">
+          <div *ngIf="getIngredientByIndex(i)" class="ingredient"
+               draggable="true"
+               (dragstart)="dragStart($event, i)">
+            <div class="ingredient-name">
+              {{ getIngredientByIndex(i)!.name }}
+            </div>
+            <div class="ingredient-quantity">
+              <input type="number"
+                    (blur)="updateRemaining($event, i)" (mousedown)="$event.stopPropagation()"
+                    value="{{ getIngredientByIndex(i)!.remainingMl }}" max="9999" min="0">
+              <span>ml</span>
+            </div>
+            <div class="liquid-bar"
+                 [style.width.%]="getLiquidPercentage(getIngredientByIndex(i)!)">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div id="unavailable-ingredients" class="container">
+  <div id="unavailable-ingredients" class="container"
+       (dragover)="dragOver($event)" (drop)="unavailableDrop($event)">
+    <h1>Unavailable Ingredients</h1>
+    <div id="ingredient-pool">
+      <div *ngFor="let ingredient of unIngredients(); let j = index" class="ingredient"
+           draggable="true"
+           (dragstart)="dragStart($event, j, false)">
+        <div class="ingredient-name">
+          {{ ingredient.name }}
+        </div>
+      </div>
+    </div>
   </div>
 </div>

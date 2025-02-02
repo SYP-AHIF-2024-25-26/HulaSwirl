@@ -1,3 +1,13 @@
+:root {
+  --container-bg-color: #9dc2d5;
+  --ingredient-bg-color: #f0f0f0;
+  --ingredient-quantity-bg-color: #a9dae8;
+  --element-primary-outline: #a3a3a3;
+  --pump-active-slot-bg: #c3ffac;
+  --pump-inactive-slot-bg: #ff9898;
+  --remaining-liquid-bar-bg: linear-gradient(90deg, #f6ef5a 0%, #e26eff 100%);
+}
+
 body{
   margin:0;
   font-family: JosefinSans, serif;
