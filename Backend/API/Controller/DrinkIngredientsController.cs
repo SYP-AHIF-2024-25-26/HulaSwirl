@@ -3,22 +3,23 @@
     [ApiController]
     public class DrinkIngredientsController(AppDbContext context) : ControllerBase {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DrinkIngredient>>> GetAllDrinkIngredients() {
-            return await context.DrinkIngredients.ToListAsync();
-        }
+        public async Task<List<IngredientAnswerDTO>> GetAllDrinkIngredients() {
+            var drinkIngredients = await context.DrinkIngredient.Include(drinkIngredient => drinkIngredient.Ingredient)
+                .ThenInclude(ingredient => ingredient.Pump).ToListAsync();
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<DrinkIngredient>>> GetAllUniqueDrinkIngredients() {
-            return await context.DrinkIngredients.Distinct().ToListAsync();
+            return drinkIngredients.Select(drinkIngredient => new IngredientAnswerDTO() {
+                Name = drinkIngredient.IngredientName, Slot = drinkIngredient.Ingredient?.Pump.Slot,
+                RemainingML = drinkIngredient.Ingredient?.RemainingMl, MaxMl = drinkIngredient.Ingredient?.MaxMl
+            }).ToList();
         }
-
 
         [HttpPut]
         public async Task<IActionResult> UpdateIngredients([FromBody] DrinkIngredient[] ingredients) {
-            var existingIngredients = await context.DrinkIngredients.ToListAsync();
+            var existingIngredients = await context.DrinkIngredient.ToListAsync();
 
             foreach (var ingredient in ingredients) {
-                var existingIngredient = existingIngredients.FirstOrDefault(i => i.IngredientName == ingredient.IngredientName);
+                var existingIngredient =
+                    existingIngredients.FirstOrDefault(i => i.IngredientName == ingredient.IngredientName);
                 if (existingIngredient != null) {
                     existingIngredient.Ml = ingredient.Ml;
                 }
@@ -27,5 +28,12 @@
             await context.SaveChangesAsync();
             return Ok("Ingredients aktualisiert.");
         }
+    }
+
+    public class IngredientAnswerDTO {
+        public required string Name { get; set; }
+        public int? Slot { get; set; }
+        public int? RemainingML { get; set; }
+        public int? MaxMl { get; set; }
     }
 }

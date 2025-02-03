@@ -10,7 +10,12 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = Env.GetString("DB_CONNECTION_STRING");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 29))));
+
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -21,7 +26,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 var app = builder.Build();
 
-app.Urls.Add("http://192.168.178.62:5000");
+// app.Urls.Add("http://192.168.178.62:5000");
 
 //Testing
 app.MapGet("/startPump", async (int slot, int ml) =>

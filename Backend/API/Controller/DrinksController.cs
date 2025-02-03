@@ -6,7 +6,7 @@
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Drink>>> GetDrinks()
         {
-            var drinks = await context.Drinks.ToListAsync();
+            var drinks = await context.Drink.ToListAsync();
             return Ok(drinks);
         }
 
@@ -15,7 +15,7 @@
         {
             foreach (var order in orders)
             {
-                var ingredient = await context.Ingredients.FindAsync(order.IngredientName);
+                var ingredient = await context.Ingredient.FindAsync(order.IngredientName);
                 if (ingredient is null || ingredient.RemainingMl < order.Ml)
                     return BadRequest($"Nicht genug {order.IngredientName} vorhanden.");
                 
