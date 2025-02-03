@@ -1,7 +1,7 @@
-import {Component, HostListener, Signal, signal, WritableSignal} from '@angular/core';
+import {Component, HostListener, inject, Signal, signal, WritableSignal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
-import {Ingredient} from '../ingredients.service';
+import {Ingredient, IngredientsService} from '../ingredients.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -15,33 +15,32 @@ import {Ingredient} from '../ingredients.service';
   styleUrls: ['./ingredients.component.css']
 })
 export class IngredientsComponent {
-  ingredientSlots = 9;
+  private readonly ingredientsService = inject(IngredientsService)
+  ingredientSlots = 5;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
 
-  avIngredients: WritableSignal<Ingredient[]> = signal([
-    { name: 'Water', slot: 1, remainingMl: 1000, maxMl: 1000 },
-    { name: 'Milk', slot: 2, remainingMl: 500, maxMl: 500 },
-    { name: 'Olive Oil', slot: 3, remainingMl: 250, maxMl: 250 },
-    { name: 'Lemon Juice', slot: 5, remainingMl: 200, maxMl: 200 },
-    { name: 'Soy Sauce', slot: 7, remainingMl: 150, maxMl: 150 }
-  ]);
+  avIngredients: WritableSignal<Ingredient[]> = signal([]);
+  unIngredients: WritableSignal<Ingredient[]> = signal([]);
 
-  unIngredients = signal([
-    { name: 'Vinegar', slot: 6, remainingMl: 300, maxMl: 300 },
-    { name: 'Coconut Milk', slot: 7, remainingMl: 400, maxMl: 400 },
-    { name: 'Honey', slot: 8, remainingMl: 350, maxMl: 350 },
-    { name: 'Vanilla Extract', slot: 9, remainingMl: 100, maxMl: 100 },
-    { name: 'Whipping Cream', slot: 10, remainingMl: 600, maxMl: 600 },
-  ]);
+  async ngOnInit() {
+    const allIngredients = await this.ingredientsService.getAllIngredients();
+    allIngredients.forEach(ing => {
+      if (ing.slot && ing.slot > this.ingredientSlots) {
+        ing.slot = null;
+      }
+    })
+    this.avIngredients.set(allIngredients.filter(ing => ing.slot !== null));
+    this.unIngredients.set(allIngredients.filter(ing => ing.slot === null));
+  }
 
-  draggedIngredient: Ingredient | null = null;
-  sourceContainer: 'available' | 'unavailable' | null = null;
-  sourceIndex: number | null = null;
-  dropSuccessful: boolean = false;
-
+  private draggedIngredient: Ingredient | null = null;
+  private sourceContainer: 'available' | 'unavailable' | null = null;
+  private sourceIndex: number | null = null;
+  private dropSuccessful: boolean = false;
   private draggedElement: HTMLElement | null = null;
 
   dragStart(event: DragEvent, index: number, available: boolean = true) {
+    console.log(this.avIngredients(), this.unIngredients());
     const ingredient = available ? this.getIngredientByIndex(index) : this.unIngredients()[index];
     if (!ingredient) return;
     this.draggedIngredient = ingredient;
@@ -127,6 +126,7 @@ export class IngredientsComponent {
         } else if (this.sourceContainer === 'unavailable') {
           this.unIngredients.update(uings => [...uings, ingByIndex]);
           newArr = newArr.filter(ing => ing.slot !== ingByIndex.slot);
+          ingByIndex.slot = null;
         }
       } else {
         this.draggedIngredient!.slot = slotIndex + 1;
@@ -139,6 +139,8 @@ export class IngredientsComponent {
 
   unavailableDrop(event: DragEvent) {
     if (!this.draggedIngredient) return;
+    this.draggedIngredient.maxMl = this.draggedIngredient.remainingMl;
+    this.draggedIngredient.slot = null;
     this.unIngredients.update(ings => [...ings, this.draggedIngredient!]);
     this.dropSuccessful = true;
   }

@@ -20,7 +20,7 @@ export const liquidIngredients: Ingredient[] = [
 
 export interface Ingredient {
   name: string;
-  slot: number;
+  slot: number | null;
   remainingMl: number;
   maxMl: number;
 }
@@ -29,8 +29,6 @@ export interface Order {
   Name: string;
   Amount: number;
 }
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +39,13 @@ export class IngredientsService {
   }
 
   async getAllIngredients(): Promise<Ingredient[]> {
-    //let res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
-    //console.log(res);
-    return liquidIngredients;
+    let res = liquidIngredients;
+    try {
+      res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
+    } catch (e) {
+      console.error("Failed to fetch ingredients, using dummy data", e);
+    }
+    return res;
   }
 
   async postOrder(ingredients: Order[]): Promise<void> {
