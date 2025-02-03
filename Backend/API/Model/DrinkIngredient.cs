@@ -9,6 +9,6 @@ public class DrinkIngredient {
 
     public int Ml { get; set; }
 
-    public virtual Drink Drink { get; set; }
-    public virtual Ingredient Ingredient { get; set; }
+    public virtual Drink? Drink { get; set; }
+    public virtual Ingredient? Ingredient { get; set; }
 }

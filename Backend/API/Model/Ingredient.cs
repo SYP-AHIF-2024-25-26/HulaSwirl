@@ -7,7 +7,7 @@ public class Ingredient {
 
     public int MaxMl { get; set; }
 
-    public virtual Pump Pump { get; set; }
+    public virtual Pump? Pump { get; set; }
 
-    public virtual ICollection<DrinkIngredient> DrinkIngredients { get; set; } = new List<DrinkIngredient>();
+    public virtual ICollection<DrinkIngredient>? DrinkIngredients { get; set; } = new List<DrinkIngredient>();
 }

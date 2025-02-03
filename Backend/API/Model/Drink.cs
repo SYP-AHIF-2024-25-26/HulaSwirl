@@ -7,9 +7,9 @@ public class Drink {
 
     public bool Enabled { get; set; }
 
-    public byte[] Img { get; set; }
+    public byte[]? Img { get; set; }
 
-    [MaxLength(255)] public string Toppings { get; set; }
+    [MaxLength(255)] public string? Toppings { get; set; }
 
     public virtual ICollection<DrinkIngredient> DrinkIngredients { get; set; } = new List<DrinkIngredient>();
 }
