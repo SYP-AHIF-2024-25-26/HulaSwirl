@@ -3,7 +3,7 @@
     [ApiController]
     public class DrinkIngredientsController(AppDbContext context) : ControllerBase {
         [HttpGet]
-        public async Task<List<IngredientDto>> GetAllDrinkIngredients() {
+        public async Task<List<IngredientDto>> GetAllIngredients() {
             var ingredients = await context.Ingredient.Include(ingredient => ingredient.DrinkIngredients)
                 .Include(ingredient => ingredient.Pump).ToListAsync();
 
