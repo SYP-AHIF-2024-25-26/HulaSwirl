@@ -1,7 +1,7 @@
 .container {
-  background-color: var(--container-bg-color);
+  background-color: var(--popup-bg);
   margin: 5px;
-  padding: 10px;
+  padding: 20px;
   border-radius: 5px;
 }
 
@@ -31,7 +31,7 @@
 
 .slot {
   display: flex;
-  gap: 5px;
+  gap: 10px;
   align-items: center;
 }
 
@@ -46,8 +46,8 @@
   font-weight: bold;
   font-size: 20px;
   border-radius: 5px;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   background-color: var(--pump-active-slot-bg);
   transition: background-color 0.2s ease;
@@ -57,13 +57,14 @@
   flex: 1;
   border: 2px solid var(--element-primary-outline);
   border-radius: 8px;
-  height: 36px;
   overflow: hidden;
+  min-height: 47px;
+  transition: height 1s ease;
 }
 
 .ingredient {
   background-color: var(--ingredient-bg-color);
-  padding: 10px;
+  padding: 15px;
   border-radius: 4px;
   display: flex;
   justify-content: space-between;
@@ -81,7 +82,7 @@
 .dragging {
   position: absolute;
   pointer-events: none;
-  gap: 30px;
+  gap: 100px;
   justify-content: center;
   z-index: 100;
 }

@@ -16,7 +16,7 @@ import {Ingredient, IngredientsService} from '../ingredients.service';
 })
 export class IngredientsComponent {
   private readonly ingredientsService = inject(IngredientsService)
-  ingredientSlots = 5;
+  ingredientSlots = 10;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
 
   avIngredients: WritableSignal<Ingredient[]> = signal([]);

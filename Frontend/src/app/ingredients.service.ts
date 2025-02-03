@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {environment} from '../environments/environment';
 
@@ -40,11 +40,13 @@ export class IngredientsService {
 
   async getAllIngredients(): Promise<Ingredient[]> {
     let res = liquidIngredients;
+    /*
     try {
       res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
     } catch (e) {
       console.error("Failed to fetch ingredients, using dummy data", e);
     }
+     */
     return res;
   }
 

@@ -1,11 +1,13 @@
 :root {
+  --body-bg: #faeee1;
+  --popup-bg: #f4e3cd;
   --container-bg-color: #9dc2d5;
-  --ingredient-bg-color: #f0f0f0;
-  --ingredient-quantity-bg-color: #a9dae8;
-  --element-primary-outline: #a3a3a3;
+  --ingredient-bg-color: #f4f3f2;
+  --ingredient-quantity-bg-color: #f1e1c3;
+  --element-primary-outline: #cacaca;
   --pump-active-slot-bg: #c3ffac;
   --pump-inactive-slot-bg: #ff9898;
-  --remaining-liquid-bar-bg: linear-gradient(90deg, #f6ef5a 0%, #e26eff 100%);
+  --remaining-liquid-bar-bg: linear-gradient(90deg, #f65a5a 0%, #ffd15e 100%);
 }
 
 body{
