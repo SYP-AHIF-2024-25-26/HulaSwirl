@@ -35,7 +35,7 @@ export class HomeComponent {
   async ngOnInit() {
     this.allAvailableIngredients.set(await this.ingredientService.getAllIngredients());
     //this.C_newIngredients.set(await this.ingredientService.getAllIngredients());//kommt nacher weg
-    this.K_bestDrinks.set(await this.drinkService.getDrinks());
+    this.K_bestDrinks.set((await this.drinkService.getDrinks()).slice(0, 5));
     this.D_allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());
   }
@@ -174,4 +174,7 @@ export class HomeComponent {
     } catch (error) {
       console.error('Order failed:', error);
     }*/
+  Orderdrink() {
+    this.drinkService.orderDrink(this.G_selectedDrink());
+  }
 }
