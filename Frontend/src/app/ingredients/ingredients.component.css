@@ -11,6 +11,7 @@
   gap: 10px;
   justify-content: center;
   margin: 20px 10%;
+
 }
 
 #available-ingredients {
@@ -21,6 +22,21 @@
 #unavailable-ingredients {
   flex: 2;
   min-width: 450px;
+}
+
+#available-ingredients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#save-button {
+  background-color: #2880b1;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
 }
 
 #ingredient-list {
