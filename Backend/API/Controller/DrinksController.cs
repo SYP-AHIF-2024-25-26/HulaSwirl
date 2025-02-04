@@ -59,20 +59,28 @@
         }
 
         [HttpPost("order")]
-        public async Task<IActionResult> OrderDrink([FromBody] List<DrinkIngredient> orders, PumpManager manager) {
+        public async Task<IActionResult> OrderDrink([FromBody] List<OrderDto> orders, PumpManager manager) {
             foreach (var order in orders) {
-                var ingredient = await context.Ingredient.FindAsync(order.IngredientName);
-                if (ingredient is null || ingredient.RemainingMl < order.Ml)
-                    return BadRequest($"Nicht genug {order.IngredientName} vorhanden.");
+                var ingredient = await context.Ingredient.FindAsync(order.Name);
+                if (ingredient is null || ingredient.RemainingMl < order.Amount)
+                    return BadRequest($"Nicht genug {order.Name} vorhanden.");
 
-                _ = Task.Run(() => manager.StartPump(ingredient.Pump.Slot, order.Ml));
+                if (ingredient.Pump is null) {
+                    return BadRequest("Pump with ingredient not found.");
+                }
 
-                ingredient.RemainingMl -= order.Ml;
+                _ = Task.Run(() => manager.StartPump(ingredient.Pump.Slot, order.Amount));
+
+                ingredient.RemainingMl -= order.Amount;
             }
 
             await _context.SaveChangesAsync();
 
             return Ok("drink ordered");
         }
+    }
+    public class OrderDto {
+        public required string Name { get; set; }
+        public required int Amount { get; set; }
     }
 }
