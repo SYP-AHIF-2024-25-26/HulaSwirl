@@ -6,6 +6,7 @@ public class PumpManager(ILogger<Drink> drinkLogger) {
 
 
     public async Task StartPump(int slot, int ml) {
+        _drinkLogger?.LogInformation($"Starting pump for slot: {slot}, ml: {ml}");
         _pumps ??= [new VPump(17, 27), new VPump(23, 24)];
 
         if (slot > _pumps.Length) {
