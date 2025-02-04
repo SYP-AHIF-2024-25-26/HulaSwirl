@@ -15,7 +15,7 @@ public class PumpManager {
         if (slot > _pumps.Length) {
             return;
         }
-        
+
         //testing show that at 20% a pump can output 13ml/s
         var timeInSec = ml / 13;
         var pump = _pumps[slot + 1];
@@ -27,6 +27,8 @@ public class PumpManager {
 
             await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
 
+            Console.WriteLine($"Pump {slot} running reverse for {timeInSec:F2} seconds.");
+
             pump.Reverse(100);
             await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
         } catch (TaskCanceledException) {
@@ -35,6 +37,6 @@ public class PumpManager {
             pump.Stop();
             Console.WriteLine($"Pump {slot} stopped.");
         }
-        
+
     }
 }
