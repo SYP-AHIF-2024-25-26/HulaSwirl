@@ -109,7 +109,8 @@ const drinks: Drink[] = [
 export class DrinkService {
   private readonly httpClient = inject(HttpClient);
   async getDrinks(): Promise<Drink[]> {
-    return await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks"));
+    return drinks;
+    //return await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks"));
   }
   async orderDrink(drink: Drink) {
     await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks?id=", drink.id));
