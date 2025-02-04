@@ -1,5 +1,7 @@
-﻿namespace API.Controller {
-    [Route("api/drinks")]
+﻿using Microsoft.AspNetCore.Components;
+
+namespace API.Controller {
+    [Microsoft.AspNetCore.Mvc.Route("api/drinks")]
     [ApiController]
     public class DrinksController(AppDbContext context, ILogger<Drink> drinkLogger) : ControllerBase {
         private readonly ILogger<Drink> _drinkLogger = drinkLogger;
@@ -59,7 +61,7 @@
         }
 
         [HttpPost("order")]
-        public async Task<IActionResult> OrderDrink([FromBody] List<OrderDto> orders, PumpManager manager) {
+        public async Task<IActionResult> OrderDrink([FromBody] OrderDto[] orders, PumpManager manager) {
             foreach (var order in orders) {
                 var ingredient = await context.Ingredient.FindAsync(order.Name);
                 if (ingredient is null || ingredient.RemainingMl < order.Amount)
@@ -79,6 +81,7 @@
             return Ok("drink ordered");
         }
     }
+
     public class OrderDto {
         public required string Name { get; set; }
         public required int Amount { get; set; }
