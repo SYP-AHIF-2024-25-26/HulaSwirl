@@ -8,7 +8,7 @@ COPY . .
 RUN npm run build --prod
 
 # Production Stage
-FROM arm64v8/httpd:alpine AS production-stage
+FROM arm64v8:alpine AS production-stage
 
 COPY --from=build-stage /app/dist/frontend/browser /usr/local/apache2/htdocs/
 EXPOSE 80

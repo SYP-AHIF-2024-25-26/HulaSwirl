@@ -40,13 +40,12 @@ export class IngredientsService {
 
   async getAllIngredients(): Promise<Ingredient[]> {
     let res = liquidIngredients;
-    /*
     try {
       res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
     } catch (e) {
       console.error("Failed to fetch ingredients, using dummy data", e);
     }
-     */
+    console.log("Ingredients", res);
     return res;
   }
 

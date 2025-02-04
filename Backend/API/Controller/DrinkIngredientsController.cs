@@ -9,7 +9,7 @@
 
             return ingredients.Select(ingredient => new IngredientDto() {
                 Name = ingredient.Name, Slot = ingredient.Pump?.Slot,
-                RemainingML = ingredient.RemainingMl, MaxMl = ingredient.MaxMl
+                RemainingMl = ingredient.RemainingMl, MaxMl = ingredient.MaxMl
             }).ToList();
         }
 
@@ -43,7 +43,7 @@
 
                 //update other columns
 
-                existingIngredient.RemainingMl = newIngredientDto.RemainingML;
+                existingIngredient.RemainingMl = newIngredientDto.RemainingMl;
                 existingIngredient.MaxMl = newIngredientDto.MaxMl;
             }
 
@@ -55,7 +55,7 @@
     public class IngredientDto {
         public required string Name { get; set; }
         public int? Slot { get; set; }
-        public required int RemainingML { get; set; }
+        public required int RemainingMl { get; set; }
         public required int MaxMl { get; set; }
     }
 }
