@@ -1,5 +1,7 @@
-﻿namespace API.Controller {
-    [Route("api/drinks")]
+﻿using Microsoft.AspNetCore.Components;
+
+namespace API.Controller {
+    [Microsoft.AspNetCore.Mvc.Route("api/drinks")]
     [ApiController]
     public class DrinksController(AppDbContext context, ILogger<Drink> drinkLogger) : ControllerBase {
         private readonly ILogger<Drink> _drinkLogger = drinkLogger;
@@ -48,7 +50,7 @@
                 //TODO check if enough fluid is available
                 _drinkLogger.LogInformation("starting pump with slot {} and ml: {}", slot, requiredMl);
 
-                _ = Task.Run(() => manager.StartPump(slot, requiredMl));
+                _ = Task.Run(() => manager.StartPump(slot - 1, requiredMl));
 
                 //TODO subtract the amount that was used
             }
@@ -59,20 +61,29 @@
         }
 
         [HttpPost("order")]
-        public async Task<IActionResult> OrderDrink([FromBody] List<DrinkIngredient> orders, PumpManager manager) {
+        public async Task<IActionResult> OrderDrink([FromBody] OrderDto[] orders, PumpManager manager) {
             foreach (var order in orders) {
-                var ingredient = await context.Ingredient.FindAsync(order.IngredientName);
-                if (ingredient is null || ingredient.RemainingMl < order.Ml)
-                    return BadRequest($"Nicht genug {order.IngredientName} vorhanden.");
+                var pump = (await context.Pump.ToListAsync()).FirstOrDefault(p => p.IngredientName == order.Name);
 
-                _ = Task.Run(() => manager.StartPump(ingredient.Pump.Slot, order.Ml));
+                //check for ammount
 
-                ingredient.RemainingMl -= order.Ml;
+                if (pump is null) {
+                    return BadRequest("Pump with ingredient not found.");
+                }
+
+                _ = Task.Run(() => manager.StartPump(pump.Slot -1, order.Amount));
+
+                //reduce amount
             }
 
             await _context.SaveChangesAsync();
 
             return Ok("drink ordered");
         }
+    }
+
+    public class OrderDto {
+        public required string Name { get; set; }
+        public required int Amount { get; set; }
     }
 }

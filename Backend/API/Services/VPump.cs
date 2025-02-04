@@ -1,63 +1,33 @@
-using System.Device.Gpio;
-using System.Device.Pwm;
 using System.Device.Pwm.Drivers;
 
-public class VPump
-{
-    private readonly PwmChannel _pwmForward;
-    private readonly PwmChannel _pwmReverse;
-    private readonly GpioController _controller;
-    private readonly int _in1;
-    private readonly int _in2;
+namespace API.Services;
 
-    public VPump(int in1, int in2, int frequency = 20000)
-    {
-        _in1 = in1;
-        _in2 = in2;
-        _controller = GpioManager.Instance.Controller;
+public class VPump {
+    private SoftwarePwmChannel _channel1;
 
-        _pwmForward = new SoftwarePwmChannel(
-            in1, frequency: frequency, dutyCycle: 0.0);
+    public VPump(int in1, int in2) {
+        _channel1 = new SoftwarePwmChannel(in1, 20_000, 0);
 
-        _pwmReverse = new SoftwarePwmChannel(
-            in2, frequency: frequency, dutyCycle: 0.0);
+        var manager = GpioManager.Instance.Controller;
+        manager.OpenPin(in2, PinMode.Output);
+        manager.Write(in2, PinValue.Low);
 
-        _controller.OpenPin(_in1, PinMode.Output);
-        _controller.OpenPin(_in2, PinMode.Output);
-
-        Stop();
+        //in1 -> PWM, in2 -> LOW ---> pump Forward
     }
 
-    public void Forward(int speedPercent)
-    {
-        if (speedPercent is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(speedPercent));
+    public void SetSpeed(int percentage) {
+        if (percentage is < 0 or > 100) {
+            throw new Exception("percentage format -> between 0 - 100");
+        }
 
-        _pwmReverse.Stop();
-        _controller.Write(_in2, PinValue.Low);
-
-        _pwmForward.DutyCycle = speedPercent / 100.0;
-        _pwmForward.Start();
+        _channel1.DutyCycle = Math.Round(percentage / 100.0, 2);
     }
 
-    public void Reverse(int speedPercent)
-    {
-        if (speedPercent < 0 || speedPercent > 100)
-            throw new ArgumentOutOfRangeException(nameof(speedPercent));
-
-        _pwmForward.Stop();
-        _controller.Write(_in1, PinValue.Low);
-
-        _pwmReverse.DutyCycle = speedPercent / 100.0;
-        _pwmReverse.Start();
+    public void Start() {
+        _channel1.Start();
     }
 
-    public void Stop()
-    {
-        _pwmForward.Stop();
-        _pwmReverse.Stop();
-
-        _controller.Write(_in1, PinValue.Low);
-        _controller.Write(_in2, PinValue.Low);
+    public void Stop() {
+        _channel1.Stop();
     }
 }
