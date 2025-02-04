@@ -50,7 +50,7 @@ namespace API.Controller {
                 //TODO check if enough fluid is available
                 _drinkLogger.LogInformation("starting pump with slot {} and ml: {}", slot, requiredMl);
 
-                _ = Task.Run(() => manager.StartPump(slot, requiredMl));
+                _ = Task.Run(() => manager.StartPump(slot - 1, requiredMl));
 
                 //TODO subtract the amount that was used
             }
@@ -71,7 +71,7 @@ namespace API.Controller {
                     return BadRequest("Pump with ingredient not found.");
                 }
 
-                _ = Task.Run(() => manager.StartPump(pump.Slot, order.Amount));
+                _ = Task.Run(() => manager.StartPump(pump.Slot -1, order.Amount));
 
                 //reduce amount
             }
