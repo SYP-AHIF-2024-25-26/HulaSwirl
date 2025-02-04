@@ -17,7 +17,7 @@ public class PumpManager(ILogger<Drink> drinkLogger) {
 
         //testing show that at 20% a pump can output 13ml/s
         var timeInSec = ml / 13;
-        var pump = _pumps[slot + 1];
+        var pump = _pumps[slot];
         var cancellationTokenSource = new CancellationTokenSource();
 
         try {
