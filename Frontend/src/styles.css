@@ -16,8 +16,20 @@ body{
   -ms-overflow-style: none;
   scrollbar-width: none;
   cursor:default;
-  background:#faeee1;
+  background: #faeee1 url("/assets/images/background.png") center;
+  background-size: cover;
 }
+
+/*
+  background-image: url("/assets/images/background.png");
+  height: 100%;
+  width: 100%;
+  filter: drop-shadow(10px 10px 5px rgba(68, 47, 36, 0.34));
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Hintergrund bleibt unter dem Text */
+
 body::-webkit-scrollbar {
   display: none;
 }

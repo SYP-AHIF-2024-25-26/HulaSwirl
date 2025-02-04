@@ -1,7 +1,10 @@
 <div id="ingredient-manager">
   <!-- Bereich: Available Ingredients -->
   <div id="available-ingredients" class="container">
-    <h1>Available Ingredients</h1>
+    <div id="available-ingredients-header">
+      <h1>Available Ingredients</h1>
+      <button id="save-button" (click)="saveIngredients()">Save</button>
+    </div>
     <div id="ingredient-list">
       <div *ngFor="let _ of [].constructor(ingredientSlots); let i = index" class="slot" [class.inactive]="!activeSlots[i]">
         <div class="slot-num" (click)="toggleSlot(i)">

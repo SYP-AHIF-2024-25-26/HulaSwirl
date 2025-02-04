@@ -9,7 +9,7 @@ export const liquidIngredients: Ingredient[] = [
   { name: "Milk", slot: 2, remainingMl: 500, maxMl: 500 },         // in milliliters (ml)
   { name: "Olive Oil", slot: 3, remainingMl: 250, maxMl: 250 },     // in milliliters (ml)
   { name: "Lemon Juice", slot: 4, remainingMl: 200, maxMl: 200 },   // in milliliters (ml)
-  { name: "Soy Sauce", slot: 5, remainingMl: 150, maxMl: 150 },     // in milliliters (ml)
+  { name: "Soy Sauce", slot: null, remainingMl: 150, maxMl: 150 },     // in milliliters (ml)
   { name: "Vinegar", slot: 6, remainingMl: 300, maxMl: 300 },       // in milliliters (ml)
   { name: "Coconut Milk", slot: 7, remainingMl: 400, maxMl: 400 },  // in milliliters (ml)
   { name: "Honey", slot: 8, remainingMl: 350, maxMl: 350 },         // in milliliters (ml)
@@ -50,10 +50,10 @@ export class IngredientsService {
   }
 
   async postOrder(ingredients: Order[]): Promise<void> {
-    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
+    await firstValueFrom(this.httpClient.post<Ingredient[]>(environment.apiUrl + "/drinks/order", ingredients));
   }
 
   async saveIngredients(ingredients:Ingredient[]){
-
+    await firstValueFrom(this.httpClient.put<Ingredient[]>(environment.apiUrl + "/admin/ingredients", ingredients));
   }
 }

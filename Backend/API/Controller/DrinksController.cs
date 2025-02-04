@@ -25,21 +25,28 @@
             };
 
             orders.Add(order);
+            _drinkLogger.LogInformation("order added");
 
             //start pumps
 
             var drink = await _context.Drink.Include(drink => drink.DrinkIngredients)
                 .FirstOrDefaultAsync(drink => drink.Id == id);
 
+
             if (drink is null) {
                 return NotFound($"drink not found with drink id {id}");
             }
 
+            _drinkLogger.LogInformation(drink.Name);
+
+
             foreach (var drinkIngredient in drink.DrinkIngredients) {
                 var requiredMl = drinkIngredient.Ml;
                 //TODO check if all ingredients are available
-                var slot = ((await _context.Pump.FirstOrDefaultAsync(p => p.IngredientName == drinkIngredient.IngredientName))!).Slot;
+                var slot = ((await _context.Pump.FirstOrDefaultAsync(p =>
+                    p.IngredientName == drinkIngredient.IngredientName))!).Slot;
                 //TODO check if enough fluid is available
+                _drinkLogger.LogInformation("starting pump with slot {} and ml: {}", slot, requiredMl);
 
                 _ = Task.Run(() => manager.StartPump(slot, requiredMl));
 
