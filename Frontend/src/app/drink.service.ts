@@ -22,9 +22,8 @@ const drinks: Drink[] = [
     img: "https://images.lecker.de/klassischer-mojito-rezept,id=56ad8212,b=lecker,w=980,rm=sk.webp",
     toppings: "Mint leaves, Sugar Syrup, Ice Cubes, abscd efghi jklmn",
     drinkIngredients: [
-      { name: "White Rum", amount: 50 },
-      { name: "Lime Juice", amount: 25 },
-      { name: "Soda Water", amount: 100 }
+      { name: "Rum", amount: 50 },
+      { name: "Gin", amount: 75 },
     ],
   },
   {
