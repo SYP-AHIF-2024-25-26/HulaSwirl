@@ -10,7 +10,7 @@
         <div class="C_singleIngredient">
           <div class="C_ingredientInfo">
             <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[$index].remainingMl"></textarea>
-            <p>cl    {{ingredient.name}}</p>
+            <p>ml    {{ingredient.name}}</p>
           </div>
           <i style="font-size:20px" class="fa" (click)="C_removeIngredientFromCustomOrderList($index)">&#xf014;</i>
         </div>
@@ -21,7 +21,7 @@
             <p class="C_addNewIngredient">+</p>
           </div>
           <textarea class="C_liquidInput C_newLiquidInput" [(ngModel)]="C_newLiquidAmount"></textarea>
-          <p>cl</p>
+          <p>ml</p>
           <form>
           <select id="C_newIngredient" class="C_newIngredient_Selection" (change)="C_updateNewIngredientName($event)">
             <option class="C_newIngredientOption" value="Choose Ingredient">Choose Ingredient</option>
