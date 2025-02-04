@@ -12,6 +12,7 @@ public class PumpManager {
 
 
     public async void StartPump(int slot, int ml) {
+        Console.WriteLine($"Starting pump {slot}: {ml}");
         if (slot > _pumps.Length) {
             return;
         }

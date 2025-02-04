@@ -8,7 +8,7 @@
             return Ok(drinks);
         }
 
-        [HttpPost("order")]
+        [HttpPost()]
         public async Task<IActionResult> OrderDrink([FromQuery] int id) {
             //insert new order
             var orders = await context.Order.ToListAsync();
