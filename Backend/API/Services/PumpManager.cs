@@ -21,14 +21,9 @@ public class PumpManager(ILogger<Drink> drinkLogger) {
         var cancellationTokenSource = new CancellationTokenSource();
 
         try {
-            pump.Forward(20);
+            pump.Start();
             _drinkLogger.LogInformation("Pump {slot} started.", slot);
 
-            await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
-
-            _drinkLogger.LogInformation($"Pump {slot} running reverse for {timeInSec:F2} seconds.");
-
-            pump.Reverse(100);
             await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
         }
         catch (TaskCanceledException) {
