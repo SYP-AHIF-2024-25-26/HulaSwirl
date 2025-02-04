@@ -12,7 +12,7 @@
         }
 
         [HttpPost()]
-        public async Task<IActionResult> OrderDrink([FromQuery] int id) {
+        public async Task<IActionResult> OrderDrink([FromQuery] int id, PumpManager manager) {
             //insert new order
             _drinkLogger.LogInformation("Ordering drink {}", id);
 
@@ -41,7 +41,7 @@
                 var slot = ((await _context.Pump.FirstOrDefaultAsync(p => p.IngredientName == drinkIngredient.IngredientName))!).Slot;
                 //TODO check if enough fluid is available
 
-                _ = Task.Run(() => PumpManager.Instance.StartPump(slot, requiredMl));
+                _ = Task.Run(() => manager.StartPump(slot, requiredMl));
 
                 //TODO subtract the amount that was used
             }
