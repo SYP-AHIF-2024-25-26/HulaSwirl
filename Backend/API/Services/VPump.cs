@@ -3,7 +3,7 @@ using System.Device.Pwm.Drivers;
 namespace API.Services;
 
 public class VPump {
-    private readonly SoftwarePwmChannel _channel1;
+    private SoftwarePwmChannel _channel1;
 
     public VPump(int in1, int in2) {
         _channel1 = new SoftwarePwmChannel(in1, 20_000, 0);
