@@ -33,8 +33,7 @@ export class HomeComponent {
   selectedIngredient: string = '';
 
   async ngOnInit() {
-    this.allAvailableIngredients.set(await this.ingredientService.getAllIngredients());
-    //this.C_newIngredients.set(await this.ingredientService.getAllIngredients());//kommt nacher weg
+    this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
     this.K_bestDrinks.set((await this.drinkService.getDrinks()).slice(0, 5));
     this.D_allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());
@@ -140,9 +139,11 @@ export class HomeComponent {
   }
   D_getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
+    /*
     this.D_allDrinks().forEach(drink => {
       drink.ingredients.forEach(ing => ingredientsSet.add(ing.name));
     });
+     */
     return Array.from(ingredientsSet);
   }
   G_isModalOpen = signal(false);

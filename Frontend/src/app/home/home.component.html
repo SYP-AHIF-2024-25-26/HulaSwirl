@@ -6,13 +6,13 @@
     <span class="C_close" (click)="C_closeModal()">&times;</span>
     <p>Configure Your own Drink</p>
     <div class="C_ingredientContainer">
-      @for (ingredient of C_newIngredients();track ingredient;let idx = $index){
+      @for (ingredient of C_newIngredients(); track $index){
         <div class="C_singleIngredient">
           <div class="C_ingredientInfo">
-            <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[idx].remainingMl"></textarea>
+            <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[$index].remainingMl"></textarea>
             <p>cl    {{ingredient.name}}</p>
           </div>
-          <i style="font-size:20px" class="fa" (click)="C_removeIngredientFromCustomOrderList(idx)">&#xf014;</i>
+          <i style="font-size:20px" class="fa" (click)="C_removeIngredientFromCustomOrderList($index)">&#xf014;</i>
         </div>
       }
       <div class="C_singleIngredient C_newIngredient">
@@ -23,15 +23,16 @@
           <textarea class="C_liquidInput C_newLiquidInput" [(ngModel)]="C_newLiquidAmount"></textarea>
           <p>cl</p>
           <form>
-          <select id="C_newIngredient" class="C_newIngredient_Selection"  (change)="C_updateNewIngredientName($event)">
+          <select id="C_newIngredient" class="C_newIngredient_Selection" (change)="C_updateNewIngredientName($event)">
             <option class="C_newIngredientOption" value="Choose Ingredient">Choose Ingredient</option>
-            @for (ingredient of allAvailableIngredients();track ingredient){
-              <option class="C_newIngredientOption" value="{{ingredient.name}}">{{ingredient.name}}</option>
+            @for (ing of allAvailableIngredients(); track $index){
+              <option class="C_newIngredientOption" value="{{ing.name}}">{{ing.name}}</option>
+            } @empty {
+              <option class="C_newIngredientOption" value="No Ingredients available">No Ingredients available</option>
             }
           </select>
         </form>
         </div>
-
       </div>
     </div>
     <div class="C_orderbuttons">

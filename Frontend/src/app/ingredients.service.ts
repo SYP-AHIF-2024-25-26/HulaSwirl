@@ -45,15 +45,14 @@ export class IngredientsService {
     } catch (e) {
       console.error("Failed to fetch ingredients, using dummy data", e);
     }
-    console.log("Ingredients", res);
     return res;
   }
 
   async postOrder(ingredients: Order[]): Promise<void> {
-    await firstValueFrom(this.httpClient.post<Ingredient[]>(environment.apiUrl + "/drinks/order", ingredients));
+    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
   }
 
   async saveIngredients(ingredients:Ingredient[]){
-    await firstValueFrom(this.httpClient.put<Ingredient[]>(environment.apiUrl + "/admin/ingredients", ingredients));
+    await firstValueFrom(this.httpClient.put(environment.apiUrl + "/admin/ingredients", ingredients));
   }
 }
