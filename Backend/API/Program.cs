@@ -15,6 +15,7 @@ var connectionString = Env.GetString("DB_CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+builder.Services.AddSingleton<PumpManager>();
 
 builder.Services.AddCors(options =>
 {
@@ -31,7 +32,7 @@ var app = builder.Build();
 //Testing
 app.MapGet("/startPump", async (int slot, int ml) =>
 {
-    _ = Task.Run(() => PumpManager.Instance.StartPump(slot, ml));
+   // _ = Task.Run(() => PumpManager.Instance.StartPump(slot, ml));
     
     return Results.Ok($"Pump {slot} scheduled to run for {ml} ml.");
 });
