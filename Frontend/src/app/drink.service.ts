@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Ingredient} from './ingredients.service';
-import {Observable} from 'rxjs';
+import {firstValueFrom, Observable} from 'rxjs';
+import {environment} from '../environments/environment';
+import {HttpClient} from '@angular/common/http';
 
 export interface Drink {
   id: number;
@@ -105,9 +107,12 @@ const drinks: Drink[] = [
   providedIn: 'root'
 })
 export class DrinkService {
-  getDrinks(): Drink[] {
-    return drinks;
+  private readonly httpClient = inject(HttpClient);
+  async getDrinks(): Promise<Drink[]> {
+    return await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks/order"));
   }
-
+  async orderDrink(drink: Drink) {
+    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order?drinkId=", drink.id));
+  }
   constructor() { }
 }
