@@ -178,4 +178,8 @@ export class IngredientsComponent {
   getIngredientByIndex(idx: number): Ingredient | null {
     return this.avIngredients().find(ing => ing != null && ing.slot === idx + 1) || null;
   }
+
+  async saveIngredients() {
+    await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
+  }
 }
