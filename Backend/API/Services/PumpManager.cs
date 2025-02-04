@@ -1,9 +1,8 @@
 namespace API.Services;
 
-public class PumpManager(ILogger<Drink> drinkLogger, PumpManager pumpManager) {
+public class PumpManager(ILogger<Drink> drinkLogger) {
     private readonly VPump[] _pumps = [new VPump(17, 27), new VPump(23, 24)];
     private readonly ILogger<Drink> _drinkLogger = drinkLogger;
-    private readonly PumpManager _pumpManager = pumpManager;
 
     public async void StartPump(int slot, int ml) {
         if (slot > _pumps.Length) {
