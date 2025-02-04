@@ -57,7 +57,7 @@
       <div class="G_moadal_right">
         <div class="G_drinkInfo">
           <h2 class="G_drinkName">{{ G_selectedDrink().name }}</h2>
-          <ul class="G_ingredientsList" *ngFor="let drink of G_selectedDrink().ingredients">
+          <ul class="G_ingredientsList" *ngFor="let drink of G_selectedDrink().drinkIngredients">
             <li > {{ drink.name }}</li>
           </ul>
         </div>
@@ -68,7 +68,7 @@
     <!--<div class="G_drinkDetails">
 
       <div class="G_drinkInfo">
-        <ul class="G_ingredientsList" *ngFor="let drink of G_selectedDrink().ingredients">
+        <ul class="G_ingredientsList" *ngFor="let drink of G_selectedDrink().drinkIngredients">
           <li > {{ drink.name }}</li>
         </ul>
       </div>

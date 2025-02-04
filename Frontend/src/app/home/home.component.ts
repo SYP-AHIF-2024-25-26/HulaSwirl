@@ -130,7 +130,7 @@ export class HomeComponent {
     if (this.selectedIngredient) {
       this.filteredDrinks.set(
         this.D_allDrinks().filter(drink =>
-          drink.ingredients.some(ing => ing.name === this.selectedIngredient)
+          drink.drinkIngredients.some(ing => ing.name === this.selectedIngredient)
         )
       );
     } else {
@@ -139,11 +139,9 @@ export class HomeComponent {
   }
   D_getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
-    /*
-    this.D_allDrinks().forEach(drink => {
-      drink.ingredients.forEach(ing => ingredientsSet.add(ing.name));
+    this.D_allDrinks().filter(d => d != null).forEach(drink => {
+      drink.drinkIngredients.forEach(ing => ingredientsSet.add(ing.name));
     });
-     */
     return Array.from(ingredientsSet);
   }
   G_isModalOpen = signal(false);
@@ -151,7 +149,6 @@ export class HomeComponent {
 
   G_openModal(drink: Drink) {
     this.G_selectedDrink.set(drink);
-    console.log(drink);
     this.G_isModalOpen.set(true);
     document.body.classList.add('no-scroll');
   }
