@@ -63,17 +63,17 @@ namespace API.Controller {
         [HttpPost("order")]
         public async Task<IActionResult> OrderDrink([FromBody] OrderDto[] orders, PumpManager manager) {
             foreach (var order in orders) {
-                var ingredient = await context.Ingredient.FindAsync(order.Name);
-                if (ingredient is null || ingredient.RemainingMl < order.Amount)
-                    return BadRequest($"Nicht genug {order.Name} vorhanden.");
+                var pump = (await context.Pump.ToListAsync()).FirstOrDefault(p => p.IngredientName == order.Name);
 
-                if (ingredient.Pump is null) {
+                //check for ammount
+
+                if (pump is null) {
                     return BadRequest("Pump with ingredient not found.");
                 }
 
-                _ = Task.Run(() => manager.StartPump(ingredient.Pump.Slot, order.Amount));
+                _ = Task.Run(() => manager.StartPump(pump.Slot, order.Amount));
 
-                ingredient.RemainingMl -= order.Amount;
+                //reduce amount
             }
 
             await _context.SaveChangesAsync();
