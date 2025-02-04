@@ -11,6 +11,7 @@ public class VPump {
         var manager = GpioManager.Instance.Controller;
         manager.OpenPin(in2, PinMode.Output);
         manager.Write(in2, PinValue.Low);
+
         //in1 -> PWM, in2 -> LOW ---> pump Forward
     }
 
