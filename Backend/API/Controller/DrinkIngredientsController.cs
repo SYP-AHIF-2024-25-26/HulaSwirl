@@ -18,7 +18,12 @@
             var existingIngredients = await context.Ingredient.Include(ingredient => ingredient.DrinkIngredients)
                 .Include(ingredient => ingredient.Pump).ToListAsync();
 
+            var updatedIngredients = new List<IngredientUpdate>();
+            var deleteIngredients = new List<Pump>();
+
             foreach (var existingIngredient in existingIngredients) {
+                //break point here
+
                 var newIngredientDto =
                     ingredients.FirstOrDefault(ingredient => ingredient.Name == existingIngredient.Name);
 
@@ -33,12 +38,12 @@
 
                     if (existingPump != null) {
                         //TODO check if existing Pump is not already in use by other Ingredient
-                        existingPump.IngredientName = newIngredientDto.Name;
+                        updatedIngredients.Add(new IngredientUpdate(existingPump, newIngredientDto.Name));
                     }
                 } //case 2: remove ingredient from pump
                 else if (existingIngredient.Pump is not null && newIngredientDto.Slot is null) {
                     var existingPump = existingIngredient.Pump;
-                    existingPump.IngredientName = null;
+                    deleteIngredients.Add(existingPump);
                 }
 
                 //update other columns
@@ -47,9 +52,21 @@
                 existingIngredient.MaxMl = newIngredientDto.MaxMl;
             }
 
+            //execute all deletes
+            foreach (var pump in deleteIngredients) {
+                pump.IngredientName = null;
+            }
+
+            //execute all updates
+            foreach (var (pump, ingredientName) in updatedIngredients) {
+                pump.IngredientName = ingredientName;
+            }
+
             await context.SaveChangesAsync();
             return Ok("Ingredients aktualisiert.");
         }
+
+        record IngredientUpdate(Pump pump, string IngredientName);
     }
 
     public class IngredientDto {
