@@ -1,35 +1,42 @@
-Table Orders {
-    id int [primary key]
-    drink_id int
-    order_date_time datetime
+Table Drink {
+  id int [primary key]
+  name varchar(100)
+  enabled bool
+  img varchar(1000)
+  toppings varchar(255)
 }
 
-Table Drinks {
-    id int [primary key]
-    name varchar(100)
-    enabled bool
-    img image
-    toppings varchar(255)
+Table Ingredient {
+  drink_id int
+  ingredient_name varchar(100)
+  ml int
+
+  // Composite primary key:
+  indexes {
+    (drink_id, ingredient_name) [pk]
+  }
 }
 
-Table DrinkIngredients {
-    drink_id int [primary key]
-    ingredient_name string [primary key]
-    ml int
+Table IngredientInBottle {
+  name varchar(100) [primary key]
+  remaining_ml int
+  max_ml int
 }
 
-Table Ingredients {
-    name varchar(100) [primary key]
-    remaining_liquid int
-}
-
-Table Pumps {
+Table Pump {
   slot int [primary key]
-  ingredient_name string
-  active boolean
+  ingredient_name varchar(100) [unique]  // Enforces 1:1 with IngredientInBottle
+  active bool
 }
 
-Ref: Orders.drink_id > Drinks.id
-Ref: Drinks.id > DrinkIngredients.drink_id
-Ref: Ingredients.name > DrinkIngredients.ingredient_name
-Ref: Ingredients.name - Pumps.ingredient_name
+Table Order {
+  id int [primary key]
+  drink_id int
+  order_date_time datetime
+}
+
+// Relationships
+Ref: Ingredient.drink_id > Drink.id
+Ref: Ingredient.ingredient_name > IngredientInBottle.name
+Ref: Order.drink_id > Drink.id
+Ref: Pump.ingredient_name > IngredientInBottle.name
