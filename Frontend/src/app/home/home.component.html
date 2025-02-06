@@ -78,23 +78,23 @@
   </div>
 </div>
 <!--Header-->
-<div class="H_Header">
-  <img src="assets/images/sideLeafsLeft.png" class="H_Leaves">
-  <div class="H_left">
-    <img src="assets/images/H_Iconpng.png" alt="Drink" height="120" width="400" class="H_ICON">
-    <div class="H_motto">
+<div id="landing">
+  <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
+  <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
+  <img src="assets/images/H_Iconpng.png" alt="Stars" height="120" width="400" id="stars">
+  <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
+  <div id="landing-text">
+    <div id="landing-title">
       Make your perfect<br>summer drinks<br> with Hula Swirl!
     </div>
-    <div class = "H_miniMotto">
+    <div id="landing-subtitle">
       Mix it easy, mix it smart, mix it fast,<br> ideal for every moment
     </div>
-    <button (click)="scrollToElement()" class ="button H_headerButton2">ORDER NOW</button>
-    <button (click)="C_openModal()" class ="button H_headerButton">ORDER CUSTOM DRINK</button>
+    <div id="button-container">
+      <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
+      <button (click)="C_openModal()" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
+    </div>
   </div>
-  <div class="H_imageSeperation">
-    <img src="assets/images/DrinkImage.png" alt="Drink"  class="H_dringImage">
-  </div>
-  <img src="assets/images/sideLeafs.png" class="H_Leaves" >
 </div>
 
 <div class="bodyBackground" #targetElement>
