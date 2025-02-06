@@ -1,11 +1,15 @@
+using System.Device.Gpio;
+using NewBackend.Services.PumpService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
-var app = builder.Build();
-
 //services
+builder.Services.AddSingleton<GpioController>();
+builder.Services.AddSingleton<PumpManager>();
 
+var app = builder.Build();
 
 
 if (app.Environment.IsDevelopment())
