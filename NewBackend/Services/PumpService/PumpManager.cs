@@ -1,5 +1,3 @@
-using System.Device.Gpio;
-
 namespace NewBackend.Services.PumpService;
 
 public class PumpManager(ILogger<PumpManager> logger, GpioController gpioController) {

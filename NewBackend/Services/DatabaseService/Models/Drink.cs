@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace NewBackend.Services.DatabaseService.Models;
 
 public class Drink {
