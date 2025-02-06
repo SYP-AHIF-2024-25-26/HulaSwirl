@@ -95,7 +95,7 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 [ERD text](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/assets/ERD.txt)
 
 ##### 6.2.2 API endpoints
-[Swagger](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/assets/openapi_doc.yaml)
+//TODO
 
 ## 7. Kostenschätzung
 
