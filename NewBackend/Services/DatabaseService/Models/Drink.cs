@@ -7,7 +7,7 @@ public class Drink {
 
     public bool Enabled { get; set; }
 
-    public byte[]? Img { get; set; }
+    [MaxLength(1000)] public string? Img { get; set; }
 
     [MaxLength(255)] public string? Toppings { get; set; }
 
