@@ -7,5 +7,5 @@ public class Pump {
 
     public bool Active { get; set; }
 
-    [ForeignKey(nameof(IngredientName))] public virtual Ingredient? Ingredient { get; set; }
+    [ForeignKey(nameof(IngredientName))] public virtual IngredientInBottle? Ingredient { get; set; }
 }

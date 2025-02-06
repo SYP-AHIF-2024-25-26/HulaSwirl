@@ -11,5 +11,5 @@ public class Drink {
 
     [MaxLength(255)] public string? Toppings { get; set; }
 
-    public virtual ICollection<DrinkIngredient> DrinkIngredients { get; set; } = new List<DrinkIngredient>();
+    public virtual ICollection<Ingredient> DrinkIngredients { get; set; } = new List<Ingredient>();
 }

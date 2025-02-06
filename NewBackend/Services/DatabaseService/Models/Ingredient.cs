@@ -1,13 +1,15 @@
 namespace NewBackend.Services.DatabaseService.Models;
 
 public class Ingredient {
-    [Key] [MaxLength(100)] public string Name { get; set; }
+    [ForeignKey(nameof(Drink))]
+    public int DrinkId { get; set; }
 
-    public int RemainingMl { get; set; }
+    [ForeignKey(nameof(IngredientInBottle))]
+    [MaxLength(100)]
+    public string IngredientName { get; set; }
 
-    public int MaxMl { get; set; }
+    public int Ml { get; set; }
 
-    public virtual Pump? Pump { get; set; }
-
-    public virtual ICollection<DrinkIngredient>? DrinkIngredients { get; set; } = new List<DrinkIngredient>();
+    public virtual Drink? Drink { get; set; }
+    public virtual IngredientInBottle? IngredientInBottle { get; set; }
 }
