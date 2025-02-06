@@ -39,8 +39,13 @@ export class IngredientsService {
   }
 
   async getAllIngredients(): Promise<Ingredient[]> {
-    return await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
-    //reutrn liquidIngredients;
+    let res = liquidIngredients;
+    try {
+      res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
+    } catch (e) {
+      console.error("Using default ingredients", e);
+    }
+    return res;
   }
 
   async postOrder(ingredients: Order[]): Promise<void> {

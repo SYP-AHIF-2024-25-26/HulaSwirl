@@ -2,6 +2,124 @@
   --primary-color: #2c3e50;
 }
 
+#landing {
+  width: 100%;
+  height:75vh;
+  background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
+  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
+  display:flex;
+  align-items: center;
+}
+
+#drink-showcase {
+  position: absolute;
+  max-width: 570px;
+  right: 20%;
+  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.48));
+  z-index: -1;
+}
+
+.leaves {
+  position: absolute;
+  height: 100%;
+  z-index: 0;
+  right: 0;
+}
+
+#stars {
+  position: absolute;
+  align-self: start;
+  left: 180px;
+  filter: drop-shadow(5px 5px 5px rgba(10, 17, 47, 0.27));
+}
+
+.leaves:first-child {
+  left: 0;
+}
+
+#drink-showcase {
+  width: 90%;
+}
+
+#landing-text {
+  margin: 55px 0 0 200px;
+}
+
+#landing-text > * {
+  color:#fefde6;
+  filter: drop-shadow(0px 0px 5px rgba(10, 17, 47, 0.75));
+  line-height: 1.2;
+}
+
+#landing-title {
+  font-size: 50px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+#landing-subtitle {
+  font-size: 25px;
+  margin-top: 24px;
+  font-weight: lighter;
+}
+
+#button-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+  justify-content: center;
+}
+
+.button{
+  border-radius: 100px;
+  background: #fdfded;
+  color: #ffffff;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.01));
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+  border: 3px solid #fc5d5b;
+}
+
+#order-button {
+  color:#fc5d5b;
+  border: 3px solid #ffffff;
+}
+
+#order-custom-button {
+  background: #fc5d5b;
+
+}
+#order-custom-button:hover{
+  filter: brightness(120%) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
+  transform: scale(1.05);
+}
+
+@media screen and (max-width: 830px) {
+  .leaves:first-child {
+    left: calc(-200px + 20%);
+  }
+
+  .leaves {
+    right: calc(-200px + 20%);
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  #drink-showcase {
+    display: none;
+  }
+
+  #landing {
+    justify-content: center;
+  }
+
+  #landing-text {
+    margin: 0;
+    text-align: center;
+  }
+}
+
 .bodyBackground {
   position: relative; /* Erforderlich für das absolute Positionieren der Wrapper */
   min-height: 60vw; /* Containerhöhe */
@@ -20,49 +138,7 @@
   left: 0;
   z-index: 0; /* Hintergrund bleibt unter dem Text */
 }
-.button{
-  border-radius: 100px;
-  background: #fdfded;
-  color: #ffffff;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.29));
-  text-align: center;
-  padding: 0.8vw;
-  cursor:pointer;
-  margin-top:4vh;
-  margin-left:2vw;
-  border:3px solid #fc5d5b;
-  height:3vw;
-}
-button:disabled {
-  pointer-events: none;
-}
-.H_headerButton{
-  border-radius: 100px;
-  background: #fdfded;
-  color:#fc5d5b;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
-  text-align: center;
-  padding: 0.8vw;
-  cursor:pointer;
-  border:3px solid #ffffff;
-  height:3vw;
-  margin: 4vh 0 0 2vw;
-}
-.H_headerButton:hover{
-  border: 3px solid #fc5d5b;
 
-}
-.H_headerButton2{
-  border-radius: 100px;
-  background: #fc5d5b;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
-  border:3px solid #fc5d5b;
-
-}
-.H_headerButton2:hover{
-  filter: brightness(120%) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
-  transform: scale(1.05);
-}
 .C_button{
   width:7vw;
   text-align: center;
@@ -220,44 +296,6 @@ button:disabled {
   padding-left:1vw;
   padding:0.05vw;
   font-size: 1.5vw;
-}
-
-.H_Header{
-  width: 100%;
-  height:75vh;
-  background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
-  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
-  display:flex;
-  justify-content: space-between;
-}
-.H_dringImage{
-  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.48));
-  height:95%
-}
-.H_ICON{
-  filter: drop-shadow(5px 5px 5px rgba(10, 17, 47, 0.27));
-
-
-}
-.H_motto{
-  color:#fefde6;
-  font-size:3.5vw;
-  filter: drop-shadow(0px 0px 5px rgba(10, 17, 47, 0.79));
-  margin-left: 3vw;
-  font-weight: bold;
-  line-height: 1.1;
-}
-.H_miniMotto{
-  color:#fefde6;
-  font-size:1.7vw;
-  line-height: 1.3;
-  filter: drop-shadow(0px 0px 5px rgba(10, 17, 47, 0.69));
-  margin-left: 2.5vw;
-  margin-top:1.5vw;
-  font-weight: lighter;
-}
-H_Leaves{
-  height:100%
 }
 
 .K_KarusellContainer{
