@@ -4,6 +4,7 @@ using NewBackend.Apis.Drinks;
 using NewBackend.Apis.Ingredients;
 using NewBackend.Services.DatabaseService;
 using NewBackend.Services.PumpService;
+using NewBackend.Services.QueueService;
 
 //env
 Env.Load();
@@ -22,6 +23,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSingleton<GpioController>();
 builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddScoped<DatabaseService>(); //has to be scoped
+builder.Services.AddSingleton<QueueManager>();
 
 var app = builder.Build();
 

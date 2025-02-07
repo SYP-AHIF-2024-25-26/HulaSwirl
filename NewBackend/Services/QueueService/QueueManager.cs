@@ -1,5 +1,5 @@
 namespace NewBackend.Services.QueueService;
 
-public class QueueService {
-    
+public class QueueManager {
+    //TODO implement queue for all Order for drinks
 }

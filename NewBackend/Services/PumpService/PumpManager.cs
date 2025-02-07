@@ -7,9 +7,10 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
     public async Task StartPump(int slot, int ml) {
         InitializePumps();
 
+
+
         if (_pumps is not null && slot > _pumps.Count)
             return;
-
 
         logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
 
