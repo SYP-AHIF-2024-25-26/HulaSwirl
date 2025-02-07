@@ -1,6 +1,6 @@
-using NewBackend.Services.DatabaseService;
+using Backend.Services.DatabaseService;
 
-namespace NewBackend.Apis.Ingredients;
+namespace Backend.Apis.Ingredients;
 
 public static class GetAllIngredients {
     public static async Task<List<IngredientDto>> HandleGetAllIngredients(DatabaseService dbService) {

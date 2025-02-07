@@ -1,6 +1,6 @@
 using System.Device.Pwm.Drivers;
 
-namespace NewBackend.Services.PumpService;
+namespace Backend.Services.PumpService;
 
 public class VPump {
     private const int Frequency = 20_000;

@@ -1,4 +1,4 @@
-namespace NewBackend.Services.DatabaseService.Models;
+namespace Backend.Services.DatabaseService.Models;
 
 public class Drink {
     [Key] public int Id { get; set; }

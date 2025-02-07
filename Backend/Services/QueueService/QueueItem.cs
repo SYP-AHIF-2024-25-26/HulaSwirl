@@ -1,4 +1,4 @@
-namespace NewBackend.Services.QueueService;
+namespace Backend.Services.QueueService;
 
 public class QueueItem {
     public required int PumpSlot { get; set; }

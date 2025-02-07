@@ -1,4 +1,4 @@
-namespace NewBackend.Services.DatabaseService.Models;
+namespace Backend.Services.DatabaseService.Models;
 
 public class Ingredient {
     [ForeignKey(nameof(Drink))]

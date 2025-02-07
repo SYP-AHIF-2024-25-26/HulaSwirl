@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace NewBackend.Apis.Drinks;
+namespace Backend.Apis.Drinks;
 
 public static class DrinkApi {
     public static IEndpointRouteBuilder MapDrinkApis(this IEndpointRouteBuilder app) {

@@ -1,4 +1,4 @@
-namespace NewBackend.Services.DatabaseService.Models;
+namespace Backend.Services.DatabaseService.Models;
 
 public class IngredientInBottle {
     [Key] [MaxLength(100)] public string Name { get; set; }

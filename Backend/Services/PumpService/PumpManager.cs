@@ -1,4 +1,4 @@
-namespace NewBackend.Services.PumpService;
+namespace Backend.Services.PumpService;
 
 public class PumpManager(ILogger<PumpManager> logger, GpioController gpioController) {
     private List<VPump>? _pumps;

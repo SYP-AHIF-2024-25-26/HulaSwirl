@@ -1,6 +1,7 @@
-using NewBackend.Services.DatabaseService;
+using Backend.Services.DatabaseService;
+using Backend.Services.DatabaseService.Models;
 
-namespace NewBackend.Apis.Drinks;
+namespace Backend.Apis.Drinks;
 
 public static class GetAllDrinks {
     public static async Task<List<Drink>> HandleGetAllDrinks(DatabaseService dbService) {

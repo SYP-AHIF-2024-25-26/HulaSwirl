@@ -1,10 +1,10 @@
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
-using NewBackend.Apis.Drinks;
-using NewBackend.Apis.Ingredients;
-using NewBackend.Services.DatabaseService;
-using NewBackend.Services.PumpService;
-using NewBackend.Services.QueueService;
+using Backend.Apis.Drinks;
+using Backend.Apis.Ingredients;
+using Backend.Services.DatabaseService;
+using Backend.Services.PumpService;
+using Backend.Services.QueueService;
 
 //env
 Env.Load();

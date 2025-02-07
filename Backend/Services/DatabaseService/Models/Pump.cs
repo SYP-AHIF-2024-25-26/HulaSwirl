@@ -1,4 +1,4 @@
-namespace NewBackend.Services.DatabaseService.Models;
+namespace Backend.Services.DatabaseService.Models;
 
 public class Pump {
     [Key] public int Slot { get; set; }

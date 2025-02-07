@@ -1,6 +1,7 @@
+using Backend.Services.DatabaseService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace NewBackend.Services.DatabaseService;
+namespace Backend.Services.DatabaseService;
 
 public class AppDbContext : DbContext {
     public DbSet<Order> Order { get; set; }

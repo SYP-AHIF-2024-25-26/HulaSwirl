@@ -1,4 +1,4 @@
-namespace NewBackend.Apis.Drinks;
+namespace Backend.Apis.Drinks;
 
 public static class OrderCustomDrink {
     public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos,

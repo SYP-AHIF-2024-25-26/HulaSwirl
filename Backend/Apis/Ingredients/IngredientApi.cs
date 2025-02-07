@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace NewBackend.Apis.Ingredients;
+namespace Backend.Apis.Ingredients;
 
 public static class IngredientApi {
     public static IEndpointRouteBuilder MapIngredientApis(this IEndpointRouteBuilder app) {
