@@ -4,7 +4,7 @@ services:
   mydb:
     image: "mysql:${MYSQL_IMAGE_VERSION}"
     container_name: "${MYSQL_CONTAINER_NAME}"
-    restart: always
+    restart: no
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_DATABASE}"
