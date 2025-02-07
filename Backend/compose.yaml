@@ -28,5 +28,12 @@ services:
     environment:
       DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
 
+networks:
+  my_custom_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.4.0/24
+
 volumes:
   db-data:
