@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Logic\" />
     <Folder Include="Services\DatabaseService\Models\" />
     <Folder Include="Services\PumpService\" />
   </ItemGroup>

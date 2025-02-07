@@ -1,6 +1,6 @@
 namespace Backend.Services.QueueService;
 
-public class QueueItem {
+public record QueueItem {
     public required int PumpSlot { get; set; }
     public required int RequiredMl { get; set; }
 }

@@ -9,8 +9,8 @@ public static class GetAllIngredients {
                 { IngredientName = ing.IngredientName })
             .ToList();
     }
+    public class IngredientDto {
+        public required string IngredientName { get; set; }
+    }
 }
 
-public class IngredientDto {
-    public required string IngredientName { get; set; }
-}
