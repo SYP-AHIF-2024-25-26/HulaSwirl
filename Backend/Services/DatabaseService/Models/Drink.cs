@@ -1,6 +1,7 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class Drink {
+public class Drink
+{
     [Key] public int Id { get; set; }
 
     [MaxLength(100)] public string Name { get; set; }

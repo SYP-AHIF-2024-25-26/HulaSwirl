@@ -1,6 +1,7 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class IngredientInBottle {
+public class IngredientInBottle
+{
     [Key] [MaxLength(100)] public string Name { get; set; }
 
     public int RemainingMl { get; set; }

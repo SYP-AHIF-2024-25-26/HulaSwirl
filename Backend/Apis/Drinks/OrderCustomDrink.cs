@@ -3,9 +3,11 @@ using Backend.Services.QueueService;
 
 namespace Backend.Apis.Drinks;
 
-public static class OrderCustomDrink {
+public static class OrderCustomDrink
+{
     public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos,
-        ILogger logger, DatabaseService dbService, QueueManager queueManager) {
+        ILogger logger, DatabaseService dbService, QueueManager queueManager)
+    {
         logger.LogInformation("Handling order custom drink");
 
         //map ordered ingredient to available ingredients
@@ -25,9 +27,7 @@ public static class OrderCustomDrink {
 
         //check if ordered ingredients are available
 
-        if (maps.Count == 0) {
-            return Results.Problem("Ingredients not available");
-        }
+        if (maps.Count == 0) return Results.BadRequest("Ingredients not available");
 
         //add to queue
 
@@ -39,9 +39,10 @@ public static class OrderCustomDrink {
         return Results.Ok("Order Queued");
     }
 
-    record Map(IngredientInBottle IngredientInBottle, IngredientDto? IngredientDto, Pump? Pump);
+    private record Map(IngredientInBottle IngredientInBottle, IngredientDto? IngredientDto, Pump? Pump);
 
-    public class IngredientDto() {
+    public class IngredientDto
+    {
         public required string IngredientName { get; set; }
         public required int Ml { get; set; }
     }

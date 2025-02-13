@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Apis.Ingredients;
 
-public static class IngredientApi {
-    public static IEndpointRouteBuilder MapIngredientApis(this IEndpointRouteBuilder app) {
+public static class IngredientApi
+{
+    public static IEndpointRouteBuilder MapIngredientApis(this IEndpointRouteBuilder app)
+    {
         const string baseUrl = "api/v1/ingredients";
 
         app.MapGet($"{baseUrl}", GetAllIngredients.HandleGetAllIngredients)
@@ -15,4 +17,3 @@ public static class IngredientApi {
         return app;
     }
 }
-

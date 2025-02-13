@@ -1,16 +1,15 @@
-using DotNetEnv;
-using Microsoft.EntityFrameworkCore;
 using Backend.Apis.Drinks;
 using Backend.Apis.Ingredients;
-using Backend.Logic;
 using Backend.Services.DatabaseService;
 using Backend.Services.PumpService;
 using Backend.Services.QueueService;
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
 
 //env
 Env.Load();
 var connectionString = Env.GetString("DB_CONNECTION_STRING") ??
-                       throw new ArgumentNullException($"Env.GetString(\"DB_CONNECTION_STRING\")");
+                       throw new ArgumentNullException("Env.GetString(\"DB_CONNECTION_STRING\")");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +27,7 @@ builder.Services.AddSingleton<QueueManager>();
 
 var app = builder.Build();
 
-
-if (app.Environment.IsDevelopment()) {
-    app.MapOpenApi();
-}
+if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
 

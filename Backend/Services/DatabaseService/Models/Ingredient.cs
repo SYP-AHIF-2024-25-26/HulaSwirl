@@ -1,8 +1,8 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class Ingredient {
-    [ForeignKey(nameof(Drink))]
-    public int DrinkId { get; set; }
+public class Ingredient
+{
+    [ForeignKey(nameof(Drink))] public int DrinkId { get; set; }
 
     [ForeignKey(nameof(IngredientInBottle))]
     [MaxLength(100)]
