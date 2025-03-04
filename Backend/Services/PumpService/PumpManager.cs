@@ -19,6 +19,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         var pump = _pumps![slot];
         var cancellationTokenSource = new CancellationTokenSource();
 
+        //forward pumping
         try
         {
             pump.Start();
@@ -33,6 +34,26 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         finally
         {
             pump.Stop();
+            logger.LogInformation("Pump {slot} stopped.", slot);
+        }
+
+        //reverse pumping
+        try
+        {
+            pump.ChangeDirection();
+            pump.Start();
+            logger.LogInformation("Pump {slot} started in reverse.", slot);
+
+            await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            logger.LogInformation("Pump {slot} operation was canceled.", slot);
+        }
+        finally
+        {
+            pump.Stop();
+            pump.ChangeDirection();
             logger.LogInformation("Pump {slot} stopped.", slot);
         }
     }

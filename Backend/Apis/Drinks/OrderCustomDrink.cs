@@ -1,18 +1,20 @@
 using Backend.Services.DatabaseService;
 using Backend.Services.QueueService;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Apis.Drinks;
 
 public static class OrderCustomDrink
 {
     public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos,
-        ILogger logger, DatabaseService dbService, QueueManager queueManager)
+        ILogger logger, AppDbContext context, QueueManager queueManager)
     {
         logger.LogInformation("Handling order custom drink");
 
         //map ordered ingredient to available ingredients
 
-        var availableIngredients = await dbService.GetAllAvailableIngredients();
+        var availableIngredients = (await context.IngredientInBottle.Include(ing => ing.Pump).ToListAsync())
+            .Where(ing => ing.Pump is not null);
 
         var maps = availableIngredients
             .Select(availableIngredient =>

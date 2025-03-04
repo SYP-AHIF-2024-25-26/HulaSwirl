@@ -22,7 +22,6 @@ builder.Services.AddOpenApi();
 //custom services
 builder.Services.AddSingleton<GpioController>();
 builder.Services.AddSingleton<PumpManager>();
-builder.Services.AddScoped<DatabaseService>(); //has to be scoped
 builder.Services.AddSingleton<QueueManager>();
 
 var app = builder.Build();

@@ -1,11 +1,12 @@
 using Backend.Services.DatabaseService;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Apis.Drinks;
 
 public static class GetAllDrinks
 {
-    public static async Task<List<Drink>> HandleGetAllDrinks(DatabaseService dbService)
+    public static async Task<List<Drink>> HandleGetAllDrinks(AppDbContext context)
     {
-        return await dbService.GetAllDrinks();
+        return await context.Drink.ToListAsync();
     }
 }
