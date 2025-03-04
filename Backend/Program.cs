@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 //services
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
+builder.Services.AddLogging();
 builder.Services.AddOpenApi();
 
 //custom services

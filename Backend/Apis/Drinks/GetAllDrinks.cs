@@ -7,6 +7,6 @@ public static class GetAllDrinks
 {
     public static async Task<List<Drink>> HandleGetAllDrinks(AppDbContext context)
     {
-        return await context.Drink.ToListAsync();
+        return await context.Drink.Include(d => d.DrinkIngredients).ToListAsync();
     }
 }

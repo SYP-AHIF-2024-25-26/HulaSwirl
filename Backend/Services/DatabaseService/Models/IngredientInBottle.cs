@@ -9,6 +9,4 @@ public class IngredientInBottle
     public int MaxMl { get; set; }
 
     public virtual Pump? Pump { get; set; }
-
-    public virtual ICollection<Ingredient>? Ingredients { get; set; } = new List<Ingredient>();
 }

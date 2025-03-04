@@ -10,6 +10,5 @@ public class Ingredient
 
     public int Ml { get; set; }
 
-    public virtual Drink? Drink { get; set; }
     public virtual IngredientInBottle? IngredientInBottle { get; set; }
 }

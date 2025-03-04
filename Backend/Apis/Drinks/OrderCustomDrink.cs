@@ -6,11 +6,9 @@ namespace Backend.Apis.Drinks;
 
 public static class OrderCustomDrink
 {
-    public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos,
-        ILogger logger, AppDbContext context, QueueManager queueManager)
+    public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos, AppDbContext context,
+        QueueManager queueManager)
     {
-        logger.LogInformation("Handling order custom drink");
-
         //map ordered ingredient to available ingredients
 
         var availableIngredients = (await context.IngredientInBottle.Include(ing => ing.Pump).ToListAsync())
