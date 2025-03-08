@@ -1,46 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!--Order Custom Drink Panel -->
-<div *ngIf="C_isModalOpen" class="C_modal" (click)="C_onOverlayClick($event)">
-  <div class="C_modal-content">
-    <span class="C_close" (click)="C_closeModal()">&times;</span>
-    <p>Configure Your own Drink</p>
-    <div class="C_ingredientContainer">
-      @for (ingredient of C_newIngredients(); track $index){
-        <div class="C_singleIngredient">
-          <div class="C_ingredientInfo">
-            <textarea class="C_liquidInput" [(ngModel)]="C_newIngredients()[$index].remainingMl"></textarea>
-            <p>ml    {{ingredient.name}}</p>
-          </div>
-          <i style="font-size:20px" class="fa" (click)="C_removeIngredientFromCustomOrderList($index)">&#xf014;</i>
-        </div>
-      }
-      <div class="C_singleIngredient C_newIngredient">
-        <div class="C_newIngredientLiquid">
-          <div class="C_newInputCircle" (click)="C_addIngredientToCustomOderList()">
-            <p class="C_addNewIngredient">+</p>
-          </div>
-          <textarea class="C_liquidInput C_newLiquidInput" [(ngModel)]="C_newLiquidAmount"></textarea>
-          <p>ml</p>
-          <form>
-          <select id="C_newIngredient" class="C_newIngredient_Selection" (change)="C_updateNewIngredientName($event)">
-            <option class="C_newIngredientOption" value="Choose Ingredient">Choose Ingredient</option>
-            @for (ing of allAvailableIngredients(); track $index){
-              <option class="C_newIngredientOption" value="{{ing.name}}">{{ing.name}}</option>
-            } @empty {
-              <option class="C_newIngredientOption" value="No Ingredients available">No Ingredients available</option>
-            }
-          </select>
-        </form>
-        </div>
-      </div>
-    </div>
-    <div class="C_orderbuttons">
-      <div class="C_button C_buttonCancel" (click)="C_cancel()">Cancel</div>
-      <div class="C_button C_buttonOrder" (click)="C_Order()">Order</div>
-    </div>
-  </div>
-</div>
+<app-order-custom-drink-modal id="order-custom-drink-modal" (close)="closeModal($event)" [hidden]="displayedModal() != 'ODC'"></app-order-custom-drink-modal>
 
 <!-- G_Modal - Order Drink Panel -->
 <div *ngIf="G_isModalOpen()" class="G_modal" (click)="G_onOverlayClick($event)">
@@ -77,7 +38,7 @@
 
   </div>
 </div>
-<!--Header-->
+<!--Header resp-->
 <div id="landing">
   <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
   <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
@@ -92,7 +53,7 @@
     </div>
     <div id="button-container">
       <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="C_openModal()" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
+      <button (click)="displayedModal.set('ODC')" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
     </div>
   </div>
 </div>

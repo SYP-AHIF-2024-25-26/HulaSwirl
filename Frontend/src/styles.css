@@ -7,7 +7,11 @@
   --element-primary-outline: #cacaca;
   --pump-active-slot-bg: #c3ffac;
   --pump-inactive-slot-bg: #ff9898;
+  --cancel-btn-bg: #df6b6b;
+  --submit-btn-bg: linear-gradient(90deg, rgb(255, 194, 108) 0%, rgb(255, 125, 114) 100%);
   --remaining-liquid-bar-bg: linear-gradient(90deg, #f65a5a 0%, #ffd15e 100%);
+  --primary-font-color: #575757;
+  --form-input-bg: #f4f3f2;
 }
 
 body{
@@ -59,4 +63,73 @@ html{
   src: url('assets/fonts/ADLaMDisplay-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+.button {
+  background-color: #fdfded;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+  filter:saturate(200%);
+}
+
+.button:hover {
+  scale: calc(1.05);
+}
+
+.cancel-btn {
+  background-color: var(--cancel-btn-bg);
+  color: white;
+}
+
+.submit-btn {
+  background: var(--submit-btn-bg);
+  color: white;
+  transition: 0.3s;
+}
+
+.form-input {
+  background-color: var(--form-input-bg);
+  border: 1px solid var(--element-primary-outline);
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 100%;
+  outline: none;
+}
+
+.form-input::-webkit-outer-spin-button,
+.form-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.form-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(#f65a5a 0%, #ffd15e 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d34b4b;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c43a3a;
 }

@@ -1,9 +1,10 @@
-import {Component, ElementRef, inject, signal, ViewChild} from '@angular/core';
+import {Component, effect, ElementRef, inject, signal, ViewChild, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Ingredient, IngredientsService} from '../ingredients.service';
 import {firstValueFrom, single} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../drink.service';
+import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-custom-drink-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,8 @@ import {Drink, DrinkService} from '../drink.service';
     NgIf,
     FormsModule,
     NgForOf,
-    NgOptimizedImage
+    NgOptimizedImage,
+    OrderCustomDrinkModalComponent
   ],
   templateUrl: './home.component.html',
   standalone: true,
@@ -31,6 +33,13 @@ export class HomeComponent {
   K_currentSlide = signal(1);
   searchQuery: string = '';
   selectedIngredient: string = '';
+  displayedModal: WritableSignal<null | "ODC" | "OD"> = signal(null);
+
+  constructor() {
+    effect(() => {
+      document.body.style.overflow = this.displayedModal() !== null ? 'hidden' : '';
+    });
+  }
 
   async ngOnInit() {
     this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
@@ -38,6 +47,7 @@ export class HomeComponent {
     this.D_allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());
   }
+
   @ViewChild('targetElement', { static: false }) targetElement!: ElementRef;
   scrollToElement() {
     this.targetElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start',alignToTop:true });
@@ -174,5 +184,9 @@ export class HomeComponent {
     }*/
   Orderdrink() {
     this.drinkService.orderDrink(this.G_selectedDrink());
+  }
+
+  closeModal(success: boolean) {
+    this.displayedModal.set(null);
   }
 }

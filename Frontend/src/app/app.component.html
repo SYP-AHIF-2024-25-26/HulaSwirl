@@ -1,12 +1,10 @@
-<nav class="navbar">
-  <div class="TitleContainer" routerLink="/Home">
-    <img src="assets/images/InconV1png.png" class="H_ICON">
-  </div>
-  <div class="H_LinkContainer">
-    <a class="link linkHome" (click)="toggleMenu()" routerLink="/Home">Home</a>
-    <a class="link linkAdmin" (click)="toggleMenu()" routerLink="Admin/Drinks">Drinks</a>
-    <a class="link linkAdmin" (click)="toggleMenu()" routerLink="Admin/Ingredients">Ingredients</a>
-    <a class="link linkAdmin" (click)="toggleMenu()" routerLink="Admin/Statistics">Statistics</a>
+<nav id="navbar">
+  <img src="assets/images/InconV1png.png" id="logo" alt="Logo">
+  <div id="nav-page-container">
+    <a class="link" (click)="toggleMenu()" routerLink="home">Home</a>
+    <a class="link" (click)="toggleMenu()" routerLink="admin/drinks">Drinks</a>
+    <a class="link" (click)="toggleMenu()" routerLink="admin/ingredients">Ingredients</a>
+    <a class="link" (click)="toggleMenu()" routerLink="admin/statistics">Statistics</a>
   </div>
 </nav>
 <router-outlet></router-outlet>

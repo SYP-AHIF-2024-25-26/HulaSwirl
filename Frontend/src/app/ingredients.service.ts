@@ -13,7 +13,7 @@ export const liquidIngredients: Ingredient[] = [
   { name: "Vinegar", slot: 6, remainingMl: 300, maxMl: 300 },       // in milliliters (ml)
   { name: "Coconut Milk", slot: 7, remainingMl: 400, maxMl: 400 },  // in milliliters (ml)
   { name: "Honey", slot: 8, remainingMl: 350, maxMl: 350 },         // in milliliters (ml)
-  { name: "Vanilla Extract", slot: 9, remainingMl: 100, maxMl: 100 }, // in milliliters (ml)
+  { name: "Vanilla Extract", slot: 9, remainingMl: 50, maxMl: 100 }, // in milliliters (ml)
   { name: "Whipping Cream", slot: 10, remainingMl: 600, maxMl: 600 }  // in milliliters (ml)
 ];
 
@@ -25,7 +25,13 @@ export interface Ingredient {
   maxMl: number;
 }
 
-export interface Order {
+export interface OrderPreparation {
+  Name: string;
+  Amount: number;
+  Status: string;
+}
+
+export interface OrderDto {
   Name: string;
   Amount: number;
 }
@@ -41,14 +47,14 @@ export class IngredientsService {
   async getAllIngredients(): Promise<Ingredient[]> {
     let res = liquidIngredients;
     try {
-      res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
+      //res = await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients'));
     } catch (e) {
       console.error("Using default ingredients", e);
     }
     return res;
   }
 
-  async postOrder(ingredients: Order[]): Promise<void> {
+  async postOrder(ingredients: OrderDto[]): Promise<void> {
     await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
   }
 

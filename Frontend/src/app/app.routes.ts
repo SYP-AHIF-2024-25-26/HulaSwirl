@@ -5,9 +5,9 @@ import {IngredientsComponent} from './ingredients/ingredients.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 
 export const routes: Routes = [
-  {path: '', pathMatch:'full',redirectTo: 'Home'},
-  {path: 'Home', component: HomeComponent},
-  {path: 'Admin/Drinks',component: DrinksComponent},
-  {path: 'Admin/Ingredients',component: IngredientsComponent},
-  {path: 'Admin/Statistics',component: StatisticsComponent},
+  {path: '', pathMatch:'full',redirectTo: 'home'},
+  {path: 'home', component: HomeComponent},
+  {path: 'admin/drinks',component: DrinksComponent},
+  {path: 'admin/ingredients',component: IngredientsComponent},
+  {path: 'admin/statistics',component: StatisticsComponent},
 ];
