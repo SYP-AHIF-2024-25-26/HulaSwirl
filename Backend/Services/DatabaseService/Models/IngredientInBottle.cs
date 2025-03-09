@@ -1,12 +1,22 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class IngredientInBottle
+public class IngredientInBottle(string name, int remainingMl, int maxMl)
 {
-    [Key] [MaxLength(100)] public string Name { get; set; }
+    IngredientInBottle() : this(string.Empty, 0, 0)
+    {
+    }
 
-    public int RemainingMl { get; set; }
+    [StringLength(255)]
+    [Key] public string Name { get; set; } = name;
 
-    public int MaxMl { get; set; }
+    public int RemainingMl { get; set; } = remainingMl;
 
-    public virtual Pump? Pump { get; set; }
+    public int MaxMl { get; set; } = maxMl;
+
+    // Foreign Key
+    [ForeignKey(nameof(Pump.Slot))]
+    public int? PumpSlot { get; set; }
+
+    // Navigational Property
+    public Pump? Pump { get; set; }
 }

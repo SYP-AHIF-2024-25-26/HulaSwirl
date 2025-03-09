@@ -1,14 +1,25 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class Ingredient
+public class Ingredient(int id, string ingredientName, int ml, int drinkID)
 {
-    [ForeignKey(nameof(Drink))] public int DrinkId { get; set; }
+    public Ingredient() : this(0, string.Empty, 0, 0)
+    {
+    }
 
-    [ForeignKey(nameof(IngredientInBottle))]
-    [MaxLength(100)]
-    public string IngredientName { get; set; }
+    [Key]
+    public int ID { get; set; } = id;
 
-    public int Ml { get; set; }
+    public int Ml { get; set; } = ml;
 
-    public virtual IngredientInBottle? IngredientInBottle { get; set; }
+
+    // Foreign Keys
+    [ForeignKey(nameof(IngredientInBottle.Name))]
+    [StringLength(255)]
+    public string IngredientName { get; set; } = ingredientName;
+    public int DrinkID { get; set; } = drinkID;
+
+    // Navigational Properties
+    public IngredientInBottle? IngredientInBottle { get; set; }
+    public Drink? Drink { get; set; }
+
 }

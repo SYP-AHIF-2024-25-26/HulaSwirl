@@ -1,10 +1,18 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class Order
+public class Order(int id, DateOnly date)
 {
-    [Key] public int Id { get; set; }
+    Order() : this(0, new DateOnly())
+    {
+    }
 
-    [ForeignKey(nameof(Drink))] public int DrinkId { get; set; }
+    [Key] public int ID { get; set; } = id;
+    public DateOnly OrderDate { get; set; } = date;
 
-    public DateTime OrderDateTime { get; set; }
+
+    // Foreign key
+    public int? DrinkID { get; set; }
+
+    // Navigation property
+    public Drink? Drink { get; set; }
 }
