@@ -6,16 +6,22 @@ using Backend.Services.QueueService;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 
-//env
-Env.Load();
-var connectionString = Env.GetString("DB_CONNECTION_STRING") ??
-                       throw new ArgumentNullException("Env.GetString(\"DB_CONNECTION_STRING\")");
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
 //services
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    options.UseSqlite(connectionString));
+
 builder.Services.AddLogging();
 builder.Services.AddOpenApi();
 
