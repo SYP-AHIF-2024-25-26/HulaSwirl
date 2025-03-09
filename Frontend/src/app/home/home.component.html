@@ -1,8 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!--Order Custom Drink Panel -->
-
-<!--Header resp-->
 <div id="landing">
   <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
   <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
@@ -16,28 +13,29 @@
     </div>
     <div id="button-container">
       <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="openModal('ODC')" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
+      <button (click)="openModal(ModalType.ODC)" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
     </div>
   </div>
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
 </div>
 
 <div class="bodyBackground" #targetElement>
-  <div class="backgroundWrapper"></div>
+  <div class="background-left bg-leaves leaves"></div>
+  <div class="background-right bg-leaves leaves"></div>
   <!--Karusell-->
   <p class="Lable K_Lable" >Our recommendations</p>
   <div class="K_KarusellContainer">
-  <div class="K_carousel">
-    <button class="K_arrow left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
-    <div class="K_carousel-track">
-      <div class="K_carousel-item" (click)="openModal('OD', drink)" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
-        <img [src]="drink.img" [alt]="drink.name">
-        <p>{{ drink.name }}</p>
+    <div class="K_carousel">
+      <button class="K_arrow left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
+      <div class="K_carousel-track">
+        <div class="K_carousel-item" (click)="openModal(ModalType.OD, drink)" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
+          <img [src]="drink.img" [alt]="drink.name">
+          <p>{{ drink.name }}</p>
+        </div>
       </div>
+      <button class="K_arrow right" (click)="K_nextSlide()" [disabled]="K_isNextDisabled()" [class.disabled]="K_isNextDisabled()">&#8250;</button>
     </div>
-    <button class="K_arrow right" (click)="K_nextSlide()" [disabled]="K_isNextDisabled()" [class.disabled]="K_isNextDisabled()">&#8250;</button>
   </div>
-</div>
 
 
   <!--<img src="assets/images/Order_Custom_Drink_button.webp" class="O_Button">-->
@@ -47,7 +45,7 @@
   <div class="D_Container">
     <div class="D_DrinksFilterSearchContainer">
       <div class="D_FilterSearchWrapper">
-        <button class="D_CustomOrderBtn" (click)="openModal('ODC')">Order Custom Drink</button>
+        <button class="D_CustomOrderBtn" (click)="openModal(ModalType.ODC)">Order Custom Drink</button>
         <!-- Suchfeld für Getränkenamen -->
         <input
           type="text"
@@ -67,7 +65,7 @@
 
     <!-- Getränkekarten -->
     <div class="D_DrinksContainer">
-      <div class="D_Drink" (click)="openModal('OD', drink)" *ngFor="let drink of filteredDrinks()">
+      <div class="D_Drink" (click)="openModal(ModalType.OD, drink)" *ngFor="let drink of filteredDrinks()">
         <div class="D_imgContainer">
           <img class="D_img" [src]="drink.img" [alt]="drink.name">
         </div>

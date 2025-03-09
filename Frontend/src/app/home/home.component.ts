@@ -6,7 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../drink.service';
 import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.component';
-import {ModalServiceService} from '../modal-service.service';
+import {ModalServiceService, ModalType} from '../modal-service.service';
 
 @Component({
   selector: 'app-home',
@@ -40,7 +40,7 @@ export class HomeComponent {
     this.filteredDrinks.set(await this.drinkService.getDrinks());
   }
 
-  openModal(modal: "ODC" | "OD", data: any = null) {
+  openModal(modal: ModalType, data: any = null) {
     this.modalService.openModal(modal, data);
   }
 
@@ -99,4 +99,6 @@ export class HomeComponent {
     });
     return Array.from(ingredientsSet);
   }
+
+  protected readonly ModalType = ModalType;
 }

@@ -94,12 +94,12 @@
     display: none;
   }
 
-  .leaves:first-child {
-    left: calc(-200px + 20%) !important;
+  .leaves:first-child:not(.bg-leaves) {
+    left: calc(-200px + 20%);
   }
 
-  .leaves {
-    right: calc(-200px + 20%) !important;
+  .leaves:not(.bg-leaves) {
+    right: calc(-200px + 20%);
   }
 
   #landing {
@@ -117,12 +117,20 @@
 }
 
 @media screen and (max-width: 1440px) {
-  .leaves:first-child {
+  .leaves:first-child:not(.bg-leaves) {
     left: calc(-200px + 12%);
   }
 
-  .leaves {
+  .leaves:not(.bg-leaves) {
     right: calc(-200px + 12%);
+  }
+
+  .bg-leaves:first-child {
+    left: calc(-100px + 6%);
+  }
+
+  .bg-leaves {
+    right: calc(-100px + 6%);
   }
 
   #landing {
@@ -134,31 +142,25 @@
   }
 }
 
-/**
-  * Home Component
-  * Landing area clean
-  * remove this later
-  * TODO: Sections below
- */
-
 .bodyBackground {
-  position: relative; /* Erforderlich für das absolute Positionieren der Wrapper */
-  min-height: 60vw; /* Containerhöhe */
-  overflow: hidden; /* Verhindert, dass der Hintergrund herausragt */
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.backgroundWrapper {
-  background-image: url("/assets/images/background.png");
-  height: 100%;
-  width: 100%;
-  filter: drop-shadow(10px 10px 5px rgba(68, 47, 36, 0.34));
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0; /* Hintergrund bleibt unter dem Text */
+
+.background-left {
+  background: url("/assets/images/background_left.png");
 }
+
+.background-right {
+  background: url("/assets/images/background_right.png");
+}
+
+
+
+
 
 
 .Lable{
