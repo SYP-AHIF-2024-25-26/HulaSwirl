@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, inject, Signal, signal, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
+import {Drink} from '../drink.service';
+import {ModalServiceService} from '../modal-service.service';
 
 @Component({
   selector: 'app-order-drink-modal',
@@ -11,5 +13,10 @@ import {NgForOf, NgIf} from "@angular/common";
   styleUrl: './order-drink-modal.component.css'
 })
 export class OrderDrinkModalComponent {
+  private readonly modalService = inject(ModalServiceService);
+  selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
 
+  closeModal() {
+    this.modalService.closeModal();
+  }
 }

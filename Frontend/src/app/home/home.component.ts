@@ -1,4 +1,4 @@
-import {Component, effect, ElementRef, inject, signal, ViewChild, WritableSignal} from '@angular/core';
+import {Component, effect, ElementRef, inject, Signal, signal, ViewChild, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Ingredient, IngredientsService} from '../ingredients.service';
 import {firstValueFrom, single} from 'rxjs';
@@ -6,6 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../drink.service';
 import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.component';
+import {ModalServiceService} from '../modal-service.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,6 @@ import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.c
     NgIf,
     FormsModule,
     NgForOf,
-    NgOptimizedImage,
     OrderCustomDrinkModalComponent,
     OrderDrinkModalComponent
   ],
@@ -24,6 +24,7 @@ import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.c
 export class HomeComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
+  private readonly modalService = inject(ModalServiceService);
   C_isModalOpen = false;
   C_newIngredients = signal<Ingredient[]>([]);
   C_newLiquidAmount = signal('0');
@@ -35,19 +36,17 @@ export class HomeComponent {
   K_currentSlide = signal(1);
   searchQuery: string = '';
   selectedIngredient: string = '';
-  displayedModal: WritableSignal<null | "ODC" | "OD"> = signal(null);
-
-  constructor() {
-    effect(() => {
-      document.body.style.overflow = this.displayedModal() !== null ? 'hidden' : '';
-    });
-  }
+  displayedModal: Signal<"ODC" | "OD" | null> = this.modalService.getDisplayedModal();
 
   async ngOnInit() {
     this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
     this.K_bestDrinks.set((await this.drinkService.getDrinks()).slice(0, 5));
     this.D_allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());
+  }
+
+  openModal(modal: "ODC" | "OD", data: any = null) {
+    this.modalService.openModal(modal, data);
   }
 
   @ViewChild('targetElement', { static: false }) targetElement!: ElementRef;
@@ -186,9 +185,5 @@ export class HomeComponent {
     }*/
   Orderdrink() {
     this.drinkService.orderDrink(this.G_selectedDrink());
-  }
-
-  closeModal(success: boolean) {
-    this.displayedModal.set(null);
   }
 }

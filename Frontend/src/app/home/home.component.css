@@ -15,10 +15,9 @@
 }
 
 #drink-showcase {
-  max-width: 570px;
-  width: 40%;
   filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.48));
   z-index: -1;
+  height: 85%;
 }
 
 .leaves {
@@ -43,7 +42,7 @@
 }
 
 #landing-text {
-  margin-top: 55px;
+  margin: 55px 0 0;
 }
 
 #landing-text > * {
@@ -107,8 +106,8 @@
     justify-content: center;
     padding: 50px 0;
   }
+
   #landing-text {
-    margin: 0;
     text-align: center;
   }
 
@@ -128,6 +127,10 @@
 
   #landing {
     gap: 0;
+  }
+
+  #landing-text {
+    margin: 0;
   }
 }
 

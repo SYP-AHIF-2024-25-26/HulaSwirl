@@ -23,3 +23,17 @@
   </div>
 </div>
 -->
+
+<div class="modal-frame">
+  <div class="modal-form">
+    <div class="modal-head">
+      <h1>{{selectedDrink()?.name}}</h1>
+      <span class="close-modal-button" (click)="closeModal()">✖</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-image">
+        <img [src]="selectedDrink()?.img" alt="Drink Image" class="drink-image">
+      </div>
+    </div>
+  </div>
+</div>

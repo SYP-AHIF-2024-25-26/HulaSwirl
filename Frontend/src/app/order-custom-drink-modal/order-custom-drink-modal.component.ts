@@ -9,6 +9,7 @@ import {
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {Ingredient, IngredientsService, OrderDto, OrderPreparation} from '../ingredients.service';
+import {ModalServiceService} from '../modal-service.service';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
@@ -22,6 +23,7 @@ import {Ingredient, IngredientsService, OrderDto, OrderPreparation} from '../ing
 })
 export class OrderCustomDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
+  private readonly modalService = inject(ModalServiceService);
   allIngredients: Ingredient[] = [];
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
@@ -29,16 +31,10 @@ export class OrderCustomDrinkModalComponent {
   selectedIngredient: WritableSignal<string> = signal("");
   selectedAmount: WritableSignal<number> = signal(10);
 
-  @Output() close = new EventEmitter<boolean>();
-
   async ngOnInit() {
     this.allIngredients = await this.ingredientsService.getAllIngredients();
     this.availableIngredients.set(this.allIngredients.filter(ing => ing.slot !== null));
     this.selectIngredient()
-  }
-
-  closeModal() {
-    this.close.emit(false);
   }
 
   selectIngredient() {
@@ -96,7 +92,11 @@ export class OrderCustomDrinkModalComponent {
         Name: ing.Name,
         Amount: ing.Amount
       })));
-      this.close.emit(true);
+      this.closeModal();
     }
+  }
+
+  closeModal() {
+    this.modalService.closeModal();
   }
 }

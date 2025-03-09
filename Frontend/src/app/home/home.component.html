@@ -1,11 +1,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!--Order Custom Drink Panel -->
-<app-order-custom-drink-modal id="order-custom-drink-modal" (close)="closeModal($event)" [hidden]="displayedModal() != 'ODC'"></app-order-custom-drink-modal>
+<app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != 'ODC'"></app-order-custom-drink-modal>
 
-<!--
-<app-order-drink-modal id="order-drink-modal" (close)="closeModal($event)" [hidden]="displayedModal() != 'OD'"></app-order-drink-modal>
--->
+<app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != 'OD'"></app-order-drink-modal>
 
 <!-- G_Modal - Order Drink Panel -->
 <div *ngIf="G_isModalOpen()" class="G_modal" (click)="G_onOverlayClick($event)">
@@ -56,7 +54,7 @@
     </div>
     <div id="button-container">
       <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="displayedModal.set('ODC')" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
+      <button (click)="openModal('ODC')" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
     </div>
   </div>
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
@@ -70,7 +68,7 @@
   <div class="K_carousel">
     <button class="K_arrow left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
     <div class="K_carousel-track">
-      <div class="K_carousel-item" (click)="G_openModal(drink)" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
+      <div class="K_carousel-item" (click)="openModal('OD', drink)" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
         <img [src]="drink.img" [alt]="drink.name">
         <p>{{ drink.name }}</p>
       </div>
