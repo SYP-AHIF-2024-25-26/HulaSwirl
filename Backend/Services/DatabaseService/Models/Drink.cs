@@ -1,16 +1,20 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class Drink
+public class Drink(int id, string name, bool enabled, string imgUrl, string toppings)
 {
-    [Key] public int Id { get; set; }
+    Drink() : this(0, string.Empty, false, string.Empty, string.Empty)
+    {
+    }
 
-    [MaxLength(100)] public string Name { get; set; }
+    [Key] public int ID { get; set; } = id;
 
-    public bool Enabled { get; set; }
+    [StringLength(255)] public string Name { get; set; } = name;
 
-    [MaxLength(1000)] public string? Img { get; set; }
+    public bool Enabled { get; set; } = enabled;
+    [StringLength(1024)] public string ImgUrl { get; set; } = imgUrl;
+    [StringLength(1024)] public string Toppings { get; set; } = toppings;
 
-    [MaxLength(255)] public string? Toppings { get; set; }
 
-    public virtual ICollection<Ingredient> DrinkIngredients { get; set; } = new List<Ingredient>();
+    // Navigation property
+    public List<Ingredient> DrinkIngredients { get; set; } = new List<Ingredient>();
 }

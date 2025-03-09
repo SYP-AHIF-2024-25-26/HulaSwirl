@@ -1,10 +1,10 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class Pump
+public class Pump(int slot, bool active)
 {
-    [Key] public int Slot { get; set; }
+    Pump() : this(0, false ) {}
 
-    [MaxLength(100)] public string? IngredientName { get; set; }
+    [Key] public int Slot { get; set; } = slot;
 
-    public bool Active { get; set; }
+    public bool Active { get; set; } = active;
 }
