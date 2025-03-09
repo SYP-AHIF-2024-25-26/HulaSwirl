@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Backend.Services.DatabaseService.Models;
 
 public class Ingredient(int id, string ingredientName, int ml, int drinkID)
@@ -19,7 +21,9 @@ public class Ingredient(int id, string ingredientName, int ml, int drinkID)
     public int DrinkID { get; set; } = drinkID;
 
     // Navigational Properties
+    [JsonIgnore]
     public IngredientInBottle? IngredientInBottle { get; set; }
+    [JsonIgnore]
     public Drink? Drink { get; set; }
 
 }

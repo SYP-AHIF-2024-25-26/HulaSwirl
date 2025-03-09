@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Backend.Services.DatabaseService.Models;
 
 public class Drink(int id, string name, bool enabled, string imgUrl, string toppings)

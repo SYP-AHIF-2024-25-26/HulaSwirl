@@ -1,11 +1,12 @@
-﻿version: '3.9'
-
-services:
+﻿services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8080:8080"
     volumes:
-      - ./app.db:/app/app.db
+      - /tmp/app.db:/data/app.db
+    environment:
+      ConnectionStrings__DefaultConnection: "Data Source=/data/app.db"
+      # this will override ConnectionStrings.DefaultConnection in appsettings.json

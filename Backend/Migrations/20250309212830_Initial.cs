@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,7 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order",
+                name: "DrinkOrder",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
@@ -51,9 +51,9 @@ namespace Backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.ID);
+                    table.PrimaryKey("PK_DrinkOrder", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Order_Drink_DrinkID",
+                        name: "FK_DrinkOrder_Drink_DrinkID",
                         column: x => x.DrinkID,
                         principalTable: "Drink",
                         principalColumn: "ID");
@@ -106,6 +106,11 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_DrinkOrder_DrinkID",
+                table: "DrinkOrder",
+                column: "DrinkID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_DrinkID",
                 table: "Ingredient",
                 column: "DrinkID");
@@ -119,27 +124,22 @@ namespace Backend.Migrations
                 name: "IX_IngredientInBottle_PumpSlot",
                 table: "IngredientInBottle",
                 column: "PumpSlot");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_DrinkID",
-                table: "Order",
-                column: "DrinkID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DrinkOrder");
+
+            migrationBuilder.DropTable(
                 name: "Ingredient");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Drink");
 
             migrationBuilder.DropTable(
                 name: "IngredientInBottle");
-
-            migrationBuilder.DropTable(
-                name: "Drink");
 
             migrationBuilder.DropTable(
                 name: "Pump");

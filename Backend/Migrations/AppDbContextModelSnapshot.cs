@@ -46,6 +46,25 @@ namespace Backend.Migrations
                     b.ToTable("Drink");
                 });
 
+            modelBuilder.Entity("Backend.Services.DatabaseService.Models.DrinkOrder", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("DrinkID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly>("OrderDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("DrinkID");
+
+                    b.ToTable("DrinkOrder");
+                });
+
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Ingredient", b =>
                 {
                     b.Property<int>("ID")
@@ -97,25 +116,6 @@ namespace Backend.Migrations
                     b.ToTable("IngredientInBottle");
                 });
 
-            modelBuilder.Entity("Backend.Services.DatabaseService.Models.Order", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("DrinkID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateOnly>("OrderDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("DrinkID");
-
-                    b.ToTable("Order");
-                });
-
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Pump", b =>
                 {
                     b.Property<int>("Slot")
@@ -128,6 +128,15 @@ namespace Backend.Migrations
                     b.HasKey("Slot");
 
                     b.ToTable("Pump");
+                });
+
+            modelBuilder.Entity("Backend.Services.DatabaseService.Models.DrinkOrder", b =>
+                {
+                    b.HasOne("Backend.Services.DatabaseService.Models.Drink", "Drink")
+                        .WithMany()
+                        .HasForeignKey("DrinkID");
+
+                    b.Navigation("Drink");
                 });
 
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Ingredient", b =>
@@ -154,15 +163,6 @@ namespace Backend.Migrations
                         .HasForeignKey("PumpSlot");
 
                     b.Navigation("Pump");
-                });
-
-            modelBuilder.Entity("Backend.Services.DatabaseService.Models.Order", b =>
-                {
-                    b.HasOne("Backend.Services.DatabaseService.Models.Drink", "Drink")
-                        .WithMany()
-                        .HasForeignKey("DrinkID");
-
-                    b.Navigation("Drink");
                 });
 
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Drink", b =>

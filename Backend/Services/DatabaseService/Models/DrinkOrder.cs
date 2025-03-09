@@ -1,8 +1,8 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class Order(int id, DateOnly date)
+public class DrinkOrder(int id, DateOnly date)
 {
-    Order() : this(0, new DateOnly())
+    DrinkOrder() : this(0, new DateOnly())
     {
     }
 

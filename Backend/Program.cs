@@ -1,9 +1,9 @@
+using System.Text.Json.Serialization;
 using Backend.Apis.Drinks;
 using Backend.Apis.Ingredients;
 using Backend.Services.DatabaseService;
 using Backend.Services.PumpService;
 using Backend.Services.QueueService;
-using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -17,11 +17,9 @@ builder.Configuration
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-
 //services
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(connectionString));
-
 builder.Services.AddLogging();
 builder.Services.AddOpenApi();
 
