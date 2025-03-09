@@ -182,7 +182,9 @@ html{
   transition: 0.3s transform ease;
   margin: -7px -7px 0 0;
 }
-
+.close-modal-button:after{
+  content: '✖';
+}
 .close-modal-button:hover {
   cursor: pointer;
   transform: rotate(10deg);

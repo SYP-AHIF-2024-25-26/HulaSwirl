@@ -9,7 +9,7 @@ import {
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {Ingredient, IngredientsService, OrderDto, OrderPreparation} from '../ingredients.service';
-import {ModalServiceService} from '../modal-service.service';
+import {ModalService} from '../modal.service';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
@@ -23,7 +23,7 @@ import {ModalServiceService} from '../modal-service.service';
 })
 export class OrderCustomDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
-  private readonly modalService = inject(ModalServiceService);
+  private readonly modalService = inject(ModalService);
   allIngredients: Ingredient[] = [];
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);

@@ -1,7 +1,7 @@
 import {Component, inject, Signal} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {NgClass, NgOptimizedImage} from '@angular/common';
-import {ModalServiceService, ModalType} from './modal-service.service';
+import {ModalService, ModalType} from './modal.service';
 import {OrderCustomDrinkModalComponent} from './order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from './order-drink-modal/order-drink-modal.component';
 import {AddDrinkModalComponent}  from './add-drink-modal/add-drink-modal.component';
@@ -15,7 +15,7 @@ import {EditDrinkModalComponent}  from './edit-drink-modal/edit-drink-modal.comp
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  private readonly modalService = inject(ModalServiceService);
+  private readonly modalService = inject(ModalService);
 
   title = 'Frontend';
   menuOpen = false;

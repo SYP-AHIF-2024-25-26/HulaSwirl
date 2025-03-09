@@ -6,7 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../drink.service';
 import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.component';
-import {ModalServiceService, ModalType} from '../modal-service.service';
+import {ModalService, ModalType} from '../modal.service';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +22,7 @@ import {ModalServiceService, ModalType} from '../modal-service.service';
 export class HomeComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalServiceService);
+  private readonly modalService = inject(ModalService);
 
   allAvailableIngredients = signal<Ingredient[]>([]);
 

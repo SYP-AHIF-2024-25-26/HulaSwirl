@@ -3,7 +3,7 @@ import {Drink, DrinkService} from '../drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {Ingredient, IngredientsService} from '../ingredients.service';
-import {ModalServiceService, ModalType} from '../modal-service.service';
+import {ModalService, ModalType} from '../modal.service';
 
 @Component({
   selector: 'app-drinks',
@@ -18,7 +18,7 @@ import {ModalServiceService, ModalType} from '../modal-service.service';
 export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalServiceService);
+  private readonly modalService = inject(ModalService);
 
 
   filteredDrinks = signal<Drink[]>([]);

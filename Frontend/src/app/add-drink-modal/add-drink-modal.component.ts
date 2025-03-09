@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {ModalService} from '../modal.service';
 
 @Component({
   selector: 'app-add-drink-modal',
@@ -7,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './add-drink-modal.component.css'
 })
 export class AddDrinkModalComponent {
+  private readonly modalService = inject(ModalService);
 
+  closeModal() {
+    this.modalService.closeModal();
+  }
 }

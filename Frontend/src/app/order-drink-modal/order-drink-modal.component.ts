@@ -1,7 +1,7 @@
 import {Component, inject, Signal, signal, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {Drink, DrinkService} from '../drink.service';
-import {ModalServiceService} from '../modal-service.service';
+import {ModalService} from '../modal.service';
 
 @Component({
   selector: 'app-order-drink-modal',
@@ -14,7 +14,7 @@ import {ModalServiceService} from '../modal-service.service';
 })
 export class OrderDrinkModalComponent {
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalServiceService);
+  private readonly modalService = inject(ModalService);
   selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
 
   closeModal() {

@@ -5,7 +5,7 @@ export enum ModalType{
 @Injectable({
   providedIn: 'root'
 })
-export class ModalServiceService {
+export class ModalService {
 
   constructor() {
     effect(() => {
