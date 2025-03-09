@@ -21,7 +21,7 @@
     <!-- Available Drinks -->
     <h2>Available Drinks</h2>
     <div id="D_AvailableDrinks" class="D_DrinksContainer">
-      <div *ngFor="let drink of filteredDrinks().filter(d => d.enabled && d.available)">
+      <div *ngFor="let drink of filteredDrinks()">
         <div *ngIf="drink.enabled && drink.available" class="D_Drink" (click)="G_openModal(drink)">
           <div class="D_imgContainer">
             <img class="D_img" [src]="drink.img" [alt]="drink.name">
