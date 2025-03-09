@@ -1,1 +1,60 @@
-<p>drinks works!</p>
+<div id="D_Container">
+  <div id="D_DrinksFilterSearchContainer">
+    <div id="D_FilterSearchWrapper">
+      <input
+        type="text"
+        placeholder="🔍 Search for a drink..."
+        [(ngModel)]="searchQuery"
+        (input)="D_searchDrinks()"
+        id="D_SearchInput"
+      />
+      <select [(ngModel)]="selectedIngredient" (change)="D_filterDrinks()" id="D_FilterDropdown">
+        <option value="">All Ingredients</option>
+        <option *ngFor="let ingredient of D_getUniqueIngredients()" [value]="ingredient">
+          {{ ingredient }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div id="D_DrinksContainer">
+    <!-- Available Drinks -->
+    <h2>Available Drinks</h2>
+    <div id="D_AvailableDrinks" class="D_DrinksContainer">
+      <div *ngFor="let drink of filteredDrinks().filter(d => d.enabled && d.available)">
+        <div *ngIf="drink.enabled && drink.available" class="D_Drink" (click)="G_openModal(drink)">
+          <div class="D_imgContainer">
+            <img class="D_img" [src]="drink.img" [alt]="drink.name">
+          </div>
+          <p class="D_DrinkText">{{ drink.name }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Drinks -->
+    <h2>Hidden Drinks</h2>
+    <div id="D_HiddenDrinks" class="D_DrinksContainer">
+      <div *ngFor="let drink of filteredDrinks()">
+        <div *ngIf="!drink.enabled" class="D_Drink" (click)="G_openModal(drink)">
+          <div class="D_imgContainer">
+            <img class="D_img" [src]="drink.img" [alt]="drink.name">
+          </div>
+          <p class="D_DrinkText">{{ drink.name }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Not Available Drinks -->
+    <h2>Not Available Drinks</h2>
+    <div id="D_NotAvailableDrinks" class="D_DrinksContainer">
+      <div *ngFor="let drink of filteredDrinks()">
+        <div *ngIf="drink.enabled && !drink.available" class="D_Drink" (click)="G_openModal(drink)">
+          <div class="D_imgContainer">
+            <img class="D_img" [src]="drink.img" [alt]="drink.name">
+          </div>
+          <p class="D_DrinkText">{{ drink.name }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
