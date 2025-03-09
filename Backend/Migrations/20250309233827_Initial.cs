@@ -18,7 +18,7 @@ namespace Backend.Migrations
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
-                    Enabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Available = table.Column<bool>(type: "INTEGER", nullable: false),
                     ImgUrl = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false),
                     Toppings = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false)
                 },

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Backend.Services.DatabaseService.Models;
 
-public class Drink(int id, string name, bool enabled, string imgUrl, string toppings)
+public class Drink(int id, string name, bool available, string imgUrl, string toppings)
 {
     Drink() : this(0, string.Empty, false, string.Empty, string.Empty)
     {
@@ -12,7 +12,7 @@ public class Drink(int id, string name, bool enabled, string imgUrl, string topp
 
     [StringLength(255)] public string Name { get; set; } = name;
 
-    public bool Enabled { get; set; } = enabled;
+    public bool Available { get; set; } = available;
     [StringLength(1024)] public string ImgUrl { get; set; } = imgUrl;
     [StringLength(1024)] public string Toppings { get; set; } = toppings;
 

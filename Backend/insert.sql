@@ -7,9 +7,9 @@ INSERT INTO IngredientInBottle (Name, RemainingMl, MaxMl, PumpSlot) VALUES ('Whi
 INSERT INTO IngredientInBottle (Name, RemainingMl, MaxMl, PumpSlot) VALUES ('Sugar Syrup', 1000, 1200, NULL);
 
 -- Drinks
-INSERT INTO Drink (Name, Enabled, ImgUrl, Toppings)
+INSERT INTO Drink (Name, Available, ImgUrl, Toppings)
 VALUES ('Mojito', 1, '/images/mojito.png', 'Mint Leaves');
-INSERT INTO Drink (Name, Enabled, ImgUrl, Toppings)
+INSERT INTO Drink (Name, Available, ImgUrl, Toppings)
 VALUES ('Whiskey Sour', 1, '/images/whiskeysour.png', 'Lemon Slice');
 
 -- Ingredients for each Drink

@@ -23,7 +23,7 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("Enabled")
+                    b.Property<bool>("Available")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ImgUrl")
