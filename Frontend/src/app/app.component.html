@@ -9,6 +9,11 @@
 </nav>
 <router-outlet></router-outlet>
 
-<app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != 'ODC'"></app-order-custom-drink-modal>
+<app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != ModalType.ODC"></app-order-custom-drink-modal>
 
-<app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != 'OD'"></app-order-drink-modal>
+<app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != ModalType.OD"></app-order-drink-modal>
+
+<app-add-drink-modal id="add-drink-modal" [hidden]="displayedModal() != ModalType.AD"></app-add-drink-modal>
+
+
+<app-edit-drink-modal id="edit-drink-modal" [hidden]="displayedModal()!=ModalType.ED"></app-edit-drink-modal>

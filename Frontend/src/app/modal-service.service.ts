@@ -1,5 +1,7 @@
 import {effect, EventEmitter, Injectable, Output, signal, WritableSignal} from '@angular/core';
-
+export enum ModalType{
+  ODC,OD,AD,ED
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -11,14 +13,14 @@ export class ModalServiceService {
     });
   }
 
-  private displayedModal: WritableSignal<null | "ODC" | "OD"> = signal(null);
+  private displayedModal: WritableSignal<null|ModalType> = signal(null);
   private modalData: WritableSignal<any> = signal(null);
 
   closeModal() {
     this.displayedModal.set(null);
   }
 
-  openModal(modal: "ODC" | "OD", data: any = null) {
+  openModal(modal: ModalType, data: any = null) {
     this.displayedModal.set(modal);
     this.modalData.set(data);
   }

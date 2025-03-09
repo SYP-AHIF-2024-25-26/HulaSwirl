@@ -3,7 +3,7 @@ import {Drink, DrinkService} from '../drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {Ingredient, IngredientsService} from '../ingredients.service';
-import {ModalServiceService} from '../modal-service.service';
+import {ModalServiceService, ModalType} from '../modal-service.service';
 
 @Component({
   selector: 'app-drinks',
@@ -62,7 +62,9 @@ export class DrinksComponent {
     this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
     console.log(this.filteredDrinks+"help");
   }
-  openModal(drink: Drink) {
-this.modalService.openModal("OD",drink)
+  openModal(m:ModalType,data:any=null) {
+this.modalService.openModal(m,data)
   }
+
+  protected readonly ModalType = ModalType;
 }

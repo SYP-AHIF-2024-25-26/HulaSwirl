@@ -1,106 +1,93 @@
-.container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
-}
-
-.search-box {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.drink-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.drink-card {
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-.drink-card img {
-  width: 100px;
-  height: 150px;
-  object-fit: cover;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
+/* ========== CONTAINER ========== */
 #D_Container {
-  width: 100%;
+  width: 90%;
   min-height: 30vh;
-  z-index: 2;
-  margin-bottom: 8vw;
+  margin: 0 auto 4vw auto;
+  max-width: 1200px;
 }
 
-/*
-  Jede Kategorie (Available, Hidden, Not Available)
-  wird in einem eigenen Abschnitt (section) dargestellt.
-*/
-.D_DrinksCategory {
-  margin-bottom: 3rem; /* Abstand zwischen den Kategorien */
+/* ========== FILTER & SEARCH ========== */
+#D_DrinksFilterSearchContainer {
+  width: 95%;
+  margin: 3vh auto;
 }
 
-.D_DrinksCategory h2 {
-  margin-bottom: 1rem;
-  text-align: center;
+#D_FilterSearchWrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
-/*
-  Innerhalb einer Kategorie werden die Drinks nebeneinander
-  in einer "flex-wrap"-Zeile dargestellt.
-*/
+#D_SearchInput {
+  width: 67%;
+  padding: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
+  linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
+  border-radius: 15px;
+  border: 3px solid transparent;
+  color: #333;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#D_FilterDropdown {
+  padding: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
+  linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
+  border-radius: 15px;
+  border: 3px solid transparent;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== ÜBERSCHRIFTEN ========== */
+h2 {
+  color: #575757;
+  padding: 1vw;
+  font-size: 2.5vw;
+  text-align: start;
+  font-family: AdlamDisplay, serif;
+  margin-top: 2vw;
+  margin-bottom: 1vw;
+  font-weight: lighter;
+}
+
+/* ========== GRID-CONTAINER FÜR DRINKS ========== */
 .D_DrinksContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
-  justify-items: center; /* Zentriert jede Karte in der Spalte */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.9rem;
+  justify-items: start;
 }
 
-
-
-/*
-  Jeder Drink als "Karte".
-  Angepasste Breite, damit mehrere Drinks nebeneinander passen.
-*/
+/* ========== DRINK-KARTE ========== */
 .D_Drink {
-  width: 150px;  /* Fixe Breite pro Karte */
-  margin: 0 auto;
+  width: 180px;
+  margin: 0;
   border-radius: 25px;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.07));
   background-color: #FBFBFB;
+  box-shadow: 0px 0px 8px rgba(53, 30, 15, 0.12);
+  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.07));
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0px 0px 8px rgba(53, 30, 15, 0.12);
-  transition: transform 0.2s ease-in-out;
   text-align: center;
+  transition: transform 0.2s ease-in-out;
 }
 
 .D_Drink:hover {
   transform: scale(1.05);
 }
 
-/*
-  Bildcontainer für das Drink-Bild.
-  Höhe anpassen, damit es einheitlich ist.
-*/
+/* Bildcontainer in der Karte */
 .D_imgContainer {
   width: 100%;
   height: 180px;
@@ -114,68 +101,14 @@ ul {
   object-fit: cover;
 }
 
+/* Text-Bereich der Karte */
 .D_DrinkText {
-  height: 3em; /* oder ein fixer px-Wert */
+  height: 3em;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;  /* z.B. max. 2 Zeilen */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
-
-
-#D_DrinksFilterSearchContainer {
-  width: 95%;
-  height: auto;
-  margin-bottom: 3vh;
-  margin-top: 3vh;
-}
-
-#D_FilterSearchWrapper {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-#D_SearchInput {
-  width: 50%;
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  color: #333;
-  border-image-slice: 1;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.D_SearchInput::placeholder {
-  color: #aaa;
-}
-
-#D_FilterDropdown {
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#D_AvailableDrinks,
-#D_HiddenDrinks,
-#D_NotAvailableDrinks {
-  display: flex;
-  gap: 1rem;
-  justify-content: start; /* Karten in der Mitte */
-  flex-wrap: wrap;         /* Falls mal mehr Karten kommen, Zeilenumbruch */
+  margin: 0.5rem 0;
+  font-weight: bold;
 }
