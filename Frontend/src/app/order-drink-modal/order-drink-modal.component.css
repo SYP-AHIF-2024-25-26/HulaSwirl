@@ -97,7 +97,7 @@ ul li:nth-child(6n+4)::before {
 }
 
 ul li:nth-child(6n+5)::before {
-  content: "🫧";
+  content: "🐠";
 }
 
 ul li:nth-child(6n+6)::before {
