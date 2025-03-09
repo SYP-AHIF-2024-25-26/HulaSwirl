@@ -6,8 +6,7 @@ import {ModalService} from '../modal.service';
 @Component({
   selector: 'app-order-drink-modal',
     imports: [
-        NgForOf,
-        NgIf
+        NgForOf
     ],
   templateUrl: './order-drink-modal.component.html',
   styleUrl: './order-drink-modal.component.css'

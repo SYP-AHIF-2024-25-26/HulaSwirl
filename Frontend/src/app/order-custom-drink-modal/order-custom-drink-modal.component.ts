@@ -15,7 +15,6 @@ import {ModalService} from '../modal.service';
   selector: 'app-order-custom-drink-modal',
     imports: [
         FormsModule,
-        NgIf,
         ReactiveFormsModule
     ],
   templateUrl: './order-custom-drink-modal.component.html',
