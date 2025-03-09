@@ -3,6 +3,7 @@ import {Drink, DrinkService} from '../drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {Ingredient, IngredientsService} from '../ingredients.service';
+import {ModalServiceService} from '../modal-service.service';
 
 @Component({
   selector: 'app-drinks',
@@ -17,9 +18,11 @@ import {Ingredient, IngredientsService} from '../ingredients.service';
 export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
+  private readonly modalService = inject(ModalServiceService);
 
 
   filteredDrinks = signal<Drink[]>([]);
+
   searchQuery: string = '';
   selectedIngredient: string = '';
   D_allDrinks = signal<Drink[]>([]);
@@ -59,7 +62,7 @@ export class DrinksComponent {
     this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
     console.log(this.filteredDrinks+"help");
   }
-  G_openModal(drink: Drink) {
-
+  openModal(drink: Drink) {
+this.modalService.openModal("OD",drink)
   }
 }

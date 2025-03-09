@@ -13,9 +13,7 @@ import {ModalServiceService} from '../modal-service.service';
   imports: [
     NgIf,
     FormsModule,
-    NgForOf,
-    OrderCustomDrinkModalComponent,
-    OrderDrinkModalComponent
+    NgForOf
   ],
   templateUrl: './home.component.html',
   standalone: true,
@@ -34,7 +32,6 @@ export class HomeComponent {
   K_currentSlide = signal(1);
   searchQuery: string = '';
   selectedIngredient: string = '';
-  displayedModal: Signal<"ODC" | "OD" | null> = this.modalService.getDisplayedModal();
 
   async ngOnInit() {
     this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));

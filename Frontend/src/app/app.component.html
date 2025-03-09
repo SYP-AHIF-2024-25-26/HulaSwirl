@@ -8,3 +8,7 @@
   </div>
 </nav>
 <router-outlet></router-outlet>
+
+<app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != 'ODC'"></app-order-custom-drink-modal>
+
+<app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != 'OD'"></app-order-drink-modal>

@@ -21,40 +21,40 @@
     <!-- Available Drinks -->
     <h2>Available Drinks</h2>
     <div id="D_AvailableDrinks" class="D_DrinksContainer">
-      <div *ngFor="let drink of filteredDrinks()">
-        <div *ngIf="drink.enabled && drink.available" class="D_Drink" (click)="G_openModal(drink)">
+      @for (drink of filteredDrinks(); track $index){
+        <div *ngIf="drink.enabled && drink.available" class="D_Drink" (click)="openModal(drink)">
           <div class="D_imgContainer">
             <img class="D_img" [src]="drink.img" [alt]="drink.name">
           </div>
           <p class="D_DrinkText">{{ drink.name }}</p>
         </div>
-      </div>
+      }
     </div>
 
     <!-- Hidden Drinks -->
     <h2>Hidden Drinks</h2>
     <div id="D_HiddenDrinks" class="D_DrinksContainer">
-      <div *ngFor="let drink of filteredDrinks()">
-        <div *ngIf="!drink.enabled" class="D_Drink" (click)="G_openModal(drink)">
+      @for (drink of filteredDrinks(); track $index){
+        <div *ngIf="!drink.enabled" class="D_Drink" (click)="openModal(drink)">
           <div class="D_imgContainer">
             <img class="D_img" [src]="drink.img" [alt]="drink.name">
           </div>
           <p class="D_DrinkText">{{ drink.name }}</p>
         </div>
-      </div>
+      }
     </div>
 
     <!-- Not Available Drinks -->
     <h2>Not Available Drinks</h2>
     <div id="D_NotAvailableDrinks" class="D_DrinksContainer">
-      <div *ngFor="let drink of filteredDrinks()">
-        <div *ngIf="drink.enabled && !drink.available" class="D_Drink" (click)="G_openModal(drink)">
+      @for (drink of filteredDrinks(); track $index){
+        <div *ngIf="drink.enabled && !drink.available" class="D_Drink" (click)="openModal(drink)">
           <div class="D_imgContainer">
             <img class="D_img" [src]="drink.img" [alt]="drink.name">
           </div>
           <p class="D_DrinkText">{{ drink.name }}</p>
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>
