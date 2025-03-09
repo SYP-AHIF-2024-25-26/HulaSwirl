@@ -4,17 +4,19 @@
 
 #landing {
   width: 100%;
-  height:75vh;
   background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
   filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
   display:flex;
   align-items: center;
+  justify-content: center;
+  gap: 50px;
+  overflow: hidden;
+  height: 70vh;
 }
 
 #drink-showcase {
-  position: absolute;
   max-width: 570px;
-  right: 20%;
+  width: 40%;
   filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.48));
   z-index: -1;
 }
@@ -29,20 +31,19 @@
 #stars {
   position: absolute;
   align-self: start;
-  left: 180px;
   filter: drop-shadow(5px 5px 5px rgba(10, 17, 47, 0.27));
+  background: url("/assets/images/H_Iconpng.png");
+  background-size: contain;
+  width: 100%;
+  height: 140px;
 }
 
 .leaves:first-child {
   left: 0;
 }
 
-#drink-showcase {
-  width: 90%;
-}
-
 #landing-text {
-  margin: 55px 0 0 300px;
+  margin-top: 55px;
 }
 
 #landing-text > * {
@@ -72,7 +73,7 @@
 .button{
   border-radius: 100px;
   border: 3px solid #fc5d5b;
-  padding: 20px;
+  padding: 15px;
   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.01));
 }
 
@@ -90,24 +91,22 @@
 }
 
 @media screen and (max-width: 830px) {
-  .leaves:first-child {
-    left: calc(-200px + 20%);
-  }
-
-  .leaves {
-    right: calc(-200px + 20%);
-  }
-}
-
-@media screen and (max-width: 1400px) {
   #drink-showcase {
     display: none;
   }
 
-  #landing {
-    justify-content: center;
+  .leaves:first-child {
+    left: calc(-200px + 20%) !important;
   }
 
+  .leaves {
+    right: calc(-200px + 20%) !important;
+  }
+
+  #landing {
+    justify-content: center;
+    padding: 50px 0;
+  }
   #landing-text {
     margin: 0;
     text-align: center;
@@ -115,6 +114,20 @@
 
   #button-container {
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .leaves:first-child {
+    left: calc(-200px + 12%);
+  }
+
+  .leaves {
+    right: calc(-200px + 12%);
+  }
+
+  #landing {
+    gap: 0;
   }
 }
 

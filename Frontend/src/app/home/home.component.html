@@ -3,6 +3,10 @@
 <!--Order Custom Drink Panel -->
 <app-order-custom-drink-modal id="order-custom-drink-modal" (close)="closeModal($event)" [hidden]="displayedModal() != 'ODC'"></app-order-custom-drink-modal>
 
+<!--
+<app-order-drink-modal id="order-drink-modal" (close)="closeModal($event)" [hidden]="displayedModal() != 'OD'"></app-order-drink-modal>
+-->
+
 <!-- G_Modal - Order Drink Panel -->
 <div *ngIf="G_isModalOpen()" class="G_modal" (click)="G_onOverlayClick($event)">
   <div class="G_modal-content">
@@ -25,6 +29,8 @@
         <button class=" C_button C_buttonOrder G_orderbutton" (click)="Orderdrink()">Order</button>
       </div>
     </div>
+  </div>
+</div>
 
     <!--<div class="G_drinkDetails">
 
@@ -36,14 +42,11 @@
       <button class=" C_button C_buttonOrder" >Order</button>
     </div>-->
 
-  </div>
-</div>
 <!--Header resp-->
 <div id="landing">
   <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
   <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
-  <img src="assets/images/H_Iconpng.png" alt="Stars" height="120" width="400" id="stars">
-  <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
+  <div id="stars"></div>
   <div id="landing-text">
     <div id="landing-title">
       Make your perfect<br>summer drinks<br> with Hula Swirl!
@@ -56,6 +59,7 @@
       <button (click)="displayedModal.set('ODC')" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
     </div>
   </div>
+  <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
 </div>
 
 <div class="bodyBackground" #targetElement>

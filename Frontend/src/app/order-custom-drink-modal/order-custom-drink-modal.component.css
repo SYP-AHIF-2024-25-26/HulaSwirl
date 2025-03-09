@@ -1,4 +1,4 @@
-#modal-frame {
+.modal-frame {
   position: fixed;
   z-index: 100;
   top: 0;
@@ -9,7 +9,7 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-#modal-form {
+.modal-form {
   background-color: var(--popup-bg);
   border-radius: 10px;
   padding: 20px;
@@ -22,18 +22,18 @@
   box-shadow: 0 0 10px 3px rgb(64, 64, 64);
 }
 
-#modal-head {
+.modal-head {
   display: flex;
   justify-content: space-between;
   gap: 20px;
   color: var(--primary-font-color);
 }
 
-#modal-head h1 {
+.modal-head h1 {
   margin: 0;
 }
 
-#close-modal-button {
+.close-modal-button {
   font-size: 24px;
   font-weight: bold;
   height: 20px;
@@ -49,12 +49,12 @@
   margin-left: auto;
 }
 
-#close-modal-button:hover, .order-ingredient-delete:hover {
+.close-modal-button:hover, .order-ingredient-delete:hover {
   cursor: pointer;
   transform: rotate(10deg);
 }
 
-#modal-body {
+.modal-body {
   margin: 20px 0;
   max-height: 300px;
   overflow-y: auto;
@@ -79,7 +79,7 @@
 }
 
 
-#order-buttons {
+.order-buttons {
   display: flex;
   justify-content: center;
   gap: 10px;

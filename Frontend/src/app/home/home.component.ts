@@ -5,6 +5,7 @@ import {firstValueFrom, single} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../drink.service';
 import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-custom-drink-modal.component';
+import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,8 @@ import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-
     FormsModule,
     NgForOf,
     NgOptimizedImage,
-    OrderCustomDrinkModalComponent
+    OrderCustomDrinkModalComponent,
+    OrderDrinkModalComponent
   ],
   templateUrl: './home.component.html',
   standalone: true,

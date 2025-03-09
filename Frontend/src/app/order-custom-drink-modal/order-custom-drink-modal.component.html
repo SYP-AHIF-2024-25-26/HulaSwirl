@@ -1,10 +1,10 @@
-<div id="modal-frame">
-  <div id="modal-form">
-      <div id="modal-head">
+<div class="modal-frame">
+  <div class="modal-form">
+      <div class="modal-head">
         <h1>Configure your own Drink</h1>
-        <span id="close-modal-button" (click)="closeModal()">✖</span>
+        <span class="close-modal-button" (click)="closeModal()">✖</span>
       </div>
-      <div id="modal-body">
+      <div class="modal-body">
         @for(ingredient of orderIngredients(); track $index){
           <div class="order-ingredient">
             <div class="order-ingredient-details">
@@ -39,7 +39,7 @@
         <span id="order-ingredient-unit">ml</span>
         <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
       </div>
-      <div id="order-buttons">
+      <div class="order-buttons">
         <div class="button cancel-btn" (click)="closeModal()">Cancel</div>
         <div class="button submit-btn" (click)="submitOrder()">Order</div>
       </div>
