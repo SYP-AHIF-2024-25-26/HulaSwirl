@@ -141,64 +141,38 @@
   align-items: center;
 }
 
-
-
-
-
-
-.Lable{
-  color:#575757;
-  padding:1vw;
-  font-size:2.5vw;
-  text-align:center;
-  font-family: AdlamDisplay, serif;
-  margin-top: 2vw;
-  z-index: 1;
-  margin-bottom:1vw;
-}
-.K_Lable{
-  margin-bottom:8vw;
-}
-
-
-.K_KarusellContainer{
-  width:60vw;
-  height:30vh;
-  justify-self: center;
+#recommendations {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  margin-bottom:4vw;
-  scale: 1.4;
 }
-.K_carousel {
+
+#slide-container{
   display: flex;
-  align-items: center;
   position: relative;
   width: 100%;
   max-width: 800px;
-  overflow: hidden;
   justify-content: center;
-  padding-top:3vw;
-  padding-bottom:3vw;
+  align-items: center;
 }
-.K_carousel-track {
+
+#slide-track {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 85%;
   position: relative;
 }
-.K_carousel-item {
+
+.slide-track-item {
   text-align: center;
   flex: 0 0 33.33%;
-  opacity: 0.5;
-  width: 5vw;
-  height: 20vw;  /* Beibehaltung der ursprünglichen Größe */
+  width: 250px;
+  height: 300px;
   transition: transform 0.5s ease, opacity 0.5s ease;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
   overflow: hidden;
   background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
@@ -206,49 +180,54 @@
   border-radius: 20px;
   border: 4px solid transparent;
   filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.25)) saturate(110%);
-  padding: 0; /* Entferne unnötige Innenabstände */
+  padding: 0;
+  cursor: pointer;
 }
-.K_carousel-item.side:hover{
-  transform: scale(93%);
+
+.slide-image-container {
+  height: 230px;
 }
-.K_carousel-item.center:hover{
-  transform: scale(103%);
-}
-.K_carousel-item img {
+
+.slide-image-container img {
   width: 100%;
-  max-height: 15vw; /* Begrenzung der maximalen Höhe für gleichmäßige Anzeige */
-  object-fit: cover; /* Füllt den Container und verhindert Verzerrungen */
-  flex-grow: 1; /* Lässt das Bild den verfügbaren Platz einnehmen */
+  height: 100%;
+  object-fit: cover;
 }
-.K_carousel-item p {
-  margin: 10px 0;  /* Abstand zwischen Bild und Text */
-  font-weight: bold;
-  color: #575757;
-  font-size: 1.5vw;
-  max-width: 90%;
-  text-align: center;
-  white-space: normal;
-  line-height: 1.2;
-  word-wrap: break-word;
-  padding-top: 1vw;
-}
-.K_carousel-item.center {
-  opacity: 1;
+
+.slide-track-item.slide-focus {
   transform: scale(1);
   z-index: 3;
 }
-.K_carousel-item.side {
+.slide-track-item.slide-neighbour {
   opacity: 0.8;
   transform: scale(0.9);
   z-index: 2;
 }
-.K_carousel-item.hidden {
+.slide-track-item.hidden {
   opacity: 0;
   transform: scale(0.8);
   z-index: 1;
   display: none;
 }
-.K_arrow {
+.slide-track-item.slide-neighbour:hover{
+  transform: scale(93%);
+}
+.slide-track-item.slide-focus:hover{
+  transform: scale(103%);
+}
+
+.slide-track-item p {
+  font-weight: bold;
+  color: var(--primary-font-color);
+  max-width: 90%;
+  word-wrap: break-word;
+  text-align: center;
+  white-space: normal;
+  font-size: 20px;
+  margin: auto 0;
+}
+
+.slide-track-arrow {
   background: none;
   border: none;
   font-size: 2rem;
@@ -259,19 +238,22 @@
   transform: translateY(-50%);
   z-index: 10;
   filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
-  font-weight: bold ;
+  font-weight: bold;
 }
-.K_arrow.left {
+#arrow-left {
   left: 10px;
 }
-.K_arrow.right {
+#arrow-right {
   right: 10px;
 }
-.K_arrow.disabled {
+.slide-track-arrow:disabled {
   color: #ccc;
   cursor: not-allowed;
 }
 
+/*
+TODO: Refactor from here
+ */
 .O_Button{
   align-self: center;
   width: 30vw;

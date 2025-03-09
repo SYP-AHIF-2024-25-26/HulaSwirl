@@ -19,25 +19,28 @@
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
 </div>
 
-
-  <p class="Lable K_Lable" #targetElement>Our recommendations</p>
-  <div class="K_KarusellContainer">
-    <div class="K_carousel">
-      <button class="K_arrow left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
-      <div class="K_carousel-track">
-        <div class="K_carousel-item" (click)="openModal(ModalType.OD, drink)" *ngFor="let drink of K_bestDrinks(); let i = index" [class.center]="K_getSlidePosition(i) === 'center'" [class.side]="K_getSlidePosition(i) === 'side'" [class.hidden]="K_getSlidePosition(i) === 'hidden'">
-          <img [src]="drink.img" [alt]="drink.name">
-          <p>{{ drink.name }}</p>
-        </div>
+<div id="recommendations" #targetElement>
+  <h2>Our recommendations</h2>
+  <div id="slide-container">
+      <button class="slide-track-arrow" id="arrow-left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
+      <div id="slide-track">
+        @for (drink of K_bestDrinks(); track $index) {
+          <div class="slide-track-item"
+               (click)="openModal(ModalType.OD, drink)"
+               [class.slide-focus]="K_getSlidePosition($index) === 'center'"
+               [class.slide-neighbour]="K_getSlidePosition($index) === 'side'"
+               [class.hidden]="K_getSlidePosition($index) === 'hidden'">
+            <div class="slide-image-container">
+              <img src="{{drink.img}}" alt="{{drink.name}}">
+            </div>
+            <p>{{ drink.name }}</p>
+          </div>
+        }
       </div>
-      <button class="K_arrow right" (click)="K_nextSlide()" [disabled]="K_isNextDisabled()" [class.disabled]="K_isNextDisabled()">&#8250;</button>
-    </div>
+      <button class="slide-track-arrow" id="arrow-right" (click)="K_nextSlide()" [disabled]="K_isNextDisabled()" [class.disabled]="K_isNextDisabled()">&#8250;</button>
   </div>
+</div>
 
-
-  <!--<img src="assets/images/Order_Custom_Drink_button.webp" class="O_Button">-->
-  <br><br><br><br><br>
-  <!--Alll Drinks-->
   <p class="Lable" >All Drinks</p>
   <div class="D_Container">
     <div class="D_DrinksFilterSearchContainer">

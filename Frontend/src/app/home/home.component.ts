@@ -12,10 +12,8 @@ import {BackgroundLeavesComponent} from '../background-leaves/background-leaves.
 @Component({
   selector: 'app-home',
   imports: [
-    NgIf,
     FormsModule,
-    NgForOf,
-    BackgroundLeavesComponent
+    NgForOf
   ],
   templateUrl: './home.component.html',
   standalone: true,
