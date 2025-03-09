@@ -13,34 +13,45 @@
   --primary-font-color: #575757;
   --heavy-font-color: #3f3f3f;
   --form-input-bg: #f4f3f2;
+
+  --default-font: 'JosefinSans';
+  --primary-font: 'AdlamDisplay';
 }
 
 body{
   margin:0;
-  font-family: JosefinSans, serif;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  cursor:default;
-  background: #faeee1 url("/assets/images/background.png") center;
-  background-size: cover;
+  font-family: var(--default-font), serif;
+  background: var(--body-bg);
+  color: var(--primary-font-color);
 }
 
-/*
-  background-image: url("/assets/images/background.png");
-  height: 100%;
-  width: 100%;
-  filter: drop-shadow(10px 10px 5px rgba(68, 47, 36, 0.34));
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0; /* Hintergrund bleibt unter dem Text */
+h1, h2, h3, h4 {
+  font-family: var(--primary-font), serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
 
 body::-webkit-scrollbar {
   display: none;
 }
 html::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Edge */
+  display: none;
 }
+
 html{
   scroll-behavior: smooth;
 }
