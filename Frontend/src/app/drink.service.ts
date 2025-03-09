@@ -30,11 +30,19 @@ const drinks: Drink[] = [
     id: 2,
     name: "Pina Colada",
     img: "https://salimaskitchen.com/wp-content/uploads/2024/07/10-Minute-Pina-Colada-Recipe-A-Classic-Puerto-Rican-Cocktail-Salimas-Kitchen-4-3.jpg",
-    toppings: "Pineapple slice, Ice Cubes",
+    toppings: "Pineapple slice, Ice Cubes, Raspberry Syrup, Ratte, Fish, Dog, Cat, Mouse, Test, AAaaaa, Was schreib ich hier hin, ich weiß es nicht",
     drinkIngredients: [
       { name: "White Rum", amount: 50 },
       { name: "Coconut Cream", amount: 60 },
-      { name: "Pineapple Juice", amount: 90 }
+      { name: "Pineapple Juice", amount: 90 },
+      { name: "Cream", amount: 30 },
+      {name: "Coconut Cream", amount: 60},
+      {name: "Pineapple", amount: 90},
+      {name: "Sugar", amount: 30},
+      {name: "Leaves", amount: 60},
+      {name: "Syrup", amount: 90},
+      {name: "Cubes", amount: 30},
+      {name: "Rum", amount: 50},
     ],
   },
   {
