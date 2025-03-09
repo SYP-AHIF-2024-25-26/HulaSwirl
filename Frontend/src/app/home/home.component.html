@@ -19,11 +19,8 @@
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
 </div>
 
-<div class="bodyBackground" #targetElement>
-  <div class="background-left bg-leaves leaves"></div>
-  <div class="background-right bg-leaves leaves"></div>
-  <!--Karusell-->
-  <p class="Lable K_Lable" >Our recommendations</p>
+
+  <p class="Lable K_Lable" #targetElement>Our recommendations</p>
   <div class="K_KarusellContainer">
     <div class="K_carousel">
       <button class="K_arrow left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
@@ -73,4 +70,3 @@
       </div>
     </div>
   </div>
-</div>

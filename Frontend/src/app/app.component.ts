@@ -6,10 +6,11 @@ import {OrderCustomDrinkModalComponent} from './order-custom-drink-modal/order-c
 import {OrderDrinkModalComponent} from './order-drink-modal/order-drink-modal.component';
 import {AddDrinkModalComponent}  from './add-drink-modal/add-drink-modal.component';
 import {EditDrinkModalComponent}  from './edit-drink-modal/edit-drink-modal.component';
+import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent,AddDrinkModalComponent, EditDrinkModalComponent],
+  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'

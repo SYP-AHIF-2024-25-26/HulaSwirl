@@ -1,0 +1,42 @@
+.background-edges {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  .edge {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    z-index: 0;
+    background-repeat: repeat-y;
+  }
+
+  .edge-left {
+    left: 0;
+    background-image: url('/assets/images/background_left.png');
+    background-position: top left;
+  }
+
+  .edge-right {
+    right: 0;
+    background-image: url('/assets/images/background_right.png');
+    background-position: top right;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .edge-left {
+    left: calc(-100px + 6%) !important;
+  }
+  .edge-right {
+    right: calc(-100px + 6%) !important;
+  }
+}

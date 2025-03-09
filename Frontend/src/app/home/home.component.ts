@@ -7,13 +7,15 @@ import {Drink, DrinkService} from '../drink.service';
 import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.component';
 import {ModalService, ModalType} from '../modal.service';
+import {BackgroundLeavesComponent} from '../background-leaves/background-leaves.component';
 
 @Component({
   selector: 'app-home',
   imports: [
     NgIf,
     FormsModule,
-    NgForOf
+    NgForOf,
+    BackgroundLeavesComponent
   ],
   templateUrl: './home.component.html',
   standalone: true,
