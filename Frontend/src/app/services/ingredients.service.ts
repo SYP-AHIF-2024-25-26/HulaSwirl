@@ -59,15 +59,12 @@ export class IngredientsService {
   readonly ingredientSlots = 2;
 
   async reloadIngredients(){
-    this.ingredients.set(liquidIngredients);
-    /*
     try {
-      this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/admin/ingredients')));
+      this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/ingredients')));
     } catch (e) {
       console.error("Using default ingredients", e);
       this.ingredients.set(liquidIngredients);
     }
-     */
     this.ingredients.update(ings => ings.map(ing => ({ ...ing, slot: ing.slot && ing.slot <= this.ingredientSlots ? ing.slot : null })));
   }
 

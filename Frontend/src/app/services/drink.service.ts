@@ -171,15 +171,12 @@ export class DrinkService {
   drinks: WritableSignal<Drink[]> = signal([]);
 
   async reloadDrinks(){
-    this.drinks.set(drinks);
-    /*
     try {
-      this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks"));
+      this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks")));
     } catch (e) {
       console.error("Using default drinks", e);
-      this.drinks.set(drinkData);
+      this.drinks.set(drinks);
     }
-    */
   }
 
   // TODO: REMOVE THIS AFTER COMPATIBILITY WITH DRINKS SIGNAL IS ASSURED

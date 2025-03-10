@@ -1,0 +1,235 @@
+.order-ingredient-delete {
+  transition: 0.3s transform ease;
+  margin-left: auto;
+}
+
+.order-ingredient-delete:hover {
+  cursor: pointer;
+  transform: rotate(10deg);
+}
+
+#order-ingredient-amount, .order-ingredient-amount {
+  width: 25px;
+  text-align: end;
+}
+
+#order-ingredient-add {
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.05);
+}
+
+.order-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.order-ingredient {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 0;
+  padding: 5px 15px;
+  border-radius: 5px;
+  background-color: var(--form-input-bg-yellow);
+  color: var(--primary-font-color);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.11);
+}
+
+.order-ingredient-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-ingredient-status {
+  margin: 0;
+  color: red;
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+.ingredient-properties {
+  display: flex;
+  margin: 7px 0;
+  gap: 5px;
+  align-items: center;
+}
+
+#order-ingredient-select {
+  min-width: 150px;
+  background-color: var(--form-input-bg-yellow);
+}
+
+#order-ingredient-add {
+  background-color: var(--form-input-bg-yellow);
+  color: var(--primary-font-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1.5px solid var(--primary-font-color);
+  margin-left: 10px;
+}
+
+#order-ingredient-add:hover {
+  scale: 1.1;
+}
+
+#left-column{
+  height: 100%;
+  width: 50%;
+}
+
+#right-column{
+  height: 100%;
+  width: 50%;
+}
+
+.modal-body {
+  display: flex;
+  margin-top:0;
+}
+
+h2 {
+  color: var(--primary-font-color);
+  font-size: 20px;
+  text-align: start;
+  font-family: AdlamDisplay, serif;
+  margin:0;
+  font-weight: lighter;
+}
+
+#drink-title{
+  color: var(--primary-font-color);
+  font-size: 20px;
+  text-align: start;
+  font-family: AdlamDisplay, serif;
+  margin:0;
+  font-weight: lighter;
+  background: linear-gradient(var(--form-input-bg-yellow), var(--form-input-bg-yellow)) padding-box,
+  linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
+  border-radius: 10px;
+  border: 3px solid transparent;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  min-height:30px;
+  width: 96%;
+  height:30px;
+  resize: vertical;
+}
+
+#drink-title:focus {
+  border-radius: 10px;
+  border: 3px solid transparent;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .modal-body {
+    flex-direction: column-reverse;
+  }
+  #left-column {
+    width: 100%;
+  }
+  #right-column {
+    width: 100%;
+  }
+  .upload-box{
+    width: 60%;
+  }
+  #drink-toppings{
+    width: 92%;
+  }
+  #drink-title{
+    width:96%;
+  }
+  .order-ingredient{
+    width: 92%;
+  }
+}
+@media (min-width: 768px) {
+  .upload-box{
+    width: 89%;
+  }
+  #drink-toppings{
+    max-width: 83%;
+  }
+}
+
+#drink-image{
+  height: 200px;
+}
+
+#drink-image-input{
+
+}
+
+.upload-box {
+  min-height:140px;
+  border: 2px dashed var(--primary-font-color);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--element-primary-outline);
+  font-family: sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+  background-color: var(--form-input-bg-yellow);
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.18);
+  margin-left: 7px;
+  margin-top: 7px;
+}
+
+.upload-box.drag-over {
+  background-color: var(--form-input-bg)
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+#drink-toppings{
+  border: none;
+  background-color: var(--form-input-bg-yellow);
+  color: var(--primary-font-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  resize: vertical;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.24);
+  margin-left: 7px;
+  margin-top: 7px;
+  min-height: 24px;
+  height: 24px;
+}
+
+#toppings-header{
+  margin-bottom: 5px;
+  margin-top:7px;
+}
+
+.order-ingredient-amount{
+  background-color: var(--form-input-bg-yellow)
+}
+
+.order-ingredient-name{
+  background-color: var(--form-input-bg-yellow)
+}
+
+.form-input{
+  background-color: var(--form-input-bg-yellow);
+}
+
+#available-btn{
+  color: var(--primary-font-color);
+}
