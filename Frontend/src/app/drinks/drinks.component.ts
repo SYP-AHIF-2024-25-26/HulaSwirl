@@ -59,7 +59,7 @@ export class DrinksComponent {
   async ngOnInit(){
     this.D_allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());
-    this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
+    //this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
     console.log(this.filteredDrinks+"help");
   }
   openModal(m:ModalType,data:any=null) {

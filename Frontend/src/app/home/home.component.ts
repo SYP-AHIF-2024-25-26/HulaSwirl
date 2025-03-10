@@ -20,11 +20,11 @@ export class HomeComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
 
-  allDrinks = signal<Drink[]>([]);
+  allAvailableDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
 
   recommendedDrinks = signal<Drink[]>([]);
-  filteredDrinks = signal<Drink[]>(this.allDrinks());
+  filteredDrinks = signal<Drink[]>(this.allAvailableDrinks());
   currentSlideIdx = signal(1);
   searchQuery: string = '';
   selectedIngredient: string = '';
@@ -32,13 +32,14 @@ export class HomeComponent {
   constructor() {
     effect(() => {
       this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.slot !== null));
+      this.allAvailableDrinks.set(this.drinkService.drinks().filter(drink =>
+        drink.enabled &&
+        drink.available &&
+        drink.drinkIngredients.every(ing => this.allAvailableIngredients().some(availableIng => availableIng.name === ing.name))
+      ));
+      this.recommendedDrinks.set(this.allAvailableDrinks().slice(0, 5));
+      this.filteredDrinks.set(this.allAvailableDrinks());
     });
-  }
-
-  async ngOnInit() {
-    this.recommendedDrinks.set((await this.drinkService.getDrinks()).slice(0, 5));
-    this.allDrinks.set(await this.drinkService.getDrinks());
-    this.filteredDrinks.set(await this.drinkService.getDrinks());
   }
 
   openModal(modal: ModalType, data: any = null) {
@@ -79,7 +80,7 @@ export class HomeComponent {
 
   filterDrinksByQuery() {
     this.filteredDrinks.set(
-      this.allDrinks().filter(drink =>
+      this.allAvailableDrinks().filter(drink =>
         drink.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       )
     );
@@ -88,18 +89,18 @@ export class HomeComponent {
   filterDrinksByIngredients() {
     if (this.selectedIngredient) {
       this.filteredDrinks.set(
-        this.allDrinks().filter(drink =>
+        this.allAvailableDrinks().filter(drink =>
           drink.drinkIngredients.some(ing => ing.name === this.selectedIngredient)
         )
       );
     } else {
-      this.filteredDrinks.set(this.allDrinks());
+      this.filteredDrinks.set(this.allAvailableDrinks());
     }
   }
 
   getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
-    this.allDrinks().filter(d => d != null).forEach(drink => {
+    this.allAvailableDrinks().filter(d => d != null).forEach(drink => {
       drink.drinkIngredients.forEach(ing => ingredientsSet.add(ing.name));
     });
     return Array.from(ingredientsSet);
