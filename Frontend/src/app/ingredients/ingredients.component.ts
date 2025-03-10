@@ -1,7 +1,7 @@
 import {Component, HostListener, inject, Signal, signal, WritableSignal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
-import {Ingredient, IngredientsService} from '../ingredients.service';
+import {Ingredient, IngredientsService} from '../services/ingredients.service';
 
 @Component({
   selector: 'app-ingredients',

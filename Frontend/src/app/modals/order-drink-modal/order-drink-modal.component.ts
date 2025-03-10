@@ -1,7 +1,7 @@
 import {Component, inject, Signal, signal, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
-import {Drink, DrinkService} from '../drink.service';
-import {ModalService} from '../modal.service';
+import {Drink, DrinkService} from '../../services/drink.service';
+import {ModalService} from '../../services/modal.service';
 
 @Component({
   selector: 'app-order-drink-modal',

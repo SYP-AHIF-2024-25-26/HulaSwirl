@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {Ingredient} from './ingredients.service';
 import {firstValueFrom, Observable} from 'rxjs';
-import {environment} from '../environments/environment';
+import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 
 export interface Drink {

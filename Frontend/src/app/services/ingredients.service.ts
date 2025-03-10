@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
-import {environment} from '../environments/environment';
+import {environment} from '../../environments/environment';
 
 
 export const liquidIngredients: Ingredient[] = [

@@ -1,11 +1,11 @@
 import {Component, inject, Signal} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {NgClass, NgOptimizedImage} from '@angular/common';
-import {ModalService, ModalType} from './modal.service';
-import {OrderCustomDrinkModalComponent} from './order-custom-drink-modal/order-custom-drink-modal.component';
-import {OrderDrinkModalComponent} from './order-drink-modal/order-drink-modal.component';
-import {AddDrinkModalComponent}  from './add-drink-modal/add-drink-modal.component';
-import {EditDrinkModalComponent}  from './edit-drink-modal/edit-drink-modal.component';
+import {ModalService, ModalType} from './services/modal.service';
+import {OrderCustomDrinkModalComponent} from './modals/order-custom-drink-modal/order-custom-drink-modal.component';
+import {OrderDrinkModalComponent} from './modals/order-drink-modal/order-drink-modal.component';
+import {AddDrinkModalComponent}  from './modals/add-drink-modal/add-drink-modal.component';
+import {EditDrinkModalComponent}  from './modals/edit-drink-modal/edit-drink-modal.component';
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
 
 @Component({

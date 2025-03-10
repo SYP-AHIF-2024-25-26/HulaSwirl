@@ -1,9 +1,9 @@
 import {Component, computed, inject, signal} from '@angular/core';
-import {Drink, DrinkService} from '../drink.service';
+import {Drink, DrinkService} from '../services/drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
-import {Ingredient, IngredientsService} from '../ingredients.service';
-import {ModalService, ModalType} from '../modal.service';
+import {Ingredient, IngredientsService} from '../services/ingredients.service';
+import {ModalService, ModalType} from '../services/modal.service';
 
 @Component({
   selector: 'app-drinks',

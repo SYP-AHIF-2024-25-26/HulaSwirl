@@ -1,12 +1,12 @@
 import {Component, effect, ElementRef, inject, Signal, signal, ViewChild, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
-import {Ingredient, IngredientsService} from '../ingredients.service';
+import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {firstValueFrom, single} from 'rxjs';
 import {FormsModule} from '@angular/forms';
-import {Drink, DrinkService} from '../drink.service';
-import {OrderCustomDrinkModalComponent} from '../order-custom-drink-modal/order-custom-drink-modal.component';
-import {OrderDrinkModalComponent} from '../order-drink-modal/order-drink-modal.component';
-import {ModalService, ModalType} from '../modal.service';
+import {Drink, DrinkService} from '../services/drink.service';
+import {OrderCustomDrinkModalComponent} from '../modals/order-custom-drink-modal/order-custom-drink-modal.component';
+import {OrderDrinkModalComponent} from '../modals/order-drink-modal/order-drink-modal.component';
+import {ModalService, ModalType} from '../services/modal.service';
 import {BackgroundLeavesComponent} from '../background-leaves/background-leaves.component';
 
 @Component({

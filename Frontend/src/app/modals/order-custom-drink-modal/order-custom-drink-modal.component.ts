@@ -1,20 +1,25 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
-import {ModalService} from '../modal.service';
-import {Ingredient, IngredientsService, OrderPreparation} from '../ingredients.service';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Output,
+  signal,
+  WritableSignal
+} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
+import {ModalService} from '../../services/modal.service';
 
 @Component({
-  selector: 'app-add-drink-modal',
-  imports: [
-    FormsModule,
-    CommonModule,
-  ],
-  templateUrl: './add-drink-modal.component.html',
-  standalone: true,
-  styleUrl: './add-drink-modal.component.css'
+  selector: 'app-order-custom-drink-modal',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule
+    ],
+  templateUrl: './order-custom-drink-modal.component.html',
+  styleUrl: './order-custom-drink-modal.component.css'
 })
-export class AddDrinkModalComponent {
+export class OrderCustomDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
   allIngredients: Ingredient[] = [];
@@ -29,6 +34,7 @@ export class AddDrinkModalComponent {
     this.availableIngredients.set(this.allIngredients.filter(ing => ing.slot !== null));
     this.selectIngredient()
   }
+
   selectIngredient() {
     const ing = this.availableIngredients()[0];
     if(ing){
@@ -77,7 +83,7 @@ export class AddDrinkModalComponent {
     }));
   }
 
-  async submitDrink() {
+  async submitOrder() {
     this.validateOrder();
     if(this.orderIngredients().every(ing => ing.Status === "")) {
       await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
@@ -90,42 +96,5 @@ export class AddDrinkModalComponent {
 
   closeModal() {
     this.modalService.closeModal();
-  }
-  imageBase64: string | null = null;
-  isDragging = false;
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
-
-    this.readFile(input.files[0]);
-  }
-
-  // Bei Drag & Drop:
-  onDragOver(event: DragEvent): void {
-    event.preventDefault(); // verhindert das Standard-Verhalten
-    this.isDragging = true;
-  }
-
-  onDragLeave(event: DragEvent): void {
-    this.isDragging = false;
-  }
-
-  onDrop(event: DragEvent): void {
-    event.preventDefault();
-    this.isDragging = false;
-
-    if (!event.dataTransfer || event.dataTransfer.files.length === 0) return;
-
-    this.readFile(event.dataTransfer.files[0]);
-  }
-
-  // Liest eine Datei ein und speichert den Base64-String
-  private readFile(file: File): void {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageBase64 = reader.result as string;
-    };
-    reader.readAsDataURL(file);
   }
 }

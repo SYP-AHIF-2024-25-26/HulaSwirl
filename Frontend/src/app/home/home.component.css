@@ -151,8 +151,6 @@
 #slide-container{
   display: flex;
   position: relative;
-  width: 100%;
-  max-width: 800px;
   justify-content: center;
   align-items: center;
 }
@@ -161,15 +159,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 85%;
   position: relative;
 }
 
 .slide-track-item {
   text-align: center;
-  flex: 0 0 33.33%;
-  width: 250px;
-  height: 300px;
+  height: 340px;
   transition: transform 0.5s ease, opacity 0.5s ease;
   display: flex;
   flex-direction: column;
@@ -185,7 +180,8 @@
 }
 
 .slide-image-container {
-  height: 230px;
+  width: 265px;
+  height: 265px;
 }
 
 .slide-image-container img {
@@ -241,24 +237,17 @@
   font-weight: bold;
 }
 #arrow-left {
-  left: 10px;
+  left: -50px;
 }
 #arrow-right {
-  right: 10px;
+  right: -50px;
 }
 .slide-track-arrow:disabled {
   color: #ccc;
   cursor: not-allowed;
 }
 
-/*
-TODO: Refactor from here
- */
-.O_Button{
-  align-self: center;
-  width: 30vw;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.42)) saturate(110%);
-}
+
 
 .D_Container{
   width:80vw;
