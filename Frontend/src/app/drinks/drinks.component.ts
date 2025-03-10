@@ -32,7 +32,7 @@ export class DrinksComponent {
   D_getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
     this.D_allDrinks().filter(d => d != null).forEach(drink => {
-      drink.drinkIngredients.forEach(ing => ingredientsSet.add(ing.name));
+      drink.drinkIngredients.forEach(ing => ingredientsSet.add(ing.ingredientName));
     });
     return Array.from(ingredientsSet);
   }
@@ -48,7 +48,7 @@ export class DrinksComponent {
     if (this.selectedIngredient) {
       this.filteredDrinks.set(
         this.D_allDrinks().filter(drink =>
-          drink.drinkIngredients.some(ing => ing.name === this.selectedIngredient)
+          drink.drinkIngredients.some(ing => ing.ingredientName === this.selectedIngredient)
         )
       );
     } else {

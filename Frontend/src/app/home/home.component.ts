@@ -31,12 +31,12 @@ export class HomeComponent {
 
   constructor() {
     effect(() => {
-      this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.slot !== null));
+      this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.pumpSlot !== null));
       this.allAvailableDrinks.set(this.drinkService.drinks().filter(drink =>
-        drink.enabled &&
         drink.available &&
-        drink.drinkIngredients.every(ing => this.allAvailableIngredients().some(availableIng => availableIng.name === ing.name))
+        drink.drinkIngredients.every(ing => this.allAvailableIngredients().some(availableIng => availableIng.ingredientName === ing.ingredientName))
       ));
+      console.log(this.allAvailableIngredients(), this.drinkService.drinks());
       this.recommendedDrinks.set(this.allAvailableDrinks().slice(0, 5));
       this.filteredDrinks.set(this.allAvailableDrinks());
     });
@@ -90,7 +90,7 @@ export class HomeComponent {
     if (this.selectedIngredient) {
       this.filteredDrinks.set(
         this.allAvailableDrinks().filter(drink =>
-          drink.drinkIngredients.some(ing => ing.name === this.selectedIngredient)
+          drink.drinkIngredients.some(ing => ing.ingredientName === this.selectedIngredient)
         )
       );
     } else {
@@ -101,7 +101,7 @@ export class HomeComponent {
   getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
     this.allAvailableDrinks().filter(d => d != null).forEach(drink => {
-      drink.drinkIngredients.forEach(ing => ingredientsSet.add(ing.name));
+      drink.drinkIngredients.forEach(ing => ingredientsSet.add(ing.ingredientName));
     });
     return Array.from(ingredientsSet);
   }

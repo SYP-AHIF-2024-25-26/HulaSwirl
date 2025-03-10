@@ -15,7 +15,7 @@
                draggable="true"
                (dragstart)="dragStart($event, i)">
             <div class="ingredient-name">
-              {{ getIngredientByIndex(i)!.name }}
+              {{ getIngredientByIndex(i)!.ingredientName }}
             </div>
             <div class="ingredient-quantity">
               <input type="number"
@@ -39,7 +39,7 @@
            draggable="true"
            (dragstart)="dragStart($event, j, false)">
         <div class="ingredient-name">
-          {{ ingredient.name }}
+          {{ ingredient.ingredientName }}
         </div>
       </div>
     </div>
