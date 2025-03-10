@@ -1,7 +1,5 @@
 using Backend.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Sprache;
 
 namespace Backend.Apis.Ingredients;
 
