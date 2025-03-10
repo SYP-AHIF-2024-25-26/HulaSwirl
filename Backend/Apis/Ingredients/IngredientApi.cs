@@ -19,6 +19,12 @@ public static class IngredientApi
             .WithDescription("Get all ingredients in bottle")
             .Produces(StatusCodes.Status200OK);
 
+        app.MapPatch($"{baseUrl}/edit", EditDrinkIngredient.HandleEditDrinkIngredient)
+            .WithName(nameof(EditDrinkIngredient.HandleEditDrinkIngredient))
+            .WithDescription("Edit ingredient")
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status200OK);
+
         return app;
     }
 }

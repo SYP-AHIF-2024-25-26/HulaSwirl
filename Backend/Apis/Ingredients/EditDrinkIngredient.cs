@@ -5,9 +5,9 @@ using Sprache;
 
 namespace Backend.Apis.Ingredients;
 
-public static class EditDrinkIngredients
+public static class EditDrinkIngredient
 {
-    public static async Task<IResult> HandleEditDrinkIngredients([FromBody] IngredientDto ingredientDto,
+    public static async Task<IResult> HandleEditDrinkIngredient([FromBody] IngredientDto ingredientDto,
         AppDbContext context)
     {
         var ingredient = await context.Ingredient.FindAsync(ingredientDto.IngredientId);
@@ -20,7 +20,9 @@ public static class EditDrinkIngredients
         ingredient.IngredientName = ingredientDto.IngredientName;
         ingredient.Ml = ingredientDto.Quantity;
 
-        return Results.Ok($"Ingredient edited {ingredient}");
+        await context.SaveChangesAsync();
+
+        return Results.Ok("Ingredient edited");
     }
 
     public class IngredientDto
