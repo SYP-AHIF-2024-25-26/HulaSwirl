@@ -42,6 +42,12 @@ public static class DrinkApi
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
+        app.MapPatch($"{baseUrl}/update", EditDrink.HandleEditDrink)
+            .WithName(nameof(EditDrink.HandleEditDrink))
+            .WithDescription("Edit drink")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound);
+
         return app;
     }
 }
