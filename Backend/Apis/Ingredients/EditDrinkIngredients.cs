@@ -11,6 +11,7 @@ public static class EditDrinkIngredients
         AppDbContext context)
     {
         var drink = await context.Drink.FindAsync(ingredientDto.DrinkId);
+        return null;
     }
 
     public class IngredientDto

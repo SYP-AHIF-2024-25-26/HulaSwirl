@@ -22,6 +22,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddLogging();
 builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 //custom services
 builder.Services.AddSingleton<GpioController>();
@@ -39,10 +46,7 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
-app.UseCors(policy => policy
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors("AllowAll");
 
 if (app.Environment.IsDevelopment())
 {
