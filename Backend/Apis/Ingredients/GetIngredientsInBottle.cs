@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Apis.Ingredients;
 
-public static class GetDrinkIngredients
+public static class GetIngredientsInBottle
 {
-    public static async Task<List<IngredientInBottleDto>> HandleGetDrinkIngredients(AppDbContext context)
+    public static async Task<List<IngredientInBottleDto>> HandleGetIngredientsInBottle(AppDbContext context)
     {
         var ingredients = await context.IngredientInBottle.ToListAsync();
 
