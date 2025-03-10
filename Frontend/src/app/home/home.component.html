@@ -27,8 +27,8 @@
         @for (drink of recommendedDrinks(); track $index) {
           <div class="drink-card"
                (click)="openModal(ModalType.OD, drink)"
-               [class.slide-focus]="getSlideState($index) === 'center'"
-               [class.slide-neighbour]="getSlideState($index) === 'side'"
+               [class.slide-focus]="getSlideState($index) === 'focus'"
+               [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
                [class.hidden]="getSlideState($index) === 'hidden'">
             <div class="drink-card-image-container">
               <img src="{{drink.img}}" alt="{{drink.name}}">
