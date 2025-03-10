@@ -11,7 +11,7 @@ public static class GetIngredientsInBottle
 
         return ingredients.Select(ig => new IngredientInBottleDto
         {
-            Name = ig.Name,
+            IngredientName = ig.Name,
             RemainingMl = ig.RemainingMl,
             PumpSlot = ig.PumpSlot,
             MaxMl = ig.MaxMl
@@ -20,7 +20,7 @@ public static class GetIngredientsInBottle
 
     public class IngredientInBottleDto()
     {
-        public required string Name { get; set; }
+        public required string IngredientName { get; set; }
         public required int RemainingMl { get; set; }
         public required int? PumpSlot { get; set; }
         public required int MaxMl { get; set; }

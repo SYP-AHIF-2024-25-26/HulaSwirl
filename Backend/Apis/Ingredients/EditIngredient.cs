@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Apis.Ingredients;
 
-public static class EditDrinkIngredient
+public static class EditIngredient
 {
-    public static async Task<IResult> HandleEditDrinkIngredient([FromBody] IngredientDto ingredientDto,
+    public static async Task<IResult> HandleEditIngredientsInBottle([FromBody] IngredientDto ingredientDto,
         AppDbContext context)
     {
         var ingredient = await context.Ingredient.FindAsync(ingredientDto.IngredientId);
