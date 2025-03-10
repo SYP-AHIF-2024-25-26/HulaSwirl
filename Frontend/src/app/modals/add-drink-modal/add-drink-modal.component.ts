@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import { ModalService } from '../../services/modal.service';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import { FormsModule } from '@angular/forms';
@@ -34,9 +34,13 @@ export class AddDrinkModalComponent {
   isDragging = false;
   allIngredients: Ingredient[] = [];
 
+  constructor() {
+    effect(() => {
+      this.allIngredients = this.ingredientsService.ingredients();
+    });
+  }
+
   async ngOnInit() {
-    this.allIngredients = await this.ingredientsService.getAllIngredients();
-    // Beispiel: Nur Zutaten mit validem Slot anzeigen
     this.availableIngredients.set(
       this.allIngredients.filter(ing => ing.slot !== null)
     );

@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, effect,
   EventEmitter,
   inject,
   Output,
@@ -29,10 +29,12 @@ export class OrderCustomDrinkModalComponent {
   selectedIngredient: WritableSignal<string> = signal("");
   selectedAmount: WritableSignal<number> = signal(10);
 
-  async ngOnInit() {
-    this.allIngredients = await this.ingredientsService.getAllIngredients();
-    this.availableIngredients.set(this.allIngredients.filter(ing => ing.slot !== null));
-    this.selectIngredient()
+  constructor() {
+    effect(() => {
+      this.allIngredients = this.ingredientsService.ingredients();
+      this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.Name == ing.name)).filter(ing => ing.slot !== null));
+      this.selectIngredient()
+    });
   }
 
   selectIngredient() {
@@ -95,6 +97,9 @@ export class OrderCustomDrinkModalComponent {
   }
 
   closeModal() {
+    this.orderIngredients.set([]);
+    this.selectedIngredient.set("");
+    this.selectedAmount.set(10);
     this.modalService.closeModal();
   }
 }

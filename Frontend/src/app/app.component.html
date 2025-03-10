@@ -1,10 +1,10 @@
 <nav id="navbar">
   <img src="assets/images/InconV1png.png" id="logo" alt="Logo">
   <div id="nav-page-container">
-    <a class="link" (click)="toggleMenu()" routerLink="home">Home</a>
-    <a class="link" (click)="toggleMenu()" routerLink="admin/drinks">Drinks</a>
-    <a class="link" (click)="toggleMenu()" routerLink="admin/ingredients">Ingredients</a>
-    <a class="link" (click)="toggleMenu()" routerLink="admin/statistics">Statistics</a>
+    <a class="link" routerLink="home">Home</a>
+    <a class="link" routerLink="admin/drinks">Drinks</a>
+    <a class="link" routerLink="admin/ingredients">Ingredients</a>
+    <a class="link" routerLink="admin/statistics">Statistics</a>
   </div>
 </nav>
 <app-background-leaves>
@@ -15,7 +15,6 @@
   <app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != ModalType.OD"></app-order-drink-modal>
 
   <app-add-drink-modal id="add-drink-modal" [hidden]="displayedModal() != ModalType.AD"></app-add-drink-modal>
-
 
   <app-edit-drink-modal id="edit-drink-modal" [hidden]="displayedModal()!=ModalType.ED"></app-edit-drink-modal>
 </app-background-leaves>

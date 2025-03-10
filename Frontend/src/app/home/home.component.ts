@@ -29,8 +29,13 @@ export class HomeComponent {
   searchQuery: string = '';
   selectedIngredient: string = '';
 
+  constructor() {
+    effect(() => {
+      this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.slot !== null));
+    });
+  }
+
   async ngOnInit() {
-    this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
     this.recommendedDrinks.set((await this.drinkService.getDrinks()).slice(0, 5));
     this.allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());

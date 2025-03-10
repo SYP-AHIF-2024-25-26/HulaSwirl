@@ -1,4 +1,4 @@
-import {Component, HostListener, inject, Signal, signal, WritableSignal} from '@angular/core';
+import {Component, effect, HostListener, inject, Signal, signal, WritableSignal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
@@ -16,21 +16,23 @@ import {Ingredient, IngredientsService} from '../services/ingredients.service';
 })
 export class IngredientsComponent {
   private readonly ingredientsService = inject(IngredientsService)
-  ingredientSlots = 2;
+  readonly ingredientSlots = this.ingredientsService.ingredientSlots;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
 
   avIngredients: WritableSignal<Ingredient[]> = signal([]);
   unIngredients: WritableSignal<Ingredient[]> = signal([]);
 
-  async ngOnInit() {
-    const allIngredients = await this.ingredientsService.getAllIngredients();
-    allIngredients.forEach(ing => {
-      if (ing.slot && ing.slot > this.ingredientSlots) {
-        ing.slot = null;
-      }
-    })
-    this.avIngredients.set(allIngredients.filter(ing => ing.slot !== null));
-    this.unIngredients.set(allIngredients.filter(ing => ing.slot === null));
+  constructor() {
+    effect(() => {
+      const allIngredients = this.ingredientsService.ingredients();
+      allIngredients.forEach(ing => {
+        if (ing.slot && ing.slot > this.ingredientSlots) {
+          ing.slot = null;
+        }
+      })
+      this.avIngredients.set(allIngredients.filter(ing => ing.slot !== null));
+      this.unIngredients.set(allIngredients.filter(ing => ing.slot === null));
+    });
   }
 
   private draggedIngredient: Ingredient | null = null;
@@ -40,7 +42,6 @@ export class IngredientsComponent {
   private draggedElement: HTMLElement | null = null;
 
   dragStart(event: DragEvent, index: number, available: boolean = true) {
-    console.log(this.avIngredients(), this.unIngredients());
     const ingredient = available ? this.getIngredientByIndex(index) : this.unIngredients()[index];
     if (!ingredient) return;
     this.draggedIngredient = ingredient;
@@ -148,7 +149,7 @@ export class IngredientsComponent {
   updateRemaining(event: FocusEvent, index: number) {
     const target = event.target as HTMLInputElement;
     const newValue = parseInt(target.value);
-    console.log(newValue);
+
     if (newValue < 0 || newValue > 9999 || isNaN(newValue)) {
       const ing = this.avIngredients()[index];
       if (ing) target.value = ing.remainingMl.toString();

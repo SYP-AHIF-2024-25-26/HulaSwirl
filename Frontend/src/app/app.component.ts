@@ -7,6 +7,7 @@ import {OrderDrinkModalComponent} from './modals/order-drink-modal/order-drink-m
 import {AddDrinkModalComponent}  from './modals/add-drink-modal/add-drink-modal.component';
 import {EditDrinkModalComponent}  from './modals/edit-drink-modal/edit-drink-modal.component';
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
+import {IngredientsService} from './services/ingredients.service';
 
 @Component({
   selector: 'app-root',
@@ -17,15 +18,14 @@ import {BackgroundLeavesComponent} from './background-leaves/background-leaves.c
 })
 export class AppComponent {
   private readonly modalService = inject(ModalService);
+  private readonly ingredientService = inject(IngredientsService);
 
   title = 'Frontend';
-  menuOpen = false;
   displayedModal: Signal<ModalType | null> = this.modalService.getDisplayedModal();
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+  async ngOnInit() {
+    await this.ingredientService.reloadIngredients();
   }
-
 
   protected readonly ModalType = ModalType;
 }

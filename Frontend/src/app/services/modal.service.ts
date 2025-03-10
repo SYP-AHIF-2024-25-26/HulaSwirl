@@ -17,6 +17,7 @@ export class ModalService {
   private modalData: WritableSignal<any> = signal(null);
 
   closeModal() {
+    this.modalData.set(null);
     this.displayedModal.set(null);
   }
 
