@@ -1,6 +1,6 @@
 PRAGMA wal_checkpoint(FULL);
 
-INSERT INTO Pump (Slot, Active) VALUES (99, 1);
+INSERT INTO Pump (Slot, Active) VALUES (1, 1);
 INSERT INTO Pump (Slot, Active) VALUES (2, 0);
 
 -- IngredientInBottles
