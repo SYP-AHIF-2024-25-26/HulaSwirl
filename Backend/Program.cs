@@ -28,7 +28,28 @@ builder.Services.AddSingleton<GpioController>();
 builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<QueueManager>();
 
+//swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.DocumentName = "Api";
+    config.Title = "Api v1";
+    config.Version = "v1";
+});
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseOpenApi();
+    app.UseSwaggerUi(config =>
+    {
+        config.DocumentTitle = "TodoAPI";
+        config.Path = "/swagger";
+        config.DocumentPath = "/swagger/{documentName}/swagger.json";
+        config.DocExpansion = "list";
+    });
+}
 
 if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
