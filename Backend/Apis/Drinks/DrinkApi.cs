@@ -20,6 +20,11 @@ public static class DrinkApi
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
+        app.MapPost($"{baseUrl}/order", OrderDrink.HandleOrderDrink)
+            .WithName(nameof(OrderDrink.HandleOrderDrink))
+            .WithDescription("Order a drink")
+            .Produces(StatusCodes.Status200OK);
+
         app.MapPost($"{baseUrl}/orderCustomDrink", OrderCustomDrink.HandleOrderCustomDrink)
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")

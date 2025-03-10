@@ -12,12 +12,13 @@ public static class GetAllIngredients
 
         return ingredients.DistinctBy(ing => ing.IngredientName).ToList()
             .Select(ing => new IngredientDto
-                { IngredientName = ing.IngredientName })
+                { IngredientName = ing.IngredientName, Quantity = ing.Ml })
             .ToList();
     }
 
     public class IngredientDto
     {
         public required string IngredientName { get; set; }
+        public required int Quantity { get; set; }
     }
 }
