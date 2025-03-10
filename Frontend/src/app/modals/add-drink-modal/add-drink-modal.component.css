@@ -22,7 +22,6 @@
 
 }
 
-
 .order-buttons {
   display: flex;
   justify-content: center;
@@ -52,7 +51,6 @@
   color: red;
   font-size: 14px;
   font-weight: lighter;
-
 }
 
 .ingredient-properties {
@@ -60,12 +58,10 @@
   margin: 7px 0;
   gap: 5px;
   align-items: center;
-
 }
 
 #order-ingredient-select {
   min-width: 150px;
-
 }
 
 #order-ingredient-add {
@@ -82,14 +78,11 @@
   scale: 1.1;
 }
 
-#drink-ingredients{
-
-}
-
 #left-column{
   height: 100%;
   width: 50%;
 }
+
 #right-column{
   height: 100%;
   width: 50%;
@@ -108,6 +101,7 @@ h2 {
   margin:0;
   font-weight: lighter;
 }
+
 #drink-title{
   color: #575757;
   font-size: 20px;
@@ -125,13 +119,13 @@ h2 {
   height:30px;
   resize: vertical;
 }
+
 #drink-title:focus {
   border-radius: 10px;
   border: 3px solid transparent;
   outline: none;
 }
 
-/* Bei schmaleren Bildschirmen die Reihenfolge ändern */
 @media (max-width: 768px) {
   .modal-body {
     flex-direction: column-reverse;
@@ -174,28 +168,26 @@ h2 {
 
 .upload-box {
   min-height:140px;
-  border: 2px dashed #767676;;  /* gestrichelte Umrandung */
+  border: 2px dashed #767676;
   border-radius: 10px;
   display: flex;
-  align-items: center;      /* vertikal zentriert */
-  justify-content: center;  /* horizontal zentriert */
+  align-items: center;
+  justify-content: center;
   color: #999;
   font-family: sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  position: relative;       /* falls du Overlay-Effekte machen willst */
+  position: relative;
   background-color: #fdfded;
   box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.18);
   margin-left: 7px;
   margin-top: 7px;
 }
 
-/* Zustand, wenn eine Datei darüber gezogen wird */
 .upload-box.drag-over {
   background-color: #f5f5f5;
 }
 
-/* Bildvorschau, wenn bereits etwas hochgeladen wurde */
 .preview-image {
   max-width: 100%;
   max-height: 100%;
@@ -219,6 +211,7 @@ h2 {
   min-height: 24px;
   height: 24px;
 }
+
 #toppings-header{
   margin-bottom: 5px;
   margin-top:7px;

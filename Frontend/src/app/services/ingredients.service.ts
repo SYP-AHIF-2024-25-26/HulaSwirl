@@ -36,6 +36,8 @@ export interface OrderDto {
   Amount: number;
 }
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -61,4 +63,5 @@ export class IngredientsService {
   async saveIngredients(ingredients:Ingredient[]){
     await firstValueFrom(this.httpClient.put(environment.apiUrl + "/admin/ingredients", ingredients));
   }
+
 }

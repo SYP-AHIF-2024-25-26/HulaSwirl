@@ -1,5 +1,4 @@
 import {inject, Injectable} from '@angular/core';
-import {Ingredient} from './ingredients.service';
 import {firstValueFrom, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
@@ -269,6 +268,24 @@ const drinks: Drink[] = [
   }
 ];
 
+export interface NewDrinkDTO {
+  name: string,
+  img: string|null,
+  toppings: string,
+  ingredients:
+    {
+      "name": string,
+      "amount": number
+    }[]
+
+}
+export interface EditDrinkDTO {
+  id:number
+  name: string,
+  available:boolean,
+  img: string|null,
+  toppings: string
+}
 
 
 
@@ -285,5 +302,17 @@ export class DrinkService {
   async orderDrink(drink: Drink) {
     await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks?id=", drink.id));
   }
+  async postNewDrink(drinkdata:NewDrinkDTO){
+    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks", drinkdata));
+  }
+  async deleteDrink(ID:number){
+    console.log("rawr delete")
+    await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks?id=" + ID));
+  }
+  async editDrink(drinkdata:EditDrinkDTO){
+    console.log("rawr edit")
+    await firstValueFrom(this.httpClient.put(environment.apiUrl + "/drinks", drinkdata));
+  }
+
   constructor() { }
 }

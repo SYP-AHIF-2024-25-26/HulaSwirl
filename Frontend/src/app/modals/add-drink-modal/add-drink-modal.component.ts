@@ -1,89 +1,131 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
-import {ModalService} from '../../services/modal.service';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { ModalService } from '../../services/modal.service';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import {DrinkService, NewDrinkDTO} from '../../services/drink.service';
 
 @Component({
   selector: 'app-add-drink-modal',
-  imports: [
-    FormsModule,
-    CommonModule,
-  ],
+  imports: [FormsModule, CommonModule],
   templateUrl: './add-drink-modal.component.html',
   standalone: true,
-  styleUrl: './add-drink-modal.component.css'
+  styleUrls: ['./add-drink-modal.component.css']
 })
 export class AddDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
+  private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  allIngredients: Ingredient[] = [];
+
+  // -- Signale für die Liste der verfügbaren Zutaten und der bestellten Zutaten
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
 
-  selectedIngredient: WritableSignal<string> = signal("");
+  // -- Signale für den aktuell ausgewählten Namen und Menge
+  selectedIngredient: WritableSignal<string> = signal('');
   selectedAmount: WritableSignal<number> = signal(10);
+
+  // -- NEU: Signale für Title und Toppings
+  drinkTitle: WritableSignal<string> = signal('');
+  drinkToppings: WritableSignal<string> = signal('');
+
+  // -- Upload-Handling
+  imageBase64: string | null = null;
+  isDragging = false;
+  allIngredients: Ingredient[] = [];
 
   async ngOnInit() {
     this.allIngredients = await this.ingredientsService.getAllIngredients();
-    this.availableIngredients.set(this.allIngredients.filter(ing => ing.slot !== null));
-    this.selectIngredient()
-  }
-  selectIngredient() {
-    const ing = this.availableIngredients()[0];
-    if(ing){
-      this.selectedIngredient.set(ing.name);
-    } else {
-      this.selectedIngredient.set("");
-    }
+    // Beispiel: Nur Zutaten mit validem Slot anzeigen
+    this.availableIngredients.set(
+      this.allIngredients.filter(ing => ing.slot !== null)
+    );
+    this.selectIngredient();
   }
 
-  deleteIngredient($index: number) {
-    const ing = this.orderIngredients()[$index];
-    if(ing) {
-      this.orderIngredients.set(this.orderIngredients().filter((_, i) => i !== $index));
+  selectIngredient() {
+    const first = this.availableIngredients()[0];
+    this.selectedIngredient.set(first ? first.name : '');
+  }
+
+  deleteIngredient(index: number) {
+    const ing = this.orderIngredients()[index];
+    if (ing) {
+      // Entfernen aus orderIngredients
+      this.orderIngredients.set(
+        this.orderIngredients().filter((_, i) => i !== index)
+      );
+      // Zurück in availableIngredients
       const availableIng = this.allIngredients.find(i => i.name === ing.Name);
-      if(availableIng) this.availableIngredients.set([...this.availableIngredients(), availableIng!]);
+      if (availableIng) {
+        this.availableIngredients.set([
+          ...this.availableIngredients(),
+          availableIng
+        ]);
+      }
       this.selectIngredient();
     }
   }
 
   addIngredient() {
-    const avIng = this.availableIngredients().find(ing => ing.name === this.selectedIngredient());
-    if(avIng && avIng!.remainingMl >= this.selectedAmount() && this.selectedAmount() > 0 && this.selectedAmount() < 100) {
-      this.orderIngredients.set([...this.orderIngredients(), { Name: this.selectedIngredient(), Amount: this.selectedAmount(), Status: "" }]);
-      this.availableIngredients.set(this.availableIngredients().filter(ing => ing.name !== this.selectedIngredient()));
+    const avIng = this.availableIngredients().find(
+      ing => ing.name === this.selectedIngredient()
+    );
+    if (
+      avIng &&
+      avIng.remainingMl >= this.selectedAmount() &&
+      this.selectedAmount() > 0 &&
+      this.selectedAmount() <= 100
+    ) {
+      this.orderIngredients.set([
+        ...this.orderIngredients(),
+        { Name: this.selectedIngredient(), Amount: this.selectedAmount(), Status: '' }
+      ]);
+      this.availableIngredients.set(
+        this.availableIngredients().filter(ing => ing.name !== this.selectedIngredient())
+      );
       this.selectIngredient();
       this.selectedAmount.set(10);
     }
   }
 
   validateOrder() {
-    this.orderIngredients.set(this.orderIngredients().map(ing => {
-      const availableIng = this.allIngredients.find(i => i.name === ing.Name);
-      if(!availableIng) {
-        return { ...ing, Status: "Where did that ingredient come from?" };
-      }
-      if(ing.Amount < 0) {
-        return { ...ing, Status: "That's not how you refill the machine" };
-      }
-      if(ing.Amount > 100) {
-        return { ...ing, Status: "You shouldn't drink more than 100ml of this" };
-      }
-      if(ing.Amount > availableIng!.remainingMl) {
-        return {...ing, Status: `This ingredient only has ${availableIng!.remainingMl}ml left`};
-      }
-      return { ...ing, Status: "" };
-    }));
+    this.orderIngredients.set(
+      this.orderIngredients().map(ing => {
+        const availableIng = this.allIngredients.find(i => i.name === ing.Name);
+        if (!availableIng) {
+          return { ...ing, Status: 'Unbekannte Zutat' };
+        }
+        if (ing.Amount < 0) {
+          return { ...ing, Status: 'Negativer Wert nicht erlaubt' };
+        }
+        if (ing.Amount > 100) {
+          return { ...ing, Status: 'Maximal 100 ml pro Zutat' };
+        }
+        if (ing.Amount > availableIng.remainingMl) {
+          return {
+            ...ing,
+            Status: `Nur noch ${availableIng.remainingMl}ml verfügbar`
+          };
+        }
+        return { ...ing, Status: '' };
+      })
+    );
   }
 
   async submitDrink() {
     this.validateOrder();
-    if(this.orderIngredients().every(ing => ing.Status === "")) {
-      await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
-        Name: ing.Name,
-        Amount: ing.Amount
-      })));
+    if (this.orderIngredients().every(ing => ing.Status === '')) {
+      const drinkData: NewDrinkDTO = {
+        name: this.drinkTitle(),
+        img: this.imageBase64,
+        toppings: this.drinkToppings(),
+        ingredients: this.orderIngredients().map(ing => ({
+          name: ing.Name,
+          amount: ing.Amount
+        }))
+      };
+      await this.drinkService.postNewDrink(drinkData);
       this.closeModal();
     }
   }
@@ -91,19 +133,16 @@ export class AddDrinkModalComponent {
   closeModal() {
     this.modalService.closeModal();
   }
-  imageBase64: string | null = null;
-  isDragging = false;
 
+  // --- Datei-Upload
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
-
-    this.readFile(input.files[0]);
+    this.readFile(input.files![0]);
   }
 
-  // Bei Drag & Drop:
   onDragOver(event: DragEvent): void {
-    event.preventDefault(); // verhindert das Standard-Verhalten
+    event.preventDefault();
     this.isDragging = true;
   }
 
@@ -114,13 +153,10 @@ export class AddDrinkModalComponent {
   onDrop(event: DragEvent): void {
     event.preventDefault();
     this.isDragging = false;
-
     if (!event.dataTransfer || event.dataTransfer.files.length === 0) return;
-
     this.readFile(event.dataTransfer.files[0]);
   }
 
-  // Liest eine Datei ein und speichert den Base64-String
   private readFile(file: File): void {
     const reader = new FileReader();
     reader.onload = () => {
