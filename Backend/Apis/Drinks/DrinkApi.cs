@@ -26,11 +26,16 @@ public static class DrinkApi
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
-
         app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)
             .WithName(nameof(CreateDrink.HandleCreateDrink))
             .WithDescription("Create drink")
             .Produces(StatusCodes.Status200OK);
+
+        app.MapDelete($"{baseUrl}/delete", DeleteDrink.HandleDeleteDrink)
+            .WithName(nameof(DeleteDrink.HandleDeleteDrink))
+            .WithDescription("delete drink with id")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound);
 
         return app;
     }
