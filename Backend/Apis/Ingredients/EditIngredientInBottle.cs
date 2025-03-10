@@ -5,7 +5,7 @@ namespace Backend.Apis.Ingredients;
 
 public static class EditIngredientInBottle
 {
-    public static async Task<IResult> HandleIngredientInBottle(
+    public static async Task<IResult> HandleEditIngredientInBottle(
         [FromBody] IngredientInBottleDto[] ingredientInBottleDtos,
         AppDbContext context)
     {

@@ -5,7 +5,7 @@ namespace Backend.Apis.Ingredients;
 
 public static class EditIngredient
 {
-    public static async Task<IResult> HandleEditIngredientsInBottle([FromBody] IngredientDto ingredientDto,
+    public static async Task<IResult> HandleEditIngredient([FromBody] IngredientDto ingredientDto,
         AppDbContext context)
     {
         var ingredient = await context.Ingredient.FindAsync(ingredientDto.IngredientId);

@@ -19,14 +19,14 @@ public static class IngredientApi
             .WithDescription("Get all ingredients in bottle")
             .Produces(StatusCodes.Status200OK);
 
-        app.MapPatch($"{baseUrl}/edit", EditIngredient.HandleEditIngredientsInBottle)
-            .WithName(nameof(EditIngredient.HandleEditIngredientsInBottle))
+        app.MapPatch($"{baseUrl}/edit", EditIngredient.HandleEditIngredient)
+            .WithName(nameof(EditIngredient.HandleEditIngredient))
             .WithDescription("Edit ingredient")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
-        app.MapPatch($"{baseUrl}/inBottle/edit", EditIngredient.HandleEditIngredientsInBottle)
-            .WithName(nameof(EditIngredient.HandleEditIngredientsInBottle))
+        app.MapPatch($"{baseUrl}/inBottle/edit", EditIngredientInBottle.HandleEditIngredientInBottle)
+            .WithName(nameof(EditIngredientInBottle.HandleEditIngredientInBottle))
             .WithDescription("Edit ingredients in bottle")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);

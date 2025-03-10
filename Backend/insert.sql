@@ -12,7 +12,7 @@ INSERT INTO IngredientInBottle (Name, RemainingMl, MaxMl, PumpSlot) VALUES ('Sug
 INSERT INTO Drink (Name, Available, ImgUrl, Toppings)
 VALUES ('Mojito', 1, '/images/mojito.png', 'Mint Leaves');
 INSERT INTO Drink (Name, Available, ImgUrl, Toppings)
-VALUES ('Whiskey Sour', 1, '/images/whiskeysour.png', 'Lemon Slice');
+VALUES ('Whiskey Sour', 1, 'https://cdn.selection-prestige.de/media/catalog/product/cache/image/1536x/a4e40ebdc3e371adff845072e1c73f37/9/9/99733_jack-daniels-old-no-7-tennessee-whiskey-10l-40-vol.jpg', 'Lemon Slice');
 
 -- Ingredients for each Drink
 -- Mojito -> uses Vodka/Sugar Syrup as an example (adjust as you like)
