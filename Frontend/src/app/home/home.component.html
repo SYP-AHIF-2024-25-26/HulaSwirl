@@ -19,58 +19,52 @@
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
 </div>
 
-<div id="recommendations" #targetElement>
+<div class="container" id="recommendations" #targetElement>
   <h2>Our recommendations</h2>
   <div id="slide-container">
-      <button class="slide-track-arrow" id="arrow-left" (click)="K_prevSlide()" [disabled]="K_isPrevDisabled()" [class.disabled]="K_isPrevDisabled()">&#8249;</button>
+      <button class="slide-track-arrow" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
       <div id="slide-track">
-        @for (drink of K_bestDrinks(); track $index) {
-          <div class="slide-track-item"
+        @for (drink of recommendedDrinks(); track $index) {
+          <div class="drink-card"
                (click)="openModal(ModalType.OD, drink)"
-               [class.slide-focus]="K_getSlidePosition($index) === 'center'"
-               [class.slide-neighbour]="K_getSlidePosition($index) === 'side'"
-               [class.hidden]="K_getSlidePosition($index) === 'hidden'">
-            <div class="slide-image-container">
+               [class.slide-focus]="getSlideState($index) === 'center'"
+               [class.slide-neighbour]="getSlideState($index) === 'side'"
+               [class.hidden]="getSlideState($index) === 'hidden'">
+            <div class="drink-card-image-container">
               <img src="{{drink.img}}" alt="{{drink.name}}">
             </div>
             <p>{{ drink.name }}</p>
           </div>
         }
       </div>
-      <button class="slide-track-arrow" id="arrow-right" (click)="K_nextSlide()" [disabled]="K_isNextDisabled()" [class.disabled]="K_isNextDisabled()">&#8250;</button>
+      <button class="slide-track-arrow" id="arrow-right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
   </div>
 </div>
-<div id="all-drinks">
+<div class="container" id="all-drinks">
   <h2>All Drinks</h2>
-  <div class="D_Container">
-    <div class="D_DrinksFilterSearchContainer">
-      <div class="D_FilterSearchWrapper">
-        <button class="D_CustomOrderBtn" (click)="openModal(ModalType.ODC)">Order Custom Drink</button>
-        <!-- Suchfeld für Getränkenamen -->
-        <input
-          type="text"
-          placeholder="🔍 Search for a drink..."
-          [(ngModel)]="searchQuery"
-          (input)="D_searchDrinks()"
-          class="D_SearchInput"
-        />
+  <div class="drink-filter-container">
+    <button class="button submit-btn" (click)="openModal(ModalType.ODC)">Order Custom Drink</button>
+    <input
+      type="text"
+      placeholder="🔍 Search for a drink..."
+      [(ngModel)]="searchQuery"
+      (input)="filterDrinksByQuery()"
+      class="form-input"
+    />
 
-        <!-- Dropdown für Zutatenfilter -->
-        <select [(ngModel)]="selectedIngredient" (change)="D_filterDrinks()" class="D_FilterDropdown">
-          <option value="">All Ingredients</option>
-          <option *ngFor="let ingredient of D_getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Getränkekarten -->
-    <div class="D_DrinksContainer">
-      <div class="D_Drink" (click)="openModal(ModalType.OD, drink)" *ngFor="let drink of filteredDrinks()">
-        <div class="D_imgContainer">
-          <img class="D_img" [src]="drink.img" [alt]="drink.name">
+    <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input">
+      <option value="">All Ingredients</option>
+      <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
+    </select>
+  </div>
+  <div id="filtered-drinks">
+    @for(drink of filteredDrinks(); track $index) {
+      <div class="drink-card" (click)="openModal(ModalType.OD, drink)">
+        <div class="drink-card-image-container">
+          <img src="{{drink.img}}" alt="{{drink.name}}">
         </div>
-        <p class="D_DrinkText">{{ drink.name }}</p>
+        <p>{{ drink.name }}</p>
       </div>
-    </div>
+    }
   </div>
 </div>

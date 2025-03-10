@@ -42,7 +42,7 @@
 }
 
 #landing-text {
-  margin: 55px 0 0;
+  margin: 3% 0 0 10px;
 }
 
 #landing-text > * {
@@ -109,10 +109,12 @@
 
   #landing-text {
     text-align: center;
+    scale: 0.9 !important;
   }
 
   #button-container {
     justify-content: center;
+    flex-wrap: wrap;
   }
 }
 
@@ -125,12 +127,12 @@
     right: calc(-200px + 12%);
   }
 
-  #landing {
-    gap: 0;
+  #landing-text, #drink-showcase {
+    scale: 0.95;
   }
 
-  #landing-text {
-    margin: 0;
+  #landing {
+    gap: 0;
   }
 }
 
@@ -141,7 +143,7 @@
   align-items: center;
 }
 
-#recommendations {
+#recommendations, #all-drinks {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -162,73 +164,12 @@
   position: relative;
 }
 
-.slide-track-item {
-  text-align: center;
-  height: 340px;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 20px;
-  border: 4px solid transparent;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.25)) saturate(110%);
-  padding: 0;
-  cursor: pointer;
-}
-
-.slide-image-container {
-  width: 265px;
-  height: 265px;
-}
-
-.slide-image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.slide-track-item.slide-focus {
-  transform: scale(1);
-  z-index: 3;
-}
-.slide-track-item.slide-neighbour {
-  opacity: 0.8;
-  transform: scale(0.9);
-  z-index: 2;
-}
-.slide-track-item.hidden {
-  opacity: 0;
-  transform: scale(0.8);
-  z-index: 1;
-  display: none;
-}
-.slide-track-item.slide-neighbour:hover{
-  transform: scale(93%);
-}
-.slide-track-item.slide-focus:hover{
-  transform: scale(103%);
-}
-
-.slide-track-item p {
-  font-weight: bold;
-  color: var(--primary-font-color);
-  max-width: 90%;
-  word-wrap: break-word;
-  text-align: center;
-  white-space: normal;
-  font-size: 20px;
-  margin: auto 0;
-}
-
 .slide-track-arrow {
   background: none;
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: #555;
+  color: var(--primary-color);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -236,226 +177,43 @@
   filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
   font-weight: bold;
 }
+.drink-card.slide-neighbour {
+  opacity: 0.8;
+  transform: scale(0.9);
+  z-index: 2;
+}
+.drink-card.slide-neighbour:hover{
+  transform: scale(93%);
+}
+
+@media screen and (max-width: 1000px) {
+  #slide-container {
+    scale: 0.9;
+  }
+}
+@media screen and (max-width: 900px) {
+  #slide-container {
+    scale: 1;
+  }
+  .drink-card.slide-neighbour {
+    display: none;
+  }
+}
+
 #arrow-left {
-  left: -50px;
+  left: -40px;
 }
 #arrow-right {
-  right: -50px;
+  right: -40px;
 }
 .slide-track-arrow:disabled {
   color: #ccc;
   cursor: not-allowed;
 }
 
-
-
-.D_Container{
-  width:80vw;
-  min-height:30vh;
-  z-index: 2;
-  margin-bottom: 8vw;
-}
-.D_DrinksContainer  {
-  width:100%;
-  min-height:30vh;
+#filtered-drinks {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
-}
-.D_Drink{
-  width: 13vw;
-  height: 17vw;
-  margin:1vw;
-  border-radius: 25px;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.07));
-  background-color: #FBFBFB;
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0px 0px 8px rgba(53, 30, 15, 0.12);
-}
-.D_Drink:hover{
-  transform: scale(1.05);
-}
-.D_img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.D_imgContainer {
-  width: 100%;
-  height: 12vw;
-  overflow: hidden;
-  background-color: transparent;
-}
-.D_DrinkText {
-  text-align: center;
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: auto;
-}
-
-.D_DrinksFilterSearchContainer {
-  width:95%;
-  height:8vh;
-  margin-bottom:3vh;
-}
-.D_FilterSearchWrapper {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-.D_SearchInput {
-  width: 50%;
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  color: #333;
-  border-image-slice: 1;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-.D_SearchInput::placeholder {
-  color: #aaa;
-}
-.D_FilterDropdown {
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-.D_CustomOrderBtn {
-  padding: 12px 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  background: linear-gradient(to right, #f5d273, #ea6b52);
-  border: none;
-  border-radius: 20px;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-.D_CustomOrderBtn:hover {
-  transform: scale(1.05);
-}
-
-
-
-.G_modal-content{
-  background-color: #FBFBFB;
-  padding: 20px;
-  border: none;
-  width: 55%;
-  height: 50%;
-  max-width: 60vw;
-  text-align: left;
-  min-height:70vh;
-  margin-top:17vh;
-  border-radius: 25px;
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.55));
-  font-size: 1.8vw;
-  z-index: 2;
-}
-
-.G_modal{
-  display: flex;
-  position: fixed;
-  z-index: 3;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.24);
-  justify-content: center;
-}
-.G_drinkName{
-  font-family: AdlamDisplay, serif;
-  color: #3b3b3b;
-  margin:0;
-  margin-left:1vw;
-}
-.G_ingredientsList{
-  color:#727272;
-}
-
-.G_close{
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: -10vw;
-  z-index: 3;
-}
-.G_close:hover,
-.G_close:focus {
-  color: #707070;
-  text-decoration: none;
-  margin-bottom: -10vw;
-  z-index: 3;
-}
-
-
-.G_modal_bigbox{
-  width:100%;
-  height:94%;
-  display: flex;
-  gap:1vw;
-  align-content: end;
-}
-.G_moadal_left{
-  height:100%;
-  width:50%;
-}
-.G_moadal_right{
-  height:100%;
-  width:50%;
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  justify-content: space-between;
-  margin-top:2vw;
-}
-.G_imagecontainer{
-  height: 27.5vw;
-  width: 27.5vw;
-  overflow: hidden;
-}
-.G_drinkImage{
-  height:100%;
-  width:100%;
-  object-fit: cover;
-  object-position: center;
-}
-.G_toppingsTitle{
-  color:#575757;
-  margin-left:1vw;
-  margin-top:1vw;
-  margin-bottom:0;
-}
-.G_Toppings{
-  color:#727272;
-  margin-left:1vw;
-  margin-top:1vw;
-}
-
-.G_orderbutton{
-  align-self: end;
-  justify-self: end;
+  gap: 20px;
 }
