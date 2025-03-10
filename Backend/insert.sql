@@ -1,3 +1,5 @@
+PRAGMA wal_checkpoint(FULL);
+
 INSERT INTO Pump (Slot, Active) VALUES (99, 1);
 INSERT INTO Pump (Slot, Active) VALUES (2, 0);
 
@@ -24,3 +26,5 @@ INSERT INTO Ingredient (IngredientName, Ml, DrinkID) VALUES ('Sugar Syrup', 15, 
 -- Orders
 INSERT INTO DrinkOrder (OrderDate, DrinkID) VALUES ('2023-01-01', 1);
 INSERT INTO DrinkOrder (OrderDate, DrinkID) VALUES ('2023-01-02', 2);
+
+PRAGMA journal_mode;

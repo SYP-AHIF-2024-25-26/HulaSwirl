@@ -1,12 +1,12 @@
 namespace Backend.Services.DatabaseService.Models;
 
-public class DrinkOrder(int id, DateOnly date)
+public class DrinkOrder(DateOnly date)
 {
-    DrinkOrder() : this(0, new DateOnly())
+    DrinkOrder() : this(new DateOnly())
     {
     }
 
-    [Key] public int ID { get; set; } = id;
+    [Key] public int ID { get; set; }
     public DateOnly OrderDate { get; set; } = date;
 
 

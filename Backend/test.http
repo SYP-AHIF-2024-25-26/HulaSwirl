@@ -1,0 +1,19 @@
+###
+POST http://localhost:8080/api/v1/drinks/create
+Content-Type: application/json
+
+{
+  "name": "Sample Drink",
+  "img": "sample-image-url.jpg",
+  "toppings": "Chocolate drizzle",
+  "ingredients": [
+    {
+      "name": "Espresso Shot",
+      "amount": 2
+    },
+    {
+      "name": "Milk",
+      "amount": 1
+    }
+  ]
+}

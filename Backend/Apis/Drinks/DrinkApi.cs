@@ -27,6 +27,11 @@ public static class DrinkApi
             .Produces(StatusCodes.Status200OK);
 
 
+        app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)
+            .WithName(nameof(CreateDrink.HandleCreateDrink))
+            .WithDescription("Create drink")
+            .Produces(StatusCodes.Status200OK);
+
         return app;
     }
 }

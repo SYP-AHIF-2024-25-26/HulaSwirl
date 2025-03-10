@@ -2,13 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace Backend.Services.DatabaseService.Models;
 
-public class Drink(int id, string name, bool available, string imgUrl, string toppings)
+public class Drink(string name, bool available, string imgUrl, string toppings)
 {
-    Drink() : this(0, string.Empty, false, string.Empty, string.Empty)
+    Drink() : this(string.Empty, false, string.Empty, string.Empty)
     {
     }
 
-    [Key] public int ID { get; set; } = id;
+    [Key] public int ID { get; set; }
 
     [StringLength(255)] public string Name { get; set; } = name;
 
