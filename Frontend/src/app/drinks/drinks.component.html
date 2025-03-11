@@ -32,7 +32,7 @@
       }
     </div>
 
-    <!-- Hidden Drinks -->
+    <!-- Hidden Drinks
     <h2>Hidden Drinks</h2>
     <div id="D_HiddenDrinks" class="D_DrinksContainer">
       @for (drink of filteredDrinks(); track $index){
@@ -44,9 +44,10 @@
         </div>
       }
     </div>
+    -->
 
     <!-- Not Available Drinks -->
-    <h2>Not Available Drinks</h2>
+    <h2>Hidden Drinks</h2>
     <div id="D_NotAvailableDrinks" class="D_DrinksContainer">
       @for (drink of filteredDrinks(); track $index){
         <div *ngIf="!drink.available" class="D_Drink" (click)="openModal(ModalType.ED,drink)">

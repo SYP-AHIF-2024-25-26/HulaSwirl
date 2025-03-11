@@ -8,14 +8,14 @@
       <div id="left-column">
         <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
           <span *ngIf="!imageBase64">upload image</span>
-          <img *ngIf="imageBase64" [src]="imageBase64" alt="Ausgewähltes Bild" class="preview-image"/>
+          <img *ngIf="imageBase64" [src]="imageBase64()" alt="Ausgewähltes Bild" class="preview-image"/>
         </div>
         <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)"/>
         <h2 id="toppings-header">Toppings:</h2>
-        <textarea id="drink-toppings" placeholder="no toppings" [ngModel]="drinkToppings()" (ngModelChange)="drinkToppings.set($event)"></textarea>
+        <textarea id="drink-toppings" placeholder="no toppings" [(ngModel)]="drinkToppings"></textarea>
       </div>
       <div id="right-column">
-        <textarea id="drink-title" placeholder="Title" [ngModel]="drinkTitle()" (ngModelChange)="drinkTitle.set($event)"></textarea>
+        <textarea id="drink-title" placeholder="Title" [(ngModel)]="drinkTitle"></textarea>
         <h2>Ingredients:</h2>
         <div id="drink-ingredients">
           @for(ingredient of orderIngredients(); track $index){
@@ -26,7 +26,6 @@
                   <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.Amount">
                   <span class="order-ingredient-unit">ml</span>
                 </div>
-                <p class="order-ingredient-status">{{ingredient.Status}}</p>
               </div>
               <span class="order-ingredient-delete" (click)="deleteIngredient($index)">❌</span>
             </div>
@@ -56,7 +55,11 @@
       <div class="button cancel-btn" (click)="closeModal()">Cancel</div>
       <div class="button cancel-btn" (click)="deleteDrink()">Delete Drink</div>
       <div class="button submit-btn" (click)="submitDrink()">Submit Drink</div>
-      <div class="button" id="available-btn" (click)="toggleDrinkAvailability()">  {{ drinkAvailability() }}</div>
+      @if(drinkAvailable()){
+        <div class="button submit-btn" (click)="drinkAvailable.set(false)">Hide Drink</div>
+      } @else {
+        <div class="button submit-btn" (click)="drinkAvailable.set(true)">Show Drink</div>
+      }
     </div>
   </div>
 </div>
