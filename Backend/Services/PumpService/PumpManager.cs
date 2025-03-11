@@ -5,18 +5,18 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
     private List<VPump>? _pumps;
 
 
-    public async Task StartPump(int slot, int ml)
+    public async Task StartPump(int? slot, int ml)
     {
         InitializePumps();
 
-        if (_pumps is not null && slot > _pumps.Count)
+        if (_pumps is null || slot is null || slot > _pumps.Count)
             return;
 
         logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
 
         //testing shows that at 20% a pump can output 13ml/s
         var timeInSec = ml / 13;
-        var pump = _pumps![slot];
+        var pump = _pumps[(int)slot];
         var cancellationTokenSource = new CancellationTokenSource();
 
         //forward pumping

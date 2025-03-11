@@ -28,7 +28,7 @@ public static class DrinkApi
         app.MapPost($"{baseUrl}/orderCustomDrink", OrderCustomDrink.HandleOrderCustomDrink)
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")
-            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)

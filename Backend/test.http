@@ -17,6 +17,7 @@ Content-Type: application/json
     }
   ]
 }
+
 ###
 DELETE http://localhost:8080/api/v1/drinks/delete?id=3
 
@@ -29,3 +30,19 @@ Content-Type: application/json
   "IngredientName": "Updated Ingredient Name",
   "Quantity": 250
 }
+
+### Order a Custom Drink
+POST http://localhost:5287/api/v1/drinks/orderCustomDrink
+Content-Type: application/json
+
+[
+  {
+    "IngredientName": "Vodka",
+    "Ml": 50
+  },
+  {
+    "IngredientName": "Orange Juice",
+    "Ml": 150
+  }
+]
+

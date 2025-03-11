@@ -1,4 +1,5 @@
 using Backend.Services.DatabaseService;
+using Backend.Services.PumpService;
 using Backend.Services.QueueService;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,39 +8,36 @@ namespace Backend.Apis.Drinks;
 public static class OrderCustomDrink
 {
     public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos, AppDbContext context,
-        QueueManager queueManager)
+        PumpManager pumpManager)
     {
         //map ordered ingredient to available ingredients
+        var orderedIngredientNames = ingredientDtos.Select(ingDto => ingDto.IngredientName).ToList();
 
-        var availableIngredients = (await context.IngredientInBottle.Include(ing => ing.Pump).ToListAsync())
-            .Where(ing => ing.Pump is not null);
+        var ingredients = await context.IngredientInBottle
+            .Include(ing => ing.Pump)
+            .Where(ing => ing.PumpSlot != null)
+            .ToListAsync();
 
-        var maps = availableIngredients
-            .Select(availableIngredient =>
-                new Map(
-                    availableIngredient,
-                    ingredientDtos.FirstOrDefault(ingredientDto =>
-                        ingredientDto.IngredientName == availableIngredient.Name),
-                    availableIngredient.Pump
-                )
-            ).Where(map =>
-                map.IngredientDto is not null && map.Pump is not null).ToList();
+        var missingIngredients = ingredients
+            .Select(ing => ing.Name)
+            .Except(orderedIngredientNames).ToList();
 
-        //check if ordered ingredients are available
+        if (missingIngredients.Count != 0)
+        {
+            return Results.NotFound("Ordered ingredients are not available");
+        }
 
-        if (maps.Count == 0) return Results.BadRequest("Ingredients not available");
+        foreach (var orderedIngredient in ingredientDtos)
+        {
+            var existingIngredient = ingredients
+                .First(ing => ing.Name == orderedIngredient.IngredientName)!;
 
-        //add to queue
+            await pumpManager.StartPump(existingIngredient.PumpSlot, orderedIngredient.Ml);
+        }
 
-        var queueItems = maps.Select(map => new QueueItem
-            { PumpSlot = map.Pump!.Slot, RequiredMl = map.IngredientDto!.Ml }).ToList();
-
-        queueManager.Queue(queueItems);
-
-        return Results.Ok("Order Queued");
+        return Results.Ok("Ordered");
     }
 
-    private record Map(IngredientInBottle IngredientInBottle, IngredientDto? IngredientDto, Pump? Pump);
 
     public class IngredientDto
     {
