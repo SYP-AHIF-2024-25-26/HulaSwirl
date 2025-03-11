@@ -7,27 +7,23 @@ namespace Backend.Services.PumpService
     public class VPump : IDisposable
     {
         private const int Frequency = 20_000;
-        private SoftwarePwmChannel _pwmChannel;
+        private readonly SoftwarePwmChannel _pwmChannel;
         private readonly GpioController _controller;
-        private readonly int _in1;
-        private readonly int _in2;
-        private bool _isForward = true;
+        private readonly int _pwmPin;
+        private readonly int _fixedPin;
         private bool _isRunning = false;
         private bool _disposed = false;
 
-        public VPump(int in1, int in2, GpioController controller)
+        public VPump(int pwmPin, int fixedPin, GpioController controller)
         {
             _controller = controller;
-            _in1 = in1;
-            _in2 = in2;
+            _pwmPin = pwmPin;
+            _fixedPin = fixedPin;
 
-            _controller.OpenPin(_in1, PinMode.Output);
-            _controller.OpenPin(_in2, PinMode.Output);
+            _controller.OpenPin(_fixedPin, PinMode.Output);
+            _controller.Write(_fixedPin, PinValue.Low);
 
-            _controller.Write(_in1, PinValue.Low);
-            _controller.Write(_in2, PinValue.Low);
-
-            _pwmChannel = new SoftwarePwmChannel(_in1, Frequency, 0);
+            _pwmChannel = new SoftwarePwmChannel(_pwmPin, Frequency, 0);
         }
 
         public void SetSpeed(int percentage)
@@ -45,7 +41,7 @@ namespace Backend.Services.PumpService
             _pwmChannel.Start();
             _isRunning = true;
 
-            _controller.Write(_isForward ? _in2 : _in1, PinValue.Low);
+            _controller.Write(_fixedPin, PinValue.Low);
         }
 
         public void Stop()
@@ -55,28 +51,8 @@ namespace Backend.Services.PumpService
             _pwmChannel.Stop();
             _isRunning = false;
 
-            if (_controller.IsPinOpen(_in1))
-                _controller.Write(_in1, PinValue.Low);
-
-            if (_controller.IsPinOpen(_in2))
-                _controller.Write(_in2, PinValue.Low);
-        }
-
-        public void ChangeDirection()
-        {
-            if (_isRunning)
-                Stop();
-
-            _isForward = !_isForward;
-
-            _pwmChannel.Dispose();
-
-            if (!_controller.IsPinOpen(_isForward ? _in1 : _in2))
-                _controller.OpenPin(_isForward ? _in1 : _in2, PinMode.Output);
-
-            _pwmChannel = new SoftwarePwmChannel(_isForward ? _in1 : _in2, Frequency, 0);
-
-            _controller.Write(_isForward ? _in2 : _in1, PinValue.Low);
+            _controller.Write(_pwmPin, PinValue.Low);
+            _controller.Write(_fixedPin, PinValue.Low);
         }
 
         public void Dispose()
@@ -85,7 +61,7 @@ namespace Backend.Services.PumpService
             {
                 Stop();
                 _pwmChannel.Dispose();
-                _controller.Dispose();
+                _controller.ClosePin(_fixedPin);
                 _disposed = true;
             }
         }
