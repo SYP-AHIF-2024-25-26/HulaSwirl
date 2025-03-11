@@ -19,45 +19,44 @@ export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-
+  protected readonly ModalType = ModalType;
 
   filteredDrinks = signal<Drink[]>([]);
-
   searchQuery: string = '';
   selectedIngredient: string = '';
-  D_allDrinks = signal<Drink[]>([]);
+  allDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
 
 
-  D_getUniqueIngredients(): string[] {
+  getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
-    this.D_allDrinks().filter(d => d != null).forEach(drink => {
+    this.allDrinks().filter(d => d != null).forEach(drink => {
       drink.drinkIngredients.forEach(ing => ingredientsSet.add(ing.ingredientName));
     });
     return Array.from(ingredientsSet);
   }
 
-  D_searchDrinks() {
+  searchDrinks() {
     this.filteredDrinks.set(
-      this.D_allDrinks().filter(drink =>
+      this.allDrinks().filter(drink =>
         drink.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       )
     );
   }
-  D_filterDrinks() {
+  filterDrinks() {
     if (this.selectedIngredient) {
       this.filteredDrinks.set(
-        this.D_allDrinks().filter(drink =>
+        this.allDrinks().filter(drink =>
           drink.drinkIngredients.some(ing => ing.ingredientName === this.selectedIngredient)
         )
       );
     } else {
-      this.filteredDrinks.set(this.D_allDrinks());
+      this.filteredDrinks.set(this.allDrinks());
     }
   }
 
   async ngOnInit(){
-    this.D_allDrinks.set(await this.drinkService.getDrinks());
+    this.allDrinks.set(await this.drinkService.getDrinks());
     this.filteredDrinks.set(await this.drinkService.getDrinks());
     //this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
     console.log(this.filteredDrinks+"help");
@@ -66,5 +65,5 @@ export class DrinksComponent {
 this.modalService.openModal(m,data)
   }
 
-  protected readonly ModalType = ModalType;
+
 }

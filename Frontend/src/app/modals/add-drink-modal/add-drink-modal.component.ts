@@ -17,19 +17,12 @@ export class AddDrinkModalComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
 
-  // -- Signale für die Liste der verfügbaren Zutaten und der bestellten Zutaten
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
-
-  // -- Signale für den aktuell ausgewählten Namen und Menge
   selectedIngredient: WritableSignal<string> = signal('');
   selectedAmount: WritableSignal<number> = signal(10);
-
-  // -- NEU: Signale für Title und Toppings
   drinkTitle: WritableSignal<string> = signal('');
   drinkToppings: WritableSignal<string> = signal('');
-
-  // -- Upload-Handling
   imageBase64: string | null = null;
   isDragging = false;
   allIngredients: Ingredient[] = [];
@@ -55,11 +48,9 @@ export class AddDrinkModalComponent {
   deleteIngredient(index: number) {
     const ing = this.orderIngredients()[index];
     if (ing) {
-      // Entfernen aus orderIngredients
       this.orderIngredients.set(
         this.orderIngredients().filter((_, i) => i !== index)
       );
-      // Zurück in availableIngredients
       const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
       if (availableIng) {
         this.availableIngredients.set([
@@ -138,7 +129,6 @@ export class AddDrinkModalComponent {
     this.modalService.closeModal();
   }
 
-  // --- Datei-Upload
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;

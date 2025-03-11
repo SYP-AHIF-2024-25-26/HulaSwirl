@@ -22,7 +22,6 @@ export class HomeComponent {
 
   allAvailableDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
-
   recommendedDrinks = signal<Drink[]>([]);
   filteredDrinks = signal<Drink[]>(this.allAvailableDrinks());
   currentSlideIdx = signal(1);

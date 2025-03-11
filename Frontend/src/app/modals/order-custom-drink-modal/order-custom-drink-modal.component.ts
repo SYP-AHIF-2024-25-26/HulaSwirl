@@ -12,20 +12,21 @@ import {ModalService} from '../../services/modal.service';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
-    imports: [
-        FormsModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './order-custom-drink-modal.component.html',
+  standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'
 })
 export class OrderCustomDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
+
   allIngredients: Ingredient[] = [];
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
-
   selectedIngredient: WritableSignal<string> = signal("");
   selectedAmount: WritableSignal<number> = signal(10);
 

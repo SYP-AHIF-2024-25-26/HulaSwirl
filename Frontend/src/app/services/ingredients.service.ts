@@ -3,7 +3,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {environment} from '../../environments/environment';
 
-
 export const liquidIngredients: Ingredient[] = [
   {
     ingredientName: 'Apple Juice',
@@ -30,7 +29,6 @@ export const liquidIngredients: Ingredient[] = [
     maxMl: 100
   }
 ];
-
 
 export interface Ingredient {
   ingredientName: string;

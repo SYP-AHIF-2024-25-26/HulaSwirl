@@ -5,12 +5,12 @@
         type="text"
         placeholder="🔍 Search for a drink..."
         [(ngModel)]="searchQuery"
-        (input)="D_searchDrinks()"
+        (input)="searchDrinks()"
         id="D_SearchInput"
       />
-      <select [(ngModel)]="selectedIngredient" (change)="D_filterDrinks()" id="D_FilterDropdown">
+      <select [(ngModel)]="selectedIngredient" (change)="filterDrinks()" id="D_FilterDropdown">
         <option value="">All Ingredients</option>
-        <option *ngFor="let ingredient of D_getUniqueIngredients()" [value]="ingredient">
+        <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">
           {{ ingredient }}
         </option>
       </select>

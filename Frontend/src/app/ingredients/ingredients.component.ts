@@ -16,11 +16,16 @@ import {Ingredient, IngredientsService} from '../services/ingredients.service';
 })
 export class IngredientsComponent {
   private readonly ingredientsService = inject(IngredientsService)
+
   readonly ingredientSlots = this.ingredientsService.ingredientSlots;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
-
   avIngredients: WritableSignal<Ingredient[]> = signal([]);
   unIngredients: WritableSignal<Ingredient[]> = signal([]);
+  private draggedIngredient: Ingredient | null = null;
+  private sourceContainer: 'available' | 'unavailable' | null = null;
+  private sourceIndex: number | null = null;
+  private dropSuccessful: boolean = false;
+  private draggedElement: HTMLElement | null = null;
 
   constructor() {
     effect(() => {
@@ -35,12 +40,6 @@ export class IngredientsComponent {
     });
   }
 
-  private draggedIngredient: Ingredient | null = null;
-  private sourceContainer: 'available' | 'unavailable' | null = null;
-  private sourceIndex: number | null = null;
-  private dropSuccessful: boolean = false;
-  private draggedElement: HTMLElement | null = null;
-
   dragStart(event: DragEvent, index: number, available: boolean = true) {
     const ingredient = available ? this.getIngredientByIndex(index) : this.unIngredients()[index];
     if (!ingredient) return;
@@ -48,7 +47,6 @@ export class IngredientsComponent {
     this.sourceContainer = available ? 'available' : 'unavailable';
     this.sourceIndex = index;
     this.dropSuccessful = false;
-
     if(available) {
       this.avIngredients.update(ings => {
         return ings.filter(ing => ing?.pumpSlot !== ingredient.pumpSlot);
@@ -66,7 +64,6 @@ export class IngredientsComponent {
     this.draggedElement.classList.add('dragging');
     document.body.appendChild(this.draggedElement);
     this.followMouse(event);
-
     event.target?.addEventListener('dragend', this.dragEnd.bind(this) as EventListener);
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
@@ -116,7 +113,6 @@ export class IngredientsComponent {
 
   availableDrop(event: DragEvent, slotIndex: number) {
     if (!this.draggedIngredient) return;
-
     this.avIngredients.update(ings => {
       let newArr = [...ings];
       const ingByIndex = this.getIngredientByIndex(slotIndex);
@@ -149,7 +145,6 @@ export class IngredientsComponent {
   updateRemaining(event: FocusEvent, index: number) {
     const target = event.target as HTMLInputElement;
     const newValue = parseInt(target.value);
-
     if (newValue < 0 || newValue > 9999 || isNaN(newValue)) {
       const ing = this.avIngredients()[index];
       if (ing) target.value = ing.remainingMl.toString();
