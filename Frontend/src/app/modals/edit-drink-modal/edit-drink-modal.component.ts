@@ -156,7 +156,7 @@ export class EditDrinkModalComponent {
   }
 
   async onShow() {
-    //this.allIngredients = await this.ingredientsService.getAllIngredients();
+    //this.allIngredients = await this.ingredientsService;
     this.availableIngredients.set(
       this.allIngredients.filter(ing => ing.pumpSlot !== null)
     );

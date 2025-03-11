@@ -8,6 +8,7 @@
   --pump-active-slot-bg: #c3ffac;
   --pump-inactive-slot-bg: #ff9898;
   --cancel-btn-bg: #df6b6b;
+  --order-btn-bg:#fc5d5b;
   --sunset-gradient: linear-gradient(to bottom right, rgb(255, 194, 108) 0%, rgb(255, 125, 114) 100%);
   --sunrise-gradient: linear-gradient(to bottom right, #f65a5a 0%, #ffd15e 100%);
   --primary-font-color: #575757;
