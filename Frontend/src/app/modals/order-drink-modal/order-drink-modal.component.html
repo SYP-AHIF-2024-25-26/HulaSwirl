@@ -6,12 +6,12 @@
     </div>
     <div class="modal-body">
       <div class="modal-image">
-        <img [src]="selectedDrink()?.img" alt="Drink Image" class="drink-image">
+        <img [src]="selectedDrink()?.imgUrl" alt="Drink Image" class="drink-image">
       </div>
       <div id="modal-ingredient-list">
         <h3>Ingredients:</h3>
         <ul>
-          <li *ngFor="let drink of selectedDrink()?.drinkIngredients">{{drink.amount}}ml {{drink.name}}</li>
+          <li *ngFor="let drink of selectedDrink()?.drinkIngredients">{{drink.amount}}ml {{drink.ingredientName}}</li>
         </ul>
       </div>
     </div>

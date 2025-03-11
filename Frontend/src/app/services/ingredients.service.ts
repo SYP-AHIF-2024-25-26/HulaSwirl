@@ -6,26 +6,26 @@ import {environment} from '../../environments/environment';
 
 export const liquidIngredients: Ingredient[] = [
   {
-    name: 'Apple Juice',
-    slot: 1,
+    ingredientName: 'Apple Juice',
+    pumpSlot: 1,
     remainingMl: 1000,
     maxMl: 1000
   },
   {
-    name: 'Water',
-    slot: 2,
+    ingredientName: 'Water',
+    pumpSlot: 2,
     remainingMl: 2000,
     maxMl: 2000
   },
   {
-    name: 'Sugar Syrup',
-    slot: 3,
+    ingredientName: 'Sugar Syrup',
+    pumpSlot: 3,
     remainingMl: 500,
     maxMl: 500
   },
   {
-    name: 'Mint Leaves',
-    slot: 4,
+    ingredientName: 'Mint Leaves',
+    pumpSlot: 4,
     remainingMl: 100,
     maxMl: 100
   }
@@ -33,8 +33,8 @@ export const liquidIngredients: Ingredient[] = [
 
 
 export interface Ingredient {
-  name: string;
-  slot: number | null;
+  ingredientName: string;
+  pumpSlot: number | null;
   remainingMl: number;
   maxMl: number;
 }
@@ -60,12 +60,12 @@ export class IngredientsService {
 
   async reloadIngredients(){
     try {
-      this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/ingredients')));
+      this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/ingredients/inBottle')));
     } catch (e) {
       console.error("Using default ingredients", e);
       this.ingredients.set(liquidIngredients);
     }
-    this.ingredients.update(ings => ings.map(ing => ({ ...ing, slot: ing.slot && ing.slot <= this.ingredientSlots ? ing.slot : null })));
+    this.ingredients.update(ings => ings.map(ing => ({ ...ing, pumpSlot: ing.pumpSlot && ing.pumpSlot <= this.ingredientSlots ? ing.pumpSlot : null })));
   }
 
   async postOrder(ingredients: OrderDto[]): Promise<void> {
@@ -75,6 +75,6 @@ export class IngredientsService {
 
   async saveIngredients(ingredients:Ingredient[]){
     this.ingredients.set(ingredients);
-    await firstValueFrom(this.httpClient.put(environment.apiUrl + "/admin/ingredients", ingredients));
+    await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/ingredients/inBottle/edit", ingredients));
   }
 }

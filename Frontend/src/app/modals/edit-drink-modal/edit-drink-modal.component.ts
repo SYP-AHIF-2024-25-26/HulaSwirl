@@ -32,7 +32,7 @@ export class EditDrinkModalComponent {
 
   selectIngredient() {
     const first = this.availableIngredients()[0];
-    this.selectedIngredient.set(first ? first.name : '');
+    this.selectedIngredient.set(first ? first.ingredientName : '');
   }
 
   deleteIngredient(index: number) {
@@ -41,7 +41,7 @@ export class EditDrinkModalComponent {
       this.orderIngredients.set(
         this.orderIngredients().filter((_, i) => i !== index)
       );
-      const availableIng = this.allIngredients.find(i => i.name === ing.Name);
+      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
       if (availableIng) {
         this.availableIngredients.set([
           ...this.availableIngredients(),
@@ -54,7 +54,7 @@ export class EditDrinkModalComponent {
 
   addIngredient() {
     const avIng = this.availableIngredients().find(
-      ing => ing.name === this.selectedIngredient()
+      ing => ing.ingredientName === this.selectedIngredient()
     );
     if (
       avIng &&
@@ -67,7 +67,7 @@ export class EditDrinkModalComponent {
         { Name: this.selectedIngredient(), Amount: this.selectedAmount(), Status: '' }
       ]);
       this.availableIngredients.set(
-        this.availableIngredients().filter(ing => ing.name !== this.selectedIngredient())
+        this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
       );
       this.selectIngredient();
       this.selectedAmount.set(10);
@@ -79,7 +79,7 @@ export class EditDrinkModalComponent {
     console.log(this.allIngredients)
     this.orderIngredients.set(
       this.orderIngredients().map(ing => {
-        const availableIng = this.allIngredients.find(i => i.name === ing.Name);
+        const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
         if (!availableIng) {
           return { ...ing, Status: 'Unbekannte Zutat' };
         }
@@ -156,18 +156,18 @@ export class EditDrinkModalComponent {
   }
 
   async onShow() {
-    this.allIngredients = await this.ingredientsService.getAllIngredients();
+    //this.allIngredients = await this.ingredientsService.getAllIngredients();
     this.availableIngredients.set(
-      this.allIngredients.filter(ing => ing.slot !== null)
+      this.allIngredients.filter(ing => ing.pumpSlot !== null)
     );
     this.selectIngredient();
     this.currentModalData = this.modalService.getModalData();
     this.drinkTitle.set(this.currentModalData()!.name);
     this.drinkToppings.set(this.currentModalData()!.toppings);
-    this.imageBase64 = this.currentModalData()?.img ?? null;
+    this.imageBase64 = this.currentModalData()?.imgUrl ?? null;
     this.orderIngredients.set(
       this.currentModalData()!.drinkIngredients.map(ing => ({
-        Name: ing.name,
+        Name: ing.ingredientName,
         Amount: ing.amount,
         Status: ''
       }))

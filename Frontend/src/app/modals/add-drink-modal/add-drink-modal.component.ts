@@ -42,14 +42,14 @@ export class AddDrinkModalComponent {
 
   async ngOnInit() {
     this.availableIngredients.set(
-      this.allIngredients.filter(ing => ing.slot !== null)
+      this.allIngredients.filter(ing => ing.pumpSlot !== null)
     );
     this.selectIngredient();
   }
 
   selectIngredient() {
     const first = this.availableIngredients()[0];
-    this.selectedIngredient.set(first ? first.name : '');
+    this.selectedIngredient.set(first ? first.ingredientName : '');
   }
 
   deleteIngredient(index: number) {
@@ -60,7 +60,7 @@ export class AddDrinkModalComponent {
         this.orderIngredients().filter((_, i) => i !== index)
       );
       // Zurück in availableIngredients
-      const availableIng = this.allIngredients.find(i => i.name === ing.Name);
+      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
       if (availableIng) {
         this.availableIngredients.set([
           ...this.availableIngredients(),
@@ -73,7 +73,7 @@ export class AddDrinkModalComponent {
 
   addIngredient() {
     const avIng = this.availableIngredients().find(
-      ing => ing.name === this.selectedIngredient()
+      ing => ing.ingredientName === this.selectedIngredient()
     );
     if (
       avIng &&
@@ -86,7 +86,7 @@ export class AddDrinkModalComponent {
         { Name: this.selectedIngredient(), Amount: this.selectedAmount(), Status: '' }
       ]);
       this.availableIngredients.set(
-        this.availableIngredients().filter(ing => ing.name !== this.selectedIngredient())
+        this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
       );
       this.selectIngredient();
       this.selectedAmount.set(10);
@@ -96,7 +96,7 @@ export class AddDrinkModalComponent {
   validateOrder() {
     this.orderIngredients.set(
       this.orderIngredients().map(ing => {
-        const availableIng = this.allIngredients.find(i => i.name === ing.Name);
+        const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
         if (!availableIng) {
           return { ...ing, Status: 'Unbekannte Zutat' };
         }

@@ -31,7 +31,7 @@
                [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
                [class.hidden]="getSlideState($index) === 'hidden'">
             <div class="drink-card-image-container">
-              <img src="{{drink.img}}" alt="{{drink.name}}">
+              <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
             </div>
             <p>{{ drink.name }}</p>
           </div>
@@ -61,7 +61,7 @@
     @for(drink of filteredDrinks(); track $index) {
       <div class="drink-card" (click)="openModal(ModalType.OD, drink)">
         <div class="drink-card-image-container">
-          <img src="{{drink.img}}" alt="{{drink.name}}">
+          <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
         </div>
         <p>{{ drink.name }}</p>
       </div>

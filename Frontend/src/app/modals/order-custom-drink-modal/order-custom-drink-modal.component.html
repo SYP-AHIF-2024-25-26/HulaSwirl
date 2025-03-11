@@ -30,7 +30,7 @@
       <div id="add-order-ingredient">
         <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
           @for(ingredient of availableIngredients(); track $index){
-            <option value="{{ ingredient.name }}">{{ ingredient.name }}</option>
+            <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
           } @empty {
             <option value="" selected>No ingredients available</option>
           }
