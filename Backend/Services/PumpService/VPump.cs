@@ -20,21 +20,18 @@ namespace Backend.Services.PumpService
             _in1 = in1;
             _in2 = in2;
 
-            // Create PWM channels for both pins
-            _pwmChannel1 = new SoftwarePwmChannel(_in1, Frequency, 0);
-            _pwmChannel2 = new SoftwarePwmChannel(_in2, Frequency, 0);
-
-            // Ensure both pins are set as outputs
             _controller.OpenPin(_in1, PinMode.Output);
             _controller.OpenPin(_in2, PinMode.Output);
-
-            // Default direction: Forward (in1 -> PWM, in2 -> LOW)
+            _controller.Write(_in1, PinValue.Low);
             _controller.Write(_in2, PinValue.Low);
+
+            _pwmChannel1 = new SoftwarePwmChannel(_in1, Frequency, 0);
+            _pwmChannel2 = new SoftwarePwmChannel(_in2, Frequency, 0);
         }
 
         public void SetSpeed(int percentage)
         {
-            if (percentage is < 0 or > 100)
+            if (percentage < 0 || percentage > 100)
                 throw new ArgumentOutOfRangeException(nameof(percentage), "Percentage must be between 0 and 100");
 
             double dutyCycle = Math.Round(percentage / 100.0, 2);
@@ -53,31 +50,42 @@ namespace Backend.Services.PumpService
 
         public void Start()
         {
-            _pwmChannel1.Start();
-            _pwmChannel2.Start();
+            if (_isForward)
+            {
+                _pwmChannel1.Start();
+                _controller.Write(_in2, PinValue.Low);
+            }
+            else
+            {
+                _pwmChannel2.Start();
+                _controller.Write(_in1, PinValue.Low);
+            }
         }
 
         public void Stop()
         {
             _pwmChannel1.Stop();
             _pwmChannel2.Stop();
+
+            _controller.Write(_in1, PinValue.Low);
+            _controller.Write(_in2, PinValue.Low);
         }
 
         public void ChangeDirection()
         {
+            Stop();
+
             _isForward = !_isForward;
 
             if (_isForward)
             {
-                _pwmChannel1.Start();
-                _pwmChannel2.Stop();
                 _controller.Write(_in2, PinValue.Low);
+                _pwmChannel1.Start();
             }
             else
             {
-                _pwmChannel1.Stop();
-                _pwmChannel2.Start();
                 _controller.Write(_in1, PinValue.Low);
+                _pwmChannel2.Start();
             }
         }
     }
