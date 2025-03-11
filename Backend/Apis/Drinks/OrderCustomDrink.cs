@@ -6,7 +6,7 @@ namespace Backend.Apis.Drinks;
 
 public static class OrderCustomDrink
 {
-    public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos, AppDbContext context)
+    public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos, AppDbContext context, PumpManager manager)
     {
         //map ordered ingredient to available ingredients
         var orderedIngredientNames = ingredientDtos.Select(ingDto => ingDto.IngredientName).ToList();
@@ -29,7 +29,7 @@ public static class OrderCustomDrink
             var existingIngredient = ingredients
                 .First(ing => ing.Name == orderedIngredient.IngredientName)!;
 
-            // await pumpManager.StartPump(existingIngredient.PumpSlot, orderedIngredient.Ml);
+            await pumpManager.StartPump(existingIngredient.PumpSlot, orderedIngredient.Ml);
         }
 
         return Results.Ok("Ordered");
