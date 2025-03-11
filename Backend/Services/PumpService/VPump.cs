@@ -21,7 +21,10 @@ namespace Backend.Services.PumpService
             _in1 = in1;
             _in2 = in2;
 
+            _controller.OpenPin(_in1, PinMode.Output);
             _controller.OpenPin(_in2, PinMode.Output);
+
+            _controller.Write(_in1, PinValue.Low);
             _controller.Write(_in2, PinValue.Low);
 
             _pwmChannel = new SoftwarePwmChannel(_in1, Frequency, 0);
@@ -52,8 +55,11 @@ namespace Backend.Services.PumpService
             _pwmChannel.Stop();
             _isRunning = false;
 
-            _controller.Write(_in1, PinValue.Low);
-            _controller.Write(_in2, PinValue.Low);
+            if (_controller.IsPinOpen(_in1))
+                _controller.Write(_in1, PinValue.Low);
+
+            if (_controller.IsPinOpen(_in2))
+                _controller.Write(_in2, PinValue.Low);
         }
 
         public void ChangeDirection()
@@ -64,6 +70,9 @@ namespace Backend.Services.PumpService
             _isForward = !_isForward;
 
             _pwmChannel.Dispose();
+
+            if (!_controller.IsPinOpen(_isForward ? _in1 : _in2))
+                _controller.OpenPin(_isForward ? _in1 : _in2, PinMode.Output);
 
             _pwmChannel = new SoftwarePwmChannel(_isForward ? _in1 : _in2, Frequency, 0);
 
