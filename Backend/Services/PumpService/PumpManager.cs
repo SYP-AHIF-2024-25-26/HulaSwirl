@@ -58,7 +58,7 @@ namespace Backend.Services.PumpService
             _pumps = new List<VPump>
             {
                 new VPump(17, 27, _gpioController), // Pump 1 (forward)
-                new VPump(23, 24, _gpioController)  // Pump 2 (forward)
+                new VPump(23, 24, _gpioController) // Pump 2 (forward)
             };
 
             _pumps.ForEach(pump => pump.SetSpeed(20));
@@ -68,24 +68,36 @@ namespace Backend.Services.PumpService
         {
             _logger.LogInformation("Reversing pump {slot} direction.", slot);
 
+            // Manually close the current pump's GPIO pins
+            _pumps[slot].Stop();
             _pumps[slot].Dispose();
+
+            // Ensure pins are fully released by unexporting them
+            UnexportPin(_pumps[slot]._pwmPin);
+            UnexportPin(_pumps[slot]._fixedPin);
+
+            // Short delay to let the system release the pins
+            await Task.Delay(50);
+
             _logger.LogInformation("Disposed pump {slot}. Reinitializing in reverse.", slot);
 
+            // Determine reversed pin setup
             int newPwmPin, newFixedPin;
             switch (slot)
             {
                 case 0:
-                    newPwmPin = 27;
+                    newPwmPin = 27; // Reverse pin for slot 0
                     newFixedPin = 17;
                     break;
                 case 1:
-                    newPwmPin = 24;
+                    newPwmPin = 24; // Reverse pin for slot 1
                     newFixedPin = 23;
                     break;
                 default:
                     return;
             }
 
+            // Create a new pump instance with reversed pins
             _pumps[slot] = new VPump(newPwmPin, newFixedPin, _gpioController);
             _pumps[slot].SetSpeed(20);
             _logger.LogInformation("Pump {slot} reinitialized in reverse.", slot);
@@ -107,6 +119,18 @@ namespace Backend.Services.PumpService
             {
                 _pumps[slot].Stop();
                 _logger.LogInformation("Pump {slot} stopped.", slot);
+            }
+        }
+
+        private void UnexportPin(int pin)
+        {
+            try
+            {
+                File.WriteAllText("/sys/class/gpio/unexport", pin.ToString());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"Failed to unexport pin {pin}: {ex.Message}");
             }
         }
     }
