@@ -5,6 +5,5 @@
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    network_mode: host
     volumes:
       - /tmp/app.db:/tmp/app.db
