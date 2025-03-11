@@ -46,6 +46,8 @@ builder.Services.AddOpenApiDocument(config =>
 
 var app = builder.Build();
 
+app.Urls.Add("http://192.168.178.62:5000");
+
 app.UseCors("AllowAll");
 
 if (app.Environment.IsDevelopment())
