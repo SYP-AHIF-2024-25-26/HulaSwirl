@@ -4,31 +4,24 @@ using System.Device.Pwm.Drivers;
 
 namespace Backend.Services.PumpService
 {
-    public class VPump : IDisposable
+    public class VPump
     {
         private const int Frequency = 20_000;
         private readonly SoftwarePwmChannel _pwmChannel;
-        private readonly GpioController _controller;
-        private readonly int _pwmPin;
-        private readonly int _fixedPin;
-        private bool _isRunning = false;
-        private bool _disposed = false;
 
-        public VPump(int pwmPin, int fixedPin, GpioController controller)
+        public VPump(int in1, int in2, GpioController controller)
         {
-            _controller = controller;
-            _pwmPin = pwmPin;
-            _fixedPin = fixedPin;
+            _pwmChannel = new SoftwarePwmChannel(in1, Frequency, 0);
 
-            _controller.OpenPin(_fixedPin, PinMode.Output);
-            _controller.Write(_fixedPin, PinValue.Low);
+            controller.OpenPin(in1, PinMode.Output);
+            controller.OpenPin(in2, PinMode.Output);
 
-            _pwmChannel = new SoftwarePwmChannel(_pwmPin, Frequency, 0);
+            controller.Write(in2, PinValue.Low);
         }
 
         public void SetSpeed(int percentage)
         {
-            if (percentage < 0 || percentage > 100)
+            if (percentage is < 0 or > 100)
                 throw new ArgumentOutOfRangeException(nameof(percentage), "Percentage must be between 0 and 100");
 
             _pwmChannel.DutyCycle = Math.Round(percentage / 100.0, 2);
@@ -36,34 +29,12 @@ namespace Backend.Services.PumpService
 
         public void Start()
         {
-            if (_isRunning) return;
-
             _pwmChannel.Start();
-            _isRunning = true;
-
-            _controller.Write(_fixedPin, PinValue.Low);
         }
 
         public void Stop()
         {
-            if (!_isRunning) return;
-
             _pwmChannel.Stop();
-            _isRunning = false;
-
-            _controller.Write(_pwmPin, PinValue.Low);
-            _controller.Write(_fixedPin, PinValue.Low);
-        }
-
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                Stop();
-                _pwmChannel.Dispose();
-                _controller.ClosePin(_fixedPin);
-                _disposed = true;
-            }
         }
     }
 }

@@ -1,137 +1,51 @@
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Device.Gpio;
-using System.Threading;
-using System.Threading.Tasks;
+namespace Backend.Services.PumpService;
 
-namespace Backend.Services.PumpService
+public class PumpManager(ILogger<PumpManager> logger, GpioController gpioController)
 {
-    public class PumpManager
+    private List<VPump>? _pumps;
+
+    public async Task StartPump(int? slot, int ml)
     {
-        private readonly ILogger<PumpManager> _logger;
-        private readonly GpioController _gpioController;
-        private List<VPump>? _pumps;
+        InitializePumps();
 
-        public PumpManager(ILogger<PumpManager> logger, GpioController gpioController)
+        if (_pumps is null || slot is null || slot > _pumps.Count)
+            return;
+
+        logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
+
+        // Testing shows that at 20% a pump can output 13ml/s
+        var timeInSec = ml / 13;
+        var pump = _pumps[(int)slot];
+        var cancellationTokenSource = new CancellationTokenSource();
+
+        try
         {
-            _logger = logger;
-            _gpioController = gpioController;
-        }
+            pump.Start();
+            logger.LogInformation("Pump {slot} started.", slot);
 
-        public async Task StartPump(int? slot, int ml)
+            await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
+        }
+        catch (TaskCanceledException)
         {
-            InitializePumps();
-
-            if (_pumps is null || slot is null || slot >= _pumps.Count)
-                return;
-
-            _logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
-
-            var timeInSec = ml / 13;
-            var pump = _pumps[(int)slot];
-            var cancellationTokenSource = new CancellationTokenSource();
-
-            try
-            {
-                pump.Start();
-                _logger.LogInformation("Pump {slot} started.", slot);
-                await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                _logger.LogInformation("Pump {slot} operation was canceled.", slot);
-            }
-            finally
-            {
-                pump.Stop();
-                _logger.LogInformation("Pump {slot} stopped.", slot);
-            }
-
-            await ReversePump((int)slot, ml);
+            logger.LogInformation("Pump {slot} operation was canceled.", slot);
         }
-
-        private void InitializePumps()
+        finally
         {
-            if (_pumps is not null) return;
-
-            _pumps = new List<VPump>
-            {
-                new VPump(17, 27, _gpioController), // Pump 1 (forward)
-                new VPump(23, 24, _gpioController) // Pump 2 (forward)
-            };
-
-            _pumps.ForEach(pump => pump.SetSpeed(20));
+            pump.Stop();
+            logger.LogInformation("Pump {slot} stopped.", slot);
         }
+    }
 
-        private async Task ReversePump(int slot, int ml)
-        {
-            _logger.LogInformation("Reversing pump {slot} direction.", slot);
+    private void InitializePumps()
+    {
+        if (_pumps is not null) return;
 
-            // Manually close the current pump's GPIO pins
-            _pumps[slot].Stop();
-            _pumps[slot].Dispose();
+        _pumps =
+        [
+            new VPump(17, 27, gpioController),
+            new VPump(23, 24, gpioController)
+        ];
 
-            // Ensure pins are fully released by unexporting them
-            UnexportPin(_pumps[slot]._pwmPin);
-            UnexportPin(_pumps[slot]._fixedPin);
-
-            // Short delay to let the system release the pins
-            await Task.Delay(50);
-
-            _logger.LogInformation("Disposed pump {slot}. Reinitializing in reverse.", slot);
-
-            // Determine reversed pin setup
-            int newPwmPin, newFixedPin;
-            switch (slot)
-            {
-                case 0:
-                    newPwmPin = 27; // Reverse pin for slot 0
-                    newFixedPin = 17;
-                    break;
-                case 1:
-                    newPwmPin = 24; // Reverse pin for slot 1
-                    newFixedPin = 23;
-                    break;
-                default:
-                    return;
-            }
-
-            // Create a new pump instance with reversed pins
-            _pumps[slot] = new VPump(newPwmPin, newFixedPin, _gpioController);
-            _pumps[slot].SetSpeed(20);
-            _logger.LogInformation("Pump {slot} reinitialized in reverse.", slot);
-
-            var timeInSec = ml / 13;
-            var cancellationTokenSource = new CancellationTokenSource();
-
-            try
-            {
-                _pumps[slot].Start();
-                _logger.LogInformation("Pump {slot} started in reverse.", slot);
-                await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                _logger.LogInformation("Pump {slot} operation was canceled.", slot);
-            }
-            finally
-            {
-                _pumps[slot].Stop();
-                _logger.LogInformation("Pump {slot} stopped.", slot);
-            }
-        }
-
-        private void UnexportPin(int pin)
-        {
-            try
-            {
-                File.WriteAllText("/sys/class/gpio/unexport", pin.ToString());
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning($"Failed to unexport pin {pin}: {ex.Message}");
-            }
-        }
+        _pumps.ForEach(pump => pump.SetSpeed(20));
     }
 }
