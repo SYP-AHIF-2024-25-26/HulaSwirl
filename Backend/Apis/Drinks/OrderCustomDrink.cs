@@ -29,7 +29,7 @@ public static class OrderCustomDrink
             var existingIngredient = ingredients
                 .First(ing => ing.Name == orderedIngredient.IngredientName)!;
 
-            await pumpManager.StartPump(existingIngredient.PumpSlot, orderedIngredient.Ml);
+            await manager.StartPump(existingIngredient.PumpSlot, orderedIngredient.Ml);
         }
 
         return Results.Ok("Ordered");
