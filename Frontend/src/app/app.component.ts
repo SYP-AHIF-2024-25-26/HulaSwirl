@@ -1,5 +1,5 @@
 import {Component, inject, Signal} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgClass, NgOptimizedImage} from '@angular/common';
 import {ModalService, ModalType} from './services/modal.service';
 import {OrderCustomDrinkModalComponent} from './modals/order-custom-drink-modal/order-custom-drink-modal.component';
@@ -12,7 +12,7 @@ import {DrinkService} from './services/drink.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent],
+  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'

@@ -1,12 +1,23 @@
 <nav id="navbar">
   <img src="assets/images/InconV1png.png" id="logo" alt="Logo">
   <div id="nav-page-container">
-    <a class="link" routerLink="home">Home</a>
-    <a class="link" routerLink="admin/drinks">Drinks</a>
-    <a class="link" routerLink="admin/ingredients">Ingredients</a>
-    <a class="link" routerLink="admin/statistics">Statistics</a>
+    <a class="link" routerLink="home"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }">
+      Home
+    </a>
+    <a class="link" routerLink="admin/drinks" routerLinkActive="active">
+      Drinks
+    </a>
+    <a class="link" routerLink="admin/ingredients" routerLinkActive="active">
+      Ingredients
+    </a>
+    <a class="link" routerLink="admin/statistics" routerLinkActive="active">
+      Statistics
+    </a>
   </div>
 </nav>
+
 <app-background-leaves>
   <router-outlet></router-outlet>
 
