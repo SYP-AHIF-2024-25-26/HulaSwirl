@@ -31,6 +31,12 @@ public static class IngredientApi
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
+        app.MapDelete($"{baseUrl}/delete", DeleteIngredient.HandleDeleteIngredient)
+            .WithName(nameof(DeleteIngredient.HandleDeleteIngredient))
+            .WithDescription("Delete ingredient")
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status200OK);
+
         return app;
     }
 }

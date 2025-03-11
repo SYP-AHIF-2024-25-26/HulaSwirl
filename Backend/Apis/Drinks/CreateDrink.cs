@@ -6,11 +6,16 @@ namespace Backend.Apis.Drinks;
 
 public static class CreateDrink
 {
-    public static async Task<Drink?> HandleCreateDrink([FromBody] DrinkDto drinkDto, AppDbContext context)
+    public static async Task<IResult> HandleCreateDrink([FromBody] DrinkDto drinkDto, AppDbContext context)
     {
         //map dto
         var drink = new
             Drink(drinkDto.Name, true, drinkDto.Img, drinkDto.Toppings);
+
+        if (drinkDto.Ingredients.Count == 0)
+        {
+            return Results.BadRequest("Please provide at least one ingredient");
+        }
 
         drink.DrinkIngredients =
             drinkDto.Ingredients.Select(dto => new Ingredient(dto.Name, dto.Amount, drink)).ToList();
@@ -18,7 +23,7 @@ public static class CreateDrink
         context.Drink.Add(drink);
 
         await context.SaveChangesAsync();
-        return drink;
+        return Results.Ok("Drink created");
     }
 
     public class DrinkDto
