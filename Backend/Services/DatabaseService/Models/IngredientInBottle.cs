@@ -2,7 +2,7 @@ namespace Backend.Services.DatabaseService.Models;
 
 public class IngredientInBottle(string name, int remainingMl, int maxMl)
 {
-    IngredientInBottle() : this(string.Empty, 0, 0)
+    public IngredientInBottle() : this(string.Empty, 0, 0)
     {
     }
 

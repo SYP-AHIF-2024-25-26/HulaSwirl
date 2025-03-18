@@ -25,6 +25,25 @@ public static class AddIngredient
 
         drink.DrinkIngredients.Add(newIngredient);
 
+        //Add ingredientInBottle if ingredientInBottle doesn't yet exist
+
+        var ingredientsInBottles =
+            await context.IngredientInBottle
+                .Where(ingB => ingB.Name == newIngredient.IngredientName)
+                .ToListAsync();
+
+        if (ingredientsInBottles.Count != 0)
+        {
+            //none exist add  ingredientInBottle
+
+            var ingredientInBottle = new IngredientInBottle()
+            {
+                Name = newIngredient.IngredientName
+            };
+
+            context.IngredientInBottle.Add(ingredientInBottle);
+        }
+
         await context.SaveChangesAsync();
 
         return Results.Ok("Ingredient added to drink");
