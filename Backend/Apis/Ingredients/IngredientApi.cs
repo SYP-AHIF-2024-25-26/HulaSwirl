@@ -37,6 +37,12 @@ public static class IngredientApi
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
+        app.MapPatch($"{baseUrl}/add", AddIngredient.HandleAddIngredient)
+            .WithName(nameof(AddIngredient.HandleAddIngredient))
+            .WithDescription("Add ingredient to drink")
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status200OK);
+
         return app;
     }
 }
