@@ -36,3 +36,8 @@
   gap: 20px;
   align-items: center;
 }
+
+.active {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}

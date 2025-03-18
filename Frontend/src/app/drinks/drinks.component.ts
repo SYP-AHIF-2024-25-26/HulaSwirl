@@ -1,4 +1,4 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal} from '@angular/core';
 import {Drink, DrinkService} from '../services/drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
@@ -55,10 +55,12 @@ export class DrinksComponent {
     }
   }
 
-  async ngOnInit(){
-    this.allDrinks.set(await this.drinkService.getDrinks());
-    this.filteredDrinks.set(await this.drinkService.getDrinks());
-    //this.allAvailableIngredients.set((await this.ingredientService.getAllIngredients()).filter(ing => ing.slot !== null));
+  constructor(){
+    effect(() => {
+      this.allDrinks.set(this.drinkService.drinks());
+      this.filteredDrinks.set(this.drinkService.drinks());
+      this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.pumpSlot !== null));
+    });
     console.log(this.filteredDrinks+"help");
   }
   openModal(m:ModalType,data:any=null) {
