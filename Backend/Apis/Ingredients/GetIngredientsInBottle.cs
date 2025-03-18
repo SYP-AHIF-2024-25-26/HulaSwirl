@@ -14,7 +14,7 @@ public static class GetIngredientsInBottle
             IngredientName = ig.Name,
             RemainingMl = ig.RemainingMl,
             PumpSlot = ig.PumpSlot,
-            MaxMl = ig.MaxMl
+            MaxAmount = ig.MaxMl
         }).ToList();
     }
 
@@ -23,6 +23,6 @@ public static class GetIngredientsInBottle
         public required string IngredientName { get; set; }
         public required int RemainingMl { get; set; }
         public required int? PumpSlot { get; set; }
-        public required int MaxMl { get; set; }
+        public required int MaxAmount { get; set; }
     }
 }
