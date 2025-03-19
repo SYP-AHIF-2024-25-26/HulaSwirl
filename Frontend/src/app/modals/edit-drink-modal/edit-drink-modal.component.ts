@@ -1,6 +1,6 @@
 import {Component, effect, inject, Input, Signal, signal, SimpleChanges, WritableSignal} from '@angular/core';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
-import {Drink, DrinkService, EditDrinkDTO, NewDrinkDTO} from '../../services/drink.service';
+import {Drink, DrinkBase, DrinkService} from '../../services/drink.service';
 import {ModalService} from '../../services/modal.service';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
@@ -41,8 +41,8 @@ export class EditDrinkModalComponent {
   deleteIngredient(index: number) {
     const ing = this.orderIngredients()[index];
     if (ing && this.currentModalData()) {
-      this.currentModalData()!.drinkIngredients = this.currentModalData()!.drinkIngredients.filter(i => i.ingredientName !== ing.Name);
-      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
+      this.currentModalData()!.drinkIngredients = this.currentModalData()!.drinkIngredients.filter(i => i.ingredientName !== ing.ingredientName);
+      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
       console.log(this.orderIngredients())
       if (availableIng) {
         this.availableIngredients.set([
@@ -60,15 +60,13 @@ export class EditDrinkModalComponent {
     if (
       this.currentModalData() &&
       avIng &&
-      avIng.remainingMl >= this.selectedAmount() &&
+      avIng.remainingAmount >= this.selectedAmount() &&
       this.selectedAmount() > 0 &&
       this.selectedAmount() <= 100
     ) {
       this.currentModalData()!.drinkIngredients.push({
-        id: 0,
         ingredientName: this.selectedIngredient(),
-        ml: this.selectedAmount(),
-        drinkID: 0
+        amount: this.selectedAmount()
       });
       this.availableIngredients.set(
         this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
@@ -81,29 +79,30 @@ export class EditDrinkModalComponent {
   validateOrder() {
     this.orderIngredients.set(
       this.orderIngredients().map(ing => {
-        const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
+        const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
         if (!availableIng) {
-          return { ...ing, Status: 'Unbekannte Zutat' };
+          return { ...ing, status: 'Unbekannte Zutat' };
         }
-        if (ing.Amount < 0) {
-          return { ...ing, Status: 'Negativer Wert nicht erlaubt' };
+        if (ing.amount < 0) {
+          return { ...ing, status: 'Negativer Wert nicht erlaubt' };
         }
-        if (ing.Amount > 100) {
-          return { ...ing, Status: 'Maximal 100 ml pro Zutat' };
+        if (ing.amount > 100) {
+          return { ...ing, status: 'Maximal 100 ml pro Zutat' };
         }
-        if (ing.Amount > availableIng.remainingMl) {
+        if (ing.amount > availableIng.remainingAmount) {
           return {
             ...ing,
-            Status: `Nur noch ${availableIng.remainingMl}ml verfügbar`
+            status: `Nur noch ${availableIng.remainingAmount}ml verfügbar`
           };
         }
-        return { ...ing, Status: '' };
+        return { ...ing, status: '' };
       })
     );
   }
 
   async submitDrink() {
     this.validateOrder()
+    console.log(this.orderIngredients())
     if(this.currentModalData()){
       this.currentModalData()!.name = this.drinkTitle();
       this.currentModalData()!.toppings = this.drinkToppings();
@@ -112,15 +111,15 @@ export class EditDrinkModalComponent {
       this.closeModal();
       this.drinkService.drinks.update(d => d.map(drink => drink.id === this.currentModalData()!.id ? this.currentModalData()! : drink));
       console.log(this.currentModalData())
-      if (this.orderIngredients().every(ing => ing.Status === '')) {
-        const drinkData: EditDrinkDTO = {
-          id: this.currentModalData()!.id,
+      if (this.orderIngredients().every(ing => ing.status === '')) {
+        const drinkData: DrinkBase = {
           name: this.currentModalData()!.name,
           available: this.drinkAvailable(),
-          img: this.imageBase64(),
-          toppings: this.currentModalData()!.toppings
+          imgUrl: this.imageBase64(),
+          toppings: this.currentModalData()!.toppings,
+          drinkIngredients: this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount }))
         };
-        await this.drinkService.editDrink(drinkData)
+        await this.drinkService.editDrink(drinkData, this.currentModalData()!.id);
       }
     }
   }
@@ -162,8 +161,8 @@ export class EditDrinkModalComponent {
   constructor() {
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
-      this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ Name: ing.ingredientName, Amount: ing.ml, Status: '' })) ?? []);
-      this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.Name == ing.ingredientName)).filter(ing => ing.pumpSlot !== null));
+      this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
+      this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)).filter(ing => ing.pumpSlot !== null));
       this.drinkTitle.set(this.currentModalData()?.name ?? '');
       this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
       this.imageBase64.set(this.currentModalData()?.imgUrl ?? null);

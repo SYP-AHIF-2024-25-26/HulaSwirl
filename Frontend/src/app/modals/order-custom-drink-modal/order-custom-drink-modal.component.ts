@@ -33,7 +33,7 @@ export class OrderCustomDrinkModalComponent {
   constructor() {
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
-      this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.Name == ing.ingredientName)).filter(ing => ing.pumpSlot !== null));
+      this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)).filter(ing => ing.pumpSlot !== null));
       this.selectIngredient()
     });
   }
@@ -51,7 +51,7 @@ export class OrderCustomDrinkModalComponent {
     const ing = this.orderIngredients()[$index];
     if(ing) {
       this.orderIngredients.set(this.orderIngredients().filter((_, i) => i !== $index));
-      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
+      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
       if(availableIng) this.availableIngredients.set([...this.availableIngredients(), availableIng!]);
       this.selectIngredient();
     }
@@ -59,8 +59,8 @@ export class OrderCustomDrinkModalComponent {
 
   addIngredient() {
     const avIng = this.availableIngredients().find(ing => ing.ingredientName === this.selectedIngredient());
-    if(avIng && avIng!.remainingMl >= this.selectedAmount() && this.selectedAmount() > 0 && this.selectedAmount() < 100) {
-      this.orderIngredients.set([...this.orderIngredients(), { Name: this.selectedIngredient(), Amount: this.selectedAmount(), Status: "" }]);
+    if(avIng && avIng!.remainingAmount >= this.selectedAmount() && this.selectedAmount() > 0 && this.selectedAmount() < 100) {
+      this.orderIngredients.set([...this.orderIngredients(), { ingredientName: this.selectedIngredient(), amount: this.selectedAmount(), status: "" }]);
       this.availableIngredients.set(this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient()));
       this.selectIngredient();
       this.selectedAmount.set(10);
@@ -69,30 +69,27 @@ export class OrderCustomDrinkModalComponent {
 
   validateOrder() {
     this.orderIngredients.set(this.orderIngredients().map(ing => {
-      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
+      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
       if(!availableIng) {
-        return { ...ing, Status: "Where did that ingredient come from?" };
+        return { ...ing, status: "Where did that ingredient come from?" };
       }
-      if(ing.Amount < 0) {
-        return { ...ing, Status: "That's not how you refill the machine" };
+      if(ing.amount < 0) {
+        return { ...ing, status: "That's not how you refill the machine" };
       }
-      if(ing.Amount > 100) {
-        return { ...ing, Status: "You shouldn't drink more than 100ml of this" };
+      if(ing.amount > 100) {
+        return { ...ing, status: "You shouldn't drink more than 100ml of this" };
       }
-      if(ing.Amount > availableIng!.remainingMl) {
-        return {...ing, Status: `This ingredient only has ${availableIng!.remainingMl}ml left`};
+      if(ing.amount > availableIng!.remainingAmount) {
+        return {...ing, status: `This ingredient only has ${availableIng!.remainingAmount}ml left`};
       }
-      return { ...ing, Status: "" };
+      return { ...ing, status: "" };
     }));
   }
 
   async submitOrder() {
     this.validateOrder();
-    if(this.orderIngredients().every(ing => ing.Status === "")) {
-      await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
-        Name: ing.Name,
-        Amount: ing.Amount
-      })));
+    if(this.orderIngredients().every(ing => ing.status === "")) {
+      await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount})));
       this.closeModal();
     }
   }

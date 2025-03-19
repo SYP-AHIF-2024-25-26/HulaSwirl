@@ -136,7 +136,7 @@ export class IngredientsComponent {
 
   unavailableDrop(event: DragEvent) {
     if (!this.draggedIngredient) return;
-    this.draggedIngredient.maxMl = this.draggedIngredient.remainingMl;
+    this.draggedIngredient.maxAmount = this.draggedIngredient.remainingAmount;
     this.draggedIngredient.pumpSlot = null;
     this.unIngredients.update(ings => [...ings, this.draggedIngredient!]);
     this.dropSuccessful = true;
@@ -147,17 +147,17 @@ export class IngredientsComponent {
     const newValue = parseInt(target.value);
     if (newValue < 0 || newValue > 9999 || isNaN(newValue)) {
       const ing = this.avIngredients()[index];
-      if (ing) target.value = ing.remainingMl.toString();
+      if (ing) target.value = ing.remainingAmount.toString();
       return;
     }
     this.avIngredients.update(ings => {
       const newArr = [...ings];
       const ingByIndex = this.getIngredientByIndex(index);
       if (ingByIndex) {
-        if (newValue > ingByIndex.maxMl) {
-          ingByIndex.maxMl = newValue;
+        if (newValue > ingByIndex.maxAmount) {
+          ingByIndex.maxAmount = newValue;
         }
-        ingByIndex.remainingMl = newValue;
+        ingByIndex.remainingAmount = newValue;
       }
       return newArr;
     });
@@ -168,7 +168,7 @@ export class IngredientsComponent {
   }
 
   getLiquidPercentage(ingredient: Ingredient): number {
-    return (ingredient.remainingMl / ingredient.maxMl) * 100 + 0.5;
+    return (ingredient.remainingAmount / ingredient.maxAmount) * 100 + 0.5;
   }
 
   getIngredientByIndex(idx: number): Ingredient | null {

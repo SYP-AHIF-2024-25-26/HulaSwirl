@@ -3,7 +3,7 @@ import { ModalService } from '../../services/modal.service';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {DrinkService, NewDrinkDTO} from '../../services/drink.service';
+import {DrinkBase, DrinkService} from '../../services/drink.service';
 
 @Component({
   selector: 'app-add-drink-modal',
@@ -51,7 +51,7 @@ export class AddDrinkModalComponent {
       this.orderIngredients.set(
         this.orderIngredients().filter((_, i) => i !== index)
       );
-      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
+      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
       if (availableIng) {
         this.availableIngredients.set([
           ...this.availableIngredients(),
@@ -68,13 +68,13 @@ export class AddDrinkModalComponent {
     );
     if (
       avIng &&
-      avIng.remainingMl >= this.selectedAmount() &&
+      avIng.remainingAmount >= this.selectedAmount() &&
       this.selectedAmount() > 0 &&
       this.selectedAmount() <= 100
     ) {
       this.orderIngredients.set([
         ...this.orderIngredients(),
-        { Name: this.selectedIngredient(), Amount: this.selectedAmount(), Status: '' }
+        { ingredientName: this.selectedIngredient(), amount: this.selectedAmount(), status: '' }
       ]);
       this.availableIngredients.set(
         this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
@@ -87,37 +87,38 @@ export class AddDrinkModalComponent {
   validateOrder() {
     this.orderIngredients.set(
       this.orderIngredients().map(ing => {
-        const availableIng = this.allIngredients.find(i => i.ingredientName === ing.Name);
+        const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
         if (!availableIng) {
-          return { ...ing, Status: 'Unbekannte Zutat' };
+          return { ...ing, status: 'Unbekannte Zutat' };
         }
-        if (ing.Amount < 0) {
-          return { ...ing, Status: 'Negativer Wert nicht erlaubt' };
+        if (ing.amount < 0) {
+          return { ...ing, status: 'Negativer Wert nicht erlaubt' };
         }
-        if (ing.Amount > 100) {
-          return { ...ing, Status: 'Maximal 100 ml pro Zutat' };
+        if (ing.amount > 100) {
+          return { ...ing, status: 'Maximal 100 ml pro Zutat' };
         }
-        if (ing.Amount > availableIng.remainingMl) {
+        if (ing.amount > availableIng.remainingAmount) {
           return {
             ...ing,
-            Status: `Nur noch ${availableIng.remainingMl}ml verfügbar`
+            status: `Nur noch ${availableIng.remainingAmount}ml verfügbar`
           };
         }
-        return { ...ing, Status: '' };
+        return { ...ing, status: '' };
       })
     );
   }
 
   async submitDrink() {
     this.validateOrder();
-    if (this.orderIngredients().every(ing => ing.Status === '')) {
-      const drinkData: NewDrinkDTO = {
+    if (this.orderIngredients().every(ing => ing.status === '')) {
+      const drinkData: DrinkBase = {
         name: this.drinkTitle(),
-        img: this.imageBase64,
+        imgUrl: this.imageBase64,
+        available: true,
         toppings: this.drinkToppings(),
-        ingredients: this.orderIngredients().map(ing => ({
-          name: ing.Name,
-          amount: ing.Amount
+        drinkIngredients: this.orderIngredients().map(ing => ({
+          ingredientName: ing.ingredientName,
+          amount: ing.amount
         }))
       };
       await this.drinkService.postNewDrink(drinkData);

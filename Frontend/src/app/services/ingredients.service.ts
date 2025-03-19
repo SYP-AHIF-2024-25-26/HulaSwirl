@@ -7,45 +7,43 @@ export const liquidIngredients: Ingredient[] = [
   {
     ingredientName: 'Apple Juice',
     pumpSlot: 1,
-    remainingMl: 1000,
-    maxMl: 1000
+    remainingAmount: 1000,
+    maxAmount: 1000
   },
   {
     ingredientName: 'Water',
     pumpSlot: 2,
-    remainingMl: 2000,
-    maxMl: 2000
+    remainingAmount: 2000,
+    maxAmount: 2000
   },
   {
     ingredientName: 'Sugar Syrup',
     pumpSlot: 3,
-    remainingMl: 500,
-    maxMl: 500
+    remainingAmount: 500,
+    maxAmount: 500
   },
   {
     ingredientName: 'Mint Leaves',
     pumpSlot: 4,
-    remainingMl: 100,
-    maxMl: 100
+    remainingAmount: 100,
+    maxAmount: 100
   }
 ];
+
+export interface DrinkIngredient {
+  ingredientName: string;
+  amount: number;
+}
 
 export interface Ingredient {
   ingredientName: string;
   pumpSlot: number | null;
-  remainingMl: number;
-  maxMl: number;
+  remainingAmount: number;
+  maxAmount: number;
 }
 
-export interface OrderPreparation {
-  Name: string;
-  Amount: number;
-  Status: string;
-}
-
-export interface OrderDto {
-  Name: string;
-  Amount: number;
+export interface OrderPreparation extends DrinkIngredient {
+  status: string;
 }
 
 @Injectable({
@@ -66,7 +64,7 @@ export class IngredientsService {
     this.ingredients.update(ings => ings.map(ing => ({ ...ing, pumpSlot: ing.pumpSlot && ing.pumpSlot <= this.ingredientSlots ? ing.pumpSlot : null })));
   }
 
-  async postOrder(ingredients: OrderDto[]): Promise<void> {
+  async postOrder(ingredients: DrinkIngredient[]): Promise<void> {
     await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
     await this.reloadIngredients();
   }

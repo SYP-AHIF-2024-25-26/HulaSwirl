@@ -19,8 +19,8 @@
             </div>
             <div class="ingredient-quantity">
               <input type="number"
-                    (blur)="updateRemaining($event, i)" (mousedown)="$event.stopPropagation()"
-                    value="{{ getIngredientByIndex(i)!.remainingMl }}" max="9999" min="0">
+                     (blur)="updateRemaining($event, i)" (mousedown)="$event.stopPropagation()"
+                     value="{{ getIngredientByIndex(i)!.remainingAmount }}" max="9999" min="0">
               <span>ml</span>
             </div>
             <div class="liquid-bar"

@@ -24,7 +24,7 @@ export class OrderDrinkModalComponent {
 
   async submitOrder() {
     if(this.selectedDrink()) {
-      await this.drinkService.orderDrink(this.selectedDrink()!);
+      await this.drinkService.orderDrink(this.selectedDrink()!.id);
     }
     this.closeModal();
   }
