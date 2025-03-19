@@ -143,6 +143,7 @@ export class DrinkService {
   async reloadDrinks(){
     try {
       this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks")));
+      console.log(this.drinks());
     } catch (e) {
       console.error("Using default drinks", e);
       this.drinks.set(drinks);
@@ -150,21 +151,21 @@ export class DrinkService {
   }
 
   async postNewDrink(drinkdata: DrinkBase){
-    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks", drinkdata));
+    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/create", drinkdata));
     await this.reloadDrinks();
   }
   async orderDrink(ID: number) {
-    await firstValueFrom(this.httpClient.get(environment.apiUrl + "/drinks?id=" + ID));
+    await firstValueFrom(this.httpClient.get(environment.apiUrl + "/drinks/order?id=" + ID));
     await this.reloadDrinks();
   }
   async deleteDrink(ID: number){
     console.log("rawr delete")
-    await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks?id=" + ID));
+    await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks/delete?id=" + ID));
     this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
   }
   async editDrink(drinkdata: DrinkBase, ID: number){
-    console.log("rawr edit")
-    await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks?id=" + ID, drinkdata));
+    console.log(drinkdata);
+    await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata));
     await this.reloadDrinks();
   }
 }

@@ -108,9 +108,7 @@ export class EditDrinkModalComponent {
       this.currentModalData()!.toppings = this.drinkToppings();
       this.currentModalData()!.imgUrl = this.imageBase64() ?? '';
       this.currentModalData()!.available = this.drinkAvailable();
-      this.closeModal();
       this.drinkService.drinks.update(d => d.map(drink => drink.id === this.currentModalData()!.id ? this.currentModalData()! : drink));
-      console.log(this.currentModalData())
       if (this.orderIngredients().every(ing => ing.status === '')) {
         const drinkData: DrinkBase = {
           name: this.currentModalData()!.name,
@@ -121,6 +119,7 @@ export class EditDrinkModalComponent {
         };
         await this.drinkService.editDrink(drinkData, this.currentModalData()!.id);
       }
+      this.closeModal();
     }
   }
 
