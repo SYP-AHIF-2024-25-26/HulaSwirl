@@ -7,14 +7,14 @@ public static class GetIngredientsInBottle
 {
     public static async Task<List<IngredientInBottleDto>> HandleGetIngredientsInBottle(AppDbContext context)
     {
-        var ingredients = await context.IngredientInBottle.ToListAsync();
+        var ingredients = await context.Ingredient.ToListAsync();
 
         return ingredients.Select(ig => new IngredientInBottleDto
         {
-            IngredientName = ig.Name,
-            RemainingAmount = ig.RemainingMl,
+            IngredientName = ig.IngredientName,
+            RemainingAmount = ig.RemainingAmount,
             PumpSlot = ig.PumpSlot,
-            MaxAmount = ig.MaxMl
+            MaxAmount = ig.MaxAmount
         }).ToList();
     }
 

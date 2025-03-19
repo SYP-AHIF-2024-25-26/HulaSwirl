@@ -1,26 +1,20 @@
-using System.Text.Json.Serialization;
-
 namespace Backend.Services.DatabaseService.Models;
 
-public class Ingredient(string ingredientName, int ml, Drink drink)
+public class Ingredient(string ingredientName, int remainingAmount, int maxAmount)
 {
-    public Ingredient() : this(string.Empty, 0, null!)
+    public Ingredient() : this(string.Empty, 0, 0)
     {
     }
 
-    [Key] public int ID { get; set; }
-
-    public int Ml { get; set; } = ml;
-
-
-    // Foreign Keys
-    [ForeignKey(nameof(IngredientInBottle.Name))]
     [StringLength(255)]
-    public string IngredientName { get; set; } = ingredientName;
+    [Key] public string IngredientName { get; set; } = ingredientName;
 
-    public int DrinkID { get; set; }
+    public int RemainingAmount { get; set; } = remainingAmount;
 
-    // Navigational Properties
-    [JsonIgnore] public IngredientInBottle? IngredientInBottle { get; set; }
-    [JsonIgnore] public Drink? Drink { get; set; } = drink;
+    public int MaxAmount { get; set; } = maxAmount;
+
+    [ForeignKey(nameof(Pump.Slot))]
+    public int? PumpSlot { get; set; }
+
+    public Pump? Pump { get; set; }
 }

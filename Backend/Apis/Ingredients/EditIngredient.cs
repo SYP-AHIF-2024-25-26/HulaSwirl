@@ -8,6 +8,7 @@ public static class EditIngredient
     public static async Task<IResult> HandleEditIngredient([FromBody] IngredientDto ingredientDto,
         AppDbContext context)
     {
+        /*
         var ingredient = await context.Ingredient.FindAsync(ingredientDto.IngredientId);
 
         if (ingredient is null)
@@ -19,6 +20,7 @@ public static class EditIngredient
         ingredient.Ml = ingredientDto.Quantity;
 
         await context.SaveChangesAsync();
+        */
 
         return Results.Ok("Ingredient edited");
     }

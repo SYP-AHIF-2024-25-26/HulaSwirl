@@ -15,16 +15,16 @@ namespace Backend.Migrations
                 name: "Drink",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     Available = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ImgUrl = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false),
-                    Toppings = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false)
+                    ImgUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    Toppings = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Drink", x => x.ID);
+                    table.PrimaryKey("PK_Drink", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,54 +56,64 @@ namespace Backend.Migrations
                         name: "FK_DrinkOrder_Drink_DrinkID",
                         column: x => x.DrinkID,
                         principalTable: "Drink",
-                        principalColumn: "ID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IngredientInBottle",
-                columns: table => new
-                {
-                    Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
-                    RemainingMl = table.Column<int>(type: "INTEGER", nullable: false),
-                    MaxMl = table.Column<int>(type: "INTEGER", nullable: false),
-                    PumpSlot = table.Column<int>(type: "INTEGER", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IngredientInBottle", x => x.Name);
-                    table.ForeignKey(
-                        name: "FK_IngredientInBottle_Pump_PumpSlot",
-                        column: x => x.PumpSlot,
-                        principalTable: "Pump",
-                        principalColumn: "Slot");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Ingredient",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Ml = table.Column<int>(type: "INTEGER", nullable: false),
                     IngredientName = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
-                    DrinkID = table.Column<int>(type: "INTEGER", nullable: false),
-                    IngredientInBottleName = table.Column<string>(type: "TEXT", nullable: true)
+                    RemainingAmount = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxAmount = table.Column<int>(type: "INTEGER", nullable: false),
+                    PumpSlot = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredient", x => x.ID);
+                    table.PrimaryKey("PK_Ingredient", x => x.IngredientName);
                     table.ForeignKey(
-                        name: "FK_Ingredient_Drink_DrinkID",
-                        column: x => x.DrinkID,
+                        name: "FK_Ingredient_Pump_PumpSlot",
+                        column: x => x.PumpSlot,
+                        principalTable: "Pump",
+                        principalColumn: "Slot");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DrinkIngredient",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DrinkId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IngredientNameFK = table.Column<string>(type: "TEXT", nullable: false),
+                    Amount = table.Column<int>(type: "INTEGER", nullable: false),
+                    IngredientName = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DrinkIngredient", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DrinkIngredient_Drink_DrinkId",
+                        column: x => x.DrinkId,
                         principalTable: "Drink",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ingredient_IngredientInBottle_IngredientInBottleName",
-                        column: x => x.IngredientInBottleName,
-                        principalTable: "IngredientInBottle",
-                        principalColumn: "Name");
+                        name: "FK_DrinkIngredient_Ingredient_IngredientName",
+                        column: x => x.IngredientName,
+                        principalTable: "Ingredient",
+                        principalColumn: "IngredientName");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DrinkIngredient_DrinkId",
+                table: "DrinkIngredient",
+                column: "DrinkId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DrinkIngredient_IngredientName",
+                table: "DrinkIngredient",
+                column: "IngredientName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DrinkOrder_DrinkID",
@@ -111,24 +121,17 @@ namespace Backend.Migrations
                 column: "DrinkID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredient_DrinkID",
+                name: "IX_Ingredient_PumpSlot",
                 table: "Ingredient",
-                column: "DrinkID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ingredient_IngredientInBottleName",
-                table: "Ingredient",
-                column: "IngredientInBottleName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IngredientInBottle_PumpSlot",
-                table: "IngredientInBottle",
                 column: "PumpSlot");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DrinkIngredient");
+
             migrationBuilder.DropTable(
                 name: "DrinkOrder");
 
@@ -137,9 +140,6 @@ namespace Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Drink");
-
-            migrationBuilder.DropTable(
-                name: "IngredientInBottle");
 
             migrationBuilder.DropTable(
                 name: "Pump");

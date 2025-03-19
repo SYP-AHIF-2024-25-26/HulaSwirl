@@ -10,6 +10,6 @@ public static class GetDrinkInfo
     {
         return (await context.Drink
             .Include(drink => drink.DrinkIngredients)
-            .FirstOrDefaultAsync(drink => drink.ID == int.Parse(id)))!;
+            .FirstOrDefaultAsync(drink => drink.Id == int.Parse(id)))!;
     }
 }

@@ -25,10 +25,10 @@ public static class DeleteIngredient
 
         if (ingredients.Count != 0)
         {
-            var ingredientInBottle = await context.IngredientInBottle.FindAsync(ingredient.IngredientName);
+            var ingredientInBottle = await context.Ingredient.FindAsync(ingredient.IngredientName);
 
             if (ingredientInBottle != null)
-                context.IngredientInBottle.Remove(ingredientInBottle);
+                context.Ingredient.Remove(ingredientInBottle);
         }
 
 

@@ -10,9 +10,10 @@ public static class GetAllIngredients
         var ingredients = (await context.Ingredient.ToListAsync())
             .DistinctBy(ing => ing.IngredientName).ToList();
 
+        //TODO
         return ingredients.DistinctBy(ing => ing.IngredientName).ToList()
             .Select(ing => new IngredientDto
-                { IngredientName = ing.IngredientName, Quantity = ing.Ml })
+                { IngredientName = ing.IngredientName, Quantity = ing.RemainingAmount })
             .ToList();
     }
 

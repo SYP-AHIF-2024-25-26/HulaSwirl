@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Backend.Apis.Drinks;
 
 namespace Backend.Services.DatabaseService.Models;
 
@@ -8,14 +9,10 @@ public class Drink(string name, bool available, string imgUrl, string toppings)
     {
     }
 
-    [Key] public int ID { get; set; }
-
-    [StringLength(255)] public string Name { get; set; } = name;
-
+    [Key] public int Id { get; set; }
+    public string Name { get; set; } = name;
     public bool Available { get; set; } = available;
-    [StringLength(1024)] public string ImgUrl { get; set; } = imgUrl;
-    [StringLength(1024)] public string Toppings { get; set; } = toppings;
-
-    // Navigation property
-    public List<Ingredient> DrinkIngredients { get; set; } = new List<Ingredient>();
+    public string ImgUrl { get; set; } = imgUrl;
+    public string Toppings { get; set; } = toppings;
+    public List<DrinkIngredient> DrinkIngredients { get; set; }
 }

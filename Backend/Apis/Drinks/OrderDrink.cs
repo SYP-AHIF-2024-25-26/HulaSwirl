@@ -12,7 +12,7 @@ public static class OrderDrink
         var drink = await context.Drink
             .Include(d => d.DrinkIngredients)
             .Include(d => d.DrinkIngredients)
-            .FirstOrDefaultAsync(d => d.ID == drinkId);
+            .FirstOrDefaultAsync(d => d.Id == drinkId);
 
 
         if (drink is null)
@@ -22,9 +22,9 @@ public static class OrderDrink
 
         foreach (var ingredient in drink.DrinkIngredients)
         {
-            var ingredientInBottle = await context.IngredientInBottle
+            var ingredientInBottle = await context.Ingredient
                 .Include(i => i.Pump)
-                .FirstOrDefaultAsync(ingD => ingD.Name == ingredient.IngredientName);
+                .FirstOrDefaultAsync(ingD => ingD.IngredientName == ingredient.IngredientNameFK);
 
             if (ingredientInBottle is null)
             {
@@ -39,7 +39,7 @@ public static class OrderDrink
             }
 
 
-            await pumpManager.StartPump(pump.Slot, ingredient.Ml);
+            await pumpManager.StartPump(pump.Slot, ingredient.Amount);
         }
 
         return Results.Ok("Drink ordered");

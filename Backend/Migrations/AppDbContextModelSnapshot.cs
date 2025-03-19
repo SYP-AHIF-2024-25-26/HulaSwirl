@@ -19,7 +19,7 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Drink", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -28,22 +28,47 @@ namespace Backend.Migrations
 
                     b.Property<string>("ImgUrl")
                         .IsRequired()
-                        .HasMaxLength(1024)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Toppings")
                         .IsRequired()
-                        .HasMaxLength(1024)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Drink");
+                });
+
+            modelBuilder.Entity("Backend.Services.DatabaseService.Models.DrinkIngredient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DrinkId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("IngredientName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("IngredientNameFK")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DrinkId");
+
+                    b.HasIndex("IngredientName");
+
+                    b.ToTable("DrinkIngredient");
                 });
 
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.DrinkOrder", b =>
@@ -67,53 +92,24 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Ingredient", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DrinkID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("IngredientInBottleName")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("IngredientName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Ml")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("DrinkID");
-
-                    b.HasIndex("IngredientInBottleName");
-
-                    b.ToTable("Ingredient");
-                });
-
-            modelBuilder.Entity("Backend.Services.DatabaseService.Models.IngredientInBottle", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("MaxMl")
+                    b.Property<int>("MaxAmount")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("PumpSlot")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RemainingMl")
+                    b.Property<int>("RemainingAmount")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Name");
+                    b.HasKey("IngredientName");
 
                     b.HasIndex("PumpSlot");
 
-                    b.ToTable("IngredientInBottle");
+                    b.ToTable("Ingredient");
                 });
 
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Pump", b =>
@@ -130,6 +126,23 @@ namespace Backend.Migrations
                     b.ToTable("Pump");
                 });
 
+            modelBuilder.Entity("Backend.Services.DatabaseService.Models.DrinkIngredient", b =>
+                {
+                    b.HasOne("Backend.Services.DatabaseService.Models.Drink", "Drink")
+                        .WithMany("DrinkIngredients")
+                        .HasForeignKey("DrinkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Services.DatabaseService.Models.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientName");
+
+                    b.Navigation("Drink");
+
+                    b.Navigation("Ingredient");
+                });
+
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.DrinkOrder", b =>
                 {
                     b.HasOne("Backend.Services.DatabaseService.Models.Drink", "Drink")
@@ -140,23 +153,6 @@ namespace Backend.Migrations
                 });
 
             modelBuilder.Entity("Backend.Services.DatabaseService.Models.Ingredient", b =>
-                {
-                    b.HasOne("Backend.Services.DatabaseService.Models.Drink", "Drink")
-                        .WithMany("DrinkIngredients")
-                        .HasForeignKey("DrinkID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Services.DatabaseService.Models.IngredientInBottle", "IngredientInBottle")
-                        .WithMany()
-                        .HasForeignKey("IngredientInBottleName");
-
-                    b.Navigation("Drink");
-
-                    b.Navigation("IngredientInBottle");
-                });
-
-            modelBuilder.Entity("Backend.Services.DatabaseService.Models.IngredientInBottle", b =>
                 {
                     b.HasOne("Backend.Services.DatabaseService.Models.Pump", "Pump")
                         .WithMany()

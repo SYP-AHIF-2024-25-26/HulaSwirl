@@ -6,21 +6,23 @@ namespace Backend.Apis.Ingredients;
 public static class EditIngredientInBottle
 {
     public static async Task<IResult> HandleEditIngredientInBottle(
-        [FromBody] IngredientInBottleDto ingredientInBottleDto,
+        [FromBody] IngredientInBottleDto[] ingredientInBottleDtos,
         AppDbContext context)
     {
-        var ingredientInBottle = await context.IngredientInBottle.FindAsync(ingredientInBottleDto.IngredientName);
-
-        if (ingredientInBottle is null)
+        foreach (var ingredientInBottleDto in ingredientInBottleDtos)
         {
-            return Results.NotFound("Ingredient in bottle not found");
+            var ingredientInBottle = await context.Ingredient.FindAsync(ingredientInBottleDto.IngredientName);
+
+            if (ingredientInBottle is null)
+            {
+                return Results.NotFound("Ingredient in bottle not found");
+            }
+
+            ingredientInBottle.IngredientName = ingredientInBottleDto.IngredientName;
+            ingredientInBottle.PumpSlot = ingredientInBottleDto.PumpSlot;
+            ingredientInBottle.RemainingAmount = ingredientInBottleDto.RemainingAmount;
+            ingredientInBottle.MaxAmount = ingredientInBottleDto.MaxAmount;
         }
-
-        ingredientInBottle.Name = ingredientInBottleDto.IngredientName;
-        ingredientInBottle.PumpSlot = ingredientInBottleDto.PumpSlot;
-        ingredientInBottle.RemainingMl = ingredientInBottleDto.RemainingMl;
-        ingredientInBottle.MaxMl = ingredientInBottleDto.MaxAmount;
-
 
         await context.SaveChangesAsync();
 
@@ -31,7 +33,7 @@ public static class EditIngredientInBottle
     {
         public required string IngredientName { get; set; }
         public required int? PumpSlot { get; set; }
-        public required int RemainingMl { get; set; }
+        public required int RemainingAmount { get; set; }
         public required int MaxAmount { get; set; }
     }
 }

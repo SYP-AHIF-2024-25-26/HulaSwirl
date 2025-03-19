@@ -11,15 +11,15 @@ public static class GetAllDrinks
 
         return drinks.Select(d => new DrinkDto()
         {
-            Id = d.ID,
+            Id = d.Id,
             Name = d.Name,
             Available = d.Available,
             ImgUrl = d.ImgUrl,
             Toppings = d.Toppings,
             DrinkIngredients = d.DrinkIngredients.Select(i => new DrinkIngredientDto
             {
-                IngredientName = i.IngredientName,
-                Amount = i.Ml
+                IngredientName = i.IngredientNameFK,
+                Amount = i.Amount
             }).ToList()
         }).ToList();
     }

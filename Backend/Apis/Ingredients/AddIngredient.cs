@@ -10,12 +10,10 @@ public static class AddIngredient
         [FromQuery] int drinkId,
         AppDbContext context)
     {
+        /*
         var drink = await context.Drink.FindAsync(drinkId);
 
-        if (drink is null)
-        {
-            return Results.NotFound("Drink with id not found");
-        }
+        if (drink is null) return Results.NotFound("Drink with id not found");
 
         var newIngredient = new Ingredient()
         {
@@ -45,7 +43,7 @@ public static class AddIngredient
         }
 
         await context.SaveChangesAsync();
-
+        */
         return Results.Ok("Ingredient added to drink");
     }
 

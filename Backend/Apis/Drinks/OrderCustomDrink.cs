@@ -11,13 +11,13 @@ public static class OrderCustomDrink
         //map ordered ingredient to available ingredients
         var orderedIngredientNames = ingredientDtos.Select(ingDto => ingDto.IngredientName).ToList();
 
-        var ingredients = await context.IngredientInBottle
+        var ingredients = await context.Ingredient
             .Include(ing => ing.Pump)
             .Where(ing => ing.PumpSlot != null)
             .ToListAsync();
 
         var missingIngredients = orderedIngredientNames
-            .Except(ingredients.Select(ing => ing.Name)).ToList();
+            .Except(ingredients.Select(ing => ing.IngredientName)).ToList();
 
         if (missingIngredients.Count != 0)
         {
@@ -27,7 +27,7 @@ public static class OrderCustomDrink
         foreach (var orderedIngredient in ingredientDtos)
         {
             var existingIngredient = ingredients
-                .First(ing => ing.Name == orderedIngredient.IngredientName)!;
+                .First(ing => ing.IngredientName == orderedIngredient.IngredientName)!;
 
             await manager.StartPump(existingIngredient.PumpSlot, orderedIngredient.Ml);
         }
