@@ -63,7 +63,7 @@ ich nehme:
 - Lötkolben, Marke „Papa meinte, die Spitze kann man noch benutzen“.
 - Lötzinn (je mehr, desto besser – wir machen Kunstwerke!).
 - 2x Wasserpumpen, powered by Hoffnung(wie die römer).
-- Power Supply 12V 5A, liebevoll Kartoffel genannt.
+- Power Supply 12V 5A, liebevolle Kartoffel mit zink.
 - Tixo (aka das Klebeband, das alles zusammenhält, sogar Beziehungen).
 - USB Stepdown, weil... warum nicht?
 - Mut und eine Feuerversicherung.
@@ -71,7 +71,6 @@ ich nehme:
 ich habe:
 * pumpen
 * board
-* power supply
 
 ich mache:
 * ich nehm mein rasberry pi 5 und spiel windows 11 drauf.
