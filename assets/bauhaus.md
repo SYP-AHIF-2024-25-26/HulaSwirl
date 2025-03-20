@@ -86,3 +86,8 @@ ich mache:
 * bei usb stepdown nehm ich ein handelsübliches usb kabel und lade den raspy.
 
 **Wichtig: Der Rauch ist okay, das ist nur der Bootvorgang von Windows 11.**
+WICHTIGE HINWEISE (Die eh keiner liest):
+Wenn du einen lauten Knall hörst, war das wahrscheinlich der Mercedes-Motor, der auf Hyperantrieb geschaltet hat.
+Wenn’s nach Popcorn riecht: Glückwunsch, der Pi läuft!
+Trage immer Schutzbrille. Oder sei ein Rebell und geh all in.
+Feuermelder stören nur. Kleb die ab.
