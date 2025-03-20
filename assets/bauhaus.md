@@ -1,9 +1,17 @@
 ## Auflistung der benötigten Komponenten
 
 Um das Gerät zu replizieren, werden folgende Komponenten benötigt:
-
-- Kabel
-- Motor
+- Einen Raspberry Pi 5 mit vorinstalliertem Windows 11, weil Linux zu Mainstream ist.
+- 4x USB-C Kabel (je mehr, desto besser. Zur Not nimm das von deiner Oma, sie braucht das eh nicht mehr).
+- 1x handelsüblichen Starkstromkabel (idealerweise von einer alten Baustelle klauen).
+- Einen Motor frisch ausgeschlachtet aus Sebastians Mercedes (Dank an Sebastian, Ehrenmann!).
+- Lötkolben, Marke „Papa meinte, die Spitze kann man noch benutzen“.
+- Lötzinn (je mehr, desto besser – wir machen Kunstwerke!).
+- 2x Wasserpumpen, powered by Hoffnung(wie die römer).
+- Power Supply 12V 5A, liebevoll Kartoffel genannt.
+- Tixo (aka das Klebeband, das alles zusammenhält, sogar Beziehungen).
+- USB Stepdown, weil... warum nicht?
+- Mut und eine Feuerversicherung.
 
 ### Bereits zur Verfügung gestellte Komponenten
 Ihr erhaltet von mir:
