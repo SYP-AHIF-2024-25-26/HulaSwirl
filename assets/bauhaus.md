@@ -55,3 +55,24 @@ Dieser Ablauf beschreibt, was bei einer Anfrage im Backend und in der Hardware p
 
 ### Wichtiger Hinweis zum Schaltplan
 Der Schaltplan dient nicht nur zur Visualisierung, sondern ermöglicht mit entsprechendem Wissen den Nachbau des Geräts.
+
+## Anleitung nach schaltplan ohne extra infos.(Interpretationsmöglichkeit der Bauhausgebrauchsanleitung)
+ich nehme:
+* kabel(usb c, usb, starkstrom)
+* einen motor ausgebaut aus sebastians mercedes
+* lötkolben und lötzinn von mein dad
+* mehr usb c kabel
+
+ich habe:
+* pumpen
+* board
+* power supply
+
+ich mache:
+* ich nehm mein rasberry pi 5 und spiel windows 11 drauf.
+* in die gpio pwm(olt)(32,33,12,35) pins steck ich mein usb kabel und mach drumrum bissi lötzinn
+* diese gehen dann jeweils auf die zwei H bridges 1 und 2 in 2 und 2 da mach ich mit tixo die usb kaben fest
+* gnd nehm ich normale handelsübliche starkstromkabel und leg es einfach auf gnd im rasberry
+* von die h brigges nehm ich die usb kabel und schalt sie auf die motor + sachen zu die pumpen(+) uns löt sie mit 10000 grad an. (- auch)
+* bei hbridge supply (+) nehm ich die zwei usbc kabel und verbinde die zwei h bidges. und ein kabel stek ich mit tixo an geht am meine 12V 5A Power supply kartoffel, das selbe kabel geht auch an den usb stepdown, das selbe bei -.
+* bei usb stepdown nehm ich ein handelsübliches usb kabel und lade den raspy.
