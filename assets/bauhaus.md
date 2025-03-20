@@ -84,3 +84,5 @@ ich mache:
 * von die h brigges nehm ich die usb kabel und schalt sie auf die motor + sachen zu die pumpen(+) uns löt sie mit 10000 grad an. (- auch)
 * bei hbridge supply (+) nehm ich die zwei usbc kabel und verbinde die zwei h bidges. und ein kabel stek ich mit tixo an geht am meine 12V 5A Power supply kartoffel, das selbe kabel geht auch an den usb stepdown, das selbe bei -.
 * bei usb stepdown nehm ich ein handelsübliches usb kabel und lade den raspy.
+
+**Wichtig: Der Rauch ist okay, das ist nur der Bootvorgang von Windows 11.**
