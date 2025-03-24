@@ -164,7 +164,7 @@ export class DrinkService {
     this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
   }
   async editDrink(drinkdata: DrinkBase, ID: number){
-    console.log(drinkdata);
+    console.log("Editdrinkpatch"+drinkdata);
     await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata));
     await this.reloadDrinks();
   }

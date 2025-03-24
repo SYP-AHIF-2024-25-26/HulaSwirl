@@ -30,14 +30,12 @@ export class AddDrinkModalComponent {
   constructor() {
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
-    });
-  }
+      this.availableIngredients.set(
+        this.allIngredients.filter(ing => ing.pumpSlot !== null)
+      );
 
-  async ngOnInit() {
-    this.availableIngredients.set(
-      this.allIngredients.filter(ing => ing.pumpSlot !== null)
-    );
-    this.selectIngredient();
+      this.selectIngredient();
+    });
   }
 
   selectIngredient() {
@@ -66,19 +64,27 @@ export class AddDrinkModalComponent {
     const avIng = this.availableIngredients().find(
       ing => ing.ingredientName === this.selectedIngredient()
     );
-    if (
-      avIng &&
+    if (avIng &&
       avIng.remainingAmount >= this.selectedAmount() &&
       this.selectedAmount() > 0 &&
       this.selectedAmount() <= 100
     ) {
+      this.availableIngredients.set(
+        this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
+      );
       this.orderIngredients.set([
         ...this.orderIngredients(),
         { ingredientName: this.selectedIngredient(), amount: this.selectedAmount(), status: '' }
       ]);
-      this.availableIngredients.set(
-        this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
-      );
+
+      this.selectIngredient();
+      this.selectedAmount.set(10);
+    }
+    else{
+      this.orderIngredients.set([
+        ...this.orderIngredients(),
+        { ingredientName: "New Ingredient", amount: this.selectedAmount(), status: 'New Ingredient' }
+      ]);
       this.selectIngredient();
       this.selectedAmount.set(10);
     }
@@ -87,22 +93,13 @@ export class AddDrinkModalComponent {
   validateOrder() {
     this.orderIngredients.set(
       this.orderIngredients().map(ing => {
-        const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
-        if (!availableIng) {
-          return { ...ing, status: 'Unbekannte Zutat' };
-        }
-        if (ing.amount < 0) {
-          return { ...ing, status: 'Negativer Wert nicht erlaubt' };
-        }
-        if (ing.amount > 100) {
-          return { ...ing, status: 'Maximal 100 ml pro Zutat' };
-        }
-        if (ing.amount > availableIng.remainingAmount) {
-          return {
-            ...ing,
-            status: `Nur noch ${availableIng.remainingAmount}ml verfügbar`
-          };
-        }
+          var availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
+          if (ing.amount < 0) {
+            return {...ing, status: 'Negativer Wert nicht erlaubt'};
+          }
+          if (ing.amount > 100) {
+            return {...ing, status: 'Maximal 100 ml pro Zutat'};
+          }
         return { ...ing, status: '' };
       })
     );
@@ -110,7 +107,7 @@ export class AddDrinkModalComponent {
 
   async submitDrink() {
     this.validateOrder();
-    if (this.orderIngredients().every(ing => ing.status === '')) {
+    if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
       const drinkData: DrinkBase = {
         name: this.drinkTitle(),
         imgUrl: this.imageBase64,
@@ -121,13 +118,19 @@ export class AddDrinkModalComponent {
           amount: ing.amount
         }))
       };
-      await this.drinkService.postNewDrink(drinkData);
       this.closeModal();
+      console.log("adding drink:",drinkData);
+      await this.drinkService.postNewDrink(drinkData);
+
     }
   }
 
   closeModal() {
     this.modalService.closeModal();
+    this.drinkTitle.set('');
+    this.drinkToppings.set('');
+    this.orderIngredients.set([]);
+    this.imageBase64 = "";
   }
 
   onFileSelected(event: Event): void {

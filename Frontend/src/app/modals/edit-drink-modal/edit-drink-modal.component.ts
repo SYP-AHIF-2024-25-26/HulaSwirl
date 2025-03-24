@@ -109,7 +109,7 @@ export class EditDrinkModalComponent {
       this.currentModalData()!.imgUrl = this.imageBase64() ?? '';
       this.currentModalData()!.available = this.drinkAvailable();
       this.drinkService.drinks.update(d => d.map(drink => drink.id === this.currentModalData()!.id ? this.currentModalData()! : drink));
-      if (this.orderIngredients().every(ing => ing.status === '')) {
+      if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
         const drinkData: DrinkBase = {
           name: this.currentModalData()!.name,
           available: this.drinkAvailable(),
