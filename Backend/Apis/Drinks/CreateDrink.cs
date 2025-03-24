@@ -8,7 +8,14 @@ public static class CreateDrink
 {
     public static async Task<IResult> HandleCreateDrink([FromBody] DrinkDto drinkDto, AppDbContext context)
     {
-        if (drinkDto.DrinkIngredients.Length == 0) return Results.BadRequest("Please provide at least one ingredient");
+        if (drinkDto.DrinkIngredients.Length == 0)
+        {
+            return Results.BadRequest("Please provide at least one ingredient");
+        }
+        if (drinkDto.DrinkIngredients.GroupBy(ing => ing.IngredientName.ToLower()).Any(g => g.Count() > 1))
+        {
+            return Results.BadRequest("Please provide unique ingredients");
+        }
 
         var drink = new Drink(drinkDto.Name, drinkDto.Available, drinkDto.ImgUrl, drinkDto.Toppings);
 

@@ -13,7 +13,18 @@ public static class EditDrink
             .ThenInclude(di => di.Ingredient)
             .FirstOrDefaultAsync(d => d.Id == id);
 
-        if (drink is null) return Results.NotFound("Drink not found");
+        if (drink is null)
+        {
+            return Results.NotFound("Drink not found");
+        }
+        if (drinkDto.DrinkIngredients.Length == 0)
+        {
+            return Results.BadRequest("Please provide at least one ingredient");
+        }
+        if (drinkDto.DrinkIngredients.GroupBy(ing => ing.IngredientName.ToLower()).Any(g => g.Count() > 1))
+        {
+            return Results.BadRequest("Please provide unique ingredients");
+        }
 
         drink.Name = drinkDto.Name;
         drink.Available = drinkDto.Available;
