@@ -1,10 +1,8 @@
 ## Auflistung der benötigten Komponenten
 
-Um das Gerät zu replizieren, werden folgende Komponenten benötigt:
-
 - Kabel
-- Motor
-
+ - Motor
+   
 ### Bereits zur Verfügung gestellte Komponenten
 Ihr erhaltet von mir:
 - Pumpen
@@ -55,3 +53,37 @@ Dieser Ablauf beschreibt, was bei einer Anfrage im Backend und in der Hardware p
 
 ### Wichtiger Hinweis zum Schaltplan
 Der Schaltplan dient nicht nur zur Visualisierung, sondern ermöglicht mit entsprechendem Wissen den Nachbau des Geräts.
+
+## Anleitung nach schaltplan ohne extra infos.(Interpretationsmöglichkeit der Bauhausgebrauchsanleitung)
+ich nehme:
+- Einen Raspberry Pi 5 mit vorinstalliertem Windows 11, weil Linux zu Mainstream ist.
+- 4x USB-C Kabel (je mehr, desto besser. Zur Not nimm das von deiner Oma, sie braucht das eh nicht mehr).
+- 1x handelsüblichen Starkstromkabel (idealerweise von einer alten Baustelle klauen).
+- Einen Motor frisch ausgeschlachtet aus Sebastians Mercedes (Dank an Sebastian, Ehrenmann!).
+- Lötkolben, Marke „Papa meinte, die Spitze kann man noch benutzen“.
+- Lötzinn (je mehr, desto besser – wir machen Kunstwerke!).
+- 2x Wasserpumpen, powered by Hoffnung(wie die römer).
+- Power Supply 12V 5A, liebevolle Kartoffel mit zink.
+- Tixo (aka das Klebeband, das alles zusammenhält, sogar Beziehungen).
+- USB Stepdown, weil... warum nicht?
+- Mut und eine Feuerversicherung.
+
+ich habe:
+* pumpen
+* board
+
+ich mache:
+* ich nehm mein rasberry pi 5 und spiel windows 11 drauf.
+* in die gpio pwm(olt)(32,33,12,35) pins steck ich mein usb kabel und mach drumrum bissi lötzinn
+* diese gehen dann jeweils auf die zwei H bridges 1 und 2 in 2 und 2 da mach ich mit tixo die usb kaben fest
+* gnd nehm ich normale handelsübliche starkstromkabel und leg es einfach auf gnd im rasberry
+* von die h brigges nehm ich die usb kabel und schalt sie auf die motor + sachen zu die pumpen(+) uns löt sie mit 10000 grad an. (- auch)
+* bei hbridge supply (+) nehm ich die zwei usbc kabel und verbinde die zwei h bidges. und ein kabel stek ich mit tixo an geht am meine 12V 5A Power supply kartoffel, das selbe kabel geht auch an den usb stepdown, das selbe bei -.
+* bei usb stepdown nehm ich ein handelsübliches usb kabel und lade den raspy.
+
+**Wichtig: Der Rauch ist okay, das ist nur der Bootvorgang von Windows 11.**
+WICHTIGE HINWEISE (Die eh keiner liest):
+Wenn du einen lauten Knall hörst, war das wahrscheinlich der Mercedes-Motor, der auf Hyperantrieb geschaltet hat.
+Wenn’s nach Popcorn riecht: Glückwunsch, der Pi läuft!
+Trage immer Schutzbrille. Oder sei ein Rebell und geh all in.
+Feuermelder stören nur. Kleb die ab.
