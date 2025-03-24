@@ -55,7 +55,7 @@ public static class EditDrink
             }
             else
             {
-                var newDrinkIng = new DrinkIngredient(ingDto.Amount, globalIng.IngredientName, drink.Id, drink, globalIng);
+                var newDrinkIng = new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink, globalIng);
                 drink.DrinkIngredients.Add(newDrinkIng);
             }
         }

@@ -14,5 +14,5 @@ public class Drink(string name, bool available, string imgUrl, string toppings)
     public bool Available { get; set; } = available;
     public string ImgUrl { get; set; } = imgUrl;
     public string Toppings { get; set; } = toppings;
-    public List<DrinkIngredient> DrinkIngredients { get; set; }
+    public List<DrinkIngredient> DrinkIngredients { get; set; } = new();
 }
