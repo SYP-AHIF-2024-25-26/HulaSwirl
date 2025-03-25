@@ -23,7 +23,7 @@ export class AddDrinkModalComponent {
   selectedAmount: WritableSignal<number> = signal(10);
   drinkTitle: WritableSignal<string> = signal('');
   drinkToppings: WritableSignal<string> = signal('');
-  imageBase64: string | null = null;
+  imageBase64: string  = "";
   isDragging = false;
   allIngredients: Ingredient[] = [];
 
@@ -108,7 +108,7 @@ export class AddDrinkModalComponent {
     if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
       const drinkData: DrinkBase = {
         name: this.drinkTitle(),
-        imgUrl: this.imageBase64!,
+        imgUrl: this.imageBase64,
         available: true,
         toppings: this.drinkToppings(),
         drinkIngredients: this.orderIngredients().map(ing => ({

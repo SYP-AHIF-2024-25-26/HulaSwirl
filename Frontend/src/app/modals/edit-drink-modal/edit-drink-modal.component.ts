@@ -25,7 +25,7 @@ export class EditDrinkModalComponent {
 
   drinkTitle = signal('');
   drinkToppings = signal('');
-  imageBase64: WritableSignal<string | null> = signal(null);
+  imageBase64: WritableSignal<string > = signal("");
   drinkAvailable = signal(true);
 
   selectedIngredient: WritableSignal<string> = signal('');
@@ -119,7 +119,7 @@ export class EditDrinkModalComponent {
         const drinkData: DrinkBase = {
           name: this.currentModalData()!.name,
           available: this.drinkAvailable(),
-          imgUrl: this.imageBase64()!,
+          imgUrl: this.imageBase64(),
           toppings: this.currentModalData()!.toppings,
           drinkIngredients: this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount }))
         };
@@ -174,7 +174,7 @@ export class EditDrinkModalComponent {
         this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)));
         this.drinkTitle.set(this.currentModalData()?.name ?? '');
         this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
-        this.imageBase64.set(this.currentModalData()?.imgUrl ?? null);
+        this.imageBase64.set(this.currentModalData()?.imgUrl ?? "");
         this.selectIngredient()
         this.dataloaded = this.currentModalData() != null;
       }
