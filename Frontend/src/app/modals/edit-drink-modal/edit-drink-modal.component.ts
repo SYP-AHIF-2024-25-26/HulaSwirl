@@ -4,6 +4,7 @@ import {Drink, DrinkBase, DrinkService} from '../../services/drink.service';
 import {ModalService} from '../../services/modal.service';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import {subscribeOn} from 'rxjs';
 
 @Component({
   selector: 'app-edit-drink-modal',
@@ -32,6 +33,7 @@ export class EditDrinkModalComponent {
 
   isDragging = false;
   currentModalData: WritableSignal<Drink|null>=signal(null);
+  dataloaded:boolean=false;
 
   selectIngredient() {
     const first = this.availableIngredients()[0];
@@ -44,6 +46,9 @@ export class EditDrinkModalComponent {
       this.currentModalData()!.drinkIngredients = this.currentModalData()!.drinkIngredients.filter(i => i.ingredientName !== ing.ingredientName);
       const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
       console.log(this.orderIngredients())
+      this.orderIngredients.set(
+        this.orderIngredients().filter((_, i) => i !== index)
+      );
       if (availableIng) {
         this.availableIngredients.set([
           ...this.availableIngredients(),
@@ -54,23 +59,34 @@ export class EditDrinkModalComponent {
     }
   }
 
-  addIngredient() {
-    const avIng = this.availableIngredients().find(ing => ing.ingredientName === this.selectedIngredient());
-    console.log(avIng)
-    if (
-      this.currentModalData() &&
-      avIng &&
-      avIng.remainingAmount >= this.selectedAmount() &&
+  addIngredient(){
+    const avIng = this.availableIngredients().find(
+      ing => ing.ingredientName === this.selectedIngredient()
+    );
+
+    if (avIng &&
       this.selectedAmount() > 0 &&
       this.selectedAmount() <= 100
     ) {
-      this.currentModalData()!.drinkIngredients.push({
-        ingredientName: this.selectedIngredient(),
-        amount: this.selectedAmount()
-      });
+
       this.availableIngredients.set(
         this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
       );
+      this.orderIngredients.set([
+        ...this.orderIngredients(),
+        { ingredientName: this.selectedIngredient(), amount: this.selectedAmount(), status: '' }
+      ]);
+
+      this.selectIngredient();
+      this.selectedAmount.set(10);
+    }
+    else{
+      console.log("adding ingredient: ")
+      console.log(avIng)
+      this.orderIngredients.set([
+        ...this.orderIngredients(),
+        { ingredientName: "New Ingredient", amount: this.selectedAmount(), status: 'New Ingredient' }
+      ]);
       this.selectIngredient();
       this.selectedAmount.set(10);
     }
@@ -80,20 +96,11 @@ export class EditDrinkModalComponent {
     this.orderIngredients.set(
       this.orderIngredients().map(ing => {
         const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
-        if (!availableIng) {
-          return { ...ing, status: 'Unbekannte Zutat' };
-        }
         if (ing.amount < 0) {
           return { ...ing, status: 'Negativer Wert nicht erlaubt' };
         }
         if (ing.amount > 100) {
           return { ...ing, status: 'Maximal 100 ml pro Zutat' };
-        }
-        if (ing.amount > availableIng.remainingAmount) {
-          return {
-            ...ing,
-            status: `Nur noch ${availableIng.remainingAmount}ml verfügbar`
-          };
         }
         return { ...ing, status: '' };
       })
@@ -102,7 +109,6 @@ export class EditDrinkModalComponent {
 
   async submitDrink() {
     this.validateOrder()
-    console.log(this.orderIngredients())
     if(this.currentModalData()){
       this.currentModalData()!.name = this.drinkTitle();
       this.currentModalData()!.toppings = this.drinkToppings();
@@ -113,7 +119,7 @@ export class EditDrinkModalComponent {
         const drinkData: DrinkBase = {
           name: this.currentModalData()!.name,
           available: this.drinkAvailable(),
-          imgUrl: this.imageBase64(),
+          imgUrl: this.imageBase64()!,
           toppings: this.currentModalData()!.toppings,
           drinkIngredients: this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount }))
         };
@@ -125,6 +131,7 @@ export class EditDrinkModalComponent {
 
   closeModal() {
     this.modalService.closeModal();
+    this.dataloaded=false;
   }
 
   onFileSelected(event: Event): void {
@@ -157,20 +164,26 @@ export class EditDrinkModalComponent {
     reader.readAsDataURL(file);
   }
 
+
   constructor() {
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
-      this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
-      this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)).filter(ing => ing.pumpSlot !== null));
-      this.drinkTitle.set(this.currentModalData()?.name ?? '');
-      this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
-      this.imageBase64.set(this.currentModalData()?.imgUrl ?? null);
-      this.selectIngredient()
+      if(!this.dataloaded){
+        console.log(this.currentModalData());
+        this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
+        this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)));
+        this.drinkTitle.set(this.currentModalData()?.name ?? '');
+        this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
+        this.imageBase64.set(this.currentModalData()?.imgUrl ?? null);
+        this.selectIngredient()
+        this.dataloaded = this.currentModalData() != null;
+      }
     });
   }
 
   async ngOnInit() {
     this.currentModalData = this.modalService.getModalData();
+
   }
 
   deleteDrink() {

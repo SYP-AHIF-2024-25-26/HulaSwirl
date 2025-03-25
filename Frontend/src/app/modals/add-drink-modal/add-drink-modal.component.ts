@@ -31,9 +31,8 @@ export class AddDrinkModalComponent {
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
       this.availableIngredients.set(
-        this.allIngredients.filter(ing => ing.pumpSlot !== null)
+        this.allIngredients
       );
-
       this.selectIngredient();
     });
   }
@@ -65,7 +64,6 @@ export class AddDrinkModalComponent {
       ing => ing.ingredientName === this.selectedIngredient()
     );
     if (avIng &&
-      avIng.remainingAmount >= this.selectedAmount() &&
       this.selectedAmount() > 0 &&
       this.selectedAmount() <= 100
     ) {
@@ -110,7 +108,7 @@ export class AddDrinkModalComponent {
     if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
       const drinkData: DrinkBase = {
         name: this.drinkTitle(),
-        imgUrl: this.imageBase64,
+        imgUrl: this.imageBase64!,
         available: true,
         toppings: this.drinkToppings(),
         drinkIngredients: this.orderIngredients().map(ing => ({

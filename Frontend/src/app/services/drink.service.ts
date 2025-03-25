@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 export interface DrinkBase {
   name: string;
   available: boolean;
-  imgUrl: string | null;
+  imgUrl: string ;
   toppings: string;
   drinkIngredients: {
     ingredientName: string;

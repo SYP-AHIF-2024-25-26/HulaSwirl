@@ -71,6 +71,7 @@ export class IngredientsService {
 
   async saveIngredients(ingredients:Ingredient[]){
     this.ingredients.set(ingredients);
+    console.log(ingredients);
     await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/ingredients/inBottle/edit", ingredients));
   }
 }

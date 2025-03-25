@@ -22,7 +22,11 @@
             <div class="order-ingredient">
               <div class="order-ingredient-details">
                 <div class="ingredient-properties">
-                  <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
+                  @if(ingredient.status=="New Ingredient"){
+                    <textarea class="order-ingredient-name" [(ngModel)]="ingredient.ingredientName"></textarea>
+                  } @else {
+                    <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
+                  }
                   <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.amount">
                   <span class="order-ingredient-unit">ml</span>
                 </div>
@@ -39,10 +43,9 @@
             </div>
           }
           <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
+            <option value="newIngredient">New Ingredient</option>
             @for(ingredient of availableIngredients(); track $index){
               <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
-            } @empty {
-              <option value="" selected>No ingredients available</option>
             }
           </select>
           <input type="number" id="order-ingredient-amount" class="form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="100">
