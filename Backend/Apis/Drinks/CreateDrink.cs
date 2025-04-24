@@ -16,6 +16,10 @@ public static class CreateDrink
         {
             return Results.BadRequest("Please provide unique ingredients");
         }
+        if (drinkDto.DrinkIngredients.Sum(di => di.Amount) > 500)
+        {
+            return Results.BadRequest("Your drink can't contain more than 500ml");
+        }
 
         var drink = new Drink(drinkDto.Name, drinkDto.Available, drinkDto.ImgUrl, drinkDto.Toppings);
 

@@ -14,7 +14,6 @@ public static class OrderDrink
             .Include(d => d.DrinkIngredients)
             .FirstOrDefaultAsync(d => d.Id == drinkId);
 
-
         if (drink is null)
         {
             return Results.NotFound("Drink not found");

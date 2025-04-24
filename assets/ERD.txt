@@ -1,42 +1,57 @@
+Table User {
+  Id           int        [pk, increment]
+  Username     varchar(100) [unique, not null]
+  PasswordHash varchar(255) [not null]
+  Role         varchar(50)  [not null]
+}
+
 Table Drink {
-  id int [primary key]
-  name varchar(100)
-  enabled bool
-  img varchar(1000)
-  toppings varchar(255)
+  Id           int         [pk, increment]
+  Name         varchar(100) [not null]
+  Available    boolean     [not null, default: true]
+  ImgUrl       varchar(1000)
+  Toppings     varchar(255)
 }
 
 Table Ingredient {
-  drink_id int
-  ingredient_name varchar(100)
-  ml int
-
-  // Composite primary key:
-  indexes {
-    (drink_id, ingredient_name) [pk]
-  }
-}
-
-Table IngredientInBottle {
-  name varchar(100) [primary key]
-  remaining_ml int
-  max_ml int
+  Name             varchar(100) [pk]
+  RemainingAmount  int          [not null]
+  MaxAmount        int          [not null]
+  PumpSlot         int         
 }
 
 Table Pump {
-  slot int [primary key]
-  ingredient_name varchar(100) [unique]  // Enforces 1:1 with IngredientInBottle
-  active bool
+  Slot    int    [pk]
+  Active  boolean [not null, default: true]
+}
+
+Table DrinkIngredient {
+  Id             int          [pk, increment]
+  DrinkId        int          [not null]
+  IngredientName varchar(100) [not null]
+  Amount         int          [not null]
 }
 
 Table Order {
-  id int [primary key]
-  drink_id int
-  order_date_time datetime
+  Id        int      [pk, increment]
+  UserId    int      [not null]
+  DrinkId   int      [not null]
+  OrderDate datetime [not null]
 }
 
-// Relationships
-Ref: Ingredient.drink_id > Drink.id
-Ref: Ingredient.ingredient_name > IngredientInBottle.name
-Ref: Order.drink_id > Drink.id
-Ref: Pump.ingredient_name > IngredientInBottle.name
+Table UserDrinkStatistic {
+  UserId  int  [not null]
+  DrinkId int  [not null]
+  Count   int  [not null, default: 0]
+  Indexes {
+    (UserId, DrinkId) [pk]
+  }
+}
+
+Ref: DrinkIngredient.DrinkId > Drink.Id
+Ref: DrinkIngredient.IngredientName > Ingredient.Name
+Ref: Ingredient.PumpSlot > Pump.Slot
+Ref: Order.UserId > User.Id
+Ref: Order.DrinkId > Drink.Id
+Ref: UserDrinkStatistic.UserId > User.Id
+Ref: UserDrinkStatistic.DrinkId > Drink.Id
