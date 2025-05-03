@@ -1,15 +1,10 @@
-namespace Backend.Services.DatabaseService.Models;
+﻿namespace Backend.Services.DatabaseService.Models;
 
-public class DrinkOrder
+public class UserDrinkStatistic
 {
-    public int Id { get; set; }
-
-    // Foreign Keys
     public int UserId { get; set; }
     public int DrinkId { get; set; }
-
-    // Order Timestamp
-    public DateTime OrderDate { get; set; }
+    public int Count { get; set; }
 
     // Navigation Properties
     public User User { get; set; } = null!;

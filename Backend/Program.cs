@@ -1,10 +1,14 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using Backend.Apis.Drinks;
 using Backend.Apis.Ingredients;
+using Backend.Apis.Users;
 using Backend.Services.DatabaseService;
 using Backend.Services.PumpService;
 using Backend.Services.QueueService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +38,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<GpioController>();
 builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<QueueManager>();
+builder.Services.AddSingleton<JwtService>();
+builder.Services.AddSingleton<BCryptHasher>();
+builder.Services.AddSingleton<IOtpService, InMemoryOtpService>();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -43,6 +50,26 @@ builder.Services.AddOpenApiDocument(config =>
     config.Title = "Api v1";
     config.Version = "v1";
 });
+
+var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!);
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
 
 var app = builder.Build();
 
@@ -70,6 +97,7 @@ app.UseHttpsRedirection();
 
 app
     .MapIngredientApis()
-    .MapDrinkApis();
+    .MapDrinkApis()
+    .MapUserApi();
 
 app.Run();
