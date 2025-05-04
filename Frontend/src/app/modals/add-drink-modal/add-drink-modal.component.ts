@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {DrinkBase, DrinkService} from '../../services/drink.service';
 import {ErrorService} from '../../services/error.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-drink-modal',
@@ -18,6 +19,7 @@ export class AddDrinkModalComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
   private readonly errorService = inject(ErrorService);
+  private readonly router = inject(Router);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
@@ -124,6 +126,9 @@ export class AddDrinkModalComponent {
         }))
       };
       await this.drinkService.postNewDrink(drinkData);
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([this.router.url]);
+      });
       this.closeModal();
     }
   }

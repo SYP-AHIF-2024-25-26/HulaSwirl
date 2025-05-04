@@ -3,6 +3,7 @@ import {firstValueFrom, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ErrorService} from './error.service';
+import {UserService} from './user.service';
 
 export interface DrinkBase {
   name: string;
@@ -140,10 +141,11 @@ const drinks: Drink[] = [
 export class DrinkService {
   private readonly httpClient = inject(HttpClient);
   private readonly errorService = inject(ErrorService);
+  private readonly userService =inject(UserService)
   drinks: WritableSignal<Drink[]> = signal([]);
 
   async reloadDrinks() {
-    const todo = "'Reloading Drinks.'"
+    const todo = "'Reloading Drinks'"
     try {
       console.log(todo);
       this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks")));
@@ -154,10 +156,14 @@ export class DrinkService {
   }
 
   async postNewDrink(drinkdata: DrinkBase) {
-    const todo = "Creating new drink."
+    const todo = "Creating new drink"
     try {
       console.log(todo);
-      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/create", drinkdata));
+      const jwt = this.userService.getTokenFromStorage();
+      const headers = {
+        Authorization: `Bearer ${jwt}`
+      };
+      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/create", drinkdata,{headers}));
       await this.reloadDrinks();
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
@@ -165,9 +171,14 @@ export class DrinkService {
   }
 
   async orderDrink(ID: number) {
-    const todo = "Ordering a Drink."
+    const todo = "Ordering a Drink"
     try {
-      await firstValueFrom(this.httpClient.get(environment.apiUrl + "/drinks/order?id=" + ID));
+      console.log(todo);
+      const jwt = this.userService.getTokenFromStorage();
+      const headers = {
+        Authorization: `Bearer ${jwt}`
+      };
+      await firstValueFrom(this.httpClient.get(environment.apiUrl + "/drinks/order?id=" + ID,{headers}));
       await this.reloadDrinks();
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
@@ -175,10 +186,14 @@ export class DrinkService {
   }
 
   async deleteDrink(ID: number) {
-    const todo = "Deleting drink."
+    const todo = "Deleting drink"
     try {
       console.log(todo);
-      await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks/delete?id=" + ID));
+      const jwt = this.userService.getTokenFromStorage();
+      const headers = {
+        Authorization: `Bearer ${jwt}`
+      };
+      await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks/delete?id=" + ID,{headers}));
       this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
@@ -186,10 +201,14 @@ export class DrinkService {
   }
 
   async editDrink(drinkdata: DrinkBase, ID: number) {
-    const todo = "Editing drink."
+    const todo = "Editing drink"
     try {
       console.log(todo);
-      await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata));
+      const jwt = this.userService.getTokenFromStorage();
+      const headers = {
+        Authorization: `Bearer ${jwt}`
+      };
+      await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata,{headers}));
       await this.reloadDrinks();
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);

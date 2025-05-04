@@ -1,0 +1,46 @@
+<div class="modal-frame">
+  <div class="modal-form">
+    <div class="modal-head flex-row">
+      <div class="tab-switch centered">
+        <button [class.active]="mode() === 'login'"    (click)="switchMode('login')">Login</button>
+        <button [class.active]="mode() === 'register'" (click)="switchMode('register')">Register</button>
+      </div>
+      <span class="close-modal-button right" (click)="closeModal()"></span>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="mode() === 'login'">
+        <input type="email"     placeholder="Email"
+               class="form-input"
+               [(ngModel)]="loginEmail" />
+        <input type="password"  placeholder="Password"
+               class="form-input"
+               [(ngModel)]="loginPassword" />
+      </ng-container>
+      <ng-container *ngIf="mode() === 'register'">
+        <input type="text"      placeholder="Username"
+               class="form-input"
+               [(ngModel)]="regUsername" />
+        <input type="email"     placeholder="Email"
+               class="form-input"
+               [(ngModel)]="regEmail" />
+        <input type="password"  placeholder="Password"
+               class="form-input"
+               [(ngModel)]="regPassword" />
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <ng-container *ngIf="mode() === 'register'">
+      <div class="buttons">
+        <button class="button submit-btn" (click)="register()">Register</button>
+        <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
+      </div>
+      </ng-container>
+      <ng-container *ngIf="mode() === 'login'">
+        <div class="buttons">
+          <button class="button submit-btn" (click)="login()">Login</button>
+          <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

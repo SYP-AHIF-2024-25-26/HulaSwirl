@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {ErrorService} from './error.service';
+import {UserService} from './user.service';
 
 export const liquidIngredients: Ingredient[] = [
   {
@@ -53,6 +54,7 @@ export interface OrderPreparation extends DrinkIngredient {
 export class IngredientsService {
   private readonly httpClient = inject(HttpClient);
   private readonly errorService = inject(ErrorService);
+  private readonly userService=inject(UserService)
   ingredients: WritableSignal<Ingredient[]> = signal([]);
   readonly ingredientSlots = 2;
 
@@ -60,7 +62,11 @@ export class IngredientsService {
     const todo= 'Reloading ingredients.'
     try {
       console.log(todo);
-      this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/ingredients/inBottle')));
+      const jwt = this.userService.getTokenFromStorage();
+      const headers = {
+        Authorization: `Bearer ${jwt}`
+      };
+      this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/ingredients',{headers})));
     } catch (e) {
       console.error(`An error occurred while ${todo}, placeholders will be shown.`, e);
       this.ingredients.set(liquidIngredients);
@@ -69,10 +75,14 @@ export class IngredientsService {
   }
 
   async postOrder(ingredients: DrinkIngredient[]): Promise<void> {
-    const todo="Posting an custom-drink-order."
+    const todo="Posting an custom-drink-order"
     try{
       console.log(todo)
-      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
+      const jwt = this.userService.getTokenFromStorage();
+      const headers = {
+        Authorization: `Bearer ${jwt}`
+      };
+      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/orderCustomDrink", ingredients,{headers}));
       await this.reloadIngredients();
     }
     catch (e: unknown) {
@@ -81,11 +91,15 @@ export class IngredientsService {
   }
 
   async saveIngredients(ingredients:Ingredient[]){
-    const todo="Saving ingredient settings."
+    const todo="Saving ingredient settings"
     try{
       console.log(todo);
+      const jwt = this.userService.getTokenFromStorage();
+      const headers = {
+        Authorization: `Bearer ${jwt}`
+      };
       this.ingredients.set(ingredients);
-      await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/ingredients/inBottle/edit", ingredients));
+        await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/ingredients", ingredients, {headers}));
     }
     catch (e: unknown) {
       this.errorService.handleError(e, todo);

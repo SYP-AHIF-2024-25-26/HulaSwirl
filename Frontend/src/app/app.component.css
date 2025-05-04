@@ -23,7 +23,7 @@
   font-weight: lighter;
 }
 
-.link:nth-child(1){
+.bigLink{
   font-size: 64px;
   font-weight: bold;
   font-family: Katibeh,sans-serif;
@@ -40,4 +40,28 @@
 .active {
   text-decoration: underline;
   text-decoration-thickness: 2px;
+}
+
+
+
+.spacer {
+  flex: 1;
+}
+
+#userManagementContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info {
+  font-size: 28px;
+  font-family: JosefinSans, sans-serif;
+}
+
+.logout-btn{
+  background-color: rgba(255,185,185,0);
+  color:var(--pump-inactive-slot-bg);
+  padding-top: 16px;
+  font-size: 20px;
 }

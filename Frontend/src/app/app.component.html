@@ -1,24 +1,44 @@
 <nav id="navbar">
   <img src="assets/images/InconV2png.png" id="logo" alt="Logo">
   <div id="nav-page-container">
-    <a class="link" routerLink="home"
-       routerLinkActive="active"
-       [routerLinkActiveOptions]="{ exact: true }">
+    <a class="bigLink" routerLink="home"
+       >
       Home
     </a>
     <a class="link" routerLink="admin/drinks" routerLinkActive="active">
       Drinks
     </a>
-    <a class="link" routerLink="admin/ingredients" routerLinkActive="active">
+    <a class="link"
+       *ngIf="userService.isAdmin()"
+       routerLink="admin/ingredients"
+       routerLinkActive="active">
       Ingredients
     </a>
-    <a class="link" routerLink="admin/statistics" routerLinkActive="active">
+
+    <a class="link"
+       *ngIf="userService.isAdmin()"
+       routerLink="admin/statistics"
+       routerLinkActive="active">
       Statistics
     </a>
   </div>
+  <div class="spacer"></div>
+
+  <div id="userManagementContainer" >
+    <ng-container  *ngIf="userService.isLoggedIn();">
+        <span class="user-info link">
+          🦩  {{ userService.username() || 'User' }}
+        </span>
+      <button class="logout-btn button" (click)="userService.logout()">Logout</button>
+    </ng-container>
+    <ng-container *ngIf="!userService.isLoggedIn();">
+      <a class="link"  (click)="openLoginModal()">
+        Login/Register
+      </a>
+    </ng-container>
+  </div>
+
 </nav>
-
-
 
 <app-background-leaves>
   <router-outlet></router-outlet>
@@ -32,5 +52,7 @@
   <app-edit-drink-modal id="edit-drink-modal" [hidden]="displayedModal()!=ModalType.ED"></app-edit-drink-modal>
 
   <app-error-modal id="error-model" [hidden]="displayedModal()!=ModalType.E"></app-error-modal>
+
+  <app-user-modal id="user-modal" [hidden]="displayedModal()!=ModalType.U"></app-user-modal>
 
 </app-background-leaves>
