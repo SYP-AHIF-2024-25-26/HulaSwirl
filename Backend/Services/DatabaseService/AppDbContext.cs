@@ -16,12 +16,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserDrinkStatistic>()
-            .HasKey(uds => new { uds.UserId, uds.DrinkId });
+            .HasKey(uds => new { uds.UserName, uds.DrinkId });
 
         modelBuilder.Entity<UserDrinkStatistic>()
             .HasOne(uds => uds.User)
             .WithMany(u => u.DrinkStatistics)
-            .HasForeignKey(uds => uds.UserId);
+            .HasForeignKey(uds => uds.UserName);
 
         modelBuilder.Entity<UserDrinkStatistic>()
             .HasOne(uds => uds.Drink)

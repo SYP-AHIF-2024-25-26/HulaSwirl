@@ -8,19 +8,24 @@ public class CreateUser
 {
     public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, BCryptHasher hasher)
     {
+        if (!dto.TryValidate(out var errors))
+            return Results.BadRequest(new { errors });
+        if(await db.User.AnyAsync(u => u.Email == dto.Email))
+            return Results.Conflict("Email already in use");
         if (await db.User.AnyAsync(u => u.Username == dto.Username))
             return Results.Conflict("Username already exists.");
 
         var user = new User
         {
             Username = dto.Username,
+            Email = dto.Email,
             PasswordHash = hasher.Hash(dto.Password),
-            Role = dto.Role
+            Role = "User"
         };
 
         db.User.Add(user);
         await db.SaveChangesAsync();
 
-        return Results.Created($"/api/users/{user.Id}", new { user.Id, user.Username });
+        return Results.Created($"/api/users/{user.Username}", new { user.Username });
     }
 }

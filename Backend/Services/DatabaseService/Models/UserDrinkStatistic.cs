@@ -2,7 +2,7 @@
 
 public class UserDrinkStatistic
 {
-    public int UserId { get; set; }
+    public string UserName { get; set; }
     public int DrinkId { get; set; }
     public int Count { get; set; }
 

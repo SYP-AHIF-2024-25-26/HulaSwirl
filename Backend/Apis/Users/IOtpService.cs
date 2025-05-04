@@ -3,6 +3,7 @@
 public interface IOtpService
 {
     int ValidityMinutes { get; }
-    string GenerateOtp(int userId);
-    bool ValidateOtp(int userId, string otp);
+    string GenerateOtp(string username);
+    bool ValidateOtp(string username, string otp);
+    bool UseOtp(string username, string otp);
 }

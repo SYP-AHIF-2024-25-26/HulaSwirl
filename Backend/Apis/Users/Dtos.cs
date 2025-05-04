@@ -1,7 +1,37 @@
 ﻿namespace Backend.Apis.Users;
 
-public record CreateUserDto(string Username, string Password, string Role);
+public record CreateUserDto
+{
+    [Required]
+    public string Username { get; init; } = null!;
 
-public record ResetPasswordDto(string Otp, string NewPassword);
+    [Required, EmailAddress]
+    public string Email { get; init; } = null!;
 
-public record LoginDto(string Username, string Password);
+    [Required]
+    public string Password { get; init; } = null!;
+}
+
+public record LoginDto
+{
+    [Required, EmailAddress]
+    public string Email { get; init; } = null!;
+
+    [Required]
+    public string Password { get; init; } = null!;
+}
+
+public record ResetPasswordDto
+{
+    [Required]
+    public string Otp { get; init; } = null!;
+
+    [Required]
+    public string NewPassword { get; init; } = null!;
+}
+
+public record DeleteUserDto
+{
+    [Required]
+    public string Otp { get; init; } = null!;
+}

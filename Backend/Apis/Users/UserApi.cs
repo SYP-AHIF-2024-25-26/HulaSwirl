@@ -16,21 +16,21 @@ public static class UserApi
             .Produces(StatusCodes.Status409Conflict);
 
         // 2) User löschen
-        app.MapDelete($"{baseUrl}/{{id:int}}", DeleteUser.HandleDelete)
+        app.MapDelete($"{baseUrl}/{{username}}", DeleteUser.HandleDelete)
             .WithName(nameof(DeleteUser.HandleDelete))
             .WithDescription("Delete an existing user by Id")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
 
         // 3a) OTP anfordern
-        app.MapPost($"{baseUrl}/{{id:int}}/password-reset/request", RequestOtp.HandleRequestOtp)
+        app.MapPost($"{baseUrl}/{{username}}/request-otp", RequestOtp.HandleRequestOtp)
             .WithName(nameof(RequestOtp.HandleRequestOtp))
             .WithDescription("Request password reset OTP for a user")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
         // 3b) Passwort zurücksetzen
-        app.MapPost($"{baseUrl}/{{id:int}}/password-reset", ResetPassword.HandleReset)
+        app.MapPost($"{baseUrl}/{{username}}/password-reset", ResetPassword.HandleReset)
             .WithName(nameof(ResetPassword.HandleReset))
             .WithDescription("Reset user's password using OTP")
             .Produces(StatusCodes.Status204NoContent)
@@ -38,7 +38,7 @@ public static class UserApi
             .Produces(StatusCodes.Status404NotFound);
 
         // 4) Admin-Check
-        app.MapGet($"{baseUrl}/{{id:int}}/is-admin", AdminCheck.HandleRoleCheck)
+        app.MapGet($"{baseUrl}/{{username}}/is-admin", AdminCheck.HandleRoleCheck)
             .WithName(nameof(AdminCheck.HandleRoleCheck))
             .WithDescription("Check if a user has admin role")
             .Produces(StatusCodes.Status200OK)
