@@ -1,3 +1,4 @@
+using Backend.Apis.Users;
 using Backend.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,22 +7,28 @@ namespace Backend.Apis.Ingredients;
 public static class EditIngredients
 {
     public static async Task<IResult> HandleEditIngredients(
-        [FromBody] IngredientDto[] ingredientInBottleDtos,
+        [FromBody] EditIngredientsDto editIngredientsDto,
         AppDbContext context)
     {
-        foreach (var ingredientInBottleDto in ingredientInBottleDtos)
-        {
-            var ingredientInBottle = await context.Ingredient.FindAsync(ingredientInBottleDto.IngredientName);
+        if (!editIngredientsDto.TryValidate(out var errors))
+            return Results.BadRequest(new { errors });
 
-            if (ingredientInBottle is null)
+        if (!await AuthService.ChangePermitted(editIngredientsDto.Username, context))
+            return Results.Unauthorized();
+        
+        foreach (var ing in editIngredientsDto.Ingredients)
+        {
+            var ingredient = await context.Ingredient.FindAsync(ing.IngredientName);
+
+            if (ingredient is null)
             {
                 return Results.NotFound("Ingredient not found");
             }
 
-            ingredientInBottle.IngredientName = ingredientInBottleDto.IngredientName;
-            ingredientInBottle.PumpSlot = ingredientInBottleDto.PumpSlot;
-            ingredientInBottle.RemainingAmount = ingredientInBottleDto.RemainingAmount;
-            ingredientInBottle.MaxAmount = ingredientInBottleDto.MaxAmount;
+            ingredient.IngredientName = ing.IngredientName;
+            ingredient.PumpSlot = ing.PumpSlot;
+            ingredient.RemainingAmount = ing.RemainingAmount;
+            ingredient.MaxAmount = ing.MaxAmount;
         }
 
         await context.SaveChangesAsync();

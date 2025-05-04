@@ -52,7 +52,7 @@ public static class AuthService
         return user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase);
     }
     
-    public static async Task<bool> ChangePermitted(string username, AppDbContext db, JwtService jwtService)
+    public static async Task<bool> ChangePermitted(string username, AppDbContext db)
     {
         var user = await db.User.FirstOrDefaultAsync(u => u.Username == username);
         return user != null && IsAdmin(user);

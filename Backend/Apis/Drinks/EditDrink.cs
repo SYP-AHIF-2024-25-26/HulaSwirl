@@ -16,7 +16,7 @@ public static class EditDrink
         if (!drinkDto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
 
-        if (!await AuthService.ChangePermitted(drinkDto.Username, context, jwtService))
+        if (!await AuthService.ChangePermitted(drinkDto.Username, context))
             return Results.Unauthorized();
 
         foreach (var ing in drinkDto.DrinkIngredients)

@@ -15,7 +15,7 @@ public static class CreateDrink
         if (!drinkDto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
 
-        if (!await AuthService.ChangePermitted(drinkDto.Username, context, jwtService))
+        if (!await AuthService.ChangePermitted(drinkDto.Username, context))
             return Results.Unauthorized();
 
         if (drinkDto.DrinkIngredients.Length == 0)
