@@ -35,7 +35,7 @@ public static class OrderCustomDrink
 
             if (stored.RemainingAmount < ordered.Amount)
                 return Results.BadRequest($"Not enough {ordered.IngredientName} available: {stored.RemainingAmount}ml left but {ordered.Amount}ml needed");
-
+            
             await manager.StartPump(stored.PumpSlot!.Value, ordered.Amount);
         }
 
