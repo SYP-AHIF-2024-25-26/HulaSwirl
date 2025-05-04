@@ -11,41 +11,48 @@ public static class DrinkApi
         app.MapGet($"{baseUrl}", GetAllDrinks.HandleGetAllDrinks)
             .WithName(nameof(GetAllDrinks.HandleGetAllDrinks))
             .WithDescription("Get all drinks")
+            .WithTags("Drinks")
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
         app.MapGet($"{baseUrl}/info", GetDrinkInfo.HandleGetDrinkInfo)
             .WithName(nameof(GetDrinkInfo.HandleGetDrinkInfo))
             .WithDescription("Get info of single drink with drink_id")
+            .WithTags("Drinks")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/order", OrderDrink.HandleOrderDrink)
             .WithName(nameof(OrderDrink.HandleOrderDrink))
             .WithDescription("Order a drink")
+            .WithTags("Drinks")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/orderCustomDrink", OrderCustomDrink.HandleOrderCustomDrink)
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")
+            .WithTags("Drinks")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)
             .WithName(nameof(CreateDrink.HandleCreateDrink))
             .WithDescription("Create drink")
+            .WithTags("Drinks")
             .Produces(StatusCodes.Status200OK);
 
         app.MapDelete($"{baseUrl}/delete", DeleteDrink.HandleDeleteDrink)
             .WithName(nameof(DeleteDrink.HandleDeleteDrink))
             .WithDescription("delete drink with id")
+            .WithTags("Drinks")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
         app.MapPatch($"{baseUrl}/update", EditDrink.HandleEditDrink)
             .WithName(nameof(EditDrink.HandleEditDrink))
             .WithDescription("Edit drink")
+            .WithTags("Drinks")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
