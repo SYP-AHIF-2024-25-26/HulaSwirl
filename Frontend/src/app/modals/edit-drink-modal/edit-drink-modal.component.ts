@@ -15,26 +15,45 @@ import {ErrorService} from '../../services/error.service';
   styleUrl: './edit-drink-modal.component.css'
 })
 export class EditDrinkModalComponent {
-
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
   private readonly errorService = inject(ErrorService);
-  allIngredients: Ingredient[] = [];
+
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
-
   drinkTitle = signal('');
   drinkToppings = signal('');
-  imageBase64: WritableSignal<string > = signal("");
-  drinkAvailable = signal(true);
-
   selectedIngredient: WritableSignal<string> = signal('');
   selectedAmount: WritableSignal<number> = signal(10);
 
+  imageBase64: WritableSignal<string > = signal("");
+  drinkAvailable = signal(true);
+
   isDragging = false;
+  allIngredients: Ingredient[] = [];
+
   currentModalData: WritableSignal<Drink|null>=signal(null);
   dataloaded:boolean=false;
+
+  constructor() {
+    effect(() => {
+      this.allIngredients = this.ingredientsService.ingredients();
+      if(!this.dataloaded){
+        this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
+        this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)));
+        this.drinkTitle.set(this.currentModalData()?.name ?? '');
+        this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
+        this.imageBase64.set(this.currentModalData()?.imgUrl ?? "");
+        this.selectIngredient()
+        this.dataloaded = this.currentModalData() != null;
+      }
+    });
+  }
+
+  async ngOnInit() {
+    this.currentModalData = this.modalService.getModalData();
+  }
 
   selectIngredient() {
     const first = this.availableIngredients()[0];
@@ -63,12 +82,10 @@ export class EditDrinkModalComponent {
     const avIng = this.availableIngredients().find(
       ing => ing.ingredientName === this.selectedIngredient()
     );
-
     if (avIng &&
       this.selectedAmount() > 0 &&
       this.selectedAmount() <= 100
     ) {
-
       this.availableIngredients.set(
         this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
       );
@@ -115,10 +132,10 @@ export class EditDrinkModalComponent {
       this.drinkService.drinks.update(d => d.map(drink => drink.id === this.currentModalData()!.id ? this.currentModalData()! : drink));
       if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
         const drinkData: DrinkBase = {
-          name: this.currentModalData()!.name,
+          name: this.drinkTitle(),
           available: this.drinkAvailable(),
           imgUrl: this.imageBase64(),
-          toppings: this.currentModalData()!.toppings,
+          toppings: this.drinkToppings(),
           drinkIngredients: this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount }))
         };
         await this.drinkService.editDrink(drinkData, this.currentModalData()!.id);
@@ -160,27 +177,6 @@ export class EditDrinkModalComponent {
       this.imageBase64.set(reader.result as string);
     };
     reader.readAsDataURL(file);
-  }
-
-
-  constructor() {
-    effect(() => {
-      this.allIngredients = this.ingredientsService.ingredients();
-      if(!this.dataloaded){
-        this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
-        this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)));
-        this.drinkTitle.set(this.currentModalData()?.name ?? '');
-        this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
-        this.imageBase64.set(this.currentModalData()?.imgUrl ?? "");
-        this.selectIngredient()
-        this.dataloaded = this.currentModalData() != null;
-      }
-    });
-  }
-
-  async ngOnInit() {
-    this.currentModalData = this.modalService.getModalData();
-
   }
 
   deleteDrink() {

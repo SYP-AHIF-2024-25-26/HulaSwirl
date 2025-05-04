@@ -21,11 +21,13 @@ export class AddDrinkModalComponent {
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
-  selectedIngredient: WritableSignal<string> = signal('');
-  selectedAmount: WritableSignal<number> = signal(10);
   drinkTitle: WritableSignal<string> = signal('');
   drinkToppings: WritableSignal<string> = signal('');
+  selectedIngredient: WritableSignal<string> = signal('');
+  selectedAmount: WritableSignal<number> = signal(10);
+
   imageBase64: string  = "";
+
   isDragging = false;
   allIngredients: Ingredient[] = [];
 
@@ -33,8 +35,11 @@ export class AddDrinkModalComponent {
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
       this.availableIngredients.set(
-        this.allIngredients
+        this.allIngredients.filter(ing =>
+          !this.orderIngredients().some(i => i.ingredientName === ing.ingredientName)
+        )
       );
+
       this.selectIngredient();
     });
   }

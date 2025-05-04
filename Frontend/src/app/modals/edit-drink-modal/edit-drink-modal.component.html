@@ -30,6 +30,7 @@
                   <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.amount">
                   <span class="order-ingredient-unit">ml</span>
                 </div>
+                <p class="order-ingredient-status">{{ingredient.status}}</p>
               </div>
               <span class="order-ingredient-delete" (click)="deleteIngredient($index)">❌</span>
             </div>
