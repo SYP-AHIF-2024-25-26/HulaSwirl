@@ -46,7 +46,6 @@ export class EditDrinkModalComponent {
     if (ing && this.currentModalData()) {
       this.currentModalData()!.drinkIngredients = this.currentModalData()!.drinkIngredients.filter(i => i.ingredientName !== ing.ingredientName);
       const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
-      console.log(this.orderIngredients())
       this.orderIngredients.set(
         this.orderIngredients().filter((_, i) => i !== index)
       );
@@ -82,8 +81,6 @@ export class EditDrinkModalComponent {
       this.selectedAmount.set(10);
     }
     else{
-      console.log("adding ingredient: ")
-      console.log(avIng)
       this.orderIngredients.set([
         ...this.orderIngredients(),
         { ingredientName: "New Ingredient", amount: this.selectedAmount(), status: 'New Ingredient' }
@@ -170,7 +167,6 @@ export class EditDrinkModalComponent {
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
       if(!this.dataloaded){
-        console.log(this.currentModalData());
         this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
         this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)));
         this.drinkTitle.set(this.currentModalData()?.name ?? '');

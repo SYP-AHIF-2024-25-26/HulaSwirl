@@ -57,29 +57,38 @@ export class IngredientsService {
   readonly ingredientSlots = 2;
 
   async reloadIngredients(){
+    const todo= 'Reloading ingredients.'
     try {
-      console.log('Reloading ingredients.');
+      console.log(todo);
       this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/ingredients/inBottle')));
     } catch (e) {
-      console.error('An error occurred while trying to load ingredients, placeholders will be shown.', e);
+      console.error(`An error occurred while ${todo}, placeholders will be shown.`, e);
       this.ingredients.set(liquidIngredients);
     }
     this.ingredients.update(ings => ings.map(ing => ({ ...ing, pumpSlot: ing.pumpSlot && ing.pumpSlot <= this.ingredientSlots ? ing.pumpSlot : null })));
   }
 
   async postOrder(ingredients: DrinkIngredient[]): Promise<void> {
+    const todo="Posting an custom-drink-order."
     try{
+      console.log(todo)
       await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
       await this.reloadIngredients();
     }
-    catch(e){
-      this.errorService.showError("")
+    catch (e: unknown) {
+      this.errorService.handleError(e, todo);
     }
-
   }
 
   async saveIngredients(ingredients:Ingredient[]){
-    this.ingredients.set(ingredients);
-    await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/ingredients/inBottle/edit", ingredients));
+    const todo="Saving ingredient settings."
+    try{
+      console.log(todo);
+      this.ingredients.set(ingredients);
+      await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/ingredients/inBottle/edit", ingredients));
+    }
+    catch (e: unknown) {
+      this.errorService.handleError(e, todo);
+    }
   }
 }

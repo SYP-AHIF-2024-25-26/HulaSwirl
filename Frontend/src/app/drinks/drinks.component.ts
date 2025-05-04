@@ -62,7 +62,6 @@ export class DrinksComponent {
       this.filteredDrinks.set(this.drinkService.drinks());
       this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.pumpSlot !== null));
     });
-    console.log(this.filteredDrinks+"help");
   }
   openModal(m:ModalType,data:any=null) {
     this.modalService.openModal(m,data)

@@ -16,7 +16,6 @@ export class ErrorModalComponent {
   constructor() {
     effect(() => {
       const data = this.modalService.getModalData()();
-      console.log('EFFECT DATA:', data);
       if (data?.message) {
         this.errorMessage.set(data.message);
       } else {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ModalService, ModalType} from './modal.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,24 @@ import {ModalService, ModalType} from './modal.service';
 export class ErrorService {
   constructor(private modalService: ModalService) {}
 
-  showError(message: string) {
+
+  showError(message: string,e:any) {
     this.modalService.openModal(ModalType.E, { message:message });
+    console.error(message,e);
+  }
+  handleError(e:any,todo:string) {
+    if (e instanceof HttpErrorResponse) {
+      const status = e.status; // z.B. 400, 401, 500
+      const backendMessage = e.error?.message || "No errormessage from server.";
+
+      this.showError(
+        `Error while ${todo} (Status ${status}): ${backendMessage}`,
+        e
+      );
+    } else if (e instanceof Error) {
+      this.showError("Unknown Error: " + e.message, e);
+    } else {
+      this.showError("Something went wrong.", e);
+    }
   }
 }

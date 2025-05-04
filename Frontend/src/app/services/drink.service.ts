@@ -1,7 +1,7 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {firstValueFrom, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ErrorService} from './error.service';
 
 export interface DrinkBase {
@@ -142,28 +142,57 @@ export class DrinkService {
   private readonly errorService = inject(ErrorService);
   drinks: WritableSignal<Drink[]> = signal([]);
 
-  async reloadDrinks(){
+  async reloadDrinks() {
+    const todo = "'Reloading Drinks.'"
     try {
+      console.log(todo);
       this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks")));
     } catch (e) {
+      console.error(`An error occurred while ${todo}, placeholders will be shown.`, e);
       this.drinks.set(drinks);
     }
   }
 
-  async postNewDrink(drinkdata: DrinkBase){
-    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/create", drinkdata));
-    await this.reloadDrinks();
+  async postNewDrink(drinkdata: DrinkBase) {
+    const todo = "Creating new drink."
+    try {
+      console.log(todo);
+      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/create", drinkdata));
+      await this.reloadDrinks();
+    } catch (e: unknown) {
+      this.errorService.handleError(e, todo);
+    }
   }
+
   async orderDrink(ID: number) {
-    await firstValueFrom(this.httpClient.get(environment.apiUrl + "/drinks/order?id=" + ID));
-    await this.reloadDrinks();
+    const todo = "Ordering a Drink."
+    try {
+      await firstValueFrom(this.httpClient.get(environment.apiUrl + "/drinks/order?id=" + ID));
+      await this.reloadDrinks();
+    } catch (e: unknown) {
+      this.errorService.handleError(e, todo);
+    }
   }
-  async deleteDrink(ID: number){
-    await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks/delete?id=" + ID));
-    this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
+
+  async deleteDrink(ID: number) {
+    const todo = "Deleting drink."
+    try {
+      console.log(todo);
+      await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks/delete?id=" + ID));
+      this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
+    } catch (e: unknown) {
+      this.errorService.handleError(e, todo);
+    }
   }
-  async editDrink(drinkdata: DrinkBase, ID: number){
-    await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata));
-    await this.reloadDrinks();
+
+  async editDrink(drinkdata: DrinkBase, ID: number) {
+    const todo = "Editing drink."
+    try {
+      console.log(todo);
+      await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata));
+      await this.reloadDrinks();
+    } catch (e: unknown) {
+      this.errorService.handleError(e, todo);
+    }
   }
 }

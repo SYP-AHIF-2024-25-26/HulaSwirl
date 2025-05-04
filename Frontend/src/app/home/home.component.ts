@@ -37,7 +37,6 @@ export class HomeComponent {
         drink.available &&
         drink.drinkIngredients.every(ing => this.allAvailableIngredients().some(availableIng => availableIng.ingredientName === ing.ingredientName))
       ));
-      console.log(this.allAvailableIngredients(), this.drinkService.drinks());
       this.recommendedDrinks.set(this.allAvailableDrinks().slice(0, 5));
       this.filteredDrinks.set(this.allAvailableDrinks());
     });
