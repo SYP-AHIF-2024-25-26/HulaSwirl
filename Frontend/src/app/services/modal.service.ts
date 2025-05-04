@@ -1,6 +1,6 @@
 import {effect, EventEmitter, Injectable, Output, signal, WritableSignal} from '@angular/core';
 export enum ModalType{
-  ODC,OD,AD,ED
+  ODC,OD,AD,ED,E
 }
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,7 @@ export class ModalService {
   openModal(modal: ModalType, data: any = null) {
     this.displayedModal.set(modal);
     this.modalData.set(data);
+    console.log('OPEN MODAL:', modal, data);
   }
 
   getDisplayedModal() {

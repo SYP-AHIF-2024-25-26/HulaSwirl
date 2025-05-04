@@ -4,6 +4,7 @@ import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../services/drink.service';
 import {ModalService, ModalType} from '../services/modal.service';
+import {ErrorService} from '../services/error.service';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ export class HomeComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
+  private readonly errorService = inject(ErrorService);
 
   allAvailableDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);

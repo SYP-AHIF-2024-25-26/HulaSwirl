@@ -2,6 +2,7 @@ import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {environment} from '../../environments/environment';
+import {ErrorService} from './error.service';
 
 export const liquidIngredients: Ingredient[] = [
   {
@@ -51,27 +52,34 @@ export interface OrderPreparation extends DrinkIngredient {
 })
 export class IngredientsService {
   private readonly httpClient = inject(HttpClient);
+  private readonly errorService = inject(ErrorService);
   ingredients: WritableSignal<Ingredient[]> = signal([]);
   readonly ingredientSlots = 2;
 
   async reloadIngredients(){
     try {
+      console.log('Reloading ingredients.');
       this.ingredients.set(await firstValueFrom(this.httpClient.get<Ingredient[]>(environment.apiUrl + '/ingredients/inBottle')));
     } catch (e) {
-      console.error("Using default ingredients", e);
+      console.error('An error occurred while trying to load ingredients, placeholders will be shown.', e);
       this.ingredients.set(liquidIngredients);
     }
     this.ingredients.update(ings => ings.map(ing => ({ ...ing, pumpSlot: ing.pumpSlot && ing.pumpSlot <= this.ingredientSlots ? ing.pumpSlot : null })));
   }
 
   async postOrder(ingredients: DrinkIngredient[]): Promise<void> {
-    await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
-    await this.reloadIngredients();
+    try{
+      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/order", ingredients));
+      await this.reloadIngredients();
+    }
+    catch(e){
+      this.errorService.showError("")
+    }
+
   }
 
   async saveIngredients(ingredients:Ingredient[]){
     this.ingredients.set(ingredients);
-    console.log(ingredients);
     await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/ingredients/inBottle/edit", ingredients));
   }
 }

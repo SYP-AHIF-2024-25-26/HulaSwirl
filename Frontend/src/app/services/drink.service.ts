@@ -2,6 +2,7 @@ import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {firstValueFrom, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
+import {ErrorService} from './error.service';
 
 export interface DrinkBase {
   name: string;
@@ -138,14 +139,13 @@ const drinks: Drink[] = [
 })
 export class DrinkService {
   private readonly httpClient = inject(HttpClient);
+  private readonly errorService = inject(ErrorService);
   drinks: WritableSignal<Drink[]> = signal([]);
 
   async reloadDrinks(){
     try {
       this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks")));
-      console.log(this.drinks());
     } catch (e) {
-      console.error("Using default drinks", e);
       this.drinks.set(drinks);
     }
   }
@@ -159,12 +159,10 @@ export class DrinkService {
     await this.reloadDrinks();
   }
   async deleteDrink(ID: number){
-    console.log("rawr delete")
     await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks/delete?id=" + ID));
     this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
   }
   async editDrink(drinkdata: DrinkBase, ID: number){
-    console.log("Editdrinkpatch"+drinkdata);
     await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata));
     await this.reloadDrinks();
   }

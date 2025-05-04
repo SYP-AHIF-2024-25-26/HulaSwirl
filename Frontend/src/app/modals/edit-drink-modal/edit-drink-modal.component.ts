@@ -5,6 +5,7 @@ import {ModalService} from '../../services/modal.service';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {subscribeOn} from 'rxjs';
+import {ErrorService} from '../../services/error.service';
 
 @Component({
   selector: 'app-edit-drink-modal',
@@ -18,7 +19,7 @@ export class EditDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-
+  private readonly errorService = inject(ErrorService);
   allIngredients: Ingredient[] = [];
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);

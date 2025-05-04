@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {ModalService, ModalType} from '../services/modal.service';
+import {ErrorService} from '../services/error.service';
 
 @Component({
   selector: 'app-drinks',
@@ -19,6 +20,7 @@ export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
+  private readonly errorService = inject(ErrorService);
   protected readonly ModalType = ModalType;
 
   filteredDrinks = signal<Drink[]>([]);
@@ -26,7 +28,6 @@ export class DrinksComponent {
   selectedIngredient: string = '';
   allDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
-
 
   getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
@@ -64,8 +65,6 @@ export class DrinksComponent {
     console.log(this.filteredDrinks+"help");
   }
   openModal(m:ModalType,data:any=null) {
-this.modalService.openModal(m,data)
+    this.modalService.openModal(m,data)
   }
-
-
 }

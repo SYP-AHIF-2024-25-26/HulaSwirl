@@ -18,6 +18,8 @@
   </div>
 </nav>
 
+
+
 <app-background-leaves>
   <router-outlet></router-outlet>
 
@@ -28,4 +30,7 @@
   <app-add-drink-modal id="add-drink-modal" [hidden]="displayedModal() != ModalType.AD"></app-add-drink-modal>
 
   <app-edit-drink-modal id="edit-drink-modal" [hidden]="displayedModal()!=ModalType.ED"></app-edit-drink-modal>
+
+  <app-error-modal id="error-model" [hidden]="displayedModal()!=ModalType.E"></app-error-modal>
+
 </app-background-leaves>

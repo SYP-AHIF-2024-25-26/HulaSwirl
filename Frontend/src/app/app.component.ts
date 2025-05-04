@@ -9,10 +9,11 @@ import {EditDrinkModalComponent}  from './modals/edit-drink-modal/edit-drink-mod
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
 import {IngredientsService} from './services/ingredients.service';
 import {DrinkService} from './services/drink.service';
+import {ErrorModalComponent} from './modals/error-modal/error-modal.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive, ErrorModalComponent],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'

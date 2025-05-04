@@ -2,6 +2,7 @@ import {Component, effect, HostListener, inject, Signal, signal, WritableSignal}
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
+import {ErrorService} from '../services/error.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -16,7 +17,7 @@ import {Ingredient, IngredientsService} from '../services/ingredients.service';
 })
 export class IngredientsComponent {
   private readonly ingredientsService = inject(IngredientsService)
-
+  private readonly errorService = inject(ErrorService);
   readonly ingredientSlots = this.ingredientsService.ingredientSlots;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
   avIngredients: WritableSignal<Ingredient[]> = signal([]);
