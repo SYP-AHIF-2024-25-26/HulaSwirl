@@ -28,7 +28,6 @@ public class JwtService
     {
         var claims = new[] {
             new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-            new Claim("id", user.Id.ToString()),
             new Claim(ClaimTypes.Role, user.Role)
         };
 
@@ -41,5 +40,17 @@ public class JwtService
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+}
+
+public static class ValidationExtensions
+{
+    public static bool TryValidate<T>(this T dto, out List<string> errors)
+    {
+        var context = new ValidationContext(dto);
+        var results = new List<ValidationResult>();
+        bool isValid = Validator.TryValidateObject(dto, context, results, true);
+        errors = results.Select(r => r.ErrorMessage!).ToList();
+        return isValid;
     }
 }

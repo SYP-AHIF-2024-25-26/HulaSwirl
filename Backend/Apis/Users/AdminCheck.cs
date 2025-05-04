@@ -5,9 +5,9 @@ namespace Backend.Apis.Users;
 
 public class AdminCheck
 {
-    public static async Task<IResult> HandleRoleCheck(int id, AppDbContext db)
+    public static async Task<IResult> HandleRoleCheck(string username, AppDbContext db)
     {
-        var user = await db.User.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+        var user = await db.User.AsNoTracking().FirstOrDefaultAsync(u => u.Username == username);
         if (user == null) return Results.NotFound();
 
         var isAdmin = user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase);
