@@ -11,12 +11,14 @@ public static class IngredientApi
         app.MapGet($"{baseUrl}", GetAllIngredients.HandleGetAllIngredients)
             .WithName(nameof(GetAllIngredients.HandleGetAllIngredients))
             .WithDescription("Get all ingredients")
+            .WithTags("Ingredients")
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
         app.MapPatch($"{baseUrl}", EditIngredients.HandleEditIngredients)
             .WithName(nameof(EditIngredients.HandleEditIngredients))
             .WithDescription("Edit ingredients")
+            .WithTags("Ingredients")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
