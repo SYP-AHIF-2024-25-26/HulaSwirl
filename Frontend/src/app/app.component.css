@@ -12,7 +12,7 @@
 }
 
 #logo {
-  height: 70px;
+  height: 100px;
 }
 
 .link{
@@ -27,7 +27,7 @@
   font-size: 64px;
   font-weight: bold;
   font-family: Katibeh,sans-serif;
-  color: #ef7f84;
+  color: var(--order-btn-bg);
   margin-top: -32px;
 }
 
