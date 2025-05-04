@@ -40,7 +40,6 @@ builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<QueueManager>();
 
 builder.Services.AddSingleton<JwtService>();
-builder.Services.AddSingleton<BCryptHasher>();
 builder.Services.AddSingleton<IOtpService, InMemoryOtpService>();
 
 //swagger
@@ -103,5 +102,12 @@ app
     .MapIngredientApis()
     .MapDrinkApis()
     .MapUserApi();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    PumpSeeder.SeedPumps(db);
+    UserSeeder.SeedUsers(db);
+}
 
 app.Run();

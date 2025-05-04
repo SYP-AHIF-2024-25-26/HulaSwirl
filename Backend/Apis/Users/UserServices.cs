@@ -9,10 +9,10 @@ using BCrypt.Net;
 using System.Security.Claims;
 using System.Text;
 
-public class BCryptHasher
+public static class BCryptHasher
 {
-    public string Hash(string password) => BCrypt.HashPassword(password);
-    public bool Verify(string hash, string password) => BCrypt.Verify(password, hash);
+    public static string Hash(string password) => BCrypt.HashPassword(password);
+    public static bool Verify(string hash, string password) => BCrypt.Verify(password, hash);
 }
 
 public class JwtService

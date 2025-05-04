@@ -5,7 +5,7 @@ namespace Backend.Apis.Users;
 
 public class ResetPassword
 {
-    public static async Task<IResult> HandleReset(string username, ResetPasswordDto dto, AppDbContext db, IOtpService otp, BCryptHasher hasher)
+    public static async Task<IResult> HandleReset(string username, ResetPasswordDto dto, AppDbContext db, IOtpService otp)
     {
         if (!dto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
@@ -14,7 +14,7 @@ public class ResetPassword
         if (!otp.UseOtp(username, dto.Otp))
             return Results.BadRequest("Invalid or expired OTP.");
 
-        user.PasswordHash = hasher.Hash(dto.NewPassword);
+        user.PasswordHash = BCryptHasher.Hash(dto.NewPassword);
         await db.SaveChangesAsync();
         return Results.NoContent();
     }

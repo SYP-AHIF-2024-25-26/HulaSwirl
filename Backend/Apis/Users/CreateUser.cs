@@ -6,7 +6,7 @@ namespace Backend.Apis.Users;
 
 public class CreateUser
 {
-    public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, BCryptHasher hasher, [FromServices] JwtService jwtService)
+    public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, [FromServices] JwtService jwtService)
     {
         if (!dto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
@@ -19,7 +19,7 @@ public class CreateUser
         {
             Username = dto.Username,
             Email = dto.Email,
-            PasswordHash = hasher.Hash(dto.Password),
+            PasswordHash = BCryptHasher.Hash(dto.Password),
             Role = "Admin"
         };
 
