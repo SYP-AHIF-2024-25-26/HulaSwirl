@@ -42,7 +42,7 @@ public static class UserApi
             .Produces(StatusCodes.Status404NotFound);
 
         // 4) Admin-Check
-        app.MapGet($"{baseUrl}/{{username}}/is-admin", AdminCheck.HandleRoleCheck)
+        app.MapGet($"{baseUrl}/is-admin", AdminCheck.HandleRoleCheck)
             .WithName(nameof(AdminCheck.HandleRoleCheck))
             .WithDescription("Check if a user has admin role")
             .WithTags("Users")
