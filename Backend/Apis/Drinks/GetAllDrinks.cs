@@ -1,3 +1,4 @@
+using Backend.Apis.Ingredients;
 using Backend.Services.DatabaseService;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,7 @@ public static class GetAllDrinks
     {
         var drinks = await context.Drink.Include(d => d.DrinkIngredients).ToListAsync();
 
-        return drinks.Select(d => new DrinkDto()
+        return drinks.Select(d => new DrinkDto
         {
             Id = d.Id,
             Name = d.Name,
@@ -22,21 +23,5 @@ public static class GetAllDrinks
                 Amount = i.Amount
             }).ToList()
         }).ToList();
-    }
-
-    public class DrinkDto
-    {
-        public required int Id { get; set; }
-        public required string Name { get; set; }
-        public required bool Available { get; set; }
-        public required string ImgUrl { get; set; }
-        public required string Toppings { get; set; }
-        public List<DrinkIngredientDto> DrinkIngredients { get; set; } = [];
-    }
-
-    public class DrinkIngredientDto
-    {
-        public required string IngredientName { get; set; }
-        public required int Amount { get; set; }
     }
 }

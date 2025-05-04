@@ -11,36 +11,39 @@ public static class OrderDrink
     {
         var drink = await context.Drink
             .Include(d => d.DrinkIngredients)
-            .Include(d => d.DrinkIngredients)
             .FirstOrDefaultAsync(d => d.Id == drinkId);
 
         if (drink is null)
-        {
             return Results.NotFound("Drink not found");
-        }
 
-        foreach (var ingredient in drink.DrinkIngredients)
+        var ingredientNames = drink.DrinkIngredients.Select(i => i.IngredientNameFK).ToList();
+
+        var availableIngredients = await context.Ingredient
+            .Include(i => i.Pump)
+            .Where(i => ingredientNames.Contains(i.IngredientName))
+            .ToListAsync();
+
+        var missingIngredients = ingredientNames.Except(availableIngredients.Select(i => i.IngredientName)).ToList();
+        if (missingIngredients.Any())
+            return Results.NotFound($"The following ingredients are not available: {string.Join(", ", missingIngredients)}");
+
+        foreach (var drinkIngredient in drink.DrinkIngredients)
         {
-            var ingredientInBottle = await context.Ingredient
-                .Include(i => i.Pump)
-                .FirstOrDefaultAsync(ingD => ingD.IngredientName == ingredient.IngredientNameFK);
+            var matched = availableIngredients.First(i => i.IngredientName == drinkIngredient.IngredientNameFK);
 
-            if (ingredientInBottle is null)
+            if (matched.RemainingAmount < drinkIngredient.Amount)
             {
-                return Results.NotFound("Ingredient not found");
+                return Results.BadRequest(
+                    $"Not enough {drinkIngredient.IngredientNameFK} available: {drinkIngredient.Amount}ml left but needed {matched.RemainingAmount}ml");
             }
-
-            var pump = ingredientInBottle.Pump;
-
-            if (pump is null)
-            {
-                return Results.NotFound("Pump not found");
-            }
-
-
-            await pumpManager.StartPump(pump.Slot, ingredient.Amount);
         }
 
-        return Results.Ok("Drink ordered");
+        foreach (var drinkIngredient in drink.DrinkIngredients)
+        {
+            var matched = availableIngredients.First(i => i.IngredientName == drinkIngredient.IngredientNameFK);
+            await pumpManager.StartPump(matched.PumpSlot!.Value, drinkIngredient.Amount);
+        }
+
+        return Results.Ok(drink.DrinkIngredients.Sum(i => i.Amount) / 12);
     }
 }

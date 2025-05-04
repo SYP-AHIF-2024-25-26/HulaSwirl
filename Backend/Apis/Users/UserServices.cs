@@ -1,4 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Backend.Services.DatabaseService;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Apis.Users;
@@ -43,14 +45,16 @@ public class JwtService
     }
 }
 
-public static class ValidationExtensions
+public static class AuthService
 {
-    public static bool TryValidate<T>(this T dto, out List<string> errors)
+    public static bool IsAdmin(User user)
     {
-        var context = new ValidationContext(dto);
-        var results = new List<ValidationResult>();
-        bool isValid = Validator.TryValidateObject(dto, context, results, true);
-        errors = results.Select(r => r.ErrorMessage!).ToList();
-        return isValid;
+        return user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+    }
+    
+    public static async Task<bool> ChangePermitted(string username, AppDbContext db, JwtService jwtService)
+    {
+        var user = await db.User.FirstOrDefaultAsync(u => u.Username == username);
+        return user != null && IsAdmin(user);
     }
 }

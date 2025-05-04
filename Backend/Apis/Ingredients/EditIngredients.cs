@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Apis.Ingredients;
 
-public static class EditIngredientInBottle
+public static class EditIngredients
 {
-    public static async Task<IResult> HandleEditIngredientInBottle(
-        [FromBody] IngredientInBottleDto[] ingredientInBottleDtos,
+    public static async Task<IResult> HandleEditIngredients(
+        [FromBody] IngredientDto[] ingredientInBottleDtos,
         AppDbContext context)
     {
         foreach (var ingredientInBottleDto in ingredientInBottleDtos)
@@ -15,7 +15,7 @@ public static class EditIngredientInBottle
 
             if (ingredientInBottle is null)
             {
-                return Results.NotFound("Ingredient in bottle not found");
+                return Results.NotFound("Ingredient not found");
             }
 
             ingredientInBottle.IngredientName = ingredientInBottleDto.IngredientName;
@@ -27,13 +27,5 @@ public static class EditIngredientInBottle
         await context.SaveChangesAsync();
 
         return Results.Ok("Ingredient edited");
-    }
-
-    public class IngredientInBottleDto
-    {
-        public required string IngredientName { get; set; }
-        public required int? PumpSlot { get; set; }
-        public required int RemainingAmount { get; set; }
-        public required int MaxAmount { get; set; }
     }
 }

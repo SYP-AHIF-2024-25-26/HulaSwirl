@@ -1,3 +1,4 @@
+using Backend.Apis.Users;
 using Backend.Services.DatabaseService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,20 +7,31 @@ namespace Backend.Apis.Drinks;
 
 public static class CreateDrink
 {
-    public static async Task<IResult> HandleCreateDrink([FromBody] DrinkDto drinkDto, AppDbContext context)
+    public static async Task<IResult> HandleCreateDrink(
+        [FromBody] EditDrinkDto drinkDto, 
+        AppDbContext context, 
+        JwtService jwtService)
     {
+        if (!drinkDto.TryValidate(out var errors))
+            return Results.BadRequest(new { errors });
+
+        if (!await AuthService.ChangePermitted(drinkDto.Username, context, jwtService))
+            return Results.Unauthorized();
+
         if (drinkDto.DrinkIngredients.Length == 0)
-        {
             return Results.BadRequest("Please provide at least one ingredient");
-        }
+
         if (drinkDto.DrinkIngredients.GroupBy(ing => ing.IngredientName.ToLower()).Any(g => g.Count() > 1))
-        {
             return Results.BadRequest("Please provide unique ingredients");
-        }
-        if (drinkDto.DrinkIngredients.Sum(di => di.Amount) > 500)
+
+        foreach (var ing in drinkDto.DrinkIngredients)
         {
-            return Results.BadRequest("Your drink can't contain more than 500ml");
+            if (ing.Amount <= 0 || ing.Amount > 500)
+                return Results.BadRequest($"Invalid amount for ingredient '{ing.IngredientName}': {ing.Amount}ml (allowed: 1–500)");
         }
+
+        if (drinkDto.DrinkIngredients.Sum(di => di.Amount) > 500)
+            return Results.BadRequest("Your drink can't contain more than 500ml");
 
         var drink = new Drink(drinkDto.Name, drinkDto.Available, drinkDto.ImgUrl, drinkDto.Toppings);
 
@@ -42,21 +54,5 @@ public static class CreateDrink
         context.Drink.Add(drink);
         await context.SaveChangesAsync();
         return Results.Ok("Drink created");
-    }
-
-    public class DrinkDto
-    {
-        public required string Name { get; set; }
-        public required bool Available { get; set; }
-        public required string ImgUrl { get; set; }
-        public required string Toppings { get; set; }
-        
-        public required IngredientDto[] DrinkIngredients { get; set; }
-    }
-
-    public class IngredientDto
-    {
-        public required string IngredientName { get; set; }
-        public required int Amount { get; set; }
     }
 }

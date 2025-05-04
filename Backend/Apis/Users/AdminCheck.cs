@@ -10,7 +10,6 @@ public class AdminCheck
         var user = await db.User.AsNoTracking().FirstOrDefaultAsync(u => u.Username == username);
         if (user == null) return Results.NotFound();
 
-        var isAdmin = user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase);
-        return Results.Ok(new { isAdmin });
+        return Results.Ok(AuthService.IsAdmin(user));
     }
 }

@@ -1,3 +1,4 @@
+using Backend.Apis.Ingredients;
 using Backend.Services.DatabaseService;
 using Backend.Services.PumpService;
 using Microsoft.EntityFrameworkCore;
@@ -6,39 +7,38 @@ namespace Backend.Apis.Drinks;
 
 public static class OrderCustomDrink
 {
-    public static async Task<IResult> HandleOrderCustomDrink(List<IngredientDto> ingredientDtos, AppDbContext context, PumpManager manager)
+    public static async Task<IResult> HandleOrderCustomDrink(List<DrinkIngredientDto> ingredientDtos, AppDbContext context, PumpManager manager)
     {
-        //map ordered ingredient to available ingredients
-        var orderedIngredientNames = ingredientDtos.Select(ingDto => ingDto.IngredientName).ToList();
+        var orderedIngredientNames = ingredientDtos.Select(i => i.IngredientName).ToList();
 
         var ingredients = await context.Ingredient
-            .Include(ing => ing.Pump)
-            .Where(ing => ing.PumpSlot != null)
+            .Include(i => i.Pump)
+            .Where(i => i.PumpSlot != null)
             .ToListAsync();
 
         var missingIngredients = orderedIngredientNames
-            .Except(ingredients.Select(ing => ing.IngredientName)).ToList();
+            .Except(ingredients.Select(i => i.IngredientName))
+            .ToList();
 
-        if (missingIngredients.Count != 0)
+        if (missingIngredients.Any())
+            return Results.NotFound($"The following ingredients are not available: {string.Join(", ", missingIngredients)}");
+
+        if (ingredientDtos.Sum(i => i.Amount) > 500)
+            return Results.BadRequest("Your drink can't contain more than 500ml");
+
+        foreach (var ordered in ingredientDtos)
         {
-            return Results.NotFound("Ordered ingredients are not available");
+            if (ordered.Amount <= 0 || ordered.Amount > 500)
+                return Results.BadRequest($"Invalid amount for ingredient {ordered.IngredientName}: {ordered.Amount}ml (allowed: 1–500)");
+
+            var stored = ingredients.First(i => i.IngredientName == ordered.IngredientName);
+
+            if (stored.RemainingAmount < ordered.Amount)
+                return Results.BadRequest($"Not enough {ordered.IngredientName} available: {stored.RemainingAmount}ml left but {ordered.Amount}ml needed");
+
+            await manager.StartPump(stored.PumpSlot!.Value, ordered.Amount);
         }
 
-        foreach (var orderedIngredient in ingredientDtos)
-        {
-            var existingIngredient = ingredients
-                .First(ing => ing.IngredientName == orderedIngredient.IngredientName)!;
-
-            await manager.StartPump(existingIngredient.PumpSlot, orderedIngredient.Ml);
-        }
-
-        return Results.Ok("Ordered");
-    }
-
-
-    public class IngredientDto
-    {
-        public required string IngredientName { get; set; }
-        public required int Ml { get; set; }
+        return Results.Ok(ingredientDtos.Sum(i => i.Amount) / 12);
     }
 }

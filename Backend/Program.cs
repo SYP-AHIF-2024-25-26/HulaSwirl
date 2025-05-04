@@ -38,6 +38,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<GpioController>();
 builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<QueueManager>();
+
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<BCryptHasher>();
 builder.Services.AddSingleton<IOtpService, InMemoryOtpService>();
