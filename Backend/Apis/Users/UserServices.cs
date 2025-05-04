@@ -43,16 +43,4 @@ public class JwtService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
-    private JwtSecurityToken? ValidateToken(string token)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        return tokenHandler.ReadToken(token) as JwtSecurityToken;
-    }
-    
-    public bool IsAdmin(string jwt)
-    {
-        var token = ValidateToken(jwt);
-        return token != null && token.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
-    }
 }

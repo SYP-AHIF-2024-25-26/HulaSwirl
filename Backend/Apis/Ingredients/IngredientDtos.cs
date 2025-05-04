@@ -13,9 +13,3 @@ public class IngredientDto
     public required int? PumpSlot { get; set; }
     public required int MaxAmount { get; set; }
 }
-
-public class EditIngredientsDto
-{
-    public required IngredientDto[] Ingredients { get; set; }
-    public required string UserJwt { get; set; }
-}

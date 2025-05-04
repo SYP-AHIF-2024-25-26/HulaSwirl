@@ -12,15 +12,20 @@ public static class IngredientApi
             .WithName(nameof(GetAllIngredients.HandleGetAllIngredients))
             .WithDescription("Get all ingredients")
             .WithTags("Ingredients")
-            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status200OK);
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
 
         app.MapPatch($"{baseUrl}", EditIngredients.HandleEditIngredients)
             .WithName(nameof(EditIngredients.HandleEditIngredients))
             .WithDescription("Edit ingredients")
             .WithTags("Ingredients")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status200OK);
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
 
         return app;
     }

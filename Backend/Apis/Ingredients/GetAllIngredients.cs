@@ -5,16 +5,19 @@ namespace Backend.Apis.Ingredients;
 
 public static class GetAllIngredients
 {
-    public static async Task<List<IngredientDto>> HandleGetAllIngredients(AppDbContext context)
+    public static async Task<IResult> HandleGetAllIngredients(AppDbContext db, HttpContext httpContext)
     {
-        var ingredients = await context.Ingredient.ToListAsync();
+        if(!httpContext.User.IsInRole("Admin"))
+            return Results.Forbid();
+        
+        var ingredients = await db.Ingredient.ToListAsync();
 
-        return ingredients.Select(ig => new IngredientDto
+        return Results.Ok(ingredients.Select(ig => new IngredientDto
         {
             IngredientName = ig.IngredientName,
             RemainingAmount = ig.RemainingAmount,
             PumpSlot = ig.PumpSlot,
             MaxAmount = ig.MaxAmount
-        }).ToList();
+        }).ToList());
     }
 }

@@ -47,7 +47,7 @@ public static class UserApi
             .WithDescription("Check if a user has admin role")
             .WithTags("Users")
             .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status403Forbidden);
         
         // Login
         app.MapPost($"{baseUrl}/login", Login.HandleLogin)
@@ -55,7 +55,7 @@ public static class UserApi
             .WithDescription("Authenticate user and return JWT token")
             .WithTags("Users")
             .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized);
+            .Produces(StatusCodes.Status400BadRequest);
 
         return app;
     }

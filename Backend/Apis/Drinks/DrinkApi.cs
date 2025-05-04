@@ -12,7 +12,6 @@ public static class DrinkApi
             .WithName(nameof(GetAllDrinks.HandleGetAllDrinks))
             .WithDescription("Get all drinks")
             .WithTags("Drinks")
-            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
         app.MapGet($"{baseUrl}/info", GetDrinkInfo.HandleGetDrinkInfo)
@@ -26,35 +25,52 @@ public static class DrinkApi
             .WithName(nameof(OrderDrink.HandleOrderDrink))
             .WithDescription("Order a drink")
             .WithTags("Drinks")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/orderCustomDrink", OrderCustomDrink.HandleOrderCustomDrink)
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")
             .WithTags("Drinks")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)
             .WithName(nameof(CreateDrink.HandleCreateDrink))
             .WithDescription("Create drink")
             .WithTags("Drinks")
-            .Produces(StatusCodes.Status200OK);
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
 
         app.MapDelete($"{baseUrl}/delete", DeleteDrink.HandleDeleteDrink)
             .WithName(nameof(DeleteDrink.HandleDeleteDrink))
             .WithDescription("delete drink with id")
             .WithTags("Drinks")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
 
         app.MapPatch($"{baseUrl}/update", EditDrink.HandleEditDrink)
             .WithName(nameof(EditDrink.HandleEditDrink))
             .WithDescription("Edit drink")
+            .RequireAuthorization()
             .WithTags("Drinks")
             .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
 
         return app;
     }

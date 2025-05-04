@@ -77,6 +77,8 @@ var app = builder.Build();
 // app.Urls.Add("http://192.168.178.62:8080");
 
 app.UseCors("AllowAll");
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

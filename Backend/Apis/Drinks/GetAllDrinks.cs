@@ -6,11 +6,11 @@ namespace Backend.Apis.Drinks;
 
 public static class GetAllDrinks
 {
-    public static async Task<List<DrinkDto>> HandleGetAllDrinks(AppDbContext context)
+    public static async Task<IResult> HandleGetAllDrinks(AppDbContext db)
     {
-        var drinks = await context.Drink.Include(d => d.DrinkIngredients).ToListAsync();
+        var drinks = await db.Drink.Include(d => d.DrinkIngredients).ToListAsync();
 
-        return drinks.Select(d => new DrinkDto
+        return Results.Ok(drinks.Select(d => new DrinkDto
         {
             Id = d.Id,
             Name = d.Name,
@@ -22,6 +22,6 @@ public static class GetAllDrinks
                 IngredientName = i.IngredientNameFK,
                 Amount = i.Amount
             }).ToList()
-        }).ToList();
+        }).ToList());
     }
 }

@@ -13,9 +13,9 @@ public class Login
             return Results.BadRequest(new { errors });
         var user = await db.User.FirstOrDefaultAsync(u => u.Email == dto.Email);
         if (user == null || !hasher.Verify(user.PasswordHash, dto.Password))
-            return Results.Unauthorized();
+            return Results.BadRequest("Invalid login attempt");
 
         var token = jwtService.GenerateToken(user);
-        return Results.Ok(new { token });
+        return Results.Ok(new { user.Username, token });
     }
 }

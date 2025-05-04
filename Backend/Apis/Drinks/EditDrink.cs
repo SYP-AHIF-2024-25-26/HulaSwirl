@@ -10,14 +10,14 @@ public static class EditDrink
     public static async Task<IResult> HandleEditDrink(
         [FromBody] EditDrinkDto drinkDto, 
         [FromQuery] int id, 
-        AppDbContext context, 
-        [FromServices] JwtService jwtService)
+        AppDbContext context,
+        HttpContext httpContext)
     {
         if (!drinkDto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
 
-        if (!jwtService.IsAdmin(drinkDto.UserJwt))
-            return Results.Unauthorized();
+        if (!httpContext.User.IsInRole("Admin"))
+            return Results.Forbid();
 
         foreach (var ing in drinkDto.DrinkIngredients)
         {

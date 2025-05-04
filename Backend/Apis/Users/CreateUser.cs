@@ -6,7 +6,7 @@ namespace Backend.Apis.Users;
 
 public class CreateUser
 {
-    public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, BCryptHasher hasher)
+    public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, BCryptHasher hasher, [FromServices] JwtService jwtService)
     {
         if (!dto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
@@ -26,6 +26,7 @@ public class CreateUser
         db.User.Add(user);
         await db.SaveChangesAsync();
 
-        return Results.Created($"/api/users/{user.Username}", new { user.Username });
+        var token = jwtService.GenerateToken(user);
+        return Results.Created($"/api/users/{user.Username}", new { user.Username, token });
     }
 }

@@ -6,10 +6,11 @@ namespace Backend.Apis.Drinks;
 
 public static class GetDrinkInfo
 {
-    public static async Task<Drink> HandleGetDrinkInfo([FromQuery] string id, AppDbContext context)
+    public static async Task<IResult> HandleGetDrinkInfo([FromQuery] string id, AppDbContext context)
     {
-        return (await context.Drink
+        var drink = await context.Drink
             .Include(drink => drink.DrinkIngredients)
-            .FirstOrDefaultAsync(drink => drink.Id == int.Parse(id)))!;
+            .FirstOrDefaultAsync(drink => drink.Id == int.Parse(id));
+        return drink != null ? Results.Ok(drink) : Results.NotFound();
     }
 }

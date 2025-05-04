@@ -7,17 +7,17 @@ namespace Backend.Apis.Ingredients;
 public static class EditIngredients
 {
     public static async Task<IResult> HandleEditIngredients(
-        [FromBody] EditIngredientsDto editIngredientsDto,
+        [FromBody] IngredientDto[] editIngredientsDto,
         AppDbContext context,
-        [FromServices] JwtService jwtService)
+        HttpContext httpContext)
     {
         if (!editIngredientsDto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
 
-        if (!jwtService.IsAdmin(editIngredientsDto.UserJwt))
-            return Results.Unauthorized();
+        if (!httpContext.User.IsInRole("Admin"))
+            return Results.Forbid();
         
-        foreach (var ing in editIngredientsDto.Ingredients)
+        foreach (var ing in editIngredientsDto)
         {
             var ingredient = await context.Ingredient.FindAsync(ing.IngredientName);
 

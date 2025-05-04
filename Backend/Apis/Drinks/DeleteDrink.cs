@@ -6,25 +6,28 @@ namespace Backend.Apis.Drinks;
 
 public static class DeleteDrink
 {
-    public static async Task<IResult> HandleDeleteDrink([FromQuery] int id, AppDbContext context)
+    public static async Task<IResult> HandleDeleteDrink([FromQuery] int id, AppDbContext db, HttpContext httpContext)
     {
-        var drink = await context.Drink.FindAsync(id);
+        if (!httpContext.User.IsInRole("Admin"))
+            return Results.Forbid();
+        
+        var drink = await db.Drink.FindAsync(id);
 
         if (drink is null) return Results.NotFound("Drink with id not found");
         
-        context.Drink.Remove(drink);
-        await context.SaveChangesAsync();
+        db.Drink.Remove(drink);
+        await db.SaveChangesAsync();
         
-        foreach (var ingredient in context.Ingredient)
+        foreach (var ingredient in db.Ingredient)
         {
-            bool isReferenced = await context.DrinkIngredient
+            bool isReferenced = await db.DrinkIngredient
                 .AnyAsync(di => di.IngredientNameFK == ingredient.IngredientName);
             if (!isReferenced)
             {
-                context.Ingredient.Remove(ingredient);
+                db.Ingredient.Remove(ingredient);
             }
         }
-        await context.SaveChangesAsync();
+        await db.SaveChangesAsync();
 
         return Results.Ok("drink deleted");
     }

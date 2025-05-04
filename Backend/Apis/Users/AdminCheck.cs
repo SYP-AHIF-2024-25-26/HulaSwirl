@@ -6,8 +6,8 @@ namespace Backend.Apis.Users;
 
 public class AdminCheck
 {
-    public static async Task<IResult> HandleRoleCheck(string jwt, AppDbContext db, [FromServices] JwtService jwtService)
+    public static async Task<IResult> HandleRoleCheck(string jwt, AppDbContext db, HttpContext httpContext)
     {
-        return Results.Ok(jwtService.IsAdmin(jwt));
+        return !httpContext.User.IsInRole("Admin") ? Results.Forbid() : Results.Ok();
     }
 }
