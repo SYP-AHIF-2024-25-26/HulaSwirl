@@ -43,18 +43,16 @@ public class JwtService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-}
 
-public static class AuthService
-{
-    public static bool IsAdmin(User user)
+    private JwtSecurityToken? ValidateToken(string token)
     {
-        return user.Role.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        return tokenHandler.ReadToken(token) as JwtSecurityToken;
     }
     
-    public static async Task<bool> ChangePermitted(string username, AppDbContext db)
+    public bool IsAdmin(string jwt)
     {
-        var user = await db.User.FirstOrDefaultAsync(u => u.Username == username);
-        return user != null && IsAdmin(user);
+        var token = ValidateToken(jwt);
+        return token != null && token.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
     }
 }

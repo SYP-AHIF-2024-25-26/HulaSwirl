@@ -1,15 +1,13 @@
 ﻿using Backend.Services.DatabaseService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Apis.Users;
 
 public class AdminCheck
 {
-    public static async Task<IResult> HandleRoleCheck(string username, AppDbContext db)
+    public static async Task<IResult> HandleRoleCheck(string jwt, AppDbContext db, [FromServices] JwtService jwtService)
     {
-        var user = await db.User.AsNoTracking().FirstOrDefaultAsync(u => u.Username == username);
-        if (user == null) return Results.NotFound();
-
-        return Results.Ok(AuthService.IsAdmin(user));
+        return Results.Ok(jwtService.IsAdmin(jwt));
     }
 }

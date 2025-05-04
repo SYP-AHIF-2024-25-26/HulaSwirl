@@ -17,5 +17,5 @@ public class IngredientDto
 public class EditIngredientsDto
 {
     public required IngredientDto[] Ingredients { get; set; }
-    public required string Username { get; set; }
+    public required string UserJwt { get; set; }
 }

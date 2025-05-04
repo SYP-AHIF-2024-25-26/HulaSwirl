@@ -10,12 +10,12 @@ public static class CreateDrink
     public static async Task<IResult> HandleCreateDrink(
         [FromBody] EditDrinkDto drinkDto, 
         AppDbContext context, 
-        JwtService jwtService)
+        [FromServices] JwtService jwtService)
     {
         if (!drinkDto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
 
-        if (!await AuthService.ChangePermitted(drinkDto.Username, context))
+        if (!jwtService.IsAdmin(drinkDto.UserJwt))
             return Results.Unauthorized();
 
         if (drinkDto.DrinkIngredients.Length == 0)

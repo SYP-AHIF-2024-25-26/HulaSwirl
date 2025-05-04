@@ -11,12 +11,12 @@ public static class EditDrink
         [FromBody] EditDrinkDto drinkDto, 
         [FromQuery] int id, 
         AppDbContext context, 
-        JwtService jwtService)
+        [FromServices] JwtService jwtService)
     {
         if (!drinkDto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
 
-        if (!await AuthService.ChangePermitted(drinkDto.Username, context))
+        if (!jwtService.IsAdmin(drinkDto.UserJwt))
             return Results.Unauthorized();
 
         foreach (var ing in drinkDto.DrinkIngredients)
