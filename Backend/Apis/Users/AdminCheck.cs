@@ -8,6 +8,6 @@ public class AdminCheck
 {
     public static async Task<IResult> HandleRoleCheck(AppDbContext db, HttpContext httpContext)
     {
-        return !httpContext.User.IsInRole("Admin") ? Results.Forbid() : Results.Ok();
+        return Results.Ok(httpContext.User.IsInRole("Admin"));
     }
 }

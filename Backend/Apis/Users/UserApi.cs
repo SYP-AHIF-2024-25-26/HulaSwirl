@@ -46,8 +46,7 @@ public static class UserApi
             .WithName(nameof(AdminCheck.HandleRoleCheck))
             .WithDescription("Check if a user has admin role")
             .WithTags("Users")
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status403Forbidden);
+            .Produces(StatusCodes.Status200OK);
         
         // Login
         app.MapPost($"{baseUrl}/login", Login.HandleLogin)

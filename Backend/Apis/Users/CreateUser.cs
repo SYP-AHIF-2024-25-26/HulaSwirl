@@ -20,7 +20,7 @@ public class CreateUser
             Username = dto.Username,
             Email = dto.Email,
             PasswordHash = hasher.Hash(dto.Password),
-            Role = "User"
+            Role = "Admin"
         };
 
         db.User.Add(user);

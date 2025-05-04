@@ -28,7 +28,7 @@ public static class OrderCustomDrink
 
         foreach (var ordered in ingredientDtos)
         {
-            if (ordered.Amount <= 0 || ordered.Amount > 500)
+            if (ordered.Amount is <= 0 or > 500)
                 return Results.BadRequest($"Invalid amount for ingredient {ordered.IngredientName}: {ordered.Amount}ml (allowed: 1–500)");
 
             var stored = ingredients.First(i => i.IngredientName == ordered.IngredientName);
