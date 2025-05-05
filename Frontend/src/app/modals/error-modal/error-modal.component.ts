@@ -17,7 +17,7 @@ export class ErrorModalComponent {
   progressVisible: boolean = false;
 
   constructor() {
-    effect(async () => {
+    effect(() => {
       const data = this.modalService.getModalData();
       if (data().message) {
         this.errorMessage.set(data().message);
@@ -26,12 +26,12 @@ export class ErrorModalComponent {
       }
 
       if (data().progressDuration) {
-         this.startProgress(data().progressDuration);
+        this.startProgress(data().progressDuration);
       }
     });
   }
 
-   startProgress(durationInSeconds: number) {
+  startProgress(durationInSeconds: number) {
     this.progressVisible = true;
     this.progress = 0;
     const steps = durationInSeconds * 10;
@@ -40,8 +40,14 @@ export class ErrorModalComponent {
     const interval = setInterval(() => {
       currentStep++;
       this.progress = (currentStep / steps) * 100;
+
       if (currentStep >= steps) {
         clearInterval(interval);
+
+        // 👉 Zeige "Getränk fertig!" nach dem Fortschritt
+        this.errorMessage.set('Getränk fertig!');
+
+        // Optional: Fortschrittsbalken nach kurzer Zeit ausblenden
         setTimeout(() => {
           this.progressVisible = false;
         }, 500);
