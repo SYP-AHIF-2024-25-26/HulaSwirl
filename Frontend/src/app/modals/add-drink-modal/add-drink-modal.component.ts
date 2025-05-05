@@ -126,9 +126,7 @@ export class AddDrinkModalComponent {
         }))
       };
       await this.drinkService.postNewDrink(drinkData);
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([this.router.url]);
-      });
+
       this.closeModal();
     }
   }

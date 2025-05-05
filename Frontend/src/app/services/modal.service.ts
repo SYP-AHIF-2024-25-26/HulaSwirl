@@ -21,7 +21,7 @@ export class ModalService {
     this.displayedModal.set(null);
   }
 
-  openModal(modal: ModalType, data: any = null) {
+  openModal(modal: ModalType, data: any ) {
     this.displayedModal.set(modal);
     this.modalData.set(data);
   }

@@ -74,7 +74,7 @@ export class IngredientsService {
     this.ingredients.update(ings => ings.map(ing => ({ ...ing, pumpSlot: ing.pumpSlot && ing.pumpSlot <= this.ingredientSlots ? ing.pumpSlot : null })));
   }
 
-  async postOrder(ingredients: DrinkIngredient[]): Promise<void> {
+  async postOrder(ingredients: DrinkIngredient[]): Promise<number> {
     const todo="Posting an custom-drink-order"
     try{
       console.log(todo)
@@ -82,11 +82,13 @@ export class IngredientsService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/orderCustomDrink", ingredients,{headers}));
+      var res=await firstValueFrom(this.httpClient.post<number>(environment.apiUrl + "/drinks/orderCustomDrink", ingredients,{headers}));
       await this.reloadIngredients();
+      return res;
     }
     catch (e: unknown) {
       this.errorService.handleError(e, todo);
+      return 0;
     }
   }
 

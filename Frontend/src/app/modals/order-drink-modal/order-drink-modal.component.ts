@@ -1,7 +1,7 @@
-import {Component, inject, Signal, signal, WritableSignal} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {Component, inject, Signal} from '@angular/core';
+import {NgForOf} from "@angular/common";
 import {Drink, DrinkService} from '../../services/drink.service';
-import {ModalService} from '../../services/modal.service';
+import {ModalService, ModalType} from '../../services/modal.service';
 import {ErrorService} from '../../services/error.service';
 
 @Component({
@@ -24,9 +24,12 @@ export class OrderDrinkModalComponent {
   }
 
   async submitOrder() {
+    var res = 0;
     if(this.selectedDrink()) {
-      await this.drinkService.orderDrink(this.selectedDrink()!.id);
+      res= await this.drinkService.orderDrink(this.selectedDrink()!.id);
     }
     this.closeModal();
+    this.modalService.closeModal();
+    this.errorService.startProgress(res);
   }
 }

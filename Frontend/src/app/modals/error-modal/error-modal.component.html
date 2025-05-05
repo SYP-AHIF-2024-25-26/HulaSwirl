@@ -1,8 +1,13 @@
 <div class="modal-frame">
   <div class="modal-form">
     <div class="modal-head">
-      <h1>An error occurred</h1>
+      <h1>Status</h1>
     </div>
+    <!-- Fortschrittsbalken -->
+    <div *ngIf="progressVisible" class="progress-container">
+      <div class="progress-bar" [style.width.%]="progress"></div>
+    </div>
+
     <p class="modal-footer" id="errorMessage">{{ errorMessage() }}</p>
     <div class="button submit-btn" (click)="close()">OK</div>
   </div>

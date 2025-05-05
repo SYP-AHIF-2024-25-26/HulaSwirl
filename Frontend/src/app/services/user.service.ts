@@ -29,7 +29,7 @@ export class UserService {
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());
-  isAdminFlag = signal<boolean |null>(this.getIsAdminFlagFromStorage());
+  isAdminFlag = signal<boolean>(this.getIsAdminFlagFromStorage()!);
 
 
   public getTokenFromStorage(): string | null {
@@ -40,8 +40,8 @@ export class UserService {
     return localStorage.getItem('username');
   }
 
-  private getIsAdminFlagFromStorage(): boolean | null {
-    return Boolean(localStorage.getItem('isAdminFlag'));
+  private getIsAdminFlagFromStorage(): boolean  {
+    return localStorage.getItem("isAdminFlag")==="true";
   }
 
   private setToken(token: string | null, username: string | null, isAdminFlag: boolean | null): void {
@@ -90,13 +90,11 @@ export class UserService {
 
   async login(email: string, password: string): Promise<void> {
     const todo='logging in';
-    console.log(todo);
     const url = `${environment.apiUrl}/users/login`;
     const payload: LoginRequest = { email, password };
     try {
       const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
       const isAdmin = await this.checkAdmin(res.token);
-      console.log(isAdmin)
       this.setToken(res.token,res.username,isAdmin);
     } catch (e) {
       this.errorService.handleError(e, todo);
@@ -111,7 +109,7 @@ export class UserService {
     return !!this.jwt();
   }
   isAdmin():boolean{
-    return !!this.isAdminFlag();
+    return this.isAdminFlag();
   }
 
   async checkAdmin(token: string): Promise<boolean> {

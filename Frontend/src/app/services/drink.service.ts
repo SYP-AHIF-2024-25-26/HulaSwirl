@@ -170,7 +170,7 @@ export class DrinkService {
     }
   }
 
-  async orderDrink(ID: number) {
+  async orderDrink(ID: number):Promise<number> {
     const todo = "Ordering a Drink"
     try {
       console.log(todo);
@@ -178,10 +178,12 @@ export class DrinkService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      await firstValueFrom(this.httpClient.get(environment.apiUrl + "/drinks/order?id=" + ID,{headers}));
+      const res = await firstValueFrom(this.httpClient.post<number>(environment.apiUrl + "/drinks/order?drinkid=" + ID,{},{headers}));
       await this.reloadDrinks();
+      return res;//res.
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
+      return 0;
     }
   }
 
