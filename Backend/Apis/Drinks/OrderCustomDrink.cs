@@ -25,7 +25,7 @@ public static class OrderCustomDrink
 
         if (ingredientDtos.Sum(i => i.Amount) > 500)
             return Results.BadRequest("Your drink can't contain more than 500ml");
-
+        
         foreach (var ordered in ingredientDtos)
         {
             if (ordered.Amount is <= 0 or > 500)
@@ -35,18 +35,27 @@ public static class OrderCustomDrink
 
             if (stored.RemainingAmount < ordered.Amount)
                 return Results.BadRequest($"Not enough {ordered.IngredientName} available: {stored.RemainingAmount}ml left but {ordered.Amount}ml needed");
-            
-            await manager.StartPump(stored.PumpSlot!.Value, ordered.Amount);
         }
-        
+
+        _ = Task.Run(async () =>
+        {
+            var pumpTasks = ingredientDtos.Select(dto => 
+                manager.StartPump(
+                    ingredients.First(i => i.IngredientName == dto.IngredientName).PumpSlot!.Value,
+                    dto.Amount
+                )
+            );
+            await Task.WhenAll(pumpTasks);
+        });
+
         foreach (var dto in ingredientDtos)
         {
             var stored = ingredients.First(i => i.IngredientName == dto.IngredientName);
             stored.RemainingAmount -= dto.Amount;
         }
-
         await context.SaveChangesAsync();
 
-        return Results.Ok(ingredientDtos.Sum(i => i.Amount) / 13);
+        var durationSec = ingredientDtos.Sum(i => i.Amount) / 13;
+        return Results.Ok(durationSec);
     }
 }

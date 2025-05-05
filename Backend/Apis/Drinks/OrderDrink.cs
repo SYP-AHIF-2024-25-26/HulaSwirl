@@ -7,7 +7,10 @@ namespace Backend.Apis.Drinks;
 
 public static class OrderDrink
 {
-    public static async Task<IResult> HandleOrderDrink([FromQuery] int drinkId, AppDbContext context, PumpManager manager)
+    public static async Task<IResult> HandleOrderDrink(
+        [FromQuery] int drinkId,
+        AppDbContext context,
+        PumpManager manager)
     {
         var drink = await context.Drink
             .Include(d => d.DrinkIngredients)
@@ -17,41 +20,40 @@ public static class OrderDrink
             return Results.NotFound("Drink not found");
 
         var ingredientNames = drink.DrinkIngredients.Select(i => i.IngredientNameFK).ToList();
-
         var availableIngredients = await context.Ingredient
-            .Include(i => i.Pump)
-            .Where(i => ingredientNames.Contains(i.IngredientName))
+            .Where(i => i.PumpSlot != null && ingredientNames.Contains(i.IngredientName))
             .ToListAsync();
 
-        var missingIngredients = ingredientNames.Except(availableIngredients.Select(i => i.IngredientName)).ToList();
-        if (missingIngredients.Any())
-            return Results.NotFound($"The following ingredients are not available: {string.Join(", ", missingIngredients)}");
+        var missing = ingredientNames.Except(availableIngredients.Select(i => i.IngredientName)).ToList();
+        if (missing.Any())
+            return Results.NotFound($"The following ingredients are not available: {string.Join(", ", missing)}");
 
-        foreach (var drinkIngredient in drink.DrinkIngredients)
+        foreach (var di in drink.DrinkIngredients)
         {
-            var matched = availableIngredients.First(i => i.IngredientName == drinkIngredient.IngredientNameFK);
-
-            if (matched.RemainingAmount < drinkIngredient.Amount)
-            {
+            var stored = availableIngredients.First(i => i.IngredientName == di.IngredientNameFK);
+            if (stored.RemainingAmount < di.Amount)
                 return Results.BadRequest(
-                    $"Not enough {drinkIngredient.IngredientNameFK} available: {drinkIngredient.Amount}ml left but needed {matched.RemainingAmount}ml");
-            }
+                    $"Not enough {di.IngredientNameFK}: available {stored.RemainingAmount}ml, needed {di.Amount}ml");
         }
-        
+
         foreach (var di in drink.DrinkIngredients)
         {
             var stored = availableIngredients.First(i => i.IngredientName == di.IngredientNameFK);
             stored.RemainingAmount -= di.Amount;
         }
-
         await context.SaveChangesAsync();
 
-        foreach (var drinkIngredient in drink.DrinkIngredients)
+        var pumpTasks = drink.DrinkIngredients.Select(di =>
         {
-            var matched = availableIngredients.First(i => i.IngredientName == drinkIngredient.IngredientNameFK);
-            await manager.StartPump(matched.PumpSlot!.Value, drinkIngredient.Amount);
-        }
+            var slot = availableIngredients
+                .First(i => i.IngredientName == di.IngredientNameFK)
+                .PumpSlot!.Value;
+            return manager.StartPump(slot, di.Amount);
+        }).ToArray();
 
-        return Results.Ok(drink.DrinkIngredients.Sum(i => i.Amount) / 13);
+        _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
+
+        var durationSec = drink.DrinkIngredients.Max(i => i.Amount) / 13;
+        return Results.Ok(durationSec);
     }
 }
