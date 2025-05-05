@@ -47,6 +47,6 @@ public static class OrderCustomDrink
 
         await context.SaveChangesAsync();
 
-        return Results.Ok(ingredientDtos.Max(i => i.Amount) / 13);
+        return Results.Ok(ingredientDtos.Sum(i => i.Amount) / 13);
     }
 }

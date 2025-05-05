@@ -52,6 +52,6 @@ public static class OrderDrink
             await manager.StartPump(matched.PumpSlot!.Value, drinkIngredient.Amount);
         }
 
-        return Results.Ok(drink.DrinkIngredients.Max(i => i.Amount) / 13);
+        return Results.Ok(drink.DrinkIngredients.Sum(i => i.Amount) / 13);
     }
 }
