@@ -7,7 +7,7 @@ namespace Backend.Apis.Drinks;
 
 public static class OrderDrink
 {
-    public static async Task<IResult> HandleOrderDrink([FromQuery] int drinkId, AppDbContext context, PumpManager pumpManager)
+    public static async Task<IResult> HandleOrderDrink([FromQuery] int drinkId, AppDbContext context)
     {
         var drink = await context.Drink
             .Include(d => d.DrinkIngredients)
@@ -37,13 +37,21 @@ public static class OrderDrink
                     $"Not enough {drinkIngredient.IngredientNameFK} available: {drinkIngredient.Amount}ml left but needed {matched.RemainingAmount}ml");
             }
         }
+        
+        foreach (var di in drink.DrinkIngredients)
+        {
+            var stored = availableIngredients.First(i => i.IngredientName == di.IngredientNameFK);
+            stored.RemainingAmount -= di.Amount;
+        }
+
+        await context.SaveChangesAsync();
 
         foreach (var drinkIngredient in drink.DrinkIngredients)
         {
             var matched = availableIngredients.First(i => i.IngredientName == drinkIngredient.IngredientNameFK);
-            await pumpManager.StartPump(matched.PumpSlot!.Value, drinkIngredient.Amount);
+            // await pumpManager.StartPump(matched.PumpSlot!.Value, drinkIngredient.Amount);
         }
 
-        return Results.Ok(drink.DrinkIngredients.Sum(i => i.Amount) / 12);
+        return Results.Ok(drink.DrinkIngredients.Max(i => i.Amount) / 13);
     }
 }

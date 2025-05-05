@@ -7,7 +7,7 @@ namespace Backend.Apis.Drinks;
 
 public static class OrderCustomDrink
 {
-    public static async Task<IResult> HandleOrderCustomDrink(List<DrinkIngredientDto> ingredientDtos, AppDbContext context, PumpManager manager)
+    public static async Task<IResult> HandleOrderCustomDrink(List<DrinkIngredientDto> ingredientDtos, AppDbContext context)
     {
         var orderedIngredientNames = ingredientDtos.Select(i => i.IngredientName).ToList();
 
@@ -36,9 +36,17 @@ public static class OrderCustomDrink
             if (stored.RemainingAmount < ordered.Amount)
                 return Results.BadRequest($"Not enough {ordered.IngredientName} available: {stored.RemainingAmount}ml left but {ordered.Amount}ml needed");
             
-            await manager.StartPump(stored.PumpSlot!.Value, ordered.Amount);
+            // await manager.StartPump(stored.PumpSlot!.Value, ordered.Amount);
+        }
+        
+        foreach (var dto in ingredientDtos)
+        {
+            var stored = ingredients.First(i => i.IngredientName == dto.IngredientName);
+            stored.RemainingAmount -= dto.Amount;
         }
 
-        return Results.Ok(ingredientDtos.Sum(i => i.Amount) / 12);
+        await context.SaveChangesAsync();
+
+        return Results.Ok(ingredientDtos.Max(i => i.Amount) / 13);
     }
 }

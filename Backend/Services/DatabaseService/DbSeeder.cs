@@ -20,7 +20,7 @@ public static class UserSeeder
 {
     public static void SeedUsers(AppDbContext db)
     {
-        var user = new User()
+        var user = new User
         {
             Username = "HulaSwirl Admin",
             Email = "admin@hulaswirl.com",
