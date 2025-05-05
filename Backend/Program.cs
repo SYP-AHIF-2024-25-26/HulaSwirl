@@ -10,16 +10,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
+const string connection = "TestConnection";
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var connectionString = builder.Configuration.GetConnectionString("WindowsConnection");
+var connectionString = builder.Configuration.GetConnectionString(connection);
 
 //services
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -74,7 +74,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// app.Urls.Add("http://192.168.178.62:8080");
+if(connection == "RaspiConnection") app.Urls.Add("http://192.168.178.62:8080");
 
 app.UseCors("AllowAll");
 app.UseAuthentication();
