@@ -7,7 +7,7 @@ namespace Backend.Apis.Drinks;
 
 public static class OrderDrink
 {
-    public static async Task<IResult> HandleOrderDrink([FromQuery] int drinkId, AppDbContext context)
+    public static async Task<IResult> HandleOrderDrink([FromQuery] int drinkId, AppDbContext context, PumpManager manager)
     {
         var drink = await context.Drink
             .Include(d => d.DrinkIngredients)
@@ -49,7 +49,7 @@ public static class OrderDrink
         foreach (var drinkIngredient in drink.DrinkIngredients)
         {
             var matched = availableIngredients.First(i => i.IngredientName == drinkIngredient.IngredientNameFK);
-            // await pumpManager.StartPump(matched.PumpSlot!.Value, drinkIngredient.Amount);
+            await manager.StartPump(matched.PumpSlot!.Value, drinkIngredient.Amount);
         }
 
         return Results.Ok(drink.DrinkIngredients.Max(i => i.Amount) / 13);
