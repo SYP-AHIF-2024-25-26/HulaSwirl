@@ -36,17 +36,16 @@ public static class OrderCustomDrink
             if (stored.RemainingAmount < ordered.Amount)
                 return Results.BadRequest($"Not enough {ordered.IngredientName} available: {stored.RemainingAmount}ml left but {ordered.Amount}ml needed");
         }
-
-        _ = Task.Run(async () =>
+        
+        var pumpTasks = ingredientDtos.Select(dto =>
         {
-            var pumpTasks = ingredientDtos.Select(dto => 
-                manager.StartPump(
-                    ingredients.First(i => i.IngredientName == dto.IngredientName).PumpSlot!.Value,
-                    dto.Amount
-                )
-            );
-            await Task.WhenAll(pumpTasks);
-        });
+            var slot = ingredients
+                .First(i => i.IngredientName == dto.IngredientName)
+                .PumpSlot!.Value;
+            return manager.StartPump(slot, dto.Amount);
+        }).ToArray();
+
+        _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
 
         foreach (var dto in ingredientDtos)
         {
