@@ -3,21 +3,12 @@ namespace Backend.Services.PumpService;
 public class PumpManager(ILogger<PumpManager> logger, GpioController gpioController)
 {
     private List<VPump>? _pumps;
-    private bool _isRunning;
-    private readonly Lock _pumpLock = new();
 
     public async Task StartPump(int? slot, int ml)
     {
         // TODO: check if it is really necessary to init pumps every time this methode is called instead of initializing it once
         InitializePumps();
-
-        lock (_pumpLock)
-        {
-            if (_pumps is null || slot is null || slot > _pumps.Count || _isRunning)
-                return;
-            
-            _isRunning = true;
-        }
+        if (_pumps is null || slot is null || slot > _pumps.Count) return;
 
         logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
 
@@ -39,10 +30,6 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         finally
         {
             pump.Stop();
-            lock (_pumpLock)
-            {
-                _isRunning = false;
-            }
             logger.LogInformation("Pump {slot} stopped.", slot);
         }
     }
