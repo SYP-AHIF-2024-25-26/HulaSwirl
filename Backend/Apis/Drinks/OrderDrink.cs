@@ -53,7 +53,7 @@ public static class OrderDrink
 
         _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
 
-        var durationSec = drink.DrinkIngredients.Max(i => i.Amount) / 13;
+        var durationSec = drink.DrinkIngredients.Max(i => i.Amount) / 13.0;
         return Results.Ok(durationSec);
     }
 }
