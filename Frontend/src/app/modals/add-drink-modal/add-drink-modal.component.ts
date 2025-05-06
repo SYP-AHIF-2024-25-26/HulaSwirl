@@ -74,7 +74,7 @@ export class AddDrinkModalComponent {
     );
     if (avIng &&
       this.selectedAmount() > 0 &&
-      this.selectedAmount() <= 100
+      this.selectedAmount() <= 500
     ) {
       this.availableIngredients.set(
         this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient())
@@ -97,23 +97,7 @@ export class AddDrinkModalComponent {
     }
   }
 
-  validateOrder() {
-    this.orderIngredients.set(
-      this.orderIngredients().map(ing => {
-          var availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
-          if (ing.amount < 0) {
-            return {...ing, status: 'Negativer Wert nicht erlaubt'};
-          }
-          if (ing.amount > 100) {
-            return {...ing, status: 'Maximal 100 ml pro Zutat'};
-          }
-        return { ...ing, status: '' };
-      })
-    );
-  }
-
   async submitDrink() {
-    this.validateOrder();
     if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
       const drinkData: DrinkBase = {
         name: this.drinkTitle(),

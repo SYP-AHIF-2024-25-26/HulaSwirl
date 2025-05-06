@@ -60,7 +60,7 @@ export class OrderCustomDrinkModalComponent {
 
   addIngredient() {
     const avIng = this.availableIngredients().find(ing => ing.ingredientName === this.selectedIngredient());
-    if(avIng && avIng!.remainingAmount >= this.selectedAmount() && this.selectedAmount() > 0 && this.selectedAmount() < 100) {
+    if(avIng && avIng!.remainingAmount >= this.selectedAmount() && this.selectedAmount() > 0 && this.selectedAmount() <= 500) {
       this.orderIngredients.set([...this.orderIngredients(), { ingredientName: this.selectedIngredient(), amount: this.selectedAmount(), status: "" }]);
       this.availableIngredients.set(this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient()));
       this.selectIngredient();
@@ -68,27 +68,8 @@ export class OrderCustomDrinkModalComponent {
     }
   }
 
-  validateOrder() {
-    this.orderIngredients.set(this.orderIngredients().map(ing => {
-      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
-      if(!availableIng) {
-        return { ...ing, status: "Where did that ingredient come from?" };
-      }
-      if(ing.amount < 0) {
-        return { ...ing, status: "That's not how you refill the machine" };
-      }
-      if(ing.amount > 100) {
-        return { ...ing, status: "You shouldn't drink more than 100ml of this" };
-      }
-      if(ing.amount > availableIng!.remainingAmount) {
-        return {...ing, status: `This ingredient only has ${availableIng!.remainingAmount}ml left`};
-      }
-      return { ...ing, status: "" };
-    }));
-  }
 
   async submitOrder() {
-    this.validateOrder();
     var res:number|null=null;
     if(this.orderIngredients().every(ing => ing.status === "")) {
        res=await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount})));
