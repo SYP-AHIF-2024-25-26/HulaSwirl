@@ -1,7 +1,7 @@
 import {Component, effect, inject, Input, Signal, signal, SimpleChanges, WritableSignal} from '@angular/core';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {Drink, DrinkBase, DrinkService} from '../../services/drink.service';
-import {ModalService} from '../../services/modal.service';
+import {ModalService, ModalType} from '../../services/modal.service';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {subscribeOn} from 'rxjs';
@@ -38,15 +38,17 @@ export class EditDrinkModalComponent {
 
   constructor() {
     effect(() => {
-      this.allIngredients = this.ingredientsService.ingredients();
-      if(!this.dataloaded){
-        this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
-        this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)));
-        this.drinkTitle.set(this.currentModalData()?.name ?? '');
-        this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
-        this.imageBase64.set(this.currentModalData()?.imgUrl ?? "");
-        this.selectIngredient()
-        this.dataloaded = this.currentModalData() != null;
+      if(this.modalService.getDisplayedModal()() == ModalType.ED){
+        this.allIngredients = this.ingredientsService.ingredients();
+        if(!this.dataloaded){
+          this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);
+          this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)));
+          this.drinkTitle.set(this.currentModalData()?.name ?? '');
+          this.drinkToppings.set(this.currentModalData()?.toppings ?? '');
+          this.imageBase64.set(this.currentModalData()?.imgUrl ?? "");
+          this.selectIngredient()
+          this.dataloaded = this.currentModalData() != null;
+        }
       }
     });
   }

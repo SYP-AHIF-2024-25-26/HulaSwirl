@@ -82,7 +82,7 @@ export class IngredientsService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      var res=await firstValueFrom(this.httpClient.post<number>(environment.apiUrl + "/drinks/orderCustomDrink", ingredients,{headers}));
+      const res=await firstValueFrom(this.httpClient.post<number>(environment.apiUrl + "/drinks/orderCustomDrink", ingredients,{headers}));
       await this.reloadIngredients();
       return res;
     }
