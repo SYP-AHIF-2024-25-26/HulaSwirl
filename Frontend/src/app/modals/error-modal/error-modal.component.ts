@@ -54,9 +54,10 @@ export class ErrorModalComponent {
         this.errorMessage.set('Getränk fertig!');
 
         // Optional: Fortschrittsbalken nach kurzer Zeit ausblenden
+
         setTimeout(() => {
-          this.progressVisible = false;
-        }, 500);
+          window.location.reload();
+        }, 3000);
       }
     }, 100);
   }
