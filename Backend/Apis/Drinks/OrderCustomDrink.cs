@@ -55,7 +55,7 @@ public static class OrderCustomDrink
         }
         await context.SaveChangesAsync();
 
-        var durationSec = ingredientDtos.Sum(i => i.Amount) / 13;
+        var durationSec = ingredientDtos.Max(i => i.Amount) / 13;
         return Results.Ok(durationSec);
     }
 }

@@ -22,7 +22,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
 
         // Testing shows that at 20% a pump can output 13ml/s
-        var timeInSec = ml / 13;
+        var timeInSec = ml / 13.0;
         var pump = _pumps[(int)slot - 1];
         var cancellationTokenSource = new CancellationTokenSource();
 
