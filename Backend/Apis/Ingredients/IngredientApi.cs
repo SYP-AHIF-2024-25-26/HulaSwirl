@@ -12,9 +12,7 @@ public static class IngredientApi
             .WithName(nameof(GetAllIngredients.HandleGetAllIngredients))
             .WithDescription("Get all ingredients")
             .WithTags("Ingredients")
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
+            .Produces(StatusCodes.Status200OK);
 
         app.MapPatch($"{baseUrl}", EditIngredients.HandleEditIngredients)
             .WithName(nameof(EditIngredients.HandleEditIngredients))
