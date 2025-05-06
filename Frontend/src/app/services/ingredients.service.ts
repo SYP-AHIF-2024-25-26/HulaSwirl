@@ -74,7 +74,7 @@ export class IngredientsService {
     this.ingredients.update(ings => ings.map(ing => ({ ...ing, pumpSlot: ing.pumpSlot && ing.pumpSlot <= this.ingredientSlots ? ing.pumpSlot : null })));
   }
 
-  async postOrder(ingredients: DrinkIngredient[]): Promise<number> {
+  async postOrder(ingredients: DrinkIngredient[]): Promise<number|null> {
     const todo="Posting an custom-drink-order"
     try{
       console.log(todo)
@@ -88,7 +88,7 @@ export class IngredientsService {
     }
     catch (e: unknown) {
       this.errorService.handleError(e, todo);
-      return 0;
+      return null;
     }
   }
 

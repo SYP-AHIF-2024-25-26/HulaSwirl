@@ -9,6 +9,7 @@ export class ErrorService {
   constructor(private modalService: ModalService) {}
 
   showError(message: string, e: any) {
+    this.modalService.closeModal();
     this.modalService.openModal(ModalType.E, { message: message });
     console.error(message, e);
   }
@@ -16,7 +17,7 @@ export class ErrorService {
   handleError(e: any, todo: string) {
     if (e instanceof HttpErrorResponse) {
       const status = e.status;
-      const backendMessage = e.error?.message || "No errormessage from server.";
+      const backendMessage = e.error?.message||e.error || "No errormessage from server.";
 
       this.showError(
         `Error while ${todo} (Status ${status}): ${backendMessage}`,
@@ -29,10 +30,13 @@ export class ErrorService {
     }
   }
 
-  startProgress(seconds: number) {
-    this.modalService.openModal(ModalType.E, {
-      message: 'Getränk wird zubereitet...',
-      progressDuration: seconds
-    });
+  startProgress(seconds: number|null){
+    if(seconds!=null &&seconds >= 0) {
+      this.modalService.openModal(ModalType.E, {
+        message: 'Getränk wird zubereitet...',
+        progressDuration: seconds
+      });
+    }
+
   }
 }

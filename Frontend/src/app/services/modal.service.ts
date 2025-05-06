@@ -22,8 +22,10 @@ export class ModalService {
   }
 
   openModal(modal: ModalType, data: any ) {
+    console.log("modaldata")
     this.displayedModal.set(modal);
     this.modalData.set(data);
+    console.log(this.getModalData()());
   }
 
   getDisplayedModal() {

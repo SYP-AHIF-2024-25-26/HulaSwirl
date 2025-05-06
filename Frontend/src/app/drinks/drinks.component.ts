@@ -58,9 +58,16 @@ export class DrinksComponent {
 
   constructor(){
     effect(() => {
+
       this.allDrinks.set(this.drinkService.drinks());
       this.filteredDrinks.set(this.drinkService.drinks());
       this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.pumpSlot !== null));
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          // Seite neu laden
+          location.reload();
+        }
+      });
     });
   }
   openModal(m:ModalType,data:any=null) {

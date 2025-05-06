@@ -24,12 +24,15 @@ export class OrderDrinkModalComponent {
   }
 
   async submitOrder() {
-    var res = 0;
+    var res :number|null=null;
     if(this.selectedDrink()) {
       res= await this.drinkService.orderDrink(this.selectedDrink()!.id);
     }
-    this.closeModal();
-    this.modalService.closeModal();
-    this.errorService.startProgress(res);
+
+    if(res!=null){
+      this.closeModal();
+      this.errorService.startProgress(res);
+    }
+
   }
 }

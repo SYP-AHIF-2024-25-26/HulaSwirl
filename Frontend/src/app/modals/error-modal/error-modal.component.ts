@@ -1,6 +1,7 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import { ModalService } from '../../services/modal.service';
 import { NgIf } from '@angular/common';
+import {Drink} from '../../services/drink.service';
 
 @Component({
   selector: 'app-error-modal',
@@ -15,18 +16,23 @@ export class ErrorModalComponent {
   errorMessage = signal('');
   progress: number = 0;
   progressVisible: boolean = false;
+  currentModalData: WritableSignal<any>=signal(null);
+
+  async ngOnInit() {
+    this.currentModalData = this.modalService.getModalData();
+  }
 
   constructor() {
     effect(() => {
-      const data = this.modalService.getModalData();
-      if (data().message) {
-        this.errorMessage.set(data().message);
+      console.log("opened modal",this.currentModalData())
+      if (this.currentModalData()&&this.currentModalData().message) {
+        this.errorMessage.set(this.currentModalData().message);
       } else {
         this.errorMessage.set('Unbekannter Fehler');
       }
 
-      if (data().progressDuration) {
-        this.startProgress(data().progressDuration);
+      if (this.currentModalData()&&this.currentModalData().progressDuration && this.currentModalData().progressDuration>=0) {
+        this.startProgress(this.currentModalData().progressDuration);
       }
     });
   }

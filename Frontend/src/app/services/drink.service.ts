@@ -170,7 +170,7 @@ export class DrinkService {
     }
   }
 
-  async orderDrink(ID: number):Promise<number> {
+  async orderDrink(ID: number):Promise<number|null> {
     const todo = "Ordering a Drink"
     try {
       console.log(todo);
@@ -182,8 +182,10 @@ export class DrinkService {
       await this.reloadDrinks();
       return res;//res.
     } catch (e: unknown) {
-      this.errorService.handleError(e, todo);
-      return 0;
+      if (e instanceof HttpErrorResponse) {
+        this.errorService.handleError(e, todo);
+      }
+      return null;
     }
   }
 
