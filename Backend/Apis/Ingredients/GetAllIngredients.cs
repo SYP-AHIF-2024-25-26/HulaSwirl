@@ -7,9 +7,6 @@ public static class GetAllIngredients
 {
     public static async Task<IResult> HandleGetAllIngredients(AppDbContext db, HttpContext httpContext)
     {
-        if(!httpContext.User.IsInRole("Admin"))
-            return Results.Forbid();
-        
         var ingredients = await db.Ingredient.ToListAsync();
 
         return Results.Ok(ingredients.Select(ig => new IngredientDto
