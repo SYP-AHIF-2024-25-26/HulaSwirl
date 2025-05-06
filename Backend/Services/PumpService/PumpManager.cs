@@ -11,13 +11,8 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         // TODO: check if it is really necessary to init pumps every time this methode is called instead of initializing it once
         InitializePumps();
 
-        lock (_pumpLock)
-        {
-            if (_pumps is null || slot is null || slot > _pumps.Count || _isRunning)
+            if (_pumps is null || slot is null || slot > _pumps.Count)
                 return;
-            
-            _isRunning = true;
-        }
 
         logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
 
@@ -39,10 +34,6 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         finally
         {
             pump.Stop();
-            lock (_pumpLock)
-            {
-                _isRunning = false;
-            }
             logger.LogInformation("Pump {slot} stopped.", slot);
         }
     }
