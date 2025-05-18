@@ -9,11 +9,9 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
     public async Task StartPump(int? slot, int ml)
     {
-        // TODO: check if it is really necessary to init pumps every time this methode is called instead of initializing it once
         InitializePumps();
 
-            if (_pumps is null || slot is null || slot > _pumps.Count)
-                return;
+        if (_pumps is null || slot is null || slot > _pumps.Count) return;
 
         logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
 

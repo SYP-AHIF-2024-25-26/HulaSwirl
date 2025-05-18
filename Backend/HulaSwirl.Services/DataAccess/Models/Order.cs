@@ -9,7 +9,7 @@ public class Order(string username, DateTime orderDate, string drinkName, List<D
 
     public int Id { get; set; }
     [StringLength(50)]
-    public string Username { get; set; } = username;
+    public string User { get; set; } = username;
     public DateTime OrderDate { get; set; } = orderDate;
     [StringLength(255)]
     public string DrinkName { get; set; } = drinkName;

@@ -38,7 +38,7 @@ public class JwtService
     public string GetUsernameFromToken(string token)
     {
         var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
+        var jwtToken = handler.ReadJwtToken(token["Bearer ".Length..].Trim());
         var usernameClaim = jwtToken.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub);
         return usernameClaim.Value;
     }

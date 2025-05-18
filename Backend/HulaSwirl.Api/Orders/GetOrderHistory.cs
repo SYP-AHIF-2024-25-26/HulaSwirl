@@ -8,18 +8,18 @@ namespace HulaSwirl.Api.Orders;
 public static class GetOrderHistory
 {
     public static async Task<IResult> HandleGetOrderHistory(
-        [FromRoute] int orderId,
         AppDbContext context,
         HttpContext httpContext)
     {
         if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
 
-        var order = await context.Order
+        var orders = await context.Order
             .Include(o => o.DrinkIngredients)
             .ThenInclude(oi => oi.Ingredient)
-            .FirstOrDefaultAsync(o => o.Id == orderId);
-        if (order is null) return Results.NotFound("Order not found");
-
-        return Results.Ok(order);
+            .ToListAsync();
+        
+        return orders.Count == 0 
+            ? Results.NotFound("No orders found") 
+            : Results.Ok(orders);
     }
 }

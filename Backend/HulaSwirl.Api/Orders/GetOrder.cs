@@ -18,8 +18,6 @@ public static class GetOrder
             .Include(o => o.DrinkIngredients)
             .ThenInclude(oi => oi.Ingredient)
             .FirstOrDefaultAsync(o => o.Id == orderId);
-        if (order is null) return Results.NotFound("Order not found");
-
-        return Results.Ok(order);
+        return order is null ? Results.NotFound("Order not found") : Results.Ok(order);
     }
 }

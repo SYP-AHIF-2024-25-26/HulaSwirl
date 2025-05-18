@@ -6,6 +6,7 @@ using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
 
 namespace HulaSwirl.Api.Orders;
 
@@ -26,8 +27,7 @@ public static class ConfirmOrder
         if (order.Status != OrderStatus.Pending) return Results.BadRequest("Order was already processed");
         
         var res = await OrderValidation.ValidateConfirmation(order.DrinkIngredients, context);
-        if (res is not Ok)
-            return res;
+        if (res is not Ok<double>) return res;
         
         foreach (var di in order.DrinkIngredients)
         {
@@ -44,9 +44,8 @@ public static class ConfirmOrder
                 .PumpSlot!.Value;
             return manager.StartPump(slot, di.Amount);
         }).ToArray();
-
         _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
 
-        return Results.Ok(res);
+        return res;
     }
 }

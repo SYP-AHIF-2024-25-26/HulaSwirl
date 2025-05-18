@@ -1,14 +1,20 @@
+using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.UserServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Api.Orders;
 
 public static class GetAllOrders
 {
-    public static IResult HandleGetAllOrders(HttpContext httpContext)
+    public static async Task<IResult> HandleGetAllOrders(HttpContext httpContext, AppDbContext context)
     {
         if (!httpContext.IsAdmin() && !httpContext.IsOperator())
             return Results.Forbid();
 
-        return Results.Ok(httpContext.Items["Orders"]);
+        var orders = await context.Order
+            .Include(o => o.DrinkIngredients)
+            .ToListAsync();
+        
+        return Results.Ok(orders);
     }
 }

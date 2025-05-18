@@ -15,7 +15,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapPost($"{baseUrl}/new/{{drinkId}}", OrderDrink.HandleOrderDrink)
+        app.MapPost($"{baseUrl}/drink/{{drinkId}}", OrderDrink.HandleOrderDrink)
             .WithName(nameof(OrderDrink.HandleOrderDrink))
             .WithDescription("Order a drink")
             .WithTags("Orders")
@@ -25,7 +25,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status201Created);
 
-        app.MapPost($"{baseUrl}/new/custom", OrderCustomDrink.HandleOrderCustomDrink)
+        app.MapPost($"{baseUrl}/custom-drink", OrderCustomDrink.HandleOrderCustomDrink)
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")
             .WithTags("Drinks")
@@ -35,7 +35,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status201Created);
         
-        app.MapPost($"{baseUrl}/confirm/{{orderId}}", ConfirmOrder.HandleConfirmOrder)
+        app.MapPost($"{baseUrl}/confirm/{{orderId:int}}", ConfirmOrder.HandleConfirmOrder)
             .WithName(nameof(ConfirmOrder.HandleConfirmOrder))
             .WithDescription("Confirm order")
             .WithTags("Orders")
@@ -45,7 +45,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
         
-        app.MapPost($"{baseUrl}/cancel/{{orderId}}", CancelOrder.HandleCancelOrder)
+        app.MapPost($"{baseUrl}/cancel/{{orderId:int}}", CancelOrder.HandleCancelOrder)
             .WithName(nameof(CancelOrder.HandleCancelOrder))
             .WithDescription("Cancel order")
             .WithTags("Orders")
@@ -55,7 +55,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
         
-        app.MapGet($"{baseUrl}/{{orderId}}", GetOrder.HandleGetOrder)
+        app.MapGet($"{baseUrl}/{{orderId:int}}", GetOrder.HandleGetOrder)
             .WithName(nameof(GetOrder.HandleGetOrder))
             .WithDescription("Get order")
             .WithTags("Orders")

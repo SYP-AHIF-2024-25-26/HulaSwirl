@@ -27,20 +27,16 @@ public static class OrderCustomDrink
             return res;
         
         var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
-        var allIngredients = await context.Ingredient
-            .Where(i => orderedNames.Select(n => n.ToLower()).Contains(i.IngredientName.ToLower()))
-            .ToListAsync();
-
         var drinkIngredients = ingredientDtos.Select(dto =>
             new DrinkIngredient(
-                0,
+                null,
                 dto.IngredientName,
                 dto.Amount,
                 null,
-                allIngredients.First(i => string.Equals(i.IngredientName, dto.IngredientName, StringComparison.CurrentCultureIgnoreCase))
+                null
             )
         ).ToList();
-        var order = new Order(username, DateTime.UtcNow, "Custom drink", drinkIngredients);
+        var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients);
         context.Order.Add(order);
         await context.SaveChangesAsync();
         return Results.Created();
