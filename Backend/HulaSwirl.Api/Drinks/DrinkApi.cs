@@ -19,26 +19,6 @@ public static class DrinkApi
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
-        app.MapPost($"{baseUrl}/order", OrderDrink.HandleOrderDrink)
-            .WithName(nameof(OrderDrink.HandleOrderDrink))
-            .WithDescription("Order a drink")
-            .WithTags("Drinks")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status200OK);
-
-        app.MapPost($"{baseUrl}/orderCustomDrink", OrderCustomDrink.HandleOrderCustomDrink)
-            .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
-            .WithDescription("Order custom drink")
-            .WithTags("Drinks")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status200OK);
-
         app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)
             .WithName(nameof(CreateDrink.HandleCreateDrink))
             .WithDescription("Create drink")

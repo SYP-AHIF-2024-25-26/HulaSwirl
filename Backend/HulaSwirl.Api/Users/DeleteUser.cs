@@ -1,17 +1,23 @@
-﻿using HulaSwirl.Services.DataAccess;
+using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.Dtos;
+using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HulaSwirl.Api.Users;
 
-public class DeleteUser
+public static class DeleteUser
 {
-    public static async Task<IResult> HandleDelete([FromRoute] string username, AppDbContext db, [FromBody] DeleteUserDto dto, IOtpService otp)
+    public static async Task<IResult> HandleDelete(
+        [FromRoute] string username,
+        AppDbContext db,
+        [FromBody] DeleteUserDto dto,
+        IOtpService otp)
     {
         if (!dto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
+
         var user = await db.User.FindAsync(username);
-        if (user == null) 
+        if (user == null)
             return Results.NotFound();
 
         if (!otp.UseOtp(username, dto.Otp))

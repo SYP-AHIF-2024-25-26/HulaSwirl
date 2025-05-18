@@ -1,11 +1,11 @@
-﻿using HulaSwirl.Services;
-using HulaSwirl.Services.DataAccess;
+﻿using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.Dtos;
+using HulaSwirl.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Api.Users;
 
-public class Login
+public static class Login
 {
     public static async Task<IResult> HandleLogin(LoginDto dto, AppDbContext db, JwtService jwtService)
     {

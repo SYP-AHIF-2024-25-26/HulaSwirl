@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace HulaSwirl.Api.Users;
+namespace HulaSwirl.Services.UserServices;
 
 public class InMemoryOtpService : IOtpService
 {

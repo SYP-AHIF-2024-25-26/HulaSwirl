@@ -7,7 +7,7 @@ namespace HulaSwirl.Services.DataAccess;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<DrinkOrder> DrinkOrder { get; set; }
+    public DbSet<Order> Order { get; set; }
     public DbSet<Drink> Drink { get; set; }
     public DbSet<Ingredient> Ingredient { get; set; }
     public DbSet<DrinkIngredient> DrinkIngredient { get; set; }

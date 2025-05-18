@@ -12,12 +12,7 @@ public class EditDrinkDto
     public required DrinkIngredientDto[] DrinkIngredients { get; set; }
 }
 
-public class DrinkDto
+public class DrinkDto : EditDrinkDto
 {
     public required int Id { get; set; }
-    public required string Name { get; set; }
-    public required bool Available { get; set; }
-    public required string ImgUrl { get; set; }
-    public required string Toppings { get; set; }
-    public List<DrinkIngredientDto> DrinkIngredients { get; set; } = [];
 }

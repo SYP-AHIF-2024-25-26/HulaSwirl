@@ -1,6 +1,0 @@
-@HulaSwirl.Api_HostAddress = http://localhost:5110
-
-GET {{HulaSwirl.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -1,16 +1,11 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using HulaSwirl.Services.DataAccess.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace HulaSwirl.Services;
-public static class BCryptHasher
-{
-    public static string Hash(string password) => BCrypt.Net.BCrypt.HashPassword(password);
-    public static bool Verify(string hash, string password) => BCrypt.Net.BCrypt.Verify(password, hash);
-}
+namespace HulaSwirl.Services.UserServices;
 
 public class JwtService
 {
@@ -38,5 +33,13 @@ public class JwtService
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    
+    public string GetUsernameFromToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        var usernameClaim = jwtToken.Claims.First(claim => claim.Type == JwtRegisteredClaimNames.Sub);
+        return usernameClaim.Value;
     }
 }

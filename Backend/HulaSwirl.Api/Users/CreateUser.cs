@@ -1,35 +1,20 @@
-﻿using HulaSwirl.Services;
 using HulaSwirl.Services.DataAccess;
-using HulaSwirl.Services.DataAccess.Models;
 using HulaSwirl.Services.Dtos;
+using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Api.Users;
 
-public class CreateUser
+public static class CreateUser
 {
     public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, [FromServices] JwtService jwtService)
     {
-        if (!dto.TryValidate(out var errors))
-            return Results.BadRequest(new { errors });
-        if(await db.User.AnyAsync(u => u.Email == dto.Email))
-            return Results.Conflict("Email already in use");
-        if (await db.User.AnyAsync(u => u.Username == dto.Username))
-            return Results.Conflict("Username already exists.");
+        var result = await UserFactory.CreateUserAsync(db, dto);
 
-        var user = new User
-        {
-            Username = dto.Username,
-            Email = dto.Email,
-            PasswordHash = BCryptHasher.Hash(dto.Password),
-            Role = "Admin"
-        };
+        if (!result.IsSuccess)
+            return Results.BadRequest(new { errors = result.Errors });
 
-        db.User.Add(user);
-        await db.SaveChangesAsync();
-
-        var token = jwtService.GenerateToken(user);
-        return Results.Created($"/api/users/{user.Username}", new { user.Username, token });
+        var token = jwtService.GenerateToken(result.Value);
+        return Results.Created($"/api/users/{result.Value.Username}", new { result.Value.Username, token });
     }
 }

@@ -40,9 +40,16 @@ public static class UserApi
             .Produces(StatusCodes.Status404NotFound);
 
         // 4) Admin-Check
-        app.MapGet($"{baseUrl}/is-admin", AdminCheck.HandleRoleCheck)
-            .WithName(nameof(AdminCheck.HandleRoleCheck))
+        app.MapGet($"{baseUrl}/is-admin", RoleCheck.HandleAdminCheck)
+            .WithName(nameof(RoleCheck.HandleAdminCheck))
             .WithDescription("Check if a user has admin role")
+            .WithTags("Users")
+            .Produces(StatusCodes.Status200OK);
+        
+        // 5) Operator-Check
+        app.MapGet($"{baseUrl}/is-operator", RoleCheck.HandleOperatorCheck)
+            .WithName(nameof(RoleCheck.HandleOperatorCheck))
+            .WithDescription("Check if a user has operator role")
             .WithTags("Users")
             .Produces(StatusCodes.Status200OK);
         

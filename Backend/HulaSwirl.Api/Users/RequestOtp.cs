@@ -1,8 +1,9 @@
 ﻿using HulaSwirl.Services.DataAccess;
+using HulaSwirl.Services.UserServices;
 
 namespace HulaSwirl.Api.Users;
 
-public class RequestOtp
+public static class RequestOtp
 {
     public static async Task<IResult> HandleRequestOtp(string username, AppDbContext db, IOtpService otp)
     {

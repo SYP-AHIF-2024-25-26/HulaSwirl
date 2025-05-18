@@ -2,10 +2,11 @@ using System.Device.Gpio;
 using System.Text;
 using HulaSwirl.Api.Drinks;
 using HulaSwirl.Api.Ingredients;
+using HulaSwirl.Api.Orders;
 using HulaSwirl.Api.Users;
-using HulaSwirl.Services;
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.Pumps;
+using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -97,12 +98,11 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
 
-//map apis
-
 app
     .MapIngredientApis()
     .MapDrinkApis()
-    .MapUserApi();
+    .MapUserApi()
+    .MapOrderApis();
 
 using (var scope = app.Services.CreateScope())
 {

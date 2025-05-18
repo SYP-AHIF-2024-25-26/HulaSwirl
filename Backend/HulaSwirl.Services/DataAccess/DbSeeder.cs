@@ -1,14 +1,15 @@
 ﻿using HulaSwirl.Services.DataAccess.Models;
+using HulaSwirl.Services.UserServices;
 
 namespace HulaSwirl.Services.DataAccess;
 
 public static class PumpSeeder
 {
-    private const int INSTALLED_PUMPS = 2;
+    private const int InstalledPumps = 2;
     public static void SeedPumps(AppDbContext db)
     {
         if (db.Pump.Any()) return;
-        for (var i = 1; i <= INSTALLED_PUMPS; i++)
+        for (var i = 1; i <= InstalledPumps; i++)
         {
             db.Pump.Add(new Pump(i, true));
         }

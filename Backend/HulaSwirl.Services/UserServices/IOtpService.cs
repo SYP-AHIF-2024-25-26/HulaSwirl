@@ -1,4 +1,4 @@
-﻿namespace HulaSwirl.Api.Users;
+﻿namespace HulaSwirl.Services.UserServices;
 
 public interface IOtpService
 {

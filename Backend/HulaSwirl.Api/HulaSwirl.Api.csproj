@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\HulaSwirl.Logic\HulaSwirl.Logic.csproj" />
       <ProjectReference Include="..\HulaSwirl.Services\HulaSwirl.Services.csproj" />
     </ItemGroup>
 

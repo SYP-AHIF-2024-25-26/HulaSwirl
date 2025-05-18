@@ -1,39 +1,22 @@
 using HulaSwirl.Services.DataAccess;
+using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.Dtos;
+using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HulaSwirl.Api.Ingredients;
 
 public static class EditIngredients
 {
-    public static async Task<IResult> HandleEditIngredients(
-        [FromBody] IngredientDto[] editIngredientsDto,
-        AppDbContext context,
-        HttpContext httpContext)
+    public static async Task<IResult> HandleEditIngredients([FromBody] IngredientDto[] editIngredientsDto, AppDbContext context, HttpContext httpContext)
     {
-        if (!editIngredientsDto.TryValidate(out var errors))
-            return Results.BadRequest(new { errors });
-
-        if (!httpContext.User.IsInRole("Admin"))
+        if (!httpContext.IsAdmin())
             return Results.Forbid();
-        
-        foreach (var ing in editIngredientsDto)
-        {
-            var ingredient = await context.Ingredient.FindAsync(ing.IngredientName);
 
-            if (ingredient is null)
-            {
-                return Results.NotFound("Ingredient not found");
-            }
+        var result = await IngredientService.BulkUpdateAsync(context, editIngredientsDto);
 
-            ingredient.IngredientName = ing.IngredientName;
-            ingredient.PumpSlot = ing.PumpSlot;
-            ingredient.RemainingAmount = ing.RemainingAmount;
-            ingredient.MaxAmount = ing.MaxAmount;
-        }
-
-        await context.SaveChangesAsync();
-
-        return Results.Ok("Ingredient edited");
+        return result.IsSuccess
+            ? Results.Ok(new { updated = result.Value.Count })
+            : Results.BadRequest(new { errors = result.Errors });
     }
 }

@@ -22,7 +22,7 @@ public static class GetAllDrinks
             {
                 IngredientName = i.IngredientNameFk,
                 Amount = i.Amount
-            }).ToList()
+            }).ToArray()
         }).ToList());
     }
 }

@@ -7,7 +7,7 @@ public class User(
     string email,
     string passwordHash,
     string role,
-    ICollection<DrinkOrder>? orders = null,
+    ICollection<Order>? orders = null,
     ICollection<UserDrinkStatistic>? drinkStatistics = null)
 {
     public User() : this(string.Empty, string.Empty, string.Empty, string.Empty) { }
@@ -25,6 +25,6 @@ public class User(
     public string Role { get; set; } = role;
 
     // Navigation Properties
-    public ICollection<DrinkOrder> Orders { get; set; } = orders ?? new List<DrinkOrder>();
+    public ICollection<Order> Orders { get; set; } = orders ?? new List<Order>();
     public ICollection<UserDrinkStatistic> DrinkStatistics { get; set; } = drinkStatistics ?? new List<UserDrinkStatistic>();
 }
