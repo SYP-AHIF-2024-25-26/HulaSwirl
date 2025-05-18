@@ -64,15 +64,6 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
         
-        app.MapGet($"{baseUrl}/history", GetOrderHistory.HandleGetOrderHistory)
-            .WithName(nameof(GetOrderHistory.HandleGetOrderHistory))
-            .WithDescription("Get order history")
-            .WithTags("Orders")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
-        
         return app;
     }
 }
