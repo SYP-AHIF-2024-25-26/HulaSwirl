@@ -35,7 +35,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status201Created);
         
-        app.MapPost($"{baseUrl}/confirm/{{orderId:int}}", ConfirmOrder.HandleConfirmOrder)
+        app.MapPut($"{baseUrl}/confirm/{{orderId:int}}", ConfirmOrder.HandleConfirmOrder)
             .WithName(nameof(ConfirmOrder.HandleConfirmOrder))
             .WithDescription("Confirm order")
             .WithTags("Orders")
@@ -45,7 +45,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
         
-        app.MapPost($"{baseUrl}/cancel/{{orderId:int}}", CancelOrder.HandleCancelOrder)
+        app.MapPut($"{baseUrl}/cancel/{{orderId:int}}", CancelOrder.HandleCancelOrder)
             .WithName(nameof(CancelOrder.HandleCancelOrder))
             .WithDescription("Cancel order")
             .WithTags("Orders")
