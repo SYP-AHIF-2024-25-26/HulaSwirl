@@ -16,6 +16,7 @@ public static class ConfirmOrder
         [FromRoute] int orderId, 
         AppDbContext context,
         PumpManager manager,
+        ObservableOrderService orderService,
         HttpContext httpContext)
     {
         if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
@@ -45,6 +46,11 @@ public static class ConfirmOrder
             return manager.StartPump(slot, di.Amount);
         }).ToArray();
         _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
+        
+        var orders = await context.Order
+            .Include(o => o.DrinkIngredients)
+            .ToListAsync();
+        await orderService.BroadcastAsync(orders);
 
         return res;
     }

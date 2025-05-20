@@ -11,6 +11,7 @@ public static class CancelOrder
     public static async Task<IResult> HandleCancelOrder(
         [FromRoute] int orderId,
         AppDbContext context,
+        ObservableOrderService orderService,
         HttpContext httpContext)
     {
         if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
@@ -20,6 +21,10 @@ public static class CancelOrder
         if (order.Status != OrderStatus.Pending) return Results.BadRequest("Order was already processed");
         order.Status = OrderStatus.Cancelled;
         await context.SaveChangesAsync();
+        var orders = await context.Order
+            .Include(o => o.DrinkIngredients)
+            .ToListAsync();
+        await orderService.BroadcastAsync(orders);
         return Results.Ok("Order cancelled");
     }
 }

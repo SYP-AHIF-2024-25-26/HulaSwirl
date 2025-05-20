@@ -5,6 +5,7 @@ using HulaSwirl.Api.Ingredients;
 using HulaSwirl.Api.Orders;
 using HulaSwirl.Api.Users;
 using HulaSwirl.Services.DataAccess;
+using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.Pumps;
 using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,12 +36,11 @@ builder.Services.AddCors(options =>
 });
 
 //custom services
-builder.Services.AddSingleton<GpioController>();
+builder.Services.AddSingleton<ObservableOrderService>();
 builder.Services.AddSingleton<PumpManager>();
-// builder.Services.AddSingleton<QueueManager>();
-
-builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<IOtpService, InMemoryOtpService>();
+builder.Services.AddSingleton<JwtService>();
+builder.Services.AddSingleton<GpioController>();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -98,6 +98,7 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
 
+app.UseWebSockets();
 app
     .MapIngredientApis()
     .MapDrinkApis()

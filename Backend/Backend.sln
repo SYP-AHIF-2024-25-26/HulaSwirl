@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HulaSwirl.Api", "HulaSwirl.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HulaSwirl.Services", "HulaSwirl.Services\HulaSwirl.Services.csproj", "{B776C002-391E-4CEE-805C-0D720481EDC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HulaSwirl.WebSockets", "HulaSwirl.WebSockets\HulaSwirl.WebSockets.csproj", "{4C318BEC-7B89-4093-BD91-5E3BEEFC9513}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{B776C002-391E-4CEE-805C-0D720481EDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B776C002-391E-4CEE-805C-0D720481EDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B776C002-391E-4CEE-805C-0D720481EDC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C318BEC-7B89-4093-BD91-5E3BEEFC9513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C318BEC-7B89-4093-BD91-5E3BEEFC9513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C318BEC-7B89-4093-BD91-5E3BEEFC9513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C318BEC-7B89-4093-BD91-5E3BEEFC9513}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

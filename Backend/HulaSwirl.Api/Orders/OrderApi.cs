@@ -6,14 +6,7 @@ public static class OrderApi
     {
         const string baseUrl = "api/v1/orders";
 
-        app.MapGet($"{baseUrl}", GetAllOrders.HandleGetAllOrders)
-            .WithName(nameof(GetAllOrders.HandleGetAllOrders))
-            .WithDescription("Get all orders")
-            .WithTags("Orders")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
+        app.Map("ws/orders", GetAllOrders.HandleGetAllOrders);
 
         app.MapPost($"{baseUrl}/drink/{{drinkId}}", OrderDrink.HandleOrderDrink)
             .WithName(nameof(OrderDrink.HandleOrderDrink))

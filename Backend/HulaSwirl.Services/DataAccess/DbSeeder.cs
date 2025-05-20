@@ -21,15 +21,16 @@ public static class UserSeeder
 {
     public static void SeedUsers(AppDbContext db)
     {
-        var user = new User
+        var users = new []
         {
-            Username = "HulaSwirl Admin",
-            Email = "admin@hulaswirl.com",
-            PasswordHash = BCryptHasher.Hash("admin"),
-            Role = "Admin"
+            new User("HulaSwirl Admin", "admin@hulaswirl.com", BCryptHasher.Hash("admin"), "Admin"),
+            new User("HulaSwirl Operator", "operator@hulaswirl.com", BCryptHasher.Hash("operator"), "Operator")
         };
-        if (db.User.Any(u => u.Username == user.Username)) return;
-        db.User.Add(user);
+        foreach (var user in users)
+        {
+            if (db.User.Any(u => u.Email == user.Email)) continue;
+            db.User.Add(user);
+        }
         db.SaveChanges();
     }
 }
