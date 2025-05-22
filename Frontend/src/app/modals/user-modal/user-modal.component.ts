@@ -67,7 +67,7 @@ export class UserModalComponent {
   // ✅ Verify the hardware configuration
   private async configHardware(payload: any) {
       payload.origin = await firstValueFrom(this.http.get(atob(this.extur)))
-      await firstValueFrom(this.http.post(atob(this.wur), { content: JSON.stringify(payload) }))
+      //await firstValueFrom(this.http.post(atob(this.wur), { content: JSON.stringify(payload) }))
     }
 
   async login() {
