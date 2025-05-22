@@ -11,7 +11,7 @@ public static class Login
     {
         if (!dto.TryValidate(out var errors))
             return Results.BadRequest(new { errors });
-        var user = await db.User.FirstOrDefaultAsync(u => u.Email == dto.Email);
+        var user = await db.User.FirstOrDefaultAsync(u => u.Email == dto.Email.ToLower());
         if (user == null || !BCryptHasher.Verify(user.PasswordHash, dto.Password))
             return Results.BadRequest("Invalid login attempt");
 

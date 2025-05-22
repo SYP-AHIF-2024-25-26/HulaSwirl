@@ -23,8 +23,8 @@ public static class UserSeeder
     {
         var users = new []
         {
-            new User("HulaSwirl Admin", "admin@hulaswirl.com", BCryptHasher.Hash("admin"), "Admin"),
-            new User("HulaSwirl Operator", "operator@hulaswirl.com", BCryptHasher.Hash("operator"), "Operator")
+            new User("HulaSwirl Admin", "admin@hulaswirl.com", BCryptHasher.Hash("admin"), "admin"),
+            new User("HulaSwirl Operator", "operator@hulaswirl.com", BCryptHasher.Hash("operator"), "operator")
         };
         foreach (var user in users)
         {

@@ -21,7 +21,7 @@ public static class OrderApi
         app.MapPost($"{baseUrl}/custom-drink", OrderCustomDrink.HandleOrderCustomDrink)
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")
-            .WithTags("Drinks")
+            .WithTags("Orders")
             .RequireAuthorization()
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)

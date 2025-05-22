@@ -31,9 +31,9 @@ public static class UserFactory
         var user = new User
         {
             Username = dto.Username,
-            Email = dto.Email,
+            Email = dto.Email.ToLower(),
             PasswordHash = BCryptHasher.Hash(dto.Password),
-            Role = "Admin"
+            Role = "user"
         };
 
         context.User.Add(user);

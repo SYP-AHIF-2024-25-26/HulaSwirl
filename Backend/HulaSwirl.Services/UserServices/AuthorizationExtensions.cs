@@ -8,6 +8,6 @@ namespace HulaSwirl.Services.UserServices;
 /// </summary>
 public static class AuthorizationExtensions
 {
-    public static bool IsAdmin(this HttpContext context) => context.User.IsInRole("Admin");
-    public static bool IsOperator(this HttpContext context) => context.User.IsInRole("Operator");
+    public static bool IsAdmin(this HttpContext context) => context.User.IsInRole("admin");
+    public static bool IsOperator(this HttpContext context) => context.User.IsInRole("operator");
 }
