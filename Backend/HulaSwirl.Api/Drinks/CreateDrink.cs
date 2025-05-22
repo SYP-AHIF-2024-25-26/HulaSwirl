@@ -20,6 +20,6 @@ public static class CreateDrink
 
         return result.IsSuccess
             ? Results.Ok("Drink created")
-            : Results.BadRequest(new { errors = result.Errors });
+            : Results.BadRequest(result.Errors);
     }
 }

@@ -12,7 +12,7 @@ public static class CreateUser
         var result = await UserFactory.CreateUserAsync(db, dto);
 
         if (!result.IsSuccess)
-            return Results.BadRequest(new { errors = result.Errors });
+            return Results.BadRequest(result.Errors);
 
         var token = jwtService.GenerateToken(result.Value);
         return Results.Created($"/api/users/{result.Value.Username}", new { result.Value.Username, token });

@@ -13,6 +13,6 @@ public static class RequestOtp
         var email = user.Email;
         var code = otp.GenerateOtp(username);
         
-        return Results.Ok( new { Code = code, Email = email } );
+        return Results.Ok(code);
     }
 }

@@ -16,7 +16,7 @@ public static class EditIngredients
         var result = await IngredientService.BulkUpdateAsync(context, editIngredientsDto);
 
         return result.IsSuccess
-            ? Results.Ok(new { updated = result.Value.Count })
-            : Results.BadRequest(new { errors = result.Errors });
+            ? Results.Ok(result.Value.Count)
+            : Results.BadRequest(result.Errors);
     }
 }

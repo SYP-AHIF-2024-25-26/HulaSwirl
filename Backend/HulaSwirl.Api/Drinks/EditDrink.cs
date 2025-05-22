@@ -29,6 +29,6 @@ public static class EditDrink
 
         return result.IsSuccess
             ? Results.Ok("Drink updated")
-            : Results.BadRequest(new { errors = result.Errors });
+            : Results.BadRequest(result.Errors);
     }
 }

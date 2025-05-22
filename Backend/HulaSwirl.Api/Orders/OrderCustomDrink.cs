@@ -39,6 +39,6 @@ public static class OrderCustomDrink
         var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients);
         context.Order.Add(order);
         await context.SaveChangesAsync();
-        return Results.Created();
+        return Results.Created($"/api/orders/{order.Id}", "Order created successfully");
     }
 }

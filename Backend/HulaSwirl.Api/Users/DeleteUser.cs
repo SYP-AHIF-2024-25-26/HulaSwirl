@@ -14,11 +14,11 @@ public static class DeleteUser
         IOtpService otp)
     {
         if (!dto.TryValidate(out var errors))
-            return Results.BadRequest(new { errors });
+            return Results.BadRequest(errors);
 
         var user = await db.User.FindAsync(username);
         if (user == null)
-            return Results.NotFound();
+            return Results.NotFound("User not found.");
 
         if (!otp.UseOtp(username, dto.Otp))
             return Results.BadRequest("Invalid or expired OTP.");

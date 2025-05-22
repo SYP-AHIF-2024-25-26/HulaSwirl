@@ -13,7 +13,7 @@ public static class ResetPassword
 
         var user = await db.User.FindAsync(username);
         if (user == null)
-            return Results.NotFound();
+            return Results.NotFound("User not found.");
 
         if (!otp.UseOtp(username, dto.Otp))
             return Results.BadRequest("Invalid or expired OTP.");
