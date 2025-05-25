@@ -1,7 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
-import {ErrorService} from './error.service';
+import {StatusService} from './status.service';
 import {environment} from '../../environments/environment';
 
 interface RegisterRequest {
@@ -25,7 +25,7 @@ interface AuthResponse {
 })
 export class UserService {
   private readonly http = inject(HttpClient);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());

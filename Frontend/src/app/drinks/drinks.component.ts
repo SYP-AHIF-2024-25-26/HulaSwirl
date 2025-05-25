@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {ModalService, ModalType} from '../services/modal.service';
-import {ErrorService} from '../services/error.service';
+import {StatusService} from '../services/status.service';
 
 @Component({
   selector: 'app-drinks',
@@ -20,7 +20,7 @@ export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
   protected readonly ModalType = ModalType;
 
   filteredDrinks = signal<Drink[]>([]);

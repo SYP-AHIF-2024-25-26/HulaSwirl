@@ -9,7 +9,7 @@ import {
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService} from '../../services/modal.service';
-import {ErrorService} from '../../services/error.service';
+import {StatusService} from '../../services/status.service';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
@@ -24,7 +24,7 @@ import {ErrorService} from '../../services/error.service';
 export class OrderCustomDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
   allIngredients: Ingredient[] = [];
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
@@ -77,7 +77,6 @@ export class OrderCustomDrinkModalComponent {
 
     if(res!=null){
       this.closeModal();
-      this.errorService.startProgress(res);
     }
   }
 

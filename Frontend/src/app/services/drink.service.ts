@@ -1,8 +1,8 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {firstValueFrom, Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {ErrorService} from './error.service';
+import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {StatusService} from './status.service';
 import {UserService} from './user.service';
 
 export interface DrinkBase {
@@ -140,7 +140,7 @@ const drinks: Drink[] = [
 })
 export class DrinkService {
   private readonly httpClient = inject(HttpClient);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
   private readonly userService =inject(UserService)
   drinks: WritableSignal<Drink[]> = signal([]);
 
@@ -163,6 +163,7 @@ export class DrinkService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
+      console.log(headers)
       await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/create", drinkdata,{headers}));
       await this.reloadDrinks();
     } catch (e: unknown) {
@@ -170,22 +171,23 @@ export class DrinkService {
     }
   }
 
-  async orderDrink(ID: number):Promise<number|null> {
+  async orderDrink(ID: number) {
     const todo = "Ordering a Drink"
+    console.log(todo);
+    const jwt = this.userService.getTokenFromStorage();
+    const headers = {
+      Authorization: `Bearer ${jwt}`
+    };
     try {
-      console.log(todo);
-      const jwt = this.userService.getTokenFromStorage();
-      const headers = {
-        Authorization: `Bearer ${jwt}`
-      };
-      const res = await firstValueFrom(this.httpClient.post<number>(environment.apiUrl + "/drinks/order?drinkid=" + ID,{},{headers}));
-      await this.reloadDrinks();
-      return res;//res.
+      const res = await firstValueFrom(this.httpClient.post(environment.apiUrl + "/orders/drink/" + ID,{},{headers,observe: 'response'}));
+      if (res.status === 200 || res.status === 201) {
+        await this.reloadDrinks();
+        this.errorService.showStatus("Your order has been submitted, please go to the order terminal and confirm your order");
+      }
     } catch (e: unknown) {
       if (e instanceof HttpErrorResponse) {
         this.errorService.handleError(e, todo);
       }
-      return null;
     }
   }
 

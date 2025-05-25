@@ -2,7 +2,7 @@ import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {ErrorService} from './error.service';
+import {StatusService} from './status.service';
 import {UserService} from './user.service';
 
 export const liquidIngredients: Ingredient[] = [
@@ -53,7 +53,7 @@ export interface OrderPreparation extends DrinkIngredient {
 })
 export class IngredientsService {
   private readonly httpClient = inject(HttpClient);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
   private readonly userService=inject(UserService)
   ingredients: WritableSignal<Ingredient[]> = signal([]);
   readonly ingredientSlots = 2;
@@ -82,7 +82,7 @@ export class IngredientsService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      const res=await firstValueFrom(this.httpClient.post<number>(environment.apiUrl + "/drinks/orderCustomDrink", ingredients,{headers}));
+      const res=await firstValueFrom(this.httpClient.post<number>(environment.apiUrl + "/orders/custom-drink", ingredients,{headers}));
       await this.reloadIngredients();
       return res;
     }

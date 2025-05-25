@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class ErrorService {
+export class StatusService {
   constructor(private modalService: ModalService) {}
 
   showError(message: string, e: any) {
@@ -17,8 +17,10 @@ export class ErrorService {
   handleError(e: any, todo: string) {
     if (e instanceof HttpErrorResponse) {
       const status = e.status;
-      const backendMessage = e.error?.message||e.error || "No errormessage from server.";
-
+      let backendMessage = e.error?.message || e.error || "No errormessage from server.";
+      if(status==401){
+        backendMessage = "Unauthorized";
+      }
       this.showError(
         `Error while ${todo} (Status ${status}): ${backendMessage}`,
         e
@@ -29,14 +31,8 @@ export class ErrorService {
       this.showError("Something went wrong.", e);
     }
   }
-
-  startProgress(seconds: number|null){
-    if(seconds!=null &&seconds >= 0) {
-      this.modalService.openModal(ModalType.E, {
-        message: 'Getränk wird zubereitet...',
-        progressDuration: seconds
-      });
-    }
-
+  showStatus(message: string){
+    this.modalService.closeModal();
+    this.modalService.openModal(ModalType.E, { message: message });
   }
 }

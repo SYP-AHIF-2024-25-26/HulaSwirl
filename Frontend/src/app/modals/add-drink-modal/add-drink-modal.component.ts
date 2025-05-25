@@ -4,7 +4,7 @@ import {Ingredient, IngredientsService, OrderPreparation} from '../../services/i
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {DrinkBase, DrinkService} from '../../services/drink.service';
-import {ErrorService} from '../../services/error.service';
+import {StatusService} from '../../services/status.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -18,7 +18,7 @@ export class AddDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
   private readonly router = inject(Router);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);

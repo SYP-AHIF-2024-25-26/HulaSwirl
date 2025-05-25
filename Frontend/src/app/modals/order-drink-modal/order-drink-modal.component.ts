@@ -2,7 +2,7 @@ import {Component, inject, Signal} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {Drink, DrinkService} from '../../services/drink.service';
 import {ModalService, ModalType} from '../../services/modal.service';
-import {ErrorService} from '../../services/error.service';
+import {StatusService} from '../../services/status.service';
 
 @Component({
   selector: 'app-order-drink-modal',
@@ -16,7 +16,7 @@ import {ErrorService} from '../../services/error.service';
 export class OrderDrinkModalComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
   selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
 
   closeModal() {
@@ -26,13 +26,8 @@ export class OrderDrinkModalComponent {
   async submitOrder() {
     var res :number|null=null;
     if(this.selectedDrink()) {
-      res= await this.drinkService.orderDrink(this.selectedDrink()!.id);
-    }
+      await this.drinkService.orderDrink(this.selectedDrink()!.id);
 
-    if(res!=null){
-      this.closeModal();
-      this.errorService.startProgress(res);
     }
-
   }
 }

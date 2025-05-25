@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ModalService, ModalType } from '../../services/modal.service';
-import { ErrorService } from '../../services/error.service';
+import { StatusService } from '../../services/status.service';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 
@@ -22,7 +22,7 @@ import {firstValueFrom} from 'rxjs';
 export class UserModalComponent {
   private readonly userService = inject(UserService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
+  private readonly errorService = inject(StatusService);
 
   mode = signal<'login' | 'register'>('login');
 
