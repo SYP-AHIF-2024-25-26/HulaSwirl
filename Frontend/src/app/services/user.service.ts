@@ -55,7 +55,6 @@ export class UserService {
       localStorage.setItem('username', username);
       this.username.set(username);
     }
-    console.log(isAdminFlag)
     if (isAdminFlag !== null) {
       localStorage.setItem('isAdminFlag', String(isAdminFlag));
       this.isAdminFlag.set(isAdminFlag);

@@ -24,7 +24,6 @@ export class StatusModalComponent {
 
   constructor() {
     effect(() => {
-      console.log("opened modal",this.currentModalData())
       if (this.currentModalData()&&this.currentModalData().message) {
         this.errorMessage.set(this.currentModalData().message);
       } else {
