@@ -1,6 +1,7 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DataAccess.Models;
 using HulaSwirl.Services.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Services.UserServices;
@@ -13,7 +14,7 @@ public static class UserFactory
     /// <summary>
     /// Creates a new user after validating DTO and uniqueness constraints.
     /// </summary>
-    public static async Task<Result<User>> CreateUserAsync(AppDbContext context, CreateUserDto dto)
+    public static async Task<IResult> CreateUserAsync(AppDbContext context, CreateUserDto dto, JwtService jwtService)
     {
         var errors = new List<string>();
         if (!dto.TryValidate(out var validationErrors))
@@ -25,8 +26,7 @@ public static class UserFactory
         if (await context.User.AnyAsync(u => u.Username == dto.Username))
             errors.Add("Username already exists.");
 
-        if (errors.Count != 0)
-            return Result<User>.Failure(errors);
+        if (errors.Count != 0) return Results.Conflict(errors);
 
         var user = new User
         {
@@ -38,7 +38,11 @@ public static class UserFactory
 
         context.User.Add(user);
         await context.SaveChangesAsync();
+        var token = jwtService.GenerateToken(user);
 
-        return Result<User>.Success(user);
+        return Results.Created($"/api/users", new {
+            user.Username,
+            token
+        });
     }
 }

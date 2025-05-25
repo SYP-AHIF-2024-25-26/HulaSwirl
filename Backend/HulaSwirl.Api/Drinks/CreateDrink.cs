@@ -16,10 +16,6 @@ public static class CreateDrink
         if (!httpContext.IsAdmin()) 
             return Results.Forbid();
 
-        var result = await DrinkFactory.CreateDrinkAsync(context, drinkDto);
-
-        return result.IsSuccess
-            ? Results.Ok("Drink created")
-            : Results.BadRequest(result.Errors);
+        return await DrinkFactory.CreateDrinkAsync(context, drinkDto);
     }
 }

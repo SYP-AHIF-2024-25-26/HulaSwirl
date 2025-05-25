@@ -9,12 +9,6 @@ public static class CreateUser
 {
     public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, [FromServices] JwtService jwtService)
     {
-        var result = await UserFactory.CreateUserAsync(db, dto);
-
-        if (!result.IsSuccess)
-            return Results.BadRequest(result.Errors);
-
-        var token = jwtService.GenerateToken(result.Value);
-        return Results.Created($"/api/users/{result.Value.Username}", new { result.Value.Username, token });
+        return await UserFactory.CreateUserAsync(db, dto, jwtService);
     }
 }

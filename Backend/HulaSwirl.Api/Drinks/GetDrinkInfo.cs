@@ -6,7 +6,7 @@ namespace HulaSwirl.Api.Drinks;
 
 public static class GetDrinkInfo
 {
-    public static async Task<IResult> HandleGetDrinkInfo([FromQuery] string id, AppDbContext context)
+    public static async Task<IResult> HandleGetDrinkInfo([FromRoute] string id, AppDbContext context)
     {
         var drink = await context.Drink
             .Include(drink => drink.DrinkIngredients)

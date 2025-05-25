@@ -43,7 +43,7 @@ public static class OrderApi
             .WithDescription("Cancel order")
             .WithTags("Orders")
             .RequireAuthorization()
-            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);

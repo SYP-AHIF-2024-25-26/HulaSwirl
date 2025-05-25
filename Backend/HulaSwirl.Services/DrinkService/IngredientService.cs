@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DataAccess.Models;
 using HulaSwirl.Services.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Services.DrinkService;
@@ -52,13 +53,12 @@ public static class IngredientService
     /// <summary>
     /// Updates the ingredients in bulk. 
     /// </summary>
-    public static async Task<Result<List<string>>> BulkUpdateAsync(
+    public static async Task<IResult> BulkUpdateAsync(
         AppDbContext context,
         IReadOnlyCollection<IngredientDto> dto)
     {
         var errors = Validate(dto);
-        if (errors.Count > 0)
-            return Result<List<string>>.Failure(errors);
+        if (errors.Count > 0) return Results.BadRequest(errors);
 
         var updated = new List<string>();
 
@@ -79,11 +79,10 @@ public static class IngredientService
             updated.Add(ingredient.IngredientName);
         }
 
-        if (errors.Count > 0)
-            return Result<List<string>>.Failure(errors);
+        if (errors.Count > 0) Results.BadRequest(errors);
 
         await context.SaveChangesAsync();
-        return Result<List<string>>.Success(updated);
+        return Results.Ok(updated);
     }
 
     private static List<string> Validate(IReadOnlyCollection<IngredientDto> dto)

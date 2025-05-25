@@ -28,24 +28,31 @@ public static class OrderDrink
         var res = await OrderValidation.ValidateRequest(ingredientNames, context);
         if (res is not Ok)
             return res;
-        
-        var orderIngredients = drink.DrinkIngredients
-            .Select(i => 
-                new DrinkIngredient(
-                    null, 
-                    i.IngredientNameFk, 
-                    i.Amount, 
-                    null, 
-                    null))
-            .ToList();
-        var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
-        var order = new Order(username, DateTime.Now, drink.Name, orderIngredients);
-        context.Order.Add(order);
-        await context.SaveChangesAsync();
-        var orders = await context.Order
-            .Include(o => o.DrinkIngredients)
-            .ToListAsync();
-        await orderService.BroadcastAsync(orders);
-        return Results.Created($"/api/orders/{order.Id}", "Order created successfully");
+
+        try
+        {
+            var orderIngredients = drink.DrinkIngredients
+                .Select(i =>
+                    new DrinkIngredient(
+                        null,
+                        i.IngredientNameFk,
+                        i.Amount,
+                        null,
+                        null))
+                .ToList();
+            var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
+            var order = new Order(username, DateTime.Now, drink.Name, orderIngredients);
+            context.Order.Add(order);
+            await context.SaveChangesAsync();
+            var orders = await context.Order
+                .Include(o => o.DrinkIngredients)
+                .ToListAsync();
+            await orderService.BroadcastAsync(orders);
+            return Results.Created($"/api/orders", order);
+        } catch (Exception ex)
+        {
+            return Results.Problem("An error occurred while processing the order: " + ex.Message);
+        }
+
     }
 }

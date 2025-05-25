@@ -26,24 +26,30 @@ public static class OrderCustomDrink
         var res = await OrderValidation.ValidateRequest(orderedNames, context);
         if (res is not Ok)
             return res;
-        
-        var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
-        var drinkIngredients = ingredientDtos.Select(dto =>
-            new DrinkIngredient(
-                null,
-                dto.IngredientName,
-                dto.Amount,
-                null,
-                null
-            )
-        ).ToList();
-        var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients);
-        context.Order.Add(order);
-        await context.SaveChangesAsync();
-        var orders = await context.Order
-            .Include(o => o.DrinkIngredients)
-            .ToListAsync();
-        await orderService.BroadcastAsync(orders);
-        return Results.Created($"/api/orders/{order.Id}", "Order created successfully");
+
+        try
+        {
+            var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
+            var drinkIngredients = ingredientDtos.Select(dto =>
+                new DrinkIngredient(
+                    null,
+                    dto.IngredientName,
+                    dto.Amount,
+                    null,
+                    null
+                )
+            ).ToList();
+            var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients);
+            context.Order.Add(order);
+            await context.SaveChangesAsync();
+            var orders = await context.Order
+                .Include(o => o.DrinkIngredients)
+                .ToListAsync();
+            await orderService.BroadcastAsync(orders);
+            return Results.Created($"/api/orders", order);
+        } catch (Exception ex)
+        {
+            return Results.Problem("An error occurred while processing the order: " + ex.Message);
+        }
     }
 }

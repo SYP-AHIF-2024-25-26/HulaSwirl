@@ -25,6 +25,6 @@ public static class CancelOrder
             .Include(o => o.DrinkIngredients)
             .ToListAsync();
         await orderService.BroadcastAsync(orders);
-        return Results.Ok("Order cancelled");
+        return Results.NoContent();
     }
 }

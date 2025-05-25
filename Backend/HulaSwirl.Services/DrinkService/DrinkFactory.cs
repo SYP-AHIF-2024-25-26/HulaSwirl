@@ -1,5 +1,7 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DataAccess.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Services.DrinkService;
 
@@ -11,10 +13,10 @@ public static class DrinkFactory
     /// <summary>
     /// Creates a new drink based on the provided DTO.
     /// </summary>
-    public static async Task<Result<Drink>> CreateDrinkAsync(AppDbContext context, EditDrinkDto dto)
+    public static async Task<IResult> CreateDrinkAsync(AppDbContext context, EditDrinkDto dto)
     {
         if (!DrinkIngredientValidation.Validate(dto.DrinkIngredients, out var errors))
-            return Result<Drink>.Failure(errors);
+            return Results.BadRequest(errors);
 
         var drink = new Drink(dto.Name, dto.Available, dto.ImgUrl, dto.Toppings, []);
 
@@ -28,16 +30,23 @@ public static class DrinkFactory
         context.Drink.Add(drink);
         await context.SaveChangesAsync();
 
-        return Result<Drink>.Success(drink);
+        return Results.Created("/api/drinks", drink);
     }
 
     /// <summary>
     /// Updates an existing drink instance with values from the DTO.
     /// </summary>
-    public static async Task<Result<Drink>> UpdateDrinkAsync(AppDbContext context, Drink drink, EditDrinkDto dto)
+    public static async Task<IResult> UpdateDrinkAsync(AppDbContext context, int id, EditDrinkDto dto)
     {
+        var drink = await context.Drink
+            .Include(d => d.DrinkIngredients)
+            .FirstOrDefaultAsync(d => d.Id == id);
+
+        if (drink is null)
+            return Results.NotFound("Drink not found");
+        
         if (!DrinkIngredientValidation.Validate(dto.DrinkIngredients, out var errors))
-            return Result<Drink>.Failure(errors);
+            return Results.BadRequest(errors);
 
         drink.Name = dto.Name;
         drink.Available = dto.Available;
@@ -70,6 +79,6 @@ public static class DrinkFactory
         await context.SaveChangesAsync();
         await IngredientService.RemoveUnreferencedIngredientsAsync(context);
 
-        return Result<Drink>.Success(drink);
+        return Results.Ok(drink);
     }
 }

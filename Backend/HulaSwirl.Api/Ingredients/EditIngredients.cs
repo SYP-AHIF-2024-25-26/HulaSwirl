@@ -13,10 +13,6 @@ public static class EditIngredients
         if (!httpContext.IsAdmin())
             return Results.Forbid();
 
-        var result = await IngredientService.BulkUpdateAsync(context, editIngredientsDto);
-
-        return result.IsSuccess
-            ? Results.Ok(result.Value.Count)
-            : Results.BadRequest(result.Errors);
+        return await IngredientService.BulkUpdateAsync(context, editIngredientsDto);
     }
 }

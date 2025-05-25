@@ -18,7 +18,7 @@ public static class DeleteDrink
 
         context.Drink.Remove(drink);
         await IngredientService.RemoveUnreferencedIngredientsAsync(context);
-        
-        return Results.Ok("Drink deleted");
+
+        return Results.NoContent();
     }
 }

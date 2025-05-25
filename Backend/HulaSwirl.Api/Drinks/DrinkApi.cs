@@ -12,9 +12,9 @@ public static class DrinkApi
             .WithTags("Drinks")
             .Produces(StatusCodes.Status200OK);
 
-        app.MapGet($"{baseUrl}/info", GetDrinkInfo.HandleGetDrinkInfo)
+        app.MapGet($"{baseUrl}/info/{{id}}", GetDrinkInfo.HandleGetDrinkInfo)
             .WithName(nameof(GetDrinkInfo.HandleGetDrinkInfo))
-            .WithDescription("Get info of single drink with drink_id")
+            .WithDescription("Get info of single drink with id")
             .WithTags("Drinks")
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
@@ -24,7 +24,7 @@ public static class DrinkApi
             .WithDescription("Create drink")
             .WithTags("Drinks")
             .RequireAuthorization()
-            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
@@ -34,12 +34,12 @@ public static class DrinkApi
             .WithDescription("delete drink with id")
             .WithTags("Drinks")
             .RequireAuthorization()
-            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapPatch($"{baseUrl}/update", EditDrink.HandleEditDrink)
+        app.MapPatch($"{baseUrl}/update/{{id}}", EditDrink.HandleEditDrink)
             .WithName(nameof(EditDrink.HandleEditDrink))
             .WithDescription("Edit drink")
             .RequireAuthorization()

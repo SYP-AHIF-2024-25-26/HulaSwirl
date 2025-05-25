@@ -29,29 +29,35 @@ public static class ConfirmOrder
         
         var res = await OrderValidation.ValidateConfirmation(order.DrinkIngredients, context);
         if (res is not Ok<double>) return res;
-        
-        foreach (var di in order.DrinkIngredients)
+
+        try
         {
-            var stored = context.Ingredient.First(i => i.IngredientName.ToLower() == di.IngredientNameFk.ToLower());
-            stored.RemainingAmount -= di.Amount;
+            foreach (var di in order.DrinkIngredients)
+            {
+                var stored = context.Ingredient.First(i => i.IngredientName.ToLower() == di.IngredientNameFk.ToLower());
+                stored.RemainingAmount -= di.Amount;
+            }
+
+            order.Status = OrderStatus.Confirmed;
+            await context.SaveChangesAsync();
+
+            var pumpTasks = order.DrinkIngredients.Select(di =>
+            {
+                var slot = context.Ingredient
+                    .First(i => i.IngredientName == di.IngredientNameFk)
+                    .PumpSlot!.Value;
+                return manager.StartPump(slot, di.Amount);
+            }).ToArray();
+            _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
+
+            var orders = await context.Order
+                .Include(o => o.DrinkIngredients)
+                .ToListAsync();
+            await orderService.BroadcastAsync(orders);
+            return res;
+        } catch (Exception ex)
+        {
+            return Results.Problem("An error occurred while processing the order: " + ex.Message);
         }
-        order.Status = OrderStatus.Confirmed;
-        await context.SaveChangesAsync();
-
-        var pumpTasks = order.DrinkIngredients.Select(di =>
-        {
-            var slot = context.Ingredient
-                .First(i => i.IngredientName == di.IngredientNameFk)
-                .PumpSlot!.Value;
-            return manager.StartPump(slot, di.Amount);
-        }).ToArray();
-        _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
-        
-        var orders = await context.Order
-            .Include(o => o.DrinkIngredients)
-            .ToListAsync();
-        await orderService.BroadcastAsync(orders);
-
-        return res;
     }
 }
