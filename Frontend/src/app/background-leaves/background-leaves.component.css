@@ -3,6 +3,12 @@
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
+  background-image: url("/assets/images/leaves.gif");
+  background-repeat: repeat-x;         /* horizontal wiederholen */
+  background-position: top center;     /* oben ausrichten */
+  background-size: cover;
+
+  filter: drop-shadow(0px 15px 4px rgba(0, 0, 0, 0.29));
 
   .edge {
     position: absolute;
@@ -13,7 +19,7 @@
     background-repeat: repeat-y;
     filter: drop-shadow(0px 15px 4px rgba(0, 0, 0, 0.29));
   }
-
+/*
   .edge-left {
     left: 0;
     background-image: url('/assets/images/background_left.png');
@@ -24,7 +30,7 @@
     right: 0;
     background-image: url('/assets/images/background_right.png');
     background-position: top right;
-  }
+  }*/
 
   .content {
     position: relative;

@@ -200,7 +200,7 @@ export class DrinkService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      await firstValueFrom(this.httpClient.delete(this.apiBaseUrl + "/drinks/delete?id=" + ID,{headers}));
+      await firstValueFrom(this.httpClient.delete(this.apiBaseUrl + "/drinks/delete/" + ID,{headers}));
       this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
@@ -215,7 +215,7 @@ export class DrinkService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/drinks/update?id=" + ID, drinkdata,{headers}));
+      await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/drinks/update/" + ID, drinkdata,{headers}));
       await this.reloadDrinks();
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
