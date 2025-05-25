@@ -1,21 +1,34 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {firstValueFrom} from 'rxjs';
+import {firstValueFrom, Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
+
+export interface OrderIngredient {
+  id: number;
+  drinkId: number | null;
+  ingredientNameFk: string;
+  amount: number;
+}
+
+export interface IncomingOrder {
+  id: number;
+  user: string;
+  orderDate: string;
+  drinkName: string;
+  drinkIngredients: OrderIngredient[];
+  status: 0 | 1 | 2;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
   private readonly http = inject(HttpClient);
-  isOperator(): Promise<boolean> {
-    return firstValueFrom(this.http.get<boolean>('/api/v1/users/is-operator'));
+  confirm(orderId: number): Observable<void> {
+    return this.http.put<void>(environment.apiUrl+`/orders/confirm/${orderId}`, {});
   }
 
-  confirm(orderId: number): Promise<void> {
-    return firstValueFrom(this.http.put<void>(`/api/v1/orders/confirm/${orderId}`, {}));
-  }
-
-  cancel(orderId: number): Promise<void> {
-    return firstValueFrom(this.http.put<void>(`/api/v1/orders/cancel/${orderId}`, {}));
+  cancel(orderId: number): Observable<void> {
+    return this.http.put<void>(environment.apiUrl+`/orders/cancel/${orderId}`, {});
   }
 }

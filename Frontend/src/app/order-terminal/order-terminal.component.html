@@ -1,1 +1,22 @@
-<p>order-terminal works!</p>
+<div class="orders" *ngIf="orders().length; else noOrders">
+  <div class="order-card" *ngFor="let o of orders()">
+    <h3>{{ o.drinkName }}</h3>
+    <p class="meta">
+      Von <strong>{{ o.user }}</strong> –
+      <small>{{ o.orderDate | date:'short' }}</small>
+    </p>
+    <ul>
+      <li *ngFor="let i of o.drinkIngredients">
+        {{ i.ingredientNameFk }} – {{ i.amount }} ml
+      </li>
+    </ul>
+    <div class="actions">
+      <button (click)="confirm(o.id)">Mischen</button>
+      <button (click)="cancel(o.id)">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #noOrders>
+  <p>Keine ausstehenden Bestellungen.</p>
+</ng-template>

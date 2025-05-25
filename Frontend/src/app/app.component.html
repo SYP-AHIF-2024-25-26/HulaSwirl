@@ -21,6 +21,12 @@
        routerLinkActive="active">
       Statistics
     </a>
+    <a class="link"
+       *ngIf="userService.isLoggedIn()"
+       routerLink="admin/orderTerminal"
+       routerLinkActive="active">
+      OrderTerminal
+    </a>
   </div>
   <div class="spacer"></div>
 
