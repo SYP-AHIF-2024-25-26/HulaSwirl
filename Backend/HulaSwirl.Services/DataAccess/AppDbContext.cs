@@ -35,6 +35,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithOne()
             .HasForeignKey(di => di.DrinkId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Order>().OwnsMany(o => o.OrderIngredients, a => a.ToJson());
     }
 }
 
