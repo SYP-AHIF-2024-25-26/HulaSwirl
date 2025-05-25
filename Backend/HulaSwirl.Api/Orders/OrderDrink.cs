@@ -15,6 +15,7 @@ public static class OrderDrink
         [FromRoute] int drinkId, 
         AppDbContext context, 
         HttpContext httpContext,
+        ObservableOrderService orderService,
         JwtService jwtService)
     {
         var drink = await context.Drink
@@ -41,6 +42,10 @@ public static class OrderDrink
         var order = new Order(username, DateTime.Now, drink.Name, orderIngredients);
         context.Order.Add(order);
         await context.SaveChangesAsync();
+        var orders = await context.Order
+            .Include(o => o.DrinkIngredients)
+            .ToListAsync();
+        await orderService.BroadcastAsync(orders);
         return Results.Created($"/api/orders/{order.Id}", "Order created successfully");
     }
 }

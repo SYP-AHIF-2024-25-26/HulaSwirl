@@ -16,6 +16,7 @@ public static class OrderCustomDrink
         List<DrinkIngredientDto> ingredientDtos, 
         AppDbContext context,
         HttpContext httpContext,
+        ObservableOrderService orderService,
         JwtService jwtService)
     {
         if (!DrinkIngredientValidation.Validate(ingredientDtos, out var errors))
@@ -39,6 +40,10 @@ public static class OrderCustomDrink
         var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients);
         context.Order.Add(order);
         await context.SaveChangesAsync();
+        var orders = await context.Order
+            .Include(o => o.DrinkIngredients)
+            .ToListAsync();
+        await orderService.BroadcastAsync(orders);
         return Results.Created($"/api/orders/{order.Id}", "Order created successfully");
     }
 }
