@@ -2,6 +2,7 @@ using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Api.Drinks;
 
@@ -18,6 +19,7 @@ public static class DeleteDrink
 
         context.Drink.Remove(drink);
         await IngredientService.RemoveUnreferencedIngredientsAsync(context);
+        await context.SaveChangesAsync();
 
         return Results.NoContent();
     }

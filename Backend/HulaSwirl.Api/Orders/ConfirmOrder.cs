@@ -22,36 +22,36 @@ public static class ConfirmOrder
         if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
 
         var order = await context.Order
-            .Include(o => o.DrinkIngredients)
+            .Include(o => o.OrderIngredients)
             .FirstOrDefaultAsync(o => o.Id == orderId);
         if(order is null) return Results.NotFound("Order not found");
         if (order.Status != OrderStatus.Pending) return Results.BadRequest("Order was already processed");
         
-        var res = await OrderValidation.ValidateConfirmation(order.DrinkIngredients, context);
+        var res = await OrderValidation.ValidateConfirmation(order.OrderIngredients, context);
         if (res is not Ok<double>) return res;
 
         try
         {
-            foreach (var di in order.DrinkIngredients)
+            foreach (var di in order.OrderIngredients)
             {
-                var stored = context.Ingredient.First(i => i.IngredientName.ToLower() == di.IngredientNameFk.ToLower());
+                var stored = context.Ingredient.First(i => i.IngredientName.ToLower() == di.IngredientName.ToLower());
                 stored.RemainingAmount -= di.Amount;
             }
 
             order.Status = OrderStatus.Confirmed;
             await context.SaveChangesAsync();
 
-            var pumpTasks = order.DrinkIngredients.Select(di =>
+            var pumpTasks = order.OrderIngredients.Select(di =>
             {
                 var slot = context.Ingredient
-                    .First(i => i.IngredientName == di.IngredientNameFk)
+                    .First(i => i.IngredientName == di.IngredientName)
                     .PumpSlot!.Value;
                 return manager.StartPump(slot, di.Amount);
             }).ToArray();
             _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
 
             var orders = await context.Order
-                .Include(o => o.DrinkIngredients)
+                .Include(o => o.OrderIngredients)
                 .ToListAsync();
             await orderService.BroadcastAsync(orders);
             return res;

@@ -47,7 +47,6 @@ public static class IngredientService
         if (unreferenced.Count == 0) return;
 
         context.Ingredient.RemoveRange(unreferenced);
-        await context.SaveChangesAsync();
     }
     
     /// <summary>

@@ -76,8 +76,8 @@ public static class DrinkFactory
                     new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink, globalIng));
         }
 
-        await context.SaveChangesAsync();
         await IngredientService.RemoveUnreferencedIngredientsAsync(context);
+        await context.SaveChangesAsync();
 
         return Results.Ok(drink);
     }

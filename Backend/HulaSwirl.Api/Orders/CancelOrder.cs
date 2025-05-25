@@ -22,7 +22,7 @@ public static class CancelOrder
         order.Status = OrderStatus.Cancelled;
         await context.SaveChangesAsync();
         var orders = await context.Order
-            .Include(o => o.DrinkIngredients)
+            .Include(o => o.OrderIngredients)
             .ToListAsync();
         await orderService.BroadcastAsync(orders);
         return Results.NoContent();

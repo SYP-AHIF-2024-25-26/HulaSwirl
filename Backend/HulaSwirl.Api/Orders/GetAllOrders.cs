@@ -17,7 +17,7 @@ public static class GetAllOrders
             var observer = new OrdersWebSocketObserver(socket);
             var subscription = orderObservable.Subscribe(observer);
 
-            var orders = context.Order.Include(o => o.DrinkIngredients).ToList();
+            var orders = context.Order.Include(o => o.OrderIngredients).ToList();
             observer.OnNext(orders);
 
             var buffer = new byte[1024 * 4];

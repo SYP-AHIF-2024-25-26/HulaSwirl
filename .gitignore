@@ -32,6 +32,7 @@ packages/
 .env.local
 .env.development
 .env.production
+app.config.ts
 
 # Ignore secrets
 secrets.json
@@ -52,3 +53,5 @@ log/
 *.ldf
 *.sqlite
 *.db
+*.db-shm
+*.db-wal
