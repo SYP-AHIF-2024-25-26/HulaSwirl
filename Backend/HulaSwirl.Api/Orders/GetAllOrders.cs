@@ -10,12 +10,6 @@ public static class GetAllOrders
 {
     public static async Task HandleGetAllOrders(HttpContext httpContext, ObservableOrderService orderObservable, AppDbContext context)
     {
-        if (!httpContext.IsAdmin() && !httpContext.IsOperator())
-        {
-            httpContext.Response.StatusCode = 403;
-            return;
-        }
-        
         if (httpContext.WebSockets.IsWebSocketRequest)
         {
             var socket = await httpContext.WebSockets.AcceptWebSocketAsync();
