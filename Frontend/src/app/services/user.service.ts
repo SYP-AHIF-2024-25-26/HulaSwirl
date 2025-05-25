@@ -2,7 +2,7 @@ import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {StatusService} from './status.service';
-import {environment} from '../../environments/environment';
+import {BASE_URL} from '../app.config';
 
 interface RegisterRequest {
   username: string;
@@ -26,6 +26,7 @@ interface AuthResponse {
 export class UserService {
   private readonly http = inject(HttpClient);
   private readonly errorService = inject(StatusService);
+  private apiBaseUrl = inject(BASE_URL);
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());
@@ -77,7 +78,7 @@ export class UserService {
 
   async register(username: string, email: string, password: string): Promise<void> {
     const todo='registering'
-    const url = `${environment.apiUrl}/users`;
+    const url = `${this.apiBaseUrl}/users`;
     const payload: RegisterRequest = { username, email, password };
     try {
       const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
@@ -90,7 +91,7 @@ export class UserService {
 
   async login(email: string, password: string): Promise<void> {
     const todo='logging in';
-    const url = `${environment.apiUrl}/users/login`;
+    const url = `${this.apiBaseUrl}/users/login`;
     const payload: LoginRequest = { email, password };
     try {
       const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
@@ -119,7 +120,7 @@ export class UserService {
       "Authorization": `Bearer ${token}`
     };
     try {
-      return await firstValueFrom(this.http.get<boolean>(environment.apiUrl + "/users/is-admin", {headers}));
+      return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-admin", {headers}));
 
     } catch (e) {
       this.errorService.handleError(e, todo);

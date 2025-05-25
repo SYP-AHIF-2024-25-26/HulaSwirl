@@ -1,9 +1,9 @@
 import {Component, inject, signal, WritableSignal} from '@angular/core';
-import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {IncomingOrder, OrdersService} from '../services/orders.service';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../services/user.service';
+import {BASE_URL} from '../app.config';
 
 
 
@@ -21,29 +21,17 @@ import {UserService} from '../services/user.service';
 export class OrderTerminalComponent {
   private readonly userService   = inject(UserService);
   private readonly ordersService = inject(OrdersService);
-  private ws!: WebSocket;
-  public orders: WritableSignal<IncomingOrder[]> = signal([]);
+  private apiBaseUrl = inject(BASE_URL);
+  public orders: WritableSignal<IncomingOrder[]> = this.ordersService.orders;
 
   ngOnInit(): void {
     this.connectWebSocket();
   }
   connectWebSocket(): void {
-    const token = this.userService.getTokenFromStorage();
-    if (!token) {
-      console.error('kein JWT im Storage – WS nicht verbunden');
-      return;
-    }
-    const wsUrl = `${environment.wsURL}`;
-    this.ws = new WebSocket(wsUrl,      [`Bearer ${token}`]);
-    this.ws.onmessage = evt => {
-      const all: IncomingOrder[] = JSON.parse(evt.data);
-      this.orders.set(all.filter(o => o.status === 0));
-    };
-    this.ws.onerror = () => console.error('WS-Error OrderTerminal');
+    this.ordersService.connectWebSocket()
   }
   confirm(id: number) {
     this.ordersService.confirm(id).subscribe(() => {
-      // lokal wegfiltern
       this.orders.set(this.orders().filter(o => o.id !== id));
     });
   }
@@ -55,7 +43,7 @@ export class OrderTerminalComponent {
   }
 
   ngOnDestroy(): void {
-    this.ws.close();
+    this.ordersService.disconnectWebSocket();
   }
 
 }

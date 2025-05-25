@@ -1,9 +1,9 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {firstValueFrom, Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {StatusService} from './status.service';
 import {UserService} from './user.service';
+import {BASE_URL} from '../app.config';
 
 export interface DrinkBase {
   name: string;
@@ -141,14 +141,15 @@ const drinks: Drink[] = [
 export class DrinkService {
   private readonly httpClient = inject(HttpClient);
   private readonly errorService = inject(StatusService);
-  private readonly userService =inject(UserService)
+  private readonly userService =inject(UserService);
+  private apiBaseUrl = inject(BASE_URL);
   drinks: WritableSignal<Drink[]> = signal([]);
 
   async reloadDrinks() {
     const todo = "'Reloading Drinks'"
     try {
       console.log(todo);
-      this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(environment.apiUrl + "/drinks")));
+      this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(this.apiBaseUrl + "/drinks")));
     } catch (e) {
       console.error(`An error occurred while ${todo}, placeholders will be shown.`, e);
       this.drinks.set(drinks);
@@ -164,7 +165,7 @@ export class DrinkService {
         Authorization: `Bearer ${jwt}`
       };
       console.log(headers)
-      await firstValueFrom(this.httpClient.post(environment.apiUrl + "/drinks/create", drinkdata,{headers}));
+      await firstValueFrom(this.httpClient.post(this.apiBaseUrl + "/drinks/create", drinkdata,{headers}));
       await this.reloadDrinks();
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
@@ -179,7 +180,7 @@ export class DrinkService {
       Authorization: `Bearer ${jwt}`
     };
     try {
-      const res = await firstValueFrom(this.httpClient.post(environment.apiUrl + "/orders/drink/" + ID,{},{headers,observe: 'response'}));
+      const res = await firstValueFrom(this.httpClient.post(this.apiBaseUrl + "/orders/drink/" + ID,{},{headers,observe: 'response'}));
       if (res.status === 200 || res.status === 201) {
         await this.reloadDrinks();
         this.errorService.showStatus("Your order has been submitted, please go to the order terminal and confirm your order");
@@ -199,7 +200,7 @@ export class DrinkService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      await firstValueFrom(this.httpClient.delete(environment.apiUrl + "/drinks/delete?id=" + ID,{headers}));
+      await firstValueFrom(this.httpClient.delete(this.apiBaseUrl + "/drinks/delete?id=" + ID,{headers}));
       this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
@@ -214,7 +215,7 @@ export class DrinkService {
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      await firstValueFrom(this.httpClient.patch(environment.apiUrl + "/drinks/update?id=" + ID, drinkdata,{headers}));
+      await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/drinks/update?id=" + ID, drinkdata,{headers}));
       await this.reloadDrinks();
     } catch (e: unknown) {
       this.errorService.handleError(e, todo);
