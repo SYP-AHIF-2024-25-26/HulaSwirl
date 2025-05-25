@@ -13,15 +13,12 @@ namespace HulaSwirl.Api.Orders;
 public static class OrderCustomDrink
 {
     public static async Task<IResult> HandleOrderCustomDrink(
-        List<DrinkIngredientDto> ingredientDtos, 
+        DrinkIngredientDto[] ingredientDtos, 
         AppDbContext context,
         HttpContext httpContext,
         ObservableOrderService orderService,
         JwtService jwtService)
     {
-        if (!DrinkIngredientValidation.Validate(ingredientDtos, out var errors))
-            return Results.BadRequest(new { errors });
-
         var orderedNames = ingredientDtos.Select(i => i.IngredientName).ToList();
         var res = await OrderValidation.ValidateRequest(orderedNames, context);
         if (res is not Ok)

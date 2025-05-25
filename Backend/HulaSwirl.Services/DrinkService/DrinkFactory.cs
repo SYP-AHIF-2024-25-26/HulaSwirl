@@ -1,5 +1,6 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DataAccess.Models;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +16,6 @@ public static class DrinkFactory
     /// </summary>
     public static async Task<IResult> CreateDrinkAsync(AppDbContext context, EditDrinkDto dto)
     {
-        if (!DrinkIngredientValidation.Validate(dto.DrinkIngredients, out var errors))
-            return Results.BadRequest(errors);
-
         var drink = new Drink(dto.Name, dto.Available, dto.ImgUrl, dto.Toppings, []);
 
         foreach (var ingDto in dto.DrinkIngredients)
@@ -42,11 +40,7 @@ public static class DrinkFactory
             .Include(d => d.DrinkIngredients)
             .FirstOrDefaultAsync(d => d.Id == id);
 
-        if (drink is null)
-            return Results.NotFound("Drink not found");
-        
-        if (!DrinkIngredientValidation.Validate(dto.DrinkIngredients, out var errors))
-            return Results.BadRequest(errors);
+        if (drink is null) return Results.NotFound("Drink not found");
 
         drink.Name = dto.Name;
         drink.Available = dto.Available;
@@ -66,14 +60,12 @@ public static class DrinkFactory
         {
             var globalIng = await IngredientService.EnsureIngredientExistsAsync(context, ingDto.IngredientName);
 
-            var existing = drink.DrinkIngredients.FirstOrDefault(di =>
-                di.IngredientNameFk.ToLower() == globalIng.IngredientName.ToLower());
+            var existing = drink.DrinkIngredients.FirstOrDefault(di => di.IngredientNameFk.ToLower() == globalIng.IngredientName.ToLower());
 
             if (existing != null)
                 existing.Amount = ingDto.Amount;
             else
-                drink.DrinkIngredients.Add(
-                    new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink, globalIng));
+                drink.DrinkIngredients.Add(new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink, globalIng));
         }
 
         await IngredientService.RemoveUnreferencedIngredientsAsync(context);
