@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorModalComponent } from './error-modal.component';
+import { StatusModalComponent } from './status-modal.component';
 
 describe('ErrorModalComponent', () => {
-  let component: ErrorModalComponent;
-  let fixture: ComponentFixture<ErrorModalComponent>;
+  let component: StatusModalComponent;
+  let fixture: ComponentFixture<StatusModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ErrorModalComponent]
+      imports: [StatusModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ErrorModalComponent);
+    fixture = TestBed.createComponent(StatusModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

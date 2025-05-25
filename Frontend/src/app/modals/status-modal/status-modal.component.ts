@@ -4,13 +4,13 @@ import { NgIf } from '@angular/common';
 import {Drink} from '../../services/drink.service';
 
 @Component({
-  selector: 'app-error-modal',
+  selector: 'app-status-modal',
   standalone: true,
   imports: [NgIf],
-  templateUrl: './error-modal.component.html',
-  styleUrl: './error-modal.component.css'
+  templateUrl: './status-modal.component.html',
+  styleUrl: './status-modal.component.css'
 })
-export class ErrorModalComponent {
+export class StatusModalComponent {
   private modalService = inject(ModalService);
 
   errorMessage = signal('');

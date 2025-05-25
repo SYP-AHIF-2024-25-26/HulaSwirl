@@ -97,4 +97,12 @@ export class UserModalComponent {
   closeModal() {
     this.modalService.closeModal();
   }
+
+  onSubmit() {
+    if (this.mode() === 'login') {
+      this.login();
+    } else {
+      this.register();
+    }
+  }
 }

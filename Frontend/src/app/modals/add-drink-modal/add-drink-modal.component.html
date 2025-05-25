@@ -23,7 +23,7 @@
               <div class="order-ingredient-details">
                 <div class="ingredient-properties">
                   @if(ingredient.status=="New Ingredient"){
-                    <textarea class="order-ingredient-name" [(ngModel)]="ingredient.ingredientName"></textarea>
+                    <textarea class="order-ingredient-name new_ingredient" [(ngModel)]="ingredient.ingredientName"></textarea>
                   } @else {
                     <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
                   }
