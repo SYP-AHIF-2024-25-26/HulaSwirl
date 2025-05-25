@@ -24,11 +24,9 @@
 }
 
 .bigLink{
-  font-size: 64px;
+  font-size: 32px;
   font-weight: bold;
-  font-family: Katibeh,sans-serif;
   color: var(--order-btn-bg);
-  margin-top: -32px;
 }
 
 #nav-page-container{
@@ -54,14 +52,27 @@
   gap: 10px;
 }
 
-.user-info {
-  font-size: 28px;
+
+.admin-section {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  color: #FFF5E1;
+  font-size: 25px;
   font-family: JosefinSans, sans-serif;
 }
 
-.logout-btn{
-  background-color: rgba(255,185,185,0);
-  color:var(--pump-inactive-slot-bg);
-  padding-top: 16px;
-  font-size: 20px;
+.admin-section #logout-btn {
+  font-size: 23.9px;
+  background: transparent;
+  border: none;
+  color: #FF6B6B;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  /*color: #FF3C3C;*/
 }

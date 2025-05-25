@@ -30,18 +30,16 @@
   </div>
   <div class="spacer"></div>
 
-  <div id="userManagementContainer" >
-    <ng-container  *ngIf="userService.isLoggedIn();">
-        <span class="user-info link">
-          🦩  {{ userService.username() || 'User' }}
-        </span>
-      <button class="logout-btn button" (click)="userService.logout()">Logout</button>
+
+  <div class="admin-section">
+    <ng-container *ngIf="userService.isLoggedIn(); else loginRegister">
+      <span>🦩</span>
+      <span class="user-info"> {{ userService.username() || 'User' }}</span>
+      <button id="logout-btn" (click)="userService.logout()">Logout</button>
     </ng-container>
-    <ng-container *ngIf="!userService.isLoggedIn();">
-      <a class="link"  (click)="openLoginModal()">
-        Login/Register
-      </a>
-    </ng-container>
+    <ng-template #loginRegister>
+      <a class="login-link" (click)="openLoginModal()">Login/Register</a>
+    </ng-template>
   </div>
 
 </nav>
