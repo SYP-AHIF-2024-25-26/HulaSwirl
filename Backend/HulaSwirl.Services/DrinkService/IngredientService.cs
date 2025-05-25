@@ -30,7 +30,6 @@ public static class IngredientService
         if (ingredient != null) return ingredient;
         ingredient = new Ingredient(ingredientName, 0, 0);
         context.Ingredient.Add(ingredient);
-        await context.SaveChangesAsync();
 
         return ingredient;
     }

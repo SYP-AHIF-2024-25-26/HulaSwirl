@@ -7,7 +7,7 @@ namespace HulaSwirl.Api.Drinks;
 
 public static class DeleteDrink
 {
-    public static async Task<IResult> HandleDeleteDrink([FromQuery] int id, AppDbContext context, HttpContext httpContext)
+    public static async Task<IResult> HandleDeleteDrink([FromRoute] int id, AppDbContext context, HttpContext httpContext)
     {
         if (!httpContext.IsAdmin()) 
             return Results.Forbid();
@@ -17,10 +17,8 @@ public static class DeleteDrink
             return Results.NotFound("Drink with id not found");
 
         context.Drink.Remove(drink);
-        await context.SaveChangesAsync();
-
         await IngredientService.RemoveUnreferencedIngredientsAsync(context);
-
+        
         return Results.Ok("Drink deleted");
     }
 }

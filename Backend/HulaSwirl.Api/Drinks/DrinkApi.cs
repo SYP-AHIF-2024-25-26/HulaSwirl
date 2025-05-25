@@ -29,7 +29,7 @@ public static class DrinkApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapDelete($"{baseUrl}/delete", DeleteDrink.HandleDeleteDrink)
+        app.MapDelete($"{baseUrl}/delete/{{id}}", DeleteDrink.HandleDeleteDrink)
             .WithName(nameof(DeleteDrink.HandleDeleteDrink))
             .WithDescription("delete drink with id")
             .WithTags("Drinks")
