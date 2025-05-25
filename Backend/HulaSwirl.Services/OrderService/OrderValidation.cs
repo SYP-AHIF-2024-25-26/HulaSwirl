@@ -29,18 +29,18 @@ public static class OrderValidation
     /// <param name="drinkIngredients">Ingredients of the drink.</param>
     /// <param name="context">The Database connection</param>
     /// <returns>Result NotFound if an ingredient is not available or Ok</returns>
-    public static async Task<IResult> ValidateConfirmation(IReadOnlyCollection<DrinkIngredient> drinkIngredients, AppDbContext context)
+    public static async Task<IResult> ValidateConfirmation(IReadOnlyCollection<OrderIngredient> drinkIngredients, AppDbContext context)
     {
-        var ingredientNames = drinkIngredients.Select(i => i.IngredientNameFk).ToList();
+        var ingredientNames = drinkIngredients.Select(i => i.IngredientName).ToList();
         var availableIngredients = await IngredientService.GetAllAvailableIngredientsAsync(ingredientNames, context);
 
         foreach (var di in drinkIngredients)
         {
-            var stored = availableIngredients.First(i => i.IngredientName == di.IngredientNameFk);
+            var stored = availableIngredients.First(i => i.IngredientName == di.IngredientName);
             if (stored.RemainingAmount < di.Amount)
             {
                 return Results.BadRequest(
-                    $"Not enough {di.IngredientNameFk}: available {stored.RemainingAmount}ml, needed {di.Amount}ml");
+                    $"Not enough {di.IngredientName}: available {stored.RemainingAmount}ml, needed {di.Amount}ml");
             }
         }
         var durationSec = drinkIngredients.Max(i => i.Amount) / 13.0;

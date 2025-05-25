@@ -33,19 +33,14 @@ public static class OrderDrink
         {
             var orderIngredients = drink.DrinkIngredients
                 .Select(i =>
-                    new DrinkIngredient(
-                        null,
-                        i.IngredientNameFk,
-                        i.Amount,
-                        null,
-                        null))
+                    new OrderIngredient(i.IngredientNameFk, i.Amount))
                 .ToList();
             var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
             var order = new Order(username, DateTime.Now, drink.Name, orderIngredients);
             context.Order.Add(order);
             await context.SaveChangesAsync();
             var orders = await context.Order
-                .Include(o => o.DrinkIngredients)
+                .Include(o => o.OrderIngredients)
                 .ToListAsync();
             await orderService.BroadcastAsync(orders);
             return Results.Created($"/api/orders", order);

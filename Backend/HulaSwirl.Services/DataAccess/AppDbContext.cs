@@ -29,6 +29,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasOne(uds => uds.Drink)
             .WithMany()
             .HasForeignKey(uds => uds.DrinkId);
+        
+        modelBuilder.Entity<Drink>()
+            .HasMany(d => d.DrinkIngredients)
+            .WithOne()
+            .HasForeignKey(di => di.DrinkId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 

@@ -31,19 +31,13 @@ public static class OrderCustomDrink
         {
             var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
             var drinkIngredients = ingredientDtos.Select(dto =>
-                new DrinkIngredient(
-                    null,
-                    dto.IngredientName,
-                    dto.Amount,
-                    null,
-                    null
-                )
+                new OrderIngredient(dto.IngredientName, dto.Amount)
             ).ToList();
             var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients);
             context.Order.Add(order);
             await context.SaveChangesAsync();
             var orders = await context.Order
-                .Include(o => o.DrinkIngredients)
+                .Include(o => o.OrderIngredients)
                 .ToListAsync();
             await orderService.BroadcastAsync(orders);
             return Results.Created($"/api/orders", order);
