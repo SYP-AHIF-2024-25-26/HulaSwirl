@@ -9,13 +9,13 @@ import {EditDrinkModalComponent} from './modals/edit-drink-modal/edit-drink-moda
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
 import {IngredientsService} from './services/ingredients.service';
 import {DrinkService} from './services/drink.service';
-import {ErrorModalComponent} from './modals/error-modal/error-modal.component';
+import {StatusModalComponent} from './modals/status-modal/status-modal.component';
 import {UserModalComponent} from './modals/user-modal/user-modal.component';
 import {UserService} from './services/user.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive, ErrorModalComponent, UserModalComponent, NgIf],
+  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive, StatusModalComponent, UserModalComponent, NgIf],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
