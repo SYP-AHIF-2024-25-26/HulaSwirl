@@ -1,3 +1,6 @@
+using HulaSwirl.Services;
+using HulaSwirl.Services.Dtos;
+
 namespace HulaSwirl.Api.Drinks;
 
 public static class DrinkApi
@@ -12,7 +15,7 @@ public static class DrinkApi
             .WithTags("Drinks")
             .Produces(StatusCodes.Status200OK);
 
-        app.MapGet($"{baseUrl}/info/{{id}}", GetDrinkInfo.HandleGetDrinkInfo)
+        app.MapGet($"{baseUrl}/info/{{id:int}}", GetDrinkInfo.HandleGetDrinkInfo)
             .WithName(nameof(GetDrinkInfo.HandleGetDrinkInfo))
             .WithDescription("Get info of single drink with id")
             .WithTags("Drinks")
@@ -20,6 +23,7 @@ public static class DrinkApi
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)
+            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<EditDrinkDto>(ValidateEditDrinkDto))
             .WithName(nameof(CreateDrink.HandleCreateDrink))
             .WithDescription("Create drink")
             .WithTags("Drinks")
@@ -29,7 +33,7 @@ public static class DrinkApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapDelete($"{baseUrl}/delete/{{id}}", DeleteDrink.HandleDeleteDrink)
+        app.MapDelete($"{baseUrl}/delete/{{id:int}}", DeleteDrink.HandleDeleteDrink)
             .WithName(nameof(DeleteDrink.HandleDeleteDrink))
             .WithDescription("delete drink with id")
             .WithTags("Drinks")
@@ -39,7 +43,8 @@ public static class DrinkApi
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapPatch($"{baseUrl}/update/{{id}}", EditDrink.HandleEditDrink)
+        app.MapPatch($"{baseUrl}/update/{{id:int}}", EditDrink.HandleEditDrink)
+            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<EditDrinkDto>(ValidateEditDrinkDto))
             .WithName(nameof(EditDrink.HandleEditDrink))
             .WithDescription("Edit drink")
             .RequireAuthorization()
@@ -51,5 +56,10 @@ public static class DrinkApi
             .Produces(StatusCodes.Status403Forbidden);
 
         return app;
+    }
+    
+    private static Dictionary<string, string[]> ValidateEditDrinkDto(EditDrinkDto dto)
+    {
+        return ValidationHelpers.ValidateDrink(dto.Name, dto.DrinkIngredients);
     }
 }

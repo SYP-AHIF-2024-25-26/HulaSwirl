@@ -1,6 +1,4 @@
-﻿using HulaSwirl.Services.Dtos;
-
-namespace HulaSwirl.Services;
+﻿namespace HulaSwirl.Services.Dtos;
 
 // Create & Edit
 public class EditDrinkDto

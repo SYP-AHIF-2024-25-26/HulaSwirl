@@ -1,3 +1,5 @@
+using HulaSwirl.Services.Dtos;
+
 namespace HulaSwirl.Api.Orders;
 
 public static class OrderApi
@@ -19,6 +21,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status201Created);
 
         app.MapPost($"{baseUrl}/custom-drink", OrderCustomDrink.HandleOrderCustomDrink)
+            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<DrinkIngredientDto[]>(ValidateCustomOrder))
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")
             .WithTags("Orders")
@@ -58,5 +61,10 @@ public static class OrderApi
             .Produces(StatusCodes.Status403Forbidden);
         
         return app;
+    }
+    
+    private static Dictionary<string, string[]> ValidateCustomOrder(DrinkIngredientDto[] ingredients)
+    {
+        return ValidationHelpers.ValidateDrink("Custom drink", ingredients);
     }
 }
