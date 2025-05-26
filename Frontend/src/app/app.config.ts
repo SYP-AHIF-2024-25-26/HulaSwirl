@@ -6,12 +6,15 @@ import {provideHttpClient, withFetch} from '@angular/common/http';
 
 
 export const BASE_URL = new InjectionToken<string>('BaseUrl');
+export const WS_URL = new InjectionToken<string>('WsUrl');
+const IP = "192.168.0.245:8080";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withFetch()),
-    { provide: BASE_URL, useValue: 'http://localhost:5110/api/v1' },
+    { provide: BASE_URL, useValue: `http://${IP}/api/v1` },
+    { provide: WS_URL, useValue: `ws://${IP}/ws/orders` },
   ]
 };
