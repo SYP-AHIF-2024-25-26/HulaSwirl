@@ -5,7 +5,7 @@ namespace HulaSwirl.Services.Pumps;
 
 public class PumpManager(ILogger<PumpManager> logger, GpioController gpioController)
 {
-    private List<VPump>? _pumps;
+    private List<VPump2>? _pumps;
 
     public async Task StartPump(int? slot, int ml)
     {
@@ -22,7 +22,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         try
         {
-            pump.Start();
+            await pump.StartSoftAsync();
             logger.LogInformation("Pump {slot} started.", slot);
             await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
         }
@@ -32,7 +32,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         }
         finally
         {
-            pump.Stop();
+            await pump.StopSoftAsync();
             logger.LogInformation("Pump {slot} stopped.", slot);
         }
     }
@@ -43,8 +43,8 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         _pumps =
         [
-            new VPump(17, 27, gpioController),
-            new VPump(23, 24, gpioController)
+            new VPump2(17, 27, gpioController),
+            new VPump2(23, 24, gpioController)
         ];
 
         _pumps.ForEach(pump => pump.SetSpeed(20));
