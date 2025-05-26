@@ -24,10 +24,14 @@ export class OrderDrinkModalComponent {
   }
 
   async submitOrder() {
-    var res :number|null=null;
-    if(this.selectedDrink()) {
-      await this.drinkService.orderDrink(this.selectedDrink()!.id);
-
+    try {
+      if (this.selectedDrink()) {
+        await this.drinkService.orderDrink(this.selectedDrink()!.id);
+        this.closeModal();
+        this.modalService.openModal(ModalType.E, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
+      }
+    } catch (e) {
+      this.errorService.handleError(e);
     }
   }
 }

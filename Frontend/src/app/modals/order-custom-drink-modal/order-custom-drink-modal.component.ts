@@ -70,9 +70,16 @@ export class OrderCustomDrinkModalComponent {
 
 
   async submitOrder() {
-    if(this.orderIngredients().every(ing => ing.status === "")) {
-      await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount})));
-      this.closeModal();
+    try {
+      if (this.orderIngredients().every(ing => ing.status === "")) {
+        await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
+          ingredientName: ing.ingredientName,
+          amount: ing.amount
+        })));
+        this.closeModal();
+      }
+    } catch (e: unknown) {
+      this.errorService.handleError(e);
     }
   }
 

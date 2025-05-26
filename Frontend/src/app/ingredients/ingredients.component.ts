@@ -173,6 +173,10 @@ export class IngredientsComponent {
   }
 
   async saveIngredients() {
-    await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
+    try {
+      await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
+    } catch (e: unknown) {
+      this.errorService.handleError(e);
+    }
   }
 }

@@ -26,7 +26,6 @@ export interface OrderPreparation extends DrinkIngredient {
 })
 export class IngredientsService {
   private readonly httpClient = inject(HttpClient);
-  private readonly errorService = inject(StatusService);
   private readonly userService=inject(UserService)
   private apiBaseUrl = inject(BASE_URL);
   ingredients: WritableSignal<Ingredient[]> = signal([]);
@@ -46,31 +45,19 @@ export class IngredientsService {
   }
 
   async postOrder(ingredients: DrinkIngredient[]) {
-    try{
-      const jwt = this.userService.getTokenFromStorage();
-      const headers = {
-        Authorization: `Bearer ${jwt}`
-      };
-      await firstValueFrom(this.httpClient.post<number>(this.apiBaseUrl + "/orders/custom-drink", ingredients,{headers}));
-    }
-    catch (e: unknown) {
-      this.errorService.handleError(e);
-    }
+    const jwt = this.userService.getTokenFromStorage();
+    const headers = {
+      Authorization: `Bearer ${jwt}`
+    };
+    await firstValueFrom(this.httpClient.post<number>(this.apiBaseUrl + "/orders/custom-drink", ingredients, {headers}));
   }
 
-  async saveIngredients(ingredients:Ingredient[]){
-    const todo="Saving ingredient settings"
-    try{
-      console.log(todo);
-      const jwt = this.userService.getTokenFromStorage();
-      const headers = {
-        Authorization: `Bearer ${jwt}`
-      };
-      this.ingredients.set(ingredients);
-      await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/ingredients", ingredients, {headers}));
-    }
-    catch (e: unknown) {
-      this.errorService.handleError(e);
-    }
+  async saveIngredients(ingredients:Ingredient[]) {
+    const jwt = this.userService.getTokenFromStorage();
+    const headers = {
+      Authorization: `Bearer ${jwt}`
+    };
+    this.ingredients.set(ingredients);
+    await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/ingredients", ingredients, {headers}));
   }
 }

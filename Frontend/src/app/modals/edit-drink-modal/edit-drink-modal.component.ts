@@ -111,22 +111,29 @@ export class EditDrinkModalComponent {
 
   async submitDrink() {
     if(this.currentModalData()){
-      this.currentModalData()!.name = this.drinkTitle();
-      this.currentModalData()!.toppings = this.drinkToppings();
-      this.currentModalData()!.imgUrl = this.imageBase64() ?? '';
-      this.currentModalData()!.available = this.drinkAvailable();
-      this.drinkService.drinks.update(d => d.map(drink => drink.id === this.currentModalData()!.id ? this.currentModalData()! : drink));
-      if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
-        const drinkData: DrinkBase = {
-          name: this.drinkTitle(),
-          available: this.drinkAvailable(),
-          imgUrl: this.imageBase64(),
-          toppings: this.drinkToppings(),
-          drinkIngredients: this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount }))
-        };
-        await this.drinkService.editDrink(drinkData, this.currentModalData()!.id);
+      try {
+        this.currentModalData()!.name = this.drinkTitle();
+        this.currentModalData()!.toppings = this.drinkToppings();
+        this.currentModalData()!.imgUrl = this.imageBase64() ?? '';
+        this.currentModalData()!.available = this.drinkAvailable();
+        this.drinkService.drinks.update(d => d.map(drink => drink.id === this.currentModalData()!.id ? this.currentModalData()! : drink));
+        if (this.orderIngredients().every(ing => ing.status === '' || ing.status === 'New Ingredient')) {
+          const drinkData: DrinkBase = {
+            name: this.drinkTitle(),
+            available: this.drinkAvailable(),
+            imgUrl: this.imageBase64(),
+            toppings: this.drinkToppings(),
+            drinkIngredients: this.orderIngredients().map(ing => ({
+              ingredientName: ing.ingredientName,
+              amount: ing.amount
+            }))
+          };
+          await this.drinkService.editDrink(drinkData, this.currentModalData()!.id);
+        }
+        this.closeModal();
+      } catch (e) {
+        this.errorService.handleError(e);
       }
-      this.closeModal();
     }
   }
 
@@ -165,8 +172,12 @@ export class EditDrinkModalComponent {
     reader.readAsDataURL(file);
   }
 
-  deleteDrink() {
-    this.drinkService.deleteDrink(this.currentModalData()!.id);
-    this.modalService.closeModal();
+  async deleteDrink() {
+    try {
+      await this.drinkService.deleteDrink(this.currentModalData()!.id);
+      this.modalService.closeModal();
+    } catch (e) {
+      this.errorService.handleError(e);
+    }
   }
 }

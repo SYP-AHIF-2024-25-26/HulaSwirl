@@ -33,7 +33,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Drink>()
             .HasMany(d => d.DrinkIngredients)
             .WithOne()
-            .HasForeignKey(di => di.DrinkId)
+            .HasForeignKey(di => di.DrinkIdFk)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Order>().OwnsMany(o => o.OrderIngredients, a => a.ToJson());

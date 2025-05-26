@@ -36,20 +36,28 @@ export class UserModalComponent {
   regPassword = signal('');
 
   async login() {
-    await this.userService.login(this.loginEmail(), this.loginPassword());
-    if (this.userService.isLoggedIn()) {
-      this.closeModal();
+    try {
+      await this.userService.login(this.loginEmail(), this.loginPassword());
+      if (this.userService.isLoggedIn()) {
+        this.closeModal();
+      }
+    } catch (e) {
+      this.errorService.handleError(e);
     }
   }
 
   async register() {
-    await this.userService.register(
-      this.regUsername(),
-      this.regEmail(),
-      this.regPassword()
-    );
-    if (this.userService.isLoggedIn()) {
-      this.closeModal();
+    try {
+      await this.userService.register(
+        this.regUsername(),
+        this.regEmail(),
+        this.regPassword()
+      );
+      if (this.userService.isLoggedIn()) {
+        this.closeModal();
+      }
+    } catch (e) {
+      this.errorService.handleError(e);
     }
   }
 

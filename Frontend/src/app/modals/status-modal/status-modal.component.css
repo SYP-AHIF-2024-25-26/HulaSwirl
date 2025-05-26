@@ -13,6 +13,7 @@ button {
 }
 #errorMessage{
   font-size: 1.7rem;
+  white-space: pre-line;
 }
 .progress-container {
   width: 100%;

@@ -19,7 +19,6 @@ export class AddDrinkModalComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
   private readonly errorService = inject(StatusService);
-  private readonly router = inject(Router);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
@@ -98,20 +97,23 @@ export class AddDrinkModalComponent {
   }
 
   async submitDrink() {
-    if (this.orderIngredients().every(ing => ing.status === ''||ing.status === 'New Ingredient')) {
-      const drinkData: DrinkBase = {
-        name: this.drinkTitle(),
-        imgUrl: this.imageBase64,
-        available: true,
-        toppings: this.drinkToppings(),
-        drinkIngredients: this.orderIngredients().map(ing => ({
-          ingredientName: ing.ingredientName,
-          amount: ing.amount
-        }))
-      };
-      await this.drinkService.postNewDrink(drinkData);
-
-      this.closeModal();
+    try {
+      if (this.orderIngredients().every(ing => ing.status === '' || ing.status === 'New Ingredient')) {
+        const drinkData: DrinkBase = {
+          name: this.drinkTitle(),
+          imgUrl: this.imageBase64,
+          available: true,
+          toppings: this.drinkToppings(),
+          drinkIngredients: this.orderIngredients().map(ing => ({
+            ingredientName: ing.ingredientName,
+            amount: ing.amount
+          }))
+        };
+        await this.drinkService.postNewDrink(drinkData);
+        this.closeModal();
+      }
+    } catch (e: unknown) {
+      this.errorService.handleError(e);
     }
   }
 
