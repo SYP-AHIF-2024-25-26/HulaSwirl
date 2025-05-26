@@ -3,38 +3,54 @@ using System.Device.Pwm.Drivers;
 
 namespace HulaSwirl.Services.Pumps;
 
-public class VPump
+using System.Device.Pwm;
+
+public class VPump : IDisposable
 {
     private const int Frequency = 20_000;
-
-    private readonly SoftwarePwmChannel _channel1;
+    private readonly SoftwarePwmChannel _pwm;
     private readonly GpioController _controller;
+    private readonly int _in2Pin;
+    private bool _disposed;
+    private bool _isRunning;
 
-
-    public VPump(int in1, int in2, GpioController controller)
+    public VPump(int pwmPin, int in2Pin, GpioController controller)
     {
         _controller = controller;
+        _in2Pin = in2Pin;
 
-        _channel1 = new SoftwarePwmChannel(in1, Frequency, 0);
-
-        controller.OpenPin(in2, PinMode.Output);
-        controller.Write(in2, PinValue.Low);
+        _pwm = new SoftwarePwmChannel(pwmPin, Frequency, 0);
+        _controller.OpenPin(in2Pin, PinMode.Output);
+        _controller.Write(in2Pin, PinValue.Low);
     }
 
     public void SetSpeed(int percentage)
     {
-        if (percentage is < 0 or > 100) throw new Exception("percentage format -> between 0 - 100");
+        if (percentage is < 0 or > 100) throw new ArgumentOutOfRangeException(nameof(percentage), "0–100");
 
-        _channel1.DutyCycle = Math.Round(percentage / 100.0, 2);
+        _pwm.DutyCycle = percentage / 100.0;
     }
 
     public void Start()
     {
-        _channel1.Start();
+        if (_isRunning) return;
+        _pwm.Start();
+        _isRunning = true;
     }
 
     public void Stop()
     {
-        _channel1.Stop();
+        if (!_isRunning) return;
+        _pwm.Stop();
+        _isRunning = false;
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _pwm.Dispose();
+        _controller.ClosePin(_in2Pin);
+        _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }

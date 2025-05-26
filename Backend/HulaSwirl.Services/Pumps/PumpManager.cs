@@ -1,11 +1,12 @@
 using System.Device.Gpio;
+using HulaSwirl.Services.OrderService;
 using Microsoft.Extensions.Logging;
 
 namespace HulaSwirl.Services.Pumps;
 
 public class PumpManager(ILogger<PumpManager> logger, GpioController gpioController)
 {
-    private List<VPump2>? _pumps;
+    private List<VPump>? _pumps;
 
     public async Task StartPump(int? slot, int ml)
     {
@@ -15,8 +16,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
 
-        // Testing shows that at 20% a pump can output 13ml/s
-        var timeInSec = ml / 13.0;
+        var timeInSec = ml / OrderValidation.ML_PER_SECOND;
         var pump = _pumps[(int)slot - 1];
         var cancellationTokenSource = new CancellationTokenSource();
 
@@ -43,8 +43,8 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         _pumps =
         [
-            new VPump2(17, 27, gpioController),
-            new VPump2(23, 24, gpioController)
+            new VPump(17, 27, gpioController),
+            new VPump(23, 24, gpioController)
         ];
 
         _pumps.ForEach(pump => pump.SetSpeed(20));

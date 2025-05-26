@@ -9,6 +9,7 @@ namespace HulaSwirl.Services.OrderService;
 
 public static class OrderValidation
 {
+    public static double ML_PER_SECOND = 13.5; // Average output of a pump at 20% speed
     /// <summary>
     /// Validates a collection of <see cref="DrinkIngredientDto"/> for an order request.
     /// </summary>
@@ -43,7 +44,7 @@ public static class OrderValidation
                     $"Not enough {di.IngredientName}: available {stored.RemainingAmount}ml, needed {di.Amount}ml");
             }
         }
-        var durationSec = drinkIngredients.Max(i => i.Amount) / 13.0;
+        var durationSec = drinkIngredients.Max(i => i.Amount) / ML_PER_SECOND;
         return Results.Ok(durationSec);
     }
 }

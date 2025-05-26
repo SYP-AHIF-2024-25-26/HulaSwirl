@@ -28,22 +28,22 @@ public static class ValidationHelpers
 
         if (string.IsNullOrWhiteSpace(name))
         {
-            errors.Add(nameof(name), ["Name is required."]);
+            errors.Add("Drink name", ["Name is required."]);
         }
 
         if (ingredients.Length == 0)
         {
-            errors.Add(nameof(ingredients), ["At least one ingredient is required."]);
+            errors.Add("Ingredient count", ["At least one ingredient is required."]);
         }
 
         if (ingredients.Any(i => string.IsNullOrWhiteSpace(i.IngredientName)))
         {
-            errors.Add(nameof(ingredients), ["Ingredient names must not be empty."]);
+            errors.Add("Ingredient names", ["Ingredient names must not be empty."]);
         }
 
         if (ingredients.GroupBy(i => i.IngredientName.ToLower()).Any(g => g.Count() > 1))
         {
-            errors.Add(nameof(ingredients), ["Please provide unique ingredients"]);
+            errors.Add("Distinct ingredients", ["Please provide unique ingredients"]);
         }
 
         var ingredientErrors = ingredients
@@ -55,12 +55,12 @@ public static class ValidationHelpers
 
         if (ingredientErrors.Length > 0)
         {
-            errors.Add(nameof(ingredients), ingredientErrors);
+            errors.Add("Ingredient amount", ingredientErrors);
         }
 
         if (ingredients.Sum(i => i.Amount) > maxTotalMl)
         {
-            errors.Add(nameof(ingredients), [$"Your drink can't contain more than {maxTotalMl}ml"]);
+            errors.Add("Drink amount", [$"Your drink can't contain more than {maxTotalMl}ml"]);
         }
 
         return errors;
