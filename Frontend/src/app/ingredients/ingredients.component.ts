@@ -118,9 +118,8 @@ export class IngredientsComponent {
         if (this.sourceContainer === 'available' && this.sourceIndex !== null) {
           ingByIndex.pumpSlot = this.sourceIndex + 1;
         } else if (this.sourceContainer === 'unavailable') {
-          this.unIngredients.update(uings => [...uings, ingByIndex]);
           newArr = newArr.filter(ing => ing.pumpSlot !== ingByIndex.pumpSlot);
-          ingByIndex.pumpSlot = null;
+          this.moveToUnavailable(ingByIndex);
         }
       } else {
         this.draggedIngredient!.pumpSlot = slotIndex + 1;
@@ -131,11 +130,16 @@ export class IngredientsComponent {
     this.dropSuccessful = true;
   }
 
+  moveToUnavailable(ingredient: Ingredient) {
+    if (!ingredient) return;
+    this.unIngredients.update(ings => [...ings, ingredient]);
+    this.avIngredients.update(ings => ings.filter(ing => ing.pumpSlot !== ingredient.pumpSlot));
+    ingredient.pumpSlot = null;
+    ingredient.maxAmount = ingredient.remainingAmount;
+  }
+
   unavailableDrop(event: DragEvent) {
-    if (!this.draggedIngredient) return;
-    this.draggedIngredient.maxAmount = this.draggedIngredient.remainingAmount;
-    this.draggedIngredient.pumpSlot = null;
-    this.unIngredients.update(ings => [...ings, this.draggedIngredient!]);
+    this.moveToUnavailable(this.draggedIngredient!);
     this.dropSuccessful = true;
   }
 
@@ -165,7 +169,7 @@ export class IngredientsComponent {
   }
 
   getLiquidPercentage(ingredient: Ingredient): number {
-    return (ingredient.remainingAmount / ingredient.maxAmount) * 100 + 0.5;
+    return ingredient.maxAmount != 0 ? (ingredient.remainingAmount / ingredient.maxAmount) * 100 + 0.5 : 0;
   }
 
   getIngredientByIndex(idx: number): Ingredient | null {
@@ -173,6 +177,10 @@ export class IngredientsComponent {
   }
 
   async saveIngredients() {
-    await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
+    try {
+      await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
+    } catch (e: unknown) {
+      this.errorService.handleError(e);
+    }
   }
 }

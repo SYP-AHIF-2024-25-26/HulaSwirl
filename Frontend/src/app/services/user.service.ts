@@ -77,26 +77,19 @@ export class UserService {
 
   async register(username: string, email: string, password: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users`;
-    const payload: RegisterRequest = { username, email, password };
-    try {
-      const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
-      const isAdmin = await this.checkAdmin(res.token);
-      this.setToken(res.token,res.username,isAdmin);
-    } catch (e) {
-      this.errorService.handleError(e);
-    }
+    const payload: RegisterRequest = {username, email, password};
+    const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
+    const isAdmin = await this.checkAdmin(res.token);
+    this.setToken(res.token, res.username, isAdmin);
+
   }
 
   async login(email: string, password: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users/login`;
-    const payload: LoginRequest = { email, password };
-    try {
-      const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
-      const isAdmin = await this.checkAdmin(res.token);
-      this.setToken(res.token,res.username,isAdmin);
-    } catch (e) {
-      this.errorService.handleError(e);
-    }
+    const payload: LoginRequest = {email, password};
+    const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
+    const isAdmin = await this.checkAdmin(res.token);
+    this.setToken(res.token, res.username, isAdmin);
   }
 
   logout(): void {

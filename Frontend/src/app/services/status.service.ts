@@ -11,14 +11,25 @@ export class StatusService {
   handleError(e: any) {
     if (e instanceof HttpErrorResponse) {
       const errorMessages: string | string[] = e.error
-      if( Array.isArray(errorMessages)) {
-        this.showStatus(`-${errorMessages.join('\n-')}`);
+      if(errorMessages) {
+        if (errorMessages instanceof Array) {
+          if (errorMessages.length > 1) {
+            this.showStatus(`Multiple errors occurred:\n❗${errorMessages.join("\n❗")}`);
+          } else {
+            this.showStatus(errorMessages[0]);
+          }
+        } else {
+          this.showStatus(errorMessages);
+        }
       } else {
-        this.showStatus(`${errorMessages}`);
+        this.showStatus(`An error occurred: ${e.status} ${e.statusText}`);
       }
+    } else if (e instanceof Error) {
+      this.showStatus(`An error occurred: ${e.message}`);
     }
   }
-  showStatus(message: string){
+
+  showStatus(message: string) {
     console.log(message);
     this.modalService.closeModal();
     this.modalService.openModal(ModalType.E, { message: message });

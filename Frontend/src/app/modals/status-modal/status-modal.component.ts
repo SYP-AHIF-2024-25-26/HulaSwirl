@@ -1,5 +1,5 @@
 import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
-import { ModalService } from '../../services/modal.service';
+import {ModalService, ModalType} from '../../services/modal.service';
 import { NgIf } from '@angular/common';
 import {Drink} from '../../services/drink.service';
 
@@ -24,15 +24,16 @@ export class StatusModalComponent {
 
   constructor() {
     effect(() => {
-      console.log(this.currentModalData());
-      if (this.currentModalData()&&this.currentModalData().message) {
-        this.errorMessage.set(this.currentModalData().message);
-      } else {
-        this.errorMessage.set('Unbekannter Fehler');
-      }
+      if(this.modalService.getDisplayedModal()() == ModalType.E) {
+        if (this.currentModalData() && this.currentModalData().message) {
+          this.errorMessage.set(this.currentModalData().message);
+        } else {
+          this.errorMessage.set('Unbekannter Fehler');
+        }
 
-      if (this.currentModalData()&&this.currentModalData().progressDuration && this.currentModalData().progressDuration>=0) {
-        this.startProgress(this.currentModalData().progressDuration);
+        if (this.currentModalData() && this.currentModalData().progressDuration && this.currentModalData().progressDuration >= 0) {
+          this.startProgress(this.currentModalData().progressDuration);
+        }
       }
     });
   }
