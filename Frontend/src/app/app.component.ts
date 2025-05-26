@@ -30,8 +30,8 @@ export class AppComponent {
   displayedModal: Signal<ModalType | null> = this.modalService.getDisplayedModal();
 
   async ngOnInit() {
-    await this.ingredientService.reloadIngredients();
-    await this.drinkService.reloadDrinks();
+    await this.ingredientService.loadIngredients();
+    await this.drinkService.loadDrinks();
   }
 
   openLoginModal(){

@@ -29,27 +29,11 @@ export class IngredientsComponent {
   private draggedElement: HTMLElement | null = null;
 
   constructor() {
-    effect(() => {
+    effect(async () => {
+      await this.ingredientsService.loadIngredients();
       const allIngredients = this.ingredientsService.ingredients();
-      allIngredients.forEach(ing => {
-        if (ing.pumpSlot && ing.pumpSlot > this.ingredientSlots) {
-          ing.pumpSlot = null;
-        }
-      })
       this.avIngredients.set(allIngredients.filter(ing => ing.pumpSlot !== null));
       this.unIngredients.set(allIngredients.filter(ing => ing.pumpSlot === null));
-    });
-  }
-  ngOnInit(): void {
-    this.ingredientsService.reloadIngredients();
-    effect(() => {
-      const all = this.ingredientsService.ingredients();
-      this.avIngredients.set(
-        all.filter(i => i.pumpSlot !== null)
-      );
-      this.unIngredients.set(
-        all.filter(i => i.pumpSlot === null)
-      );
     });
   }
 
