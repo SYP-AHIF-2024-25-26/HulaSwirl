@@ -29,7 +29,9 @@ public static class ConfirmOrder
         
         var res = await OrderValidation.ValidateConfirmation(order.OrderIngredients, context);
         if (res is not Ok<double>) return res;
-
+        
+        if (manager.Running) return Results.Conflict("Another drink is currently mixing, please wait a few seconds.");
+        await using var tx = await context.Database.BeginTransactionAsync();
         try
         {
             foreach (var di in order.OrderIngredients)
@@ -48,14 +50,21 @@ public static class ConfirmOrder
                     .PumpSlot!.Value;
                 return manager.StartPump(slot, di.Amount);
             }).ToArray();
+            
             _ = Task.Run(async () => await Task.WhenAll(pumpTasks));
 
             var orders = await context.Order
                 .Include(o => o.OrderIngredients)
                 .ToListAsync();
             await orderService.BroadcastAsync(orders);
+            await tx.CommitAsync();
             return res;
-        } catch (Exception ex)
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Results.Conflict(ex.Message);
+        }
+        catch (Exception ex)
         {
             return Results.Problem("An error occurred while processing the order: " + ex.Message);
         }

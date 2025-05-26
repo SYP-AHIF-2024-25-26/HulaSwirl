@@ -7,9 +7,11 @@ namespace HulaSwirl.Services.Pumps;
 public class PumpManager(ILogger<PumpManager> logger, GpioController gpioController)
 {
     private List<VPump>? _pumps;
+    public bool Running { get; private set; }
 
     public async Task StartPump(int? slot, int ml)
     {
+        if (Running) throw new InvalidOperationException("Pumps are already running");
         InitializePumps();
 
         if (_pumps is null || slot is null || slot > _pumps.Count) return;
@@ -22,6 +24,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         try
         {
+            Running = true;
             pump.Start();
             logger.LogInformation("Pump {slot} started.", slot);
             await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
@@ -33,6 +36,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         finally
         {
             pump.Stop();
+            Running = false;
             logger.LogInformation("Pump {slot} stopped.", slot);
         }
     }
