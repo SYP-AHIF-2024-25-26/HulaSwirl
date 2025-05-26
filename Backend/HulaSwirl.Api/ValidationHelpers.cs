@@ -5,7 +5,7 @@ namespace HulaSwirl.Api;
 public static class ValidationHelpers
 {
     public static Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>> GetEndpointFilter<T>(
-        Func<T, Dictionary<string, string[]>> validationResult)
+        Func<T, List<string>> validationResult)
     {
         return async (context, next) =>
         {
@@ -13,37 +13,37 @@ public static class ValidationHelpers
             var errors = validationResult(computer);
             if (errors.Count > 0)
             {
-                return Results.ValidationProblem(errors);
+                return Results.BadRequest(errors);
             }
 
             return await next(context);
         };
     }
 
-    public static Dictionary<string, string[]> ValidateDrink(string name, DrinkIngredientDto[] ingredients)
+    public static List<string> ValidateDrink(string name, DrinkIngredientDto[] ingredients)
     {
         const int maxPerIngredientMl = 500;
         const int maxTotalMl = 500;
-        var errors = new Dictionary<string, string[]>();
+        var errors = new List<string>();
 
         if (string.IsNullOrWhiteSpace(name))
         {
-            errors.Add("Drink name", ["Name is required."]);
+            errors.Add("Name is required.");
         }
 
         if (ingredients.Length == 0)
         {
-            errors.Add("Ingredient count", ["At least one ingredient is required."]);
+            errors.Add("At least one ingredient is required.");
         }
 
         if (ingredients.Any(i => string.IsNullOrWhiteSpace(i.IngredientName)))
         {
-            errors.Add("Ingredient names", ["Ingredient names must not be empty."]);
+            errors.Add("Ingredient names must not be empty.");
         }
 
         if (ingredients.GroupBy(i => i.IngredientName.ToLower()).Any(g => g.Count() > 1))
         {
-            errors.Add("Distinct ingredients", ["Please provide unique ingredients"]);
+            errors.Add("Please provide unique ingredients");
         }
 
         var ingredientErrors = ingredients
@@ -55,12 +55,12 @@ public static class ValidationHelpers
 
         if (ingredientErrors.Length > 0)
         {
-            errors.Add("Ingredient amount", ingredientErrors);
+            errors.AddRange(ingredientErrors);
         }
 
         if (ingredients.Sum(i => i.Amount) > maxTotalMl)
         {
-            errors.Add("Drink amount", [$"Your drink can't contain more than {maxTotalMl}ml"]);
+            errors.Add($"Your drink can't contain more than {maxTotalMl}ml");
         }
 
         return errors;

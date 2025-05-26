@@ -58,7 +58,7 @@ public static class DrinkApi
         return app;
     }
     
-    private static Dictionary<string, string[]> ValidateEditDrinkDto(EditDrinkDto dto)
+    private static List<string> ValidateEditDrinkDto(EditDrinkDto dto)
     {
         return ValidationHelpers.ValidateDrink(dto.Name, dto.DrinkIngredients);
     }
