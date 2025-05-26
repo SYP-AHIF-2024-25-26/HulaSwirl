@@ -8,36 +8,26 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 {
     private List<VPump>? _pumps;
     public bool Running { get; private set; }
-
-    public async Task StartPump(int? slot, int ml)
+    
+    public async Task RunOrderAsync(IEnumerable<(int slot, int ml)> jobs)
     {
-        if (Running) throw new InvalidOperationException("Pumps are already running");
+        if (Running) throw new InvalidOperationException("Pumps are already running.");
+
         InitializePumps();
-
-        if (_pumps is null || slot is null || slot > _pumps.Count) return;
-
-        logger.LogInformation("Starting pump for slot: {slot}, ml: {ml}", slot, ml);
-
-        var timeInSec = ml / OrderValidation.ML_PER_SECOND;
-        var pump = _pumps[(int)slot - 1];
-        var cancellationTokenSource = new CancellationTokenSource();
+        Running = true;
 
         try
         {
-            Running = true;
-            pump.Start();
-            logger.LogInformation("Pump {slot} started.", slot);
-            await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
-        }
-        catch (TaskCanceledException)
-        {
-            logger.LogInformation("Pump {slot} operation was canceled.", slot);
+            var tasks = jobs.Select(j =>
+            {
+                var pump = _pumps![j.slot - 1];
+                return pump.RunAsync(j.ml);
+            });
+            await Task.WhenAll(tasks);
         }
         finally
         {
-            pump.Stop();
             Running = false;
-            logger.LogInformation("Pump {slot} stopped.", slot);
         }
     }
 

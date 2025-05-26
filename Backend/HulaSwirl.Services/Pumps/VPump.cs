@@ -1,5 +1,6 @@
 using System.Device.Gpio;
 using System.Device.Pwm.Drivers;
+using HulaSwirl.Services.OrderService;
 
 namespace HulaSwirl.Services.Pumps;
 
@@ -30,17 +31,13 @@ public class VPump : IDisposable
 
         _pwm.DutyCycle = percentage / 100.0;
     }
-
-    public void Start()
+    
+    public async Task RunAsync(int ml)
     {
-        if (_isRunning) return;
-        _pwm.Start();
+        if(_isRunning) throw new InvalidOperationException("Pump is already running.");
         _isRunning = true;
-    }
-
-    public void Stop()
-    {
-        if (!_isRunning) return;
+        _pwm.Start();
+        await Task.Delay(TimeSpan.FromSeconds(ml / OrderValidation.ML_PER_SECOND));
         _pwm.Stop();
         _isRunning = false;
     }
