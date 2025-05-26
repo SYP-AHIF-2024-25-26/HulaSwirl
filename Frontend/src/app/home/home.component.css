@@ -32,15 +32,13 @@
 
 
 .bgVideo {
-position: absolute;
-  top: 0;
-  left: 0;
+
   object-fit: cover;
   z-index: 0;
   background-color: rgb(44, 97, 121); /* optional fallback */
   background-size: contain;
   width: 100%;
-  height: 140px;
+  height: 350px;
 }
 video {
   position: absolute;
