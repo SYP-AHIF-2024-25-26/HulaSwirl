@@ -22,7 +22,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         try
         {
-            await pump.StartSoftAsync();
+            pump.Start();
             logger.LogInformation("Pump {slot} started.", slot);
             await Task.Delay(TimeSpan.FromSeconds(timeInSec), cancellationTokenSource.Token);
         }
@@ -32,7 +32,7 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
         }
         finally
         {
-            await pump.StopSoftAsync();
+            pump.Stop();
             logger.LogInformation("Pump {slot} stopped.", slot);
         }
     }

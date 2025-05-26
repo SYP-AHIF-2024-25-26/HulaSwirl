@@ -1,4 +1,5 @@
 using System.Device.Gpio;
+using System.Device.Pwm.Drivers;
 
 namespace HulaSwirl.Services.Pumps;
 
@@ -7,7 +8,7 @@ using System.Device.Pwm;
 public class VPump2 : IDisposable
 {
     private const int Frequency = 20_000;
-    private readonly PwmChannel _pwm;
+    private readonly SoftwarePwmChannel _pwm;
     private readonly GpioController _controller;
     private readonly int _in2Pin;
     private bool _disposed;
@@ -18,7 +19,7 @@ public class VPump2 : IDisposable
         _controller = controller;
         _in2Pin = in2Pin;
 
-        _pwm = PwmChannel.Create(0, pwmPin, Frequency, 0);
+        _pwm = new SoftwarePwmChannel(pwmPin, Frequency, 0);
         _controller.OpenPin(in2Pin, PinMode.Output);
         _controller.Write(in2Pin, PinValue.Low);
     }
@@ -30,48 +31,18 @@ public class VPump2 : IDisposable
         _pwm.DutyCycle = percentage / 100.0;
     }
 
-    public async Task StartSoftAsync(int target = 100)
+    public void Start()
     {
-        if (!_isRunning)
-        {
-            _pwm.Start();
-            _isRunning = true;
-        }
-
-        await RampToAsync(target);
+        if (_isRunning) return;
+        _pwm.Start();
+        _isRunning = true;
     }
 
-    public async Task StopSoftAsync()
+    public void Stop()
     {
-        if (_isRunning)
-        {
-            await RampToAsync(0);
-            _pwm.Stop();
-            _isRunning = false;
-        }
-    }
-    
-    private async Task RampToAsync(int targetPercentage, int step = 5, int delayMs = 50)
-    {
-        if (targetPercentage is < 0 or > 100)
-            throw new ArgumentOutOfRangeException(nameof(targetPercentage), "0–100 erlaubt");
-
-        var currentPercentage = (int)Math.Round(_pwm.DutyCycle * 100);
-        var direction = Math.Sign(targetPercentage - currentPercentage);
-
-        while (currentPercentage != targetPercentage)
-        {
-            currentPercentage += step * direction;
-
-            if ((direction > 0 && currentPercentage > targetPercentage) ||
-                (direction < 0 && currentPercentage < targetPercentage))
-            {
-                currentPercentage = targetPercentage;
-            }
-
-            _pwm.DutyCycle = currentPercentage / 100.0;
-            await Task.Delay(delayMs);
-        }
+        if (!_isRunning) return;
+        _pwm.Stop();
+        _isRunning = false;
     }
 
     public void Dispose()
