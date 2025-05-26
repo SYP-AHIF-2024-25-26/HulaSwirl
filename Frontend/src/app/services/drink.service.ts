@@ -39,9 +39,7 @@ export class DrinkService {
   }
 
   async postNewDrink(drinkdata: DrinkBase) {
-    const todo = "Creating new drink"
     try {
-      console.log(todo);
       const jwt = this.userService.getTokenFromStorage();
       const headers = {
         Authorization: `Bearer ${jwt}`
@@ -50,13 +48,11 @@ export class DrinkService {
       await firstValueFrom(this.httpClient.post(this.apiBaseUrl + "/drinks/create", drinkdata,{headers}));
       await this.loadDrinks();
     } catch (e: unknown) {
-      this.errorService.handleError(e, todo);
+      this.errorService.handleError(e);
     }
   }
 
   async orderDrink(ID: number) {
-    const todo = "Ordering a Drink"
-    console.log(todo);
     const jwt = this.userService.getTokenFromStorage();
     const headers = {
       Authorization: `Bearer ${jwt}`
@@ -68,16 +64,12 @@ export class DrinkService {
         this.errorService.showStatus("Your order has been submitted, please go to the order terminal and confirm your order");
       }
     } catch (e: unknown) {
-      if (e instanceof HttpErrorResponse) {
-        this.errorService.handleError(e, todo);
-      }
+      this.errorService.handleError(e);
     }
   }
 
   async deleteDrink(ID: number) {
-    const todo = "Deleting drink"
     try {
-      console.log(todo);
       const jwt = this.userService.getTokenFromStorage();
       const headers = {
         Authorization: `Bearer ${jwt}`
@@ -85,14 +77,12 @@ export class DrinkService {
       await firstValueFrom(this.httpClient.delete(this.apiBaseUrl + "/drinks/delete/" + ID,{headers}));
       this.drinks.update(drinks => drinks.filter(drink => drink.id !== ID));
     } catch (e: unknown) {
-      this.errorService.handleError(e, todo);
+      this.errorService.handleError(e);
     }
   }
 
   async editDrink(drinkdata: DrinkBase, ID: number) {
-    const todo = "Editing drink"
     try {
-      console.log(todo);
       const jwt = this.userService.getTokenFromStorage();
       const headers = {
         Authorization: `Bearer ${jwt}`
@@ -100,7 +90,7 @@ export class DrinkService {
       await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/drinks/update/" + ID, drinkdata,{headers}));
       await this.loadDrinks();
     } catch (e: unknown) {
-      this.errorService.handleError(e, todo);
+      this.errorService.handleError(e);
     }
   }
 }

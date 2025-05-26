@@ -76,7 +76,6 @@ export class UserService {
   }
 
   async register(username: string, email: string, password: string): Promise<void> {
-    const todo='registering'
     const url = `${this.apiBaseUrl}/users`;
     const payload: RegisterRequest = { username, email, password };
     try {
@@ -84,12 +83,11 @@ export class UserService {
       const isAdmin = await this.checkAdmin(res.token);
       this.setToken(res.token,res.username,isAdmin);
     } catch (e) {
-      this.errorService.handleError(e, todo);
+      this.errorService.handleError(e);
     }
   }
 
   async login(email: string, password: string): Promise<void> {
-    const todo='logging in';
     const url = `${this.apiBaseUrl}/users/login`;
     const payload: LoginRequest = { email, password };
     try {
@@ -97,7 +95,7 @@ export class UserService {
       const isAdmin = await this.checkAdmin(res.token);
       this.setToken(res.token,res.username,isAdmin);
     } catch (e) {
-      this.errorService.handleError(e, todo);
+      this.errorService.handleError(e);
     }
   }
 
@@ -113,21 +111,13 @@ export class UserService {
   }
 
   async checkAdmin(token: string): Promise<boolean> {
-    const todo = 'checking admin status';
     const headers = {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     };
-    try {
-      return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-admin", {headers}));
-
-    } catch (e) {
-      this.errorService.handleError(e, todo);
-      return false;
-    }
+    return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-admin", {headers}));
   }
   ngOnInit(){
     this.setToken(this.getTokenFromStorage(),this.getUsernameFromStorage(),this.getIsAdminFlagFromStorage());
   }
-
 }

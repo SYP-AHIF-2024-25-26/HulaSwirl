@@ -45,21 +45,16 @@ export class IngredientsService {
     }
   }
 
-  async postOrder(ingredients: DrinkIngredient[]): Promise<number|null> {
-    const todo="Posting an custom-drink-order"
+  async postOrder(ingredients: DrinkIngredient[]) {
     try{
-      console.log(todo)
       const jwt = this.userService.getTokenFromStorage();
       const headers = {
         Authorization: `Bearer ${jwt}`
       };
-      const res=await firstValueFrom(this.httpClient.post<number>(this.apiBaseUrl + "/orders/custom-drink", ingredients,{headers}));
-      await this.loadIngredients();
-      return res;
+      await firstValueFrom(this.httpClient.post<number>(this.apiBaseUrl + "/orders/custom-drink", ingredients,{headers}));
     }
     catch (e: unknown) {
-      this.errorService.handleError(e, todo);
-      return null;
+      this.errorService.handleError(e);
     }
   }
 
@@ -72,10 +67,10 @@ export class IngredientsService {
         Authorization: `Bearer ${jwt}`
       };
       this.ingredients.set(ingredients);
-        await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/ingredients", ingredients, {headers}));
+      await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/ingredients", ingredients, {headers}));
     }
     catch (e: unknown) {
-      this.errorService.handleError(e, todo);
+      this.errorService.handleError(e);
     }
   }
 }

@@ -8,19 +8,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class StatusService {
   constructor(private modalService: ModalService) {}
 
-  showError(message: string, e: any) {
-    this.modalService.closeModal();
-    this.modalService.openModal(ModalType.E, { message: message });
-    console.error(message, e);
-  }
-
-  handleError(e: any, todo: string) {
+  handleError(e: any) {
     if (e instanceof HttpErrorResponse) {
-      console.log(e)
-      this.showError("Something went wrong.", e);
+      const errorMessages: string | string[] = e.error
+      if( Array.isArray(errorMessages)) {
+        this.showStatus(`-${errorMessages.join('\n-')}`);
+      } else {
+        this.showStatus(`${errorMessages}`);
+      }
     }
   }
   showStatus(message: string){
+    console.log(message);
     this.modalService.closeModal();
     this.modalService.openModal(ModalType.E, { message: message });
   }
