@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
-import {ModalService} from '../../services/modal.service';
+import {ModalService, ModalType} from '../../services/modal.service';
 import {StatusService} from '../../services/status.service';
 
 @Component({
@@ -77,6 +77,7 @@ export class OrderCustomDrinkModalComponent {
           amount: ing.amount
         })));
         this.closeModal();
+        this.modalService.openModal(ModalType.E, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
       }
     } catch (e: unknown) {
       this.errorService.handleError(e);
