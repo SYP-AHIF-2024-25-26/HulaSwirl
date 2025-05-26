@@ -34,11 +34,11 @@
 .bgVideo {
 
   object-fit: cover;
-  z-index: 0;
+  z-index: -1;
   background-color: rgb(44, 97, 121); /* optional fallback */
   background-size: contain;
   width: 100%;
-  height: 350px;
+  height: 370px;
 }
 video {
   position: absolute;
@@ -46,7 +46,7 @@ video {
   left: 0;
   width: 100vw;
   height: auto;
-  z-index: 0;
+  z-index: -1;
   mix-blend-mode: lighten; /* oder 'screen', je nach Effekt */
   background-color: #00FF00; /* der Greenscreen aus deinem Video */
   pointer-events: none;
@@ -109,6 +109,7 @@ video {
 @media screen and (max-width: 830px) {
   #drink-showcase {
     display: none;
+    z-index: 2;
   }
 
   .leaves:first-child {

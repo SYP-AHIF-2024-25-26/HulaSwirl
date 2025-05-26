@@ -22,7 +22,7 @@
       Statistics
     </a>
     <a class="link"
-       *ngIf="userService.isLoggedIn()"
+       *ngIf="userService.isAdmin()"
        routerLink="admin/orderTerminal"
        routerLinkActive="active">
       OrderTerminal

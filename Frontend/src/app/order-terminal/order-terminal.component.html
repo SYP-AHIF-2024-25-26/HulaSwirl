@@ -6,13 +6,13 @@
       <small>{{ o.orderDate | date:'short' }}</small>
     </p>
     <ul>
-      <li *ngFor="let i of o.drinkIngredients">
-        {{ i.ingredientNameFk }} – {{ i.amount }} ml
+      <li *ngFor="let i of o.orderIngredients">
+        {{ i.ingredientName }} – {{ i.amount }} ml
       </li>
     </ul>
     <div class="actions">
-      <button (click)="confirm(o.id)">Mischen</button>
-      <button (click)="cancel(o.id)">Abbrechen</button>
+      <button  (click)="confirm(o.id)">Mischen</button>
+      <button  (click)="cancel(o.id)">Abbrechen</button>
     </div>
   </div>
 </div>

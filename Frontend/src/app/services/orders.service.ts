@@ -5,19 +5,17 @@ import {BASE_URL, WS_URL} from '../app.config';
 import {UserService} from './user.service';
 
 export interface OrderIngredient {
-  id: number;
-  drinkId: number | null;
-  ingredientNameFk: string;
+  ingredientName: string;
   amount: number;
 }
 
 export interface IncomingOrder {
-  id: number;
-  user: string;
-  orderDate: string;
   drinkName: string;
-  drinkIngredients: OrderIngredient[];
+  id: number;
+  orderDate: string;
+  orderIngredients: OrderIngredient[];
   status: 0 | 1 | 2;
+  user: string;
 }
 
 @Injectable({
@@ -36,6 +34,7 @@ export class OrdersService {
     this.ws.onmessage = evt => {
       const all: IncomingOrder[] = JSON.parse(evt.data);
       this.orders.set(all.filter(o => o.status === 0));
+      console.log(this.orders());
     };
     this.ws.onerror = () => console.error('WS-Error OrderTerminal');
   }
