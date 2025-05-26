@@ -13,14 +13,21 @@ public static class DeleteDrink
         if (!httpContext.IsAdmin()) 
             return Results.Forbid();
 
-        var drink = await context.Drink.FindAsync(id);
-        if (drink is null) 
-            return Results.NotFound("Drink with id not found");
+        var drink = await context.Drink.Include(d => d.DrinkIngredients).FirstOrDefaultAsync(d => d.Id == id);
+        if (drink is null) return Results.NotFound("Drink with id not found");
 
-        context.Drink.Remove(drink);
-        await IngredientService.RemoveUnreferencedIngredientsAsync(context);
-        await context.SaveChangesAsync();
-
-        return Results.NoContent();
+        await using var tx = await context.Database.BeginTransactionAsync();
+        try
+        {
+            context.Drink.Remove(drink);
+            await context.SaveChangesAsync();
+            await IngredientService.RemoveUnreferencedIngredientsAsync(context);
+            await tx.CommitAsync();
+            return Results.NoContent();
+        } catch (DbUpdateException e)
+        {
+            await tx.RollbackAsync();
+            return Results.Problem(e.Message, statusCode: 500);
+        }
     }
 }

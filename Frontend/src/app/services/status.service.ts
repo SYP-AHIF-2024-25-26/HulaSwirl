@@ -16,18 +16,7 @@ export class StatusService {
 
   handleError(e: any, todo: string) {
     if (e instanceof HttpErrorResponse) {
-      const status = e.status;
-      let backendMessage = e.error?.message || e.error || "No errormessage from server.";
-      if(status==401){
-        backendMessage = "Unauthorized";
-      }
-      this.showError(
-        `Error while ${todo} (Status ${status}): ${backendMessage}`,
-        e
-      );
-    } else if (e instanceof Error) {
-      this.showError("Unknown Error: " + e.message, e);
-    } else {
+      console.log(e)
       this.showError("Something went wrong.", e);
     }
   }

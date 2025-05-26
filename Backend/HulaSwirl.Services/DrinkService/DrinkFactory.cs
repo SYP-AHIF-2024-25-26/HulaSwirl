@@ -18,17 +18,25 @@ public static class DrinkFactory
     {
         var drink = new Drink(dto.Name, dto.Available, dto.ImgUrl, dto.Toppings, []);
 
-        foreach (var ingDto in dto.DrinkIngredients)
+        await using var tx = await context.Database.BeginTransactionAsync();
+        try
         {
-            var globalIng = await IngredientService.EnsureIngredientExistsAsync(context, ingDto.IngredientName);
-            drink.DrinkIngredients.Add(new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink,
-                globalIng));
+            foreach (var ingDto in dto.DrinkIngredients)
+            {
+                var globalIng = await IngredientService.EnsureIngredientExistsAsync(context, ingDto.IngredientName);
+                drink.DrinkIngredients.Add(new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink, globalIng));
+            }
+
+            context.Drink.Add(drink);
+            await context.SaveChangesAsync();
+
+            await tx.CommitAsync();
+            return Results.Created("/api/drinks", drink);
+        } catch (DbUpdateException e)
+        {
+            await tx.RollbackAsync();
+            return Results.Problem(e.Message, statusCode: 500);
         }
-
-        context.Drink.Add(drink);
-        await context.SaveChangesAsync();
-
-        return Results.Created("/api/drinks", drink);
     }
 
     /// <summary>
@@ -49,28 +57,41 @@ public static class DrinkFactory
 
         var newNamesSet = dto.DrinkIngredients.Select(i => i.IngredientName.ToLower()).ToHashSet();
 
-        // Remove old ingredients
-        var toRemove = drink.DrinkIngredients
-            .Where(di => !newNamesSet.Contains(di.IngredientNameFk.ToLower()))
-            .ToList();
-        context.DrinkIngredient.RemoveRange(toRemove);
-
-        // Add or update ingredients
-        foreach (var ingDto in dto.DrinkIngredients)
+        await using var tx = await context.Database.BeginTransactionAsync();
+        try
         {
-            var globalIng = await IngredientService.EnsureIngredientExistsAsync(context, ingDto.IngredientName);
+            // Remove old ingredients
+            var toRemove = drink.DrinkIngredients
+                .Where(di => !newNamesSet.Contains(di.IngredientNameFk.ToLower()))
+                .ToList();
+            context.DrinkIngredient.RemoveRange(toRemove);
+            await context.SaveChangesAsync();
+            await IngredientService.RemoveUnreferencedIngredientsAsync(context);
 
-            var existing = drink.DrinkIngredients.FirstOrDefault(di => di.IngredientNameFk.ToLower() == globalIng.IngredientName.ToLower());
+            // Add or update ingredients
+            foreach (var ingDto in dto.DrinkIngredients)
+            {
+                var globalIng = await IngredientService.EnsureIngredientExistsAsync(context, ingDto.IngredientName);
 
-            if (existing != null)
-                existing.Amount = ingDto.Amount;
-            else
-                drink.DrinkIngredients.Add(new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink, globalIng));
+                var existing = drink.DrinkIngredients.FirstOrDefault(di => di.IngredientNameFk.ToLower() == globalIng.IngredientName.ToLower());
+
+                if (existing != null)
+                {
+                    existing.Amount = ingDto.Amount;
+                }
+                else
+                {
+                    drink.DrinkIngredients.Add(new DrinkIngredient(drink.Id, globalIng.IngredientName, ingDto.Amount, drink, globalIng));
+                }
+            }
+            await context.SaveChangesAsync();
+            await tx.CommitAsync();
+
+            return Results.Ok(drink);
+        } catch (DbUpdateException e)
+        {
+            await tx.RollbackAsync();
+            return Results.Problem(e.Message, statusCode: 500);
         }
-
-        await IngredientService.RemoveUnreferencedIngredientsAsync(context);
-        await context.SaveChangesAsync();
-
-        return Results.Ok(drink);
     }
 }

@@ -25,12 +25,12 @@ public static class IngredientService
     /// </summary>
     public static async Task<Ingredient> EnsureIngredientExistsAsync(AppDbContext context, string ingredientName)
     {
-        var ingredient = await context.Ingredient
-            .FirstOrDefaultAsync(i => i.IngredientName.ToLower() == ingredientName.ToLower());
+        var ingredient = await context.Ingredient.FirstOrDefaultAsync(i => i.IngredientName.ToLower() == ingredientName.ToLower());
 
         if (ingredient != null) return ingredient;
         ingredient = new Ingredient(ingredientName, 0, 0);
         context.Ingredient.Add(ingredient);
+        await context.SaveChangesAsync();
 
         return ingredient;
     }
@@ -44,9 +44,8 @@ public static class IngredientService
             .Where(i => !context.DrinkIngredient.Any(di => di.IngredientNameFk == i.IngredientName))
             .ToListAsync();
 
-        if (unreferenced.Count == 0) return;
-
-        context.Ingredient.RemoveRange(unreferenced);
+        if (unreferenced.Count > 0) context.Ingredient.RemoveRange(unreferenced);
+        await context.SaveChangesAsync();
     }
     
     /// <summary>
