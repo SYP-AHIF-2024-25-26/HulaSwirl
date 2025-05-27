@@ -16,13 +16,13 @@
 
   .edge-left {
     left: 0;
-    background-image: url('/assets/images/background_left.png');
+    background-image: url('/assets/images/background_left.gif');
     background-position: top left;
   }
 
   .edge-right {
     right: 0;
-    background-image: url('/assets/images/background_right.png');
+    background-image: url('/assets/images/background_right.gif');
     background-position: top right;
   }
 
