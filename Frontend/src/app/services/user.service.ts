@@ -1,8 +1,9 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {effect, inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {StatusService} from './status.service';
 import {BASE_URL} from '../app.config';
+import {Router} from '@angular/router';
 
 interface RegisterRequest {
   username: string;
@@ -25,13 +26,19 @@ interface AuthResponse {
 })
 export class UserService {
   private readonly http = inject(HttpClient);
-  private readonly errorService = inject(StatusService);
+  private readonly router = inject(Router);
   private apiBaseUrl = inject(BASE_URL);
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());
-  isAdminFlag = signal<boolean>(this.getIsAdminFlagFromStorage()!);
+  private isAdminFlag = signal<boolean>(false);
+  private isOperatorFlag = signal<boolean>(false);
 
+  constructor() {
+    effect(async () => {
+      await this.updateUserRole();
+    });
+  }
 
   public getTokenFromStorage(): string | null {
     return localStorage.getItem('jwt');
@@ -41,11 +48,7 @@ export class UserService {
     return localStorage.getItem('username');
   }
 
-  private getIsAdminFlagFromStorage(): boolean  {
-    return localStorage.getItem("isAdminFlag")==="true";
-  }
-
-  private setToken(token: string | null, username: string | null, isAdminFlag: boolean | null): void {
+  private setToken(token: string | null, username: string | null): void {
     if (token) {
       localStorage.setItem('jwt', token);
       this.jwt.set(token);
@@ -55,15 +58,6 @@ export class UserService {
       localStorage.setItem('username', username);
       this.username.set(username);
     }
-    if (isAdminFlag !== null) {
-      localStorage.setItem('isAdminFlag', String(isAdminFlag));
-      this.isAdminFlag.set(isAdminFlag);
-    }
-  }
-  public setLocalStorage(): void {
-    this.jwt.set(localStorage.getItem('jwt'));
-    this.username.set(localStorage.getItem('username'));
-    this.isAdminFlag.set(Boolean(localStorage.getItem('isAdminFlag')));
   }
 
   private clearToken(): void {
@@ -71,7 +65,6 @@ export class UserService {
     localStorage.removeItem('username');
     localStorage.removeItem('isAdminFlag')
     this.jwt.set(null);
-    this.isAdminFlag.set(false);
     this.username.set(null);
   }
 
@@ -79,38 +72,61 @@ export class UserService {
     const url = `${this.apiBaseUrl}/users`;
     const payload: RegisterRequest = {username, email, password};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
-    const isAdmin = await this.checkAdmin(res.token);
-    this.setToken(res.token, res.username, isAdmin);
-
+    this.setToken(res.token, res.username);
   }
 
   async login(email: string, password: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users/login`;
     const payload: LoginRequest = {email, password};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
-    const isAdmin = await this.checkAdmin(res.token);
-    this.setToken(res.token, res.username, isAdmin);
+    this.setToken(res.token, res.username);
+    await this.updateUserRole();
   }
 
-  logout(): void {
+  async logout() {
     this.clearToken();
+    await this.updateUserRole();
+    await this.router.navigate(['/home']);
   }
 
   isLoggedIn(): boolean {
     return !!this.jwt();
   }
-  isAdmin():boolean{
-    return this.isAdminFlag();
+
+  private async updateUserRole() {
+    this.isAdminFlag.set(await this.isAdmin());
+    this.isOperatorFlag.set(await this.isOperator());
   }
 
-  async checkAdmin(token: string): Promise<boolean> {
+  getAdminStatus() {
+    return this.isAdminFlag()
+  }
+
+  getOperatorStatus() {
+    return this.isOperatorFlag();
+  }
+
+  private async isAdmin(): Promise<boolean> {
+    const token = this.getTokenFromStorage();
+    if (!token) {
+      return false;
+    }
     const headers = {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     };
     return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-admin", {headers}));
   }
-  ngOnInit(){
-    this.setToken(this.getTokenFromStorage(),this.getUsernameFromStorage(),this.getIsAdminFlagFromStorage());
+
+  private async isOperator(): Promise<boolean> {
+    const token = this.getTokenFromStorage();
+    if (!token) {
+      return false;
+    }
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-operator", {headers}));
   }
 }

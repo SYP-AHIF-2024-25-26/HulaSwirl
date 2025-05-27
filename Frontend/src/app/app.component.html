@@ -5,27 +5,30 @@
        >
       Home
     </a>
-    <a class="link" routerLink="admin/drinks" routerLinkActive="active">
+    <a class="link"
+       *ngIf="userService.getAdminStatus()"
+       routerLink="admin/drinks"
+       routerLinkActive="active">
       Drinks
     </a>
     <a class="link"
-       *ngIf="userService.isAdmin()"
+       *ngIf="userService.getAdminStatus()"
        routerLink="admin/ingredients"
        routerLinkActive="active">
       Ingredients
     </a>
 
     <a class="link"
-       *ngIf="userService.isAdmin()"
+       *ngIf="userService.getAdminStatus()"
        routerLink="admin/statistics"
        routerLinkActive="active">
       Statistics
     </a>
     <a class="link"
-       *ngIf="userService.isAdmin()"
+       *ngIf="userService.getAdminStatus() || userService.getOperatorStatus()"
        routerLink="admin/orderTerminal"
        routerLinkActive="active">
-      OrderTerminal
+      Orders
     </a>
   </div>
   <div class="spacer"></div>
