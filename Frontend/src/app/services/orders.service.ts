@@ -42,12 +42,12 @@ export class OrdersService {
     this.ws?.close();
   }
 
-  confirm(orderId: number): Observable<void> {
+  async confirm(orderId: number) {
     const jwt = this.userService.getTokenFromStorage();
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    return this.http.put<void>(this.apiBaseUrl+`/orders/confirm/${orderId}`, {},{headers});
+    return await firstValueFrom(this.http.put<number>(this.apiBaseUrl+`/orders/confirm/${orderId}`, {},{headers}));
   }
 
   cancel(orderId: number): Observable<void> {

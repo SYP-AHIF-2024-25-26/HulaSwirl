@@ -4,6 +4,7 @@ import {IncomingOrder, OrdersService} from '../services/orders.service';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../services/user.service';
 import {BASE_URL} from '../app.config';
+import {StatusService} from '../services/status.service';
 
 
 
@@ -21,6 +22,7 @@ import {BASE_URL} from '../app.config';
 export class OrderTerminalComponent {
   private readonly userService   = inject(UserService);
   private readonly ordersService = inject(OrdersService);
+  private readonly statusService = inject(StatusService);
   private apiBaseUrl = inject(BASE_URL);
   public orders: WritableSignal<IncomingOrder[]> = this.ordersService.orders;
 
@@ -30,10 +32,19 @@ export class OrderTerminalComponent {
   connectWebSocket(): void {
     this.ordersService.connectWebSocket()
   }
-  confirm(id: number) {
-    this.ordersService.confirm(id).subscribe(() => {
-      this.orders.set(this.orders().filter(o => o.id !== id));
-    });
+  async confirm(id: number) {
+    try {
+      const duration = await this.ordersService.confirm(id);
+      this.orders.set(this.orders().map(o => {
+        if (o.id === id) {
+          return {...o, status: 1, orderDate: new Date(Date.now() + duration * 1000).toISOString()};
+        }
+        return o;
+      }));
+      this.statusService.showProgress(duration);
+    } catch (e) {
+      this.statusService.handleError(e);
+    }
   }
 
   cancel(id: number) {

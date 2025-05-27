@@ -29,8 +29,12 @@ export class StatusService {
     }
   }
 
+  showProgress(progressDuration: number) {
+    this.modalService.closeModal();
+    this.modalService.openModal(ModalType.E, { progressDuration: progressDuration });
+  }
+
   showStatus(message: string) {
-    console.log(message);
     this.modalService.closeModal();
     this.modalService.openModal(ModalType.E, { message: message });
   }

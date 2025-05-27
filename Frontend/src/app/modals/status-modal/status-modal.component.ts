@@ -27,12 +27,11 @@ export class StatusModalComponent {
       if(this.modalService.getDisplayedModal()() == ModalType.E) {
         if (this.currentModalData() && this.currentModalData().message) {
           this.errorMessage.set(this.currentModalData().message);
+        } else if (this.currentModalData() && this.currentModalData().progressDuration && this.currentModalData().progressDuration >= 0) {
+          this.startProgress(this.currentModalData().progressDuration);
+          this.errorMessage.set("Your drink is being prepared...");
         } else {
           this.errorMessage.set('Unbekannter Fehler');
-        }
-
-        if (this.currentModalData() && this.currentModalData().progressDuration && this.currentModalData().progressDuration >= 0) {
-          this.startProgress(this.currentModalData().progressDuration);
         }
       }
     });
@@ -52,18 +51,19 @@ export class StatusModalComponent {
         clearInterval(interval);
 
         // 👉 Zeige "Getränk fertig!" nach dem Fortschritt
-        this.errorMessage.set('Getränk fertig!');
+        this.errorMessage.set("Your drink is ready!");
 
         // Optional: Fortschrittsbalken nach kurzer Zeit ausblenden
 
         setTimeout(() => {
-          window.location.reload();
+          this.closeModal()
         }, 3000);
       }
     }, 100);
   }
 
-  close() {
+  closeModal() {
+    this.progressVisible = false;
     this.modalService.closeModal();
   }
 }
