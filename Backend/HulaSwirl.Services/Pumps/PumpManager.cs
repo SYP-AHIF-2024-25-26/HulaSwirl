@@ -37,8 +37,8 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         _pumps =
         [
-            new VPump(17, 27, gpioController),
-            new VPump(23, 24, gpioController)
+            new VPump(0, 1, gpioController),
+            new VPump(2, 3, gpioController)
         ];
 
         _pumps.ForEach(pump => pump.SetSpeed(20));
