@@ -13,7 +13,6 @@ public class VPump : IDisposable
     private readonly GpioController _controller;
     private readonly int _in2Pin;
     private bool _disposed;
-    private bool _isRunning;
 
     public VPump(int pwmPin, int in2Pin, GpioController controller)
     {
@@ -34,12 +33,9 @@ public class VPump : IDisposable
     
     public async Task RunAsync(int ml)
     {
-        if(_isRunning) throw new InvalidOperationException("Pump is already running.");
-        _isRunning = true;
         _pwm.Start();
         await Task.Delay(TimeSpan.FromSeconds(ml / OrderValidation.ML_PER_SECOND));
         _pwm.Stop();
-        _isRunning = false;
     }
 
     public void Dispose()
