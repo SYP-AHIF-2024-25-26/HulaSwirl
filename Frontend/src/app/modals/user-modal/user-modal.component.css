@@ -1,0 +1,57 @@
+.tab-switch {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-switch button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  background-color: #eee;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.tab-switch button.active {
+  background: var(--sunrise-gradient);
+  color: white;
+  border: none;
+}
+
+
+.flex-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.centered {
+  margin: 0 auto;
+}
+
+.right {
+  margin-left: 0;
+}
+input.form-input {
+  width: 90%;
+  padding: 10px 12px;
+  font-size: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: 'JosefinSans', sans-serif;
+
+}
+
+.modal-body{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-footer{
+  display: flex;
+  justify-content: center;
+}

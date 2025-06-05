@@ -7,35 +7,53 @@
   --element-primary-outline: #cacaca;
   --pump-active-slot-bg: #c3ffac;
   --pump-inactive-slot-bg: #ff9898;
-  --remaining-liquid-bar-bg: linear-gradient(90deg, #f65a5a 0%, #ffd15e 100%);
+  --cancel-btn-bg: #df6b6b;
+  --order-btn-bg:#fc5d5b;
+  --sunset-gradient: linear-gradient(to bottom right, rgb(255, 194, 108) 0%, rgb(255, 125, 114) 100%);
+  --sunrise-gradient: linear-gradient(to bottom right, #f65a5a 0%, #ffd15e 100%);
+  --primary-font-color: #575757;
+  --heavy-font-color: #3f3f3f;
+  --form-input-bg: #f4f3f2;
+  --form-input-bg-yellow: #fdfded;
+
+  --default-font: 'JosefinSans';
+  --primary-font: 'AdlamDisplay';
 }
 
 body{
   margin:0;
-  font-family: JosefinSans, serif;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  cursor:default;
-  background: #faeee1 url("/assets/images/background.png") center;
-  background-size: cover;
+  font-family: var(--default-font), serif;
+  background: var(--body-bg);
+  color: var(--primary-font-color);
 }
 
-/*
-  background-image: url("/assets/images/background.png");
-  height: 100%;
-  width: 100%;
-  filter: drop-shadow(10px 10px 5px rgba(68, 47, 36, 0.34));
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0; /* Hintergrund bleibt unter dem Text */
+h1, h2, h3, h4 {
+  font-family: var(--primary-font), serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
 
 body::-webkit-scrollbar {
   display: none;
 }
 html::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Edge */
+  display: none;
 }
+
 html{
   scroll-behavior: smooth;
 }
@@ -59,4 +77,236 @@ html{
   src: url('assets/fonts/ADLaMDisplay-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+.container {
+  padding: 20px 12%;
+}
+
+.button {
+  background-color: #fdfded;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+  filter:saturate(200%);
+  height: 100%;
+}
+
+.button:hover {
+  scale: calc(1.05);
+}
+
+.cancel-btn {
+  background-color: var(--cancel-btn-bg);
+  color: white;
+}
+
+.submit-btn {
+  background: var(--sunset-gradient);
+  color: white;
+  transition: 0.3s;
+}
+
+.form-input {
+  background-color: var(--form-input-bg);
+  border: 1px solid var(--element-primary-outline);
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 100%;
+  outline: none;
+}
+
+.form-input::-webkit-outer-spin-button,
+.form-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.form-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(#f65a5a 0%, #ffd15e 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d34b4b;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c43a3a;
+}
+
+/* Modal */
+.modal-frame {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(1px);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-form {
+  background-color: var(--popup-bg);
+  border-radius: 10px;
+  padding: 20px;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  max-width: 550px;
+  width: 80%;
+  box-shadow: 0 0 10px 3px rgb(64, 64, 64);
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--primary-font-color);
+}
+
+.modal-head h1 {
+  margin: 0;
+}
+
+.close-modal-button {
+  font-size: 24px;
+  font-weight: bold;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  line-height: 24px;
+  transition: 0.3s transform ease;
+  margin: -7px -7px 0 0;
+}
+.close-modal-button:after{
+  content: '✖';
+}
+.close-modal-button:hover {
+  cursor: pointer;
+  transform: rotate(10deg);
+}
+
+.modal-body {
+  margin: 20px 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Drink filter */
+.drink-filter-container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.drink-filter-container button {
+  font-weight: bold;
+  border: none !important;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drink-filter-container input {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box, var(--sunrise-gradient) border-box;
+  border-radius: 15px;
+  border: 3px solid transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drink-filter-container select {
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
+  var(--sunrise-gradient) border-box;
+  border-radius: 15px;
+  border: 3px solid transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Drink card */
+.drink-card {
+  text-align: center;
+  height: 340px;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
+  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
+  border-radius: 20px;
+  border: 4px solid transparent;
+  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.25)) saturate(110%);
+  padding: 0;
+  cursor: pointer;
+}
+
+.drink-card-image-container {
+  width: 265px;
+  height: 265px;
+}
+
+.drink-card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.drink-card.hidden {
+  display: none;
+}
+.drink-card:hover{
+  transform: scale(103%);
+}
+
+.drink-card p {
+  font-weight: bold;
+  color: var(--primary-font-color);
+  max-width: 90%;
+  word-wrap: break-word;
+  text-align: center;
+  white-space: normal;
+  font-size: 20px;
+  margin: auto 0;
 }

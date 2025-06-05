@@ -15,12 +15,12 @@
                draggable="true"
                (dragstart)="dragStart($event, i)">
             <div class="ingredient-name">
-              {{ getIngredientByIndex(i)!.name }}
+              {{ getIngredientByIndex(i)!.ingredientName }}
             </div>
             <div class="ingredient-quantity">
               <input type="number"
-                    (blur)="updateRemaining($event, i)" (mousedown)="$event.stopPropagation()"
-                    value="{{ getIngredientByIndex(i)!.remainingMl }}" max="9999" min="0">
+                     (blur)="updateRemaining($event, i)" (mousedown)="$event.stopPropagation()"
+                     value="{{ getIngredientByIndex(i)!.remainingAmount }}" max="9999" min="0">
               <span>ml</span>
             </div>
             <div class="liquid-bar"
@@ -39,7 +39,7 @@
            draggable="true"
            (dragstart)="dragStart($event, j, false)">
         <div class="ingredient-name">
-          {{ ingredient.name }}
+          {{ ingredient.ingredientName }}
         </div>
       </div>
     </div>

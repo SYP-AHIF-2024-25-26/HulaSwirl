@@ -1,0 +1,76 @@
+.orders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 400px);
+  gap: 1rem;
+  padding: 1rem;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.order-card {
+  background: #f1e3cc;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Titel und Meta */
+.order-card h3 {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+.meta {
+  font-size: 0.875rem;
+  color: #555;
+  margin-bottom: 0.75rem;
+  text-align: left;
+  margin-top: 3px;
+}
+
+/* Zutatenliste */
+.order-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0;
+}
+.order-card ul li {
+  margin-bottom: 0.25rem;
+}
+
+/* Buttons nebeneinander */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.actions button {
+  flex: 1;
+  padding: 0.5rem 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform .1s ease;
+}
+.actions button:active {
+  transform: scale(0.98);
+}
+.actions button:first-child {
+  background: var(--sunrise-gradient);
+  color: #fff;
+}
+.actions button:last-child {
+  background: var(  --order-btn-bg);
+  color: #fff;
+}
+
+/* Fallback, wenn keine Bestellungen da sind */
+:host ::ng-deep p {
+  text-align: center;
+  color: #666;
+  margin: 2rem 0;
+}

@@ -119,7 +119,7 @@
   bottom: 0;
   left: -2px;
   height: 7px;
-  background: var(--remaining-liquid-bar-bg);
+  background: var(--sunrise-gradient);
   transition: width 0.3s ease;
   border-radius: 4px;
 }

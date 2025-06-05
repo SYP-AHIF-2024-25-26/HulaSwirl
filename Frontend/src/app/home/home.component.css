@@ -4,19 +4,20 @@
 
 #landing {
   width: 100%;
-  height:75vh;
   background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
   filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
   display:flex;
   align-items: center;
+  justify-content: center;
+  gap: 50px;
+  overflow: hidden;
+  height: 70vh;
 }
 
 #drink-showcase {
-  position: absolute;
-  max-width: 570px;
-  right: 20%;
-  filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.48));
+
   z-index: -1;
+  height: 85%;
 }
 
 .leaves {
@@ -24,25 +25,41 @@
   height: 100%;
   z-index: 0;
   right: 0;
+  filter: drop-shadow(0px 15px 4px rgba(0, 0, 0, 0.42));
 }
 
-#stars {
-  position: absolute;
-  align-self: start;
-  left: 180px;
-  filter: drop-shadow(5px 5px 5px rgba(10, 17, 47, 0.27));
+
+
+
+.bgVideo {
+
+  object-fit: cover;
+  z-index: -1;
+  background-color: rgb(44, 97, 121); /* optional fallback */
+  background-size: contain;
+  width: 100%;
+  height: 370px;
 }
+video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: auto;
+  z-index: -1;
+  mix-blend-mode: lighten; /* oder 'screen', je nach Effekt */
+  background-color: #00FF00; /* der Greenscreen aus deinem Video */
+  pointer-events: none;
+}
+
+
 
 .leaves:first-child {
   left: 0;
 }
 
-#drink-showcase {
-  width: 90%;
-}
-
 #landing-text {
-  margin: 55px 0 0 200px;
+  margin: 3% 0 0 10px;
 }
 
 #landing-text > * {
@@ -67,27 +84,21 @@
   display: flex;
   gap: 20px;
   margin-top: 40px;
-  justify-content: center;
 }
 
 .button{
   border-radius: 100px;
-  background: #fdfded;
-  color: #ffffff;
+  border: 3px solid var(--order-btn-bg);
+  padding: 15px;
   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.01));
-  text-align: center;
-  padding: 20px;
-  cursor: pointer;
-  border: 3px solid #fc5d5b;
 }
 
 #order-button {
-  color:#fc5d5b;
-  border: 3px solid #ffffff;
+  color:var(--order-btn-bg);
 }
 
 #order-custom-button {
-  background: #fc5d5b;
+  background: var(--order-btn-bg);
 
 }
 #order-custom-button:hover{
@@ -96,6 +107,11 @@
 }
 
 @media screen and (max-width: 830px) {
+  #drink-showcase {
+    display: none;
+    z-index: 2;
+  }
+
   .leaves:first-child {
     left: calc(-200px + 20%);
   }
@@ -103,525 +119,119 @@
   .leaves {
     right: calc(-200px + 20%);
   }
-}
-
-@media screen and (max-width: 1400px) {
-  #drink-showcase {
-    display: none;
-  }
 
   #landing {
     justify-content: center;
+    padding: 50px 0;
   }
 
   #landing-text {
-    margin: 0;
     text-align: center;
+    scale: 0.9 !important;
+  }
+
+  #button-container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .leaves:first-child {
+    left: calc(-200px + 12%);
+  }
+
+  .leaves {
+    right: calc(-200px + 12%);
+  }
+
+  #landing-text, #drink-showcase {
+    scale: 0.95;
+  }
+
+  #landing {
+    gap: 0;
   }
 }
 
 .bodyBackground {
-  position: relative; /* Erforderlich für das absolute Positionieren der Wrapper */
-  min-height: 60vw; /* Containerhöhe */
-  overflow: hidden; /* Verhindert, dass der Hintergrund herausragt */
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-.backgroundWrapper {
-  background-image: url("/assets/images/background.png");
-  height: 100%;
-  width: 100%;
-  filter: drop-shadow(10px 10px 5px rgba(68, 47, 36, 0.34));
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0; /* Hintergrund bleibt unter dem Text */
-}
-
-.C_button{
-  width:7vw;
-  text-align: center;
-  padding: 0.8vw;
-  border-radius: 10px;
-  color:white;
-  margin:0;
-  cursor:pointer;
-}
-.C_buttonCancel{
-  background-color: #df6b6b;
-}
-.C_buttonOrder{
-  background: linear-gradient(90deg, rgb(255, 194, 108) 0%, rgb(255, 125, 114) 100%);
-  font-size: 1.8vw;
-  border:none;
-  filter:saturate(200%);
-
-}
-
-
-.Lable{
-  color:#575757;
-  padding:1vw;
-  font-size:2.5vw;
-  text-align:center;
-  font-family: AdlamDisplay, serif;
-  margin-top: 2vw;
-  z-index: 1;
-  margin-bottom:1vw;
-}
-.K_Lable{
-  margin-bottom:8vw;
-}
-
-.C_modal {
-  display: flex;
-  position: fixed;
-  z-index: 3;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.24);
-  justify-content: center;
-}
-.C_modal-content {
-  background-color: #FBFBFB;
-  padding: 20px;
-  border: none;
-  width: 80%;
-  height: 82%;
-  max-width: 40vw;
-  text-align: left;
-  min-height:80vh;
-  margin-top:11vh;
-  border-radius: 25px;
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.55));
-  font-size: 1.8vw;
-}
-.C_modal-content > p{
-  margin-top: 1vh;
-  margin-bottom:0;
-  color: #575757;
-}
-.C_modal-content > span{
-  padding-top :0;
-}
-.C_close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.C_close:hover,
-.C_close:focus {
-  color: #707070;
-  text-decoration: none;
-}
-.C_ingredientContainer{
-  max-width: 40vw;
-  min-height: 67vh;
-  background-color: #FBFBFB;
-}
-.C_orderbuttons{
-  display: flex;
-  justify-content: center;
-  gap:1vw;
-  margin-top:2vw;
-}
-.C_singleIngredient{
-  background-color: #ffffff;
-  padding:2vw;
-  margin: 1vw 0;
-  border-radius:12px;
-  font-size:1.3vw;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.16));
-  color:#575757;
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.C_ingredientInfo > p{
-  margin:0;
-  margin-top:0.5vw;
-  margin-left:0.5vw;
-}
-.C_liquidInput{
-  background-color: #F6F6F6;
-  border-radius: 5px;
-  text-align: right;
-  color:#575757;
-  font-size: 1.5vw;
-  resize: none;
-  border-color: rgba(114, 114, 114, 0);
-  overflow:hidden;
-  height:3.1vh;
-  max-width: 5vw;
-  padding:0;
-  margin:0;
-}
-.C_ingredientInfo{
-  display: flex;
-}
-.C_newInputCircle{
-  width:0.3vw;
-  height:0.3vw;
-  background-color: #F6F6F6;
-  color:#575757;
-  padding:1.5vw;
-  border-radius: 100px;
-  font-size:2vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1.3vw;
-}
-.C_newIngredient{
-  padding:1.25vw;
-}
-.C_newIngredientLiquid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap:1vw;
-}
-.C_newIngredient_Selection{
-  width: 23vw;
-  border: none;
-  background-color: #F6F6F6;
-  color:#575757;
-  border-radius: 5px;
-  text-align: Left;
-  padding-left:1vw;
-  padding:0.05vw;
-  font-size: 1.5vw;
-}
-
-.K_KarusellContainer{
-  width:60vw;
-  height:30vh;
-  justify-self: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom:4vw;
-  scale: 1.4;
-}
-.K_carousel {
-  display: flex;
-  align-items: center;
   position: relative;
-  width: 100%;
-  max-width: 800px;
   overflow: hidden;
-  justify-content: center;
-  padding-top:3vw;
-  padding-bottom:3vw;
-}
-.K_carousel-track {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 80%;
-  position: relative;
 }
-.K_carousel-item {
-  text-align: center;
-  flex: 0 0 33.33%;
-  opacity: 0.5;
-  width: 5vw;
-  height: 20vw;  /* Beibehaltung der ursprünglichen Größe */
-  transition: transform 0.5s ease, opacity 0.5s ease;
+
+#recommendations, #all-drinks {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  overflow: hidden;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 20px;
-  border: 4px solid transparent;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.25)) saturate(110%);
-  padding: 0; /* Entferne unnötige Innenabstände */
+  justify-content: center;
 }
-.K_carousel-item.side:hover{
-  transform: scale(93%);
+
+#slide-container{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 }
-.K_carousel-item.center:hover{
-  transform: scale(103%);
+
+#slide-track {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
-.K_carousel-item img {
-  width: 100%;
-  max-height: 15vw; /* Begrenzung der maximalen Höhe für gleichmäßige Anzeige */
-  object-fit: cover; /* Füllt den Container und verhindert Verzerrungen */
-  flex-grow: 1; /* Lässt das Bild den verfügbaren Platz einnehmen */
-}
-.K_carousel-item p {
-  margin: 10px 0;  /* Abstand zwischen Bild und Text */
-  font-weight: bold;
-  color: #575757;
-  font-size: 1.5vw;
-  max-width: 90%;
-  text-align: center;
-  white-space: normal;
-  line-height: 1.2;
-  word-wrap: break-word;
-  padding-top: 1vw;
-}
-.K_carousel-item.center {
-  opacity: 1;
-  transform: scale(1);
-  z-index: 3;
-}
-.K_carousel-item.side {
-  opacity: 0.8;
-  transform: scale(0.9);
-  z-index: 2;
-}
-.K_carousel-item.hidden {
-  opacity: 0;
-  transform: scale(0.8);
-  z-index: 1;
-  display: none;
-}
-.K_arrow {
+
+.slide-track-arrow {
   background: none;
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: #555;
+  color: var(--primary-color);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
   filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
-  font-weight: bold ;
+  font-weight: bold;
 }
-.K_arrow.left {
-  left: 10px;
+.drink-card.slide-neighbour {
+  opacity: 0.8;
+  transform: scale(0.9);
+  z-index: 2;
 }
-.K_arrow.right {
-  right: 10px;
+.drink-card.slide-neighbour:hover{
+  transform: scale(93%);
 }
-.K_arrow.disabled {
-  color: #ccc;
+
+@media screen and (max-width: 1000px) {
+  #slide-container {
+    scale: 0.9;
+  }
+}
+@media screen and (max-width: 900px) {
+  #slide-container {
+    scale: 1;
+  }
+  .drink-card.slide-neighbour {
+    display: none;
+  }
+}
+
+#arrow-left {
+  left: -40px;
+}
+#arrow-right {
+  right: -40px;
+}
+.slide-track-arrow:disabled {
+  color: var(--element-primary-outline);
   cursor: not-allowed;
 }
 
-.O_Button{
-  align-self: center;
-  width: 30vw;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.42)) saturate(110%);
-}
-
-.D_Container{
-  width:80vw;
-  min-height:30vh;
-  z-index: 2;
-  margin-bottom: 8vw;
-}
-.D_DrinksContainer  {
-  width:100%;
-  min-height:30vh;
+#filtered-drinks {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
-}
-.D_Drink{
-  width: 13vw;
-  height: 17vw;
-  margin:1vw;
-  border-radius: 25px;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.07));
-  background-color: #FBFBFB;
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0px 0px 8px rgba(53, 30, 15, 0.12);
-}
-.D_Drink:hover{
-  transform: scale(1.05);
-}
-.D_img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.D_imgContainer {
-  width: 100%;
-  height: 12vw;
-  overflow: hidden;
-  background-color: transparent;
-}
-.D_DrinkText {
-  text-align: center;
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: auto;
-}
-
-.D_DrinksFilterSearchContainer {
-  width:95%;
-  height:8vh;
-  margin-bottom:3vh;
-}
-.D_FilterSearchWrapper {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-.D_SearchInput {
-  width: 50%;
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  color: #333;
-  border-image-slice: 1;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-.D_SearchInput::placeholder {
-  color: #aaa;
-}
-.D_FilterDropdown {
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-.D_CustomOrderBtn {
-  padding: 12px 20px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  background: linear-gradient(to right, #f5d273, #ea6b52);
-  border: none;
-  border-radius: 20px;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-.D_CustomOrderBtn:hover {
-  transform: scale(1.05);
-}
-
-
-
-.G_modal-content{
-  background-color: #FBFBFB;
-  padding: 20px;
-  border: none;
-  width: 55%;
-  height: 50%;
-  max-width: 60vw;
-  text-align: left;
-  min-height:70vh;
-  margin-top:17vh;
-  border-radius: 25px;
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.55));
-  font-size: 1.8vw;
-  z-index: 2;
-}
-
-.G_modal{
-  display: flex;
-  position: fixed;
-  z-index: 3;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.24);
-  justify-content: center;
-}
-.G_drinkName{
-  font-family: AdlamDisplay, serif;
-  color: #3b3b3b;
-  margin:0;
-  margin-left:1vw;
-}
-.G_ingredientsList{
-  color:#727272;
-}
-
-.G_close{
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: -10vw;
-  z-index: 3;
-}
-.G_close:hover,
-.G_close:focus {
-  color: #707070;
-  text-decoration: none;
-  margin-bottom: -10vw;
-  z-index: 3;
-}
-
-
-.G_modal_bigbox{
-  width:100%;
-  height:94%;
-  display: flex;
-  gap:1vw;
-  align-content: end;
-}
-.G_moadal_left{
-  height:100%;
-  width:50%;
-}
-.G_moadal_right{
-  height:100%;
-  width:50%;
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  justify-content: space-between;
-  margin-top:2vw;
-}
-.G_imagecontainer{
-  height: 27.5vw;
-  width: 27.5vw;
-  overflow: hidden;
-}
-.G_drinkImage{
-  height:100%;
-  width:100%;
-  object-fit: cover;
-  object-position: center;
-}
-.G_toppingsTitle{
-  color:#575757;
-  margin-left:1vw;
-  margin-top:1vw;
-  margin-bottom:0;
-}
-.G_Toppings{
-  color:#727272;
-  margin-left:1vw;
-  margin-top:1vw;
-}
-
-.G_orderbutton{
-  align-self: end;
-  justify-self: end;
+  gap: 20px;
 }

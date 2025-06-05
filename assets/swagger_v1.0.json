@@ -1,0 +1,333 @@
+{
+  "x-generator": "NSwag v14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Api v1",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5287"
+    }
+  ],
+  "paths": {
+    "/api/v1/ingredients": {
+      "get": {
+        "operationId": "HandleGetAllIngredients",
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ingredients/inBottle": {
+      "get": {
+        "operationId": "HandleGetIngredientsInBottle",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/ingredients/edit": {
+      "patch": {
+        "operationId": "HandleEditDrinkIngredient",
+        "requestBody": {
+          "x-name": "ingredientDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngredientDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "404": {
+            "description": ""
+          },
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/drinks": {
+      "get": {
+        "operationId": "HandleGetAllDrinks",
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/drinks/info": {
+      "get": {
+        "operationId": "HandleGetDrinkInfo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/drinks/orderCustomDrink": {
+      "post": {
+        "operationId": "HandleOrderCustomDrink",
+        "requestBody": {
+          "x-name": "ingredientDtos",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/IngredientDto2"
+                }
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "400": {
+            "description": ""
+          },
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/drinks/create": {
+      "post": {
+        "operationId": "HandleCreateDrink",
+        "requestBody": {
+          "x-name": "drinkDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DrinkDto"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/drinks/delete": {
+      "delete": {
+        "operationId": "HandleDeleteDrink",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/v1/drinks/update": {
+      "patch": {
+        "operationId": "HandleEditDrink",
+        "requestBody": {
+          "x-name": "drinkDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DrinkDto2"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProblemDetails": {
+        "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "IngredientDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ingredientId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ingredientName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "IngredientDto2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ingredientName": {
+            "type": "string"
+          },
+          "ml": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DrinkDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "img": {
+            "type": "string"
+          },
+          "toppings": {
+            "type": "string"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IngredientDto3"
+            }
+          }
+        }
+      },
+      "IngredientDto3": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "DrinkDto2": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "imgUrl": {
+            "type": "string"
+          },
+          "toppings": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

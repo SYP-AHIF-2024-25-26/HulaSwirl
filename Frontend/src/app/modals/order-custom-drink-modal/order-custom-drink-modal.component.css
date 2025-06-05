@@ -1,0 +1,83 @@
+.order-ingredient-delete {
+  transition: 0.3s transform ease;
+  margin-left: auto;
+}
+
+.order-ingredient-delete:hover {
+  cursor: pointer;
+  transform: rotate(10deg);
+}
+
+#add-order-ingredient {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+#order-ingredient-amount, .order-ingredient-amount {
+  width: 25px;
+  text-align: end;
+}
+
+#order-ingredient-add {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.order-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.order-ingredient {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 0;
+  padding: 5px 15px;
+  border-radius: 5px;
+  background-color: var(--ingredient-bg-color);
+  color: var(--primary-font-color);
+}
+
+.order-ingredient-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-ingredient-status {
+  margin: 0;
+  color: red;
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+.ingredient-properties {
+  display: flex;
+  margin: 7px 0;
+  gap: 5px;
+  align-items: center;
+}
+
+#order-ingredient-select {
+  min-width: 150px;
+}
+
+#order-ingredient-add {
+  background-color: #fdfded;
+  color: var(--primary-font-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#order-ingredient-add:hover {
+  scale: 1.1;
+}

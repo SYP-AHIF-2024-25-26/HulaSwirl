@@ -1,0 +1,26 @@
+<div class="modal-frame">
+  <div class="modal-form">
+    <div class="modal-head">
+      <h1>{{selectedDrink()?.name}}</h1>
+      <span class="close-modal-button" (click)="closeModal()"></span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-image">
+        <img [src]="selectedDrink()?.imgUrl" alt="Drink Image" class="drink-image">
+      </div>
+      <div id="modal-ingredient-list">
+        <h3>Ingredients:</h3>
+        <ul>
+          <li *ngFor="let drink of selectedDrink()?.drinkIngredients">{{drink.amount}}ml {{drink.ingredientName}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div id="toppings">
+        <h4>Toppings:</h4>
+        <p>{{selectedDrink()?.toppings}}</p>
+      </div>
+      <button class="button submit-btn" (click)="submitOrder()">Order</button>
+    </div>
+  </div>
+</div>

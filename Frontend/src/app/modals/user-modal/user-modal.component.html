@@ -1,0 +1,90 @@
+<div class="modal-frame">
+  <div class="modal-form">
+    <form (ngSubmit)="onSubmit()" #authForm="ngForm">
+      <div class="modal-head flex-row">
+        <div class="tab-switch centered">
+          <button
+            type="button"
+            [class.active]="mode() === 'login'"
+            (click)="switchMode('login')">
+            Login
+          </button>
+          <button
+            type="button"
+            [class.active]="mode() === 'register'"
+            (click)="switchMode('register')">
+            Register
+          </button>
+        </div>
+        <span class="close-modal-button right" (click)="closeModal()"></span>
+      </div>
+
+      <div class="modal-body">
+        <ng-container *ngIf="mode() === 'login'">
+          <input
+            name="email"
+            ngModel
+            required
+            type="email"
+            placeholder="Email"
+            class="form-input"
+            [(ngModel)]="loginEmail" />
+          <input
+            name="password"
+            ngModel
+            required
+            type="password"
+            placeholder="Password"
+            class="form-input"
+            [(ngModel)]="loginPassword" />
+        </ng-container>
+
+        <ng-container *ngIf="mode() === 'register'">
+          <input
+            name="username"
+            ngModel
+            required
+            type="text"
+            placeholder="Username"
+            class="form-input"
+            [(ngModel)]="regUsername" />
+          <input
+            name="email"
+            ngModel
+            required
+            type="email"
+            placeholder="Email"
+            class="form-input"
+            [(ngModel)]="regEmail" />
+          <input
+            name="password"
+            ngModel
+            required
+            type="password"
+            placeholder="Password"
+            class="form-input"
+            [(ngModel)]="regPassword" />
+        </ng-container>
+      </div>
+
+      <div class="modal-footer">
+        <div class="buttons">
+          <!-- Submit-Button löst onSubmit() per Enter oder Klick aus -->
+          <button
+            type="submit"
+            class="button submit-btn"
+            [disabled]="authForm.invalid">
+            {{ mode() === 'login' ? 'Login' : 'Register' }}
+          </button>
+          <!-- Abbrechen bleibt type="button" -->
+          <button
+            type="button"
+            class="button cancel-btn"
+            (click)="closeModal()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

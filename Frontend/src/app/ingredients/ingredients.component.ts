@@ -1,7 +1,8 @@
-import {Component, HostListener, inject, Signal, signal, WritableSignal} from '@angular/core';
+import {Component, effect, HostListener, inject, Signal, signal, WritableSignal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
-import {Ingredient, IngredientsService} from '../ingredients.service';
+import {Ingredient, IngredientsService} from '../services/ingredients.service';
+import {StatusService} from '../services/status.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -16,41 +17,36 @@ import {Ingredient, IngredientsService} from '../ingredients.service';
 })
 export class IngredientsComponent {
   private readonly ingredientsService = inject(IngredientsService)
-  ingredientSlots = 2;
+  private readonly errorService = inject(StatusService);
+  readonly ingredientSlots = this.ingredientsService.ingredientSlots;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
-
   avIngredients: WritableSignal<Ingredient[]> = signal([]);
   unIngredients: WritableSignal<Ingredient[]> = signal([]);
-
-  async ngOnInit() {
-    const allIngredients = await this.ingredientsService.getAllIngredients();
-    allIngredients.forEach(ing => {
-      if (ing.slot && ing.slot > this.ingredientSlots) {
-        ing.slot = null;
-      }
-    })
-    this.avIngredients.set(allIngredients.filter(ing => ing.slot !== null));
-    this.unIngredients.set(allIngredients.filter(ing => ing.slot === null));
-  }
-
   private draggedIngredient: Ingredient | null = null;
   private sourceContainer: 'available' | 'unavailable' | null = null;
   private sourceIndex: number | null = null;
   private dropSuccessful: boolean = false;
   private draggedElement: HTMLElement | null = null;
 
+  constructor() {
+    effect(async () => {
+      await this.ingredientsService.loadIngredients();
+      const allIngredients = this.ingredientsService.ingredients();
+      this.avIngredients.set(allIngredients.filter(ing => ing.pumpSlot !== null));
+      this.unIngredients.set(allIngredients.filter(ing => ing.pumpSlot === null));
+    });
+  }
+
   dragStart(event: DragEvent, index: number, available: boolean = true) {
-    console.log(this.avIngredients(), this.unIngredients());
     const ingredient = available ? this.getIngredientByIndex(index) : this.unIngredients()[index];
     if (!ingredient) return;
     this.draggedIngredient = ingredient;
     this.sourceContainer = available ? 'available' : 'unavailable';
     this.sourceIndex = index;
     this.dropSuccessful = false;
-
     if(available) {
       this.avIngredients.update(ings => {
-        return ings.filter(ing => ing?.slot !== ingredient.slot);
+        return ings.filter(ing => ing?.pumpSlot !== ingredient.pumpSlot);
       })
     } else {
       this.unIngredients.update(ings => {
@@ -65,7 +61,6 @@ export class IngredientsComponent {
     this.draggedElement.classList.add('dragging');
     document.body.appendChild(this.draggedElement);
     this.followMouse(event);
-
     event.target?.addEventListener('dragend', this.dragEnd.bind(this) as EventListener);
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
@@ -115,21 +110,19 @@ export class IngredientsComponent {
 
   availableDrop(event: DragEvent, slotIndex: number) {
     if (!this.draggedIngredient) return;
-
     this.avIngredients.update(ings => {
       let newArr = [...ings];
       const ingByIndex = this.getIngredientByIndex(slotIndex);
       if (ingByIndex) {
-        this.draggedIngredient!.slot = ingByIndex.slot;
+        this.draggedIngredient!.pumpSlot = ingByIndex.pumpSlot;
         if (this.sourceContainer === 'available' && this.sourceIndex !== null) {
-          ingByIndex.slot = this.sourceIndex + 1;
+          ingByIndex.pumpSlot = this.sourceIndex + 1;
         } else if (this.sourceContainer === 'unavailable') {
-          this.unIngredients.update(uings => [...uings, ingByIndex]);
-          newArr = newArr.filter(ing => ing.slot !== ingByIndex.slot);
-          ingByIndex.slot = null;
+          newArr = newArr.filter(ing => ing.pumpSlot !== ingByIndex.pumpSlot);
+          this.moveToUnavailable(ingByIndex);
         }
       } else {
-        this.draggedIngredient!.slot = slotIndex + 1;
+        this.draggedIngredient!.pumpSlot = slotIndex + 1;
       }
       newArr.push(this.draggedIngredient!);
       return newArr;
@@ -137,31 +130,35 @@ export class IngredientsComponent {
     this.dropSuccessful = true;
   }
 
+  moveToUnavailable(ingredient: Ingredient) {
+    if (!ingredient) return;
+    this.unIngredients.update(ings => [...ings, ingredient]);
+    this.avIngredients.update(ings => ings.filter(ing => ing.pumpSlot !== ingredient.pumpSlot));
+    ingredient.pumpSlot = null;
+    ingredient.maxAmount = ingredient.remainingAmount;
+  }
+
   unavailableDrop(event: DragEvent) {
-    if (!this.draggedIngredient) return;
-    this.draggedIngredient.maxMl = this.draggedIngredient.remainingMl;
-    this.draggedIngredient.slot = null;
-    this.unIngredients.update(ings => [...ings, this.draggedIngredient!]);
+    this.moveToUnavailable(this.draggedIngredient!);
     this.dropSuccessful = true;
   }
 
   updateRemaining(event: FocusEvent, index: number) {
     const target = event.target as HTMLInputElement;
     const newValue = parseInt(target.value);
-    console.log(newValue);
     if (newValue < 0 || newValue > 9999 || isNaN(newValue)) {
       const ing = this.avIngredients()[index];
-      if (ing) target.value = ing.remainingMl.toString();
+      if (ing) target.value = ing.remainingAmount.toString();
       return;
     }
     this.avIngredients.update(ings => {
       const newArr = [...ings];
       const ingByIndex = this.getIngredientByIndex(index);
       if (ingByIndex) {
-        if (newValue > ingByIndex.maxMl) {
-          ingByIndex.maxMl = newValue;
+        if (newValue > ingByIndex.maxAmount) {
+          ingByIndex.maxAmount = newValue;
         }
-        ingByIndex.remainingMl = newValue;
+        ingByIndex.remainingAmount = newValue;
       }
       return newArr;
     });
@@ -172,14 +169,18 @@ export class IngredientsComponent {
   }
 
   getLiquidPercentage(ingredient: Ingredient): number {
-    return (ingredient.remainingMl / ingredient.maxMl) * 100 + 0.5;
+    return ingredient.maxAmount != 0 ? (ingredient.remainingAmount / ingredient.maxAmount) * 100 + 0.5 : 0;
   }
 
   getIngredientByIndex(idx: number): Ingredient | null {
-    return this.avIngredients().find(ing => ing != null && ing.slot === idx + 1) || null;
+    return this.avIngredients().find(ing => ing != null && ing.pumpSlot === idx + 1) || null;
   }
 
   async saveIngredients() {
-    await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
+    try {
+      await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
+    } catch (e: unknown) {
+      this.errorService.handleError(e);
+    }
   }
 }

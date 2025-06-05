@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fake Transparent Video Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #2c6179; /* dein Hintergrund */
+      overflow: hidden;
+      position: relative;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: auto;
+      z-index: 0;
+      mix-blend-mode: lighten; /* oder 'screen', je nach Effekt */
+      background-color: #00FF00; /* der Greenscreen aus deinem Video */
+      pointer-events: none;
+    }
+
+
+    .bgVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+  background-color: #2c6179; /* optional fallback */
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Green Screen Video -->
+<video autoplay loop muted playsinline class="bgVideo">
+  <source src="stars.mp4" type="video/mp4" />
+</video>
+</body>
+</html>

@@ -1,52 +1,78 @@
 /*Nav bar*/
-.navbar {
+#navbar {
   display:flex;
+  align-items: center;
   background: #0e2d3e;
   color: white;
   filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
   z-index: 3;
-  width: 100vw;
   position: sticky;
-  top: 0;
-  height: 10vh;
+  padding: 10px;
+  gap: 20px;
 }
 
-.TitleContainer{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  cursor:pointer;
-  margin-left:1vw;
-}
-
-.H_ICON{
-  height:4.5vw;
-  margin:1vw;
+#logo {
+  height: 100px;
 }
 
 .link{
-  font-size: 1.7vw;
+  font-size: 32px;
   font-family: JosefinSans,sans-serif;
-  color: #ef7f84;
   text-decoration: none;
-}
-
-.linkHome{
-  font-weight: bold;
-  font-size: 3vw;
-  padding-top:0.17vw;
-  font-family: Katibeh,sans-serif;
-}
-
-.linkAdmin{
   color: #fefde6;
   font-weight: lighter;
-  padding-top:2vw;
 }
 
-.H_LinkContainer{
+.bigLink{
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--order-btn-bg);
+}
+
+#nav-page-container{
   display: flex;
-gap: 3vw;
-  margin-left:2vw;
+  gap: 20px;
+  align-items: center;
+}
+
+.active {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+
+
+.spacer {
+  flex: 1;
+}
+
+#userManagementContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.admin-section {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  color: #FFF5E1;
+  font-size: 25px;
+  font-family: JosefinSans, sans-serif;
+}
+
+.admin-section #logout-btn {
+  font-size: 23.9px;
+  background: transparent;
+  border: none;
+  color: #FF6B6B;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  /*color: #FF3C3C;*/
 }

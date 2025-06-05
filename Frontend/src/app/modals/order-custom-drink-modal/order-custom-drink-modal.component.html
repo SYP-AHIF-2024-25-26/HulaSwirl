@@ -1,0 +1,47 @@
+<div class="modal-frame">
+  <div class="modal-form">
+      <div class="modal-head">
+        <h1>Configure your own Drink</h1>
+        <span class="close-modal-button" (click)="closeModal()"></span>
+      </div>
+      <div class="modal-body">
+        @for(ingredient of orderIngredients(); track $index){
+          <div class="order-ingredient">
+            <div class="order-ingredient-details">
+              <div class="ingredient-properties">
+                <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
+                <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.amount">
+                <span class="order-ingredient-unit">ml</span>
+              </div>
+              <p class="order-ingredient-status">{{ingredient.status}}</p>
+            </div>
+            <span class="order-ingredient-delete" (click)="deleteIngredient($index)">❌</span>
+          </div>
+        } @empty {
+          <div class="order-ingredient">
+            <div class="order-ingredient-details">
+              <div class="ingredient-properties">
+                <span class="order-ingredient-name">No ingredients added</span>
+              </div>
+            </div>
+          </div>
+        }
+    </div>
+      <div id="add-order-ingredient">
+        <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
+          @for(ingredient of availableIngredients(); track $index){
+            <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
+          } @empty {
+            <option value="" selected>No ingredients available</option>
+          }
+        </select>
+        <input type="number" id="order-ingredient-amount" class="form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="100">
+        <span id="order-ingredient-unit">ml</span>
+        <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
+      </div>
+      <div class="order-buttons">
+        <div class="button cancel-btn" (click)="closeModal()">Cancel</div>
+        <div class="button submit-btn" (click)="submitOrder()">Order</div>
+      </div>
+  </div>
+</div>

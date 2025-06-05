@@ -1,12 +1,65 @@
-<nav class="navbar">
-  <div class="TitleContainer" routerLink="/Home">
-    <img src="assets/images/InconV1png.png" class="H_ICON">
+<nav id="navbar">
+  <img src="assets/images/InconV2png.png" id="logo" alt="Logo">
+  <div id="nav-page-container">
+    <a class="bigLink" routerLink="home"
+       >
+      Home
+    </a>
+    <a class="link"
+       *ngIf="userService.getAdminStatus()"
+       routerLink="admin/drinks"
+       routerLinkActive="active">
+      Drinks
+    </a>
+    <a class="link"
+       *ngIf="userService.getAdminStatus()"
+       routerLink="admin/ingredients"
+       routerLinkActive="active">
+      Ingredients
+    </a>
+
+    <a class="link"
+       *ngIf="userService.getAdminStatus()"
+       routerLink="admin/statistics"
+       routerLinkActive="active">
+      Statistics
+    </a>
+    <a class="link"
+       *ngIf="userService.getAdminStatus() || userService.getOperatorStatus()"
+       routerLink="admin/orderTerminal"
+       routerLinkActive="active">
+      Orders
+    </a>
   </div>
-  <div class="H_LinkContainer">
-    <a class="link linkHome" (click)="toggleMenu()" routerLink="/Home">Home</a>
-    <a class="link linkAdmin" (click)="toggleMenu()" routerLink="Admin/Drinks">Drinks</a>
-    <a class="link linkAdmin" (click)="toggleMenu()" routerLink="Admin/Ingredients">Ingredients</a>
-    <a class="link linkAdmin" (click)="toggleMenu()" routerLink="Admin/Statistics">Statistics</a>
+  <div class="spacer"></div>
+
+
+  <div class="admin-section">
+    <ng-container *ngIf="userService.isLoggedIn(); else loginRegister">
+      <span>🦩</span>
+      <span class="user-info"> {{ userService.username() || 'User' }}</span>
+      <button id="logout-btn" (click)="userService.logout()">Logout</button>
+    </ng-container>
+    <ng-template #loginRegister>
+      <a class="login-link" (click)="openLoginModal()">Login/Register</a>
+    </ng-template>
   </div>
+
 </nav>
-<router-outlet></router-outlet>
+
+<app-background-leaves>
+  <router-outlet></router-outlet>
+
+  <app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != ModalType.ODC"></app-order-custom-drink-modal>
+
+  <app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != ModalType.OD"></app-order-drink-modal>
+
+  <app-add-drink-modal id="add-drink-modal" [hidden]="displayedModal() != ModalType.AD"></app-add-drink-modal>
+
+  <app-edit-drink-modal id="edit-drink-modal" [hidden]="displayedModal()!=ModalType.ED"></app-edit-drink-modal>
+
+  <app-status-modal id="error-model" [hidden]="displayedModal()!=ModalType.E"></app-status-modal>
+
+  <app-user-modal id="user-modal" [hidden]="displayedModal()!=ModalType.U"></app-user-modal>
+
+</app-background-leaves>

@@ -1,7 +1,7 @@
 # Projektantrag - Hula Swirl
 
 ## 1. Teammitglieder
-* Moritz Bernhofer
+* ~Moritz Bernhofer~
 * Caroline Hornhuber
 * Leo Oberndorfer
 
