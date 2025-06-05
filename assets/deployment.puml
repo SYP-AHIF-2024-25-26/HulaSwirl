@@ -1,0 +1,40 @@
+@startuml deployment
+
+node "HulaSwirl.RaspberryPi" as raspi {
+    rectangle "Backend" {
+        component "HulaSwirlApi" as api
+        database "SQLite" as db
+    }
+    component "WebServer" {
+        component "HulaSwirlApp" as app
+    }
+    component "Pump" as pump{
+
+    }
+    
+
+}
+
+node "CustomerMobile"{
+    rectangle "WebBrowser.Mobile"{
+        component "HulaSwirlApp.Customer" as customer
+    }
+}
+
+node "OperatorTablet"{
+    rectangle "WebBrowser.Tablet"{
+        component "HulaSwirlApp.Operator" as operator
+    }
+}
+
+customer --> app : download app
+operator --> app : download app
+
+customer --> api : order drink
+operator --> api : start drink preparation
+
+api --> operator : notify order updates
+api --> db
+
+api --> pump : start/stop pump
+@enduml
