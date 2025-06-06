@@ -22,23 +22,6 @@ public static class UserApi
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
 
-        // 3a) OTP anfordern
-        app.MapPost($"{baseUrl}/{{username}}/request-otp", RequestOtp.HandleRequestOtp)
-            .WithName(nameof(RequestOtp.HandleRequestOtp))
-            .WithDescription("Request password reset OTP for a user")
-            .WithTags("Users")
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
-
-        // 3b) Passwort zurücksetzen
-        app.MapPost($"{baseUrl}/{{username}}/password-reset", ResetPassword.HandleReset)
-            .WithName(nameof(ResetPassword.HandleReset))
-            .WithDescription("Reset user's password using OTP")
-            .WithTags("Users")
-            .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status404NotFound);
-
         // 4) Admin-Check
         app.MapGet($"{baseUrl}/is-admin", RoleCheck.HandleAdminCheck)
             .WithName(nameof(RoleCheck.HandleAdminCheck))

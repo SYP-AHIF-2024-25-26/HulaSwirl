@@ -10,18 +10,12 @@ public static class DeleteUser
     public static async Task<IResult> HandleDelete(
         [FromRoute] string username,
         AppDbContext db,
-        [FromBody] DeleteUserDto dto,
-        IOtpService otp)
+        IOtpService otp,
+        HttpContext http)
     {
-        if (!dto.TryValidate(out var errors))
-            return Results.BadRequest(errors);
-
+        if (!http.IsAdmin()) return Results.Forbid();
         var user = await db.User.FindAsync(username);
-        if (user == null)
-            return Results.NotFound("User not found.");
-
-        if (!otp.UseOtp(username, dto.Otp))
-            return Results.BadRequest("Invalid or expired OTP.");
+        if (user == null) return Results.NotFound("User not found.");
 
         db.User.Remove(user);
         await db.SaveChangesAsync();

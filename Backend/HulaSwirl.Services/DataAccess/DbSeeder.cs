@@ -5,7 +5,7 @@ namespace HulaSwirl.Services.DataAccess;
 
 public static class PumpSeeder
 {
-    private const int InstalledPumps = 2;
+    private const int InstalledPumps = 10;
     public static void SeedPumps(AppDbContext db)
     {
         if (db.Pump.Any()) return;
@@ -28,7 +28,7 @@ public static class UserSeeder
         };
         foreach (var user in users)
         {
-            if (db.User.Any(u => u.Email == user.Email)) continue;
+            if (db.User.Any(u => u.Username == user.Username)) continue;
             db.User.Add(user);
         }
         db.SaveChanges();

@@ -57,7 +57,7 @@ public static class ConfirmOrder
 
             lock (PumpLock)
             {
-                if (manager.Running) return Results.Conflict("Another drink is currently mixing, please wait a few seconds.");
+                if (manager.Running) throw new InvalidOperationException();
 
                 _ = Task.Run(async () => await manager.RunOrderAsync(jobs));
             }

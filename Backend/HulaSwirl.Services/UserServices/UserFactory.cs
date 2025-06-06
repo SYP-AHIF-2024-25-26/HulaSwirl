@@ -14,14 +14,11 @@ public static class UserFactory
     /// <summary>
     /// Creates a new user after validating DTO and uniqueness constraints.
     /// </summary>
-    public static async Task<IResult> CreateUserAsync(AppDbContext context, CreateUserDto dto, JwtService jwtService)
+    public static async Task<IResult> CreateUserAsync(AppDbContext context, UserDto dto, JwtService jwtService)
     {
         var errors = new List<string>();
         if (!dto.TryValidate(out var validationErrors))
             errors.AddRange(validationErrors);
-
-        if (await context.User.AnyAsync(u => u.Email == dto.Email))
-            errors.Add("Email already in use");
 
         if (await context.User.AnyAsync(u => u.Username == dto.Username))
             errors.Add("Username already exists.");
@@ -31,8 +28,7 @@ public static class UserFactory
         var user = new User
         {
             Username = dto.Username,
-            Email = dto.Email.ToLower(),
-            PasswordHash = BCryptHasher.Hash(dto.Password),
+            KeyHash = BCryptHasher.Hash(dto.Key),
             Role = "user"
         };
 

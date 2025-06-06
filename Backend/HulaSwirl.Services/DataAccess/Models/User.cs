@@ -5,7 +5,7 @@ namespace HulaSwirl.Services.DataAccess.Models;
 public class User(
     string username,
     string email,
-    string passwordHash,
+    string keyHash,
     string role,
     ICollection<Order>? orders = null,
     ICollection<UserDrinkStatistic>? drinkStatistics = null)
@@ -16,11 +16,7 @@ public class User(
     [StringLength(50)]
     public string Username { get; set; } = username;
 
-    [EmailAddress]
-    [StringLength(255)]
-    public string Email { get; set; } = email;
-
-    public string PasswordHash { get; set; } = passwordHash;
+    public string KeyHash { get; set; } = keyHash;
 
     public string Role { get; set; } = role;
 

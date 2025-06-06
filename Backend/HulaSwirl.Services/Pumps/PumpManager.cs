@@ -11,14 +11,16 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
     
     public async Task RunOrderAsync(IEnumerable<(int slot, int ml)> jobs)
     {
-        if (Running) throw new InvalidOperationException("Pumps are already running.");
+        if (Running) throw new InvalidOperationException();
+        var valueTuples = jobs.ToList();
+        if (valueTuples.Count > 6) throw new ArgumentException("Cannot run more than 6 pumps at once.", nameof(jobs));
 
         InitializePumps();
         Running = true;
 
         try
         {
-            var tasks = jobs.Select(j =>
+            var tasks = valueTuples.Select(j =>
             {
                 var pump = _pumps![j.slot - 1];
                 return pump.RunAsync(j.ml);
@@ -37,10 +39,18 @@ public class PumpManager(ILogger<PumpManager> logger, GpioController gpioControl
 
         _pumps =
         [
-            new VPump(0, 1, gpioController),
-            new VPump(2, 3, gpioController)
+            new VPump(5, 6, gpioController), //1
+            new VPump(14, 15, gpioController), //2
+            new VPump(18, 23, gpioController), //3
+            new VPump(24, 25, gpioController), //4
+            new VPump(8, 7, gpioController), //5
+            new VPump(11, 0, gpioController), //6
+            new VPump(10, 9, gpioController), //7
+            new VPump(27, 22, gpioController), //8
+            new VPump(4, 17, gpioController), //9
+            new VPump(2, 3, gpioController) //10
         ];
 
-        _pumps.ForEach(pump => pump.SetSpeed(20));
+        _pumps.ForEach(pump => pump.SetSpeed(50));
     }
 }

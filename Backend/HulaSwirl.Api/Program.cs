@@ -77,6 +77,12 @@ var app = builder.Build();
  * CHANGE THIS WHEN DEPLOYING
 */
 //app.Urls.Add("http://192.168.178.62:8080");
+// If url is set in appsettings.json, it will be used instead
+var url = builder.Configuration["Url"];
+if (!string.IsNullOrWhiteSpace(url))
+{
+    app.Urls.Add(url);
+}
 
 app.UseCors("AllowAll");
 app.UseAuthentication();

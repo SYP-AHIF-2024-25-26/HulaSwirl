@@ -7,14 +7,11 @@ namespace HulaSwirl.Api.Users;
 
 public static class Login
 {
-    public static async Task<IResult> HandleLogin(LoginDto dto, AppDbContext db, JwtService jwtService)
+    public static async Task<IResult> HandleLogin(UserDto dto, AppDbContext db, JwtService jwtService)
     {
-        if (!dto.TryValidate(out var errors))
-            return Results.BadRequest(new { errors });
-        var user = await db.User.FirstOrDefaultAsync(u => u.Email == dto.Email.ToLower());
-        if (user == null || !BCryptHasher.Verify(user.PasswordHash, dto.Password))
-            return Results.BadRequest("Invalid login attempt");
-
+        if (!dto.TryValidate(out var errors)) return Results.BadRequest(errors);
+        var user = await db.User.FirstOrDefaultAsync(u => u.Username == dto.Username.ToLower());
+        if (user == null || !BCryptHasher.Verify(user.KeyHash, dto.Key)) return Results.BadRequest("Invalid login attempt");
         var token = jwtService.GenerateToken(user);
         return Results.Ok(new { user.Username, token });
     }

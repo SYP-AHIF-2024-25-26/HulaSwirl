@@ -29,7 +29,7 @@ export class IngredientsService {
   private readonly userService=inject(UserService)
   private apiBaseUrl = inject(BASE_URL);
   ingredients: WritableSignal<Ingredient[]> = signal([]);
-  readonly ingredientSlots = 2;
+  readonly ingredientSlots = 10;
 
   async loadIngredients(){
     try {

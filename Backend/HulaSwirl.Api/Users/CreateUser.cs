@@ -7,7 +7,7 @@ namespace HulaSwirl.Api.Users;
 
 public static class CreateUser
 {
-    public static async Task<IResult> HandleCreate(CreateUserDto dto, AppDbContext db, [FromServices] JwtService jwtService)
+    public static async Task<IResult> HandleCreate(UserDto dto, AppDbContext db, [FromServices] JwtService jwtService)
     {
         return await UserFactory.CreateUserAsync(db, dto, jwtService);
     }
