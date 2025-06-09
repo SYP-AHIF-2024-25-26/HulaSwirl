@@ -22,21 +22,21 @@
       <div class="modal-body">
         <ng-container *ngIf="mode() === 'login'">
           <input
-            name="email"
+            name="username"
             ngModel
             required
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Username"
             class="form-input"
-            [(ngModel)]="loginEmail" />
+            [(ngModel)]="loginUsername" />
           <input
-            name="password"
+            name="key"
             ngModel
             required
             type="password"
             placeholder="Password"
             class="form-input"
-            [(ngModel)]="loginPassword" />
+            [(ngModel)]="loginKey" />
         </ng-container>
 
         <ng-container *ngIf="mode() === 'register'">
@@ -49,21 +49,13 @@
             class="form-input"
             [(ngModel)]="regUsername" />
           <input
-            name="email"
-            ngModel
-            required
-            type="email"
-            placeholder="Email"
-            class="form-input"
-            [(ngModel)]="regEmail" />
-          <input
-            name="password"
+            name="key"
             ngModel
             required
             type="password"
             placeholder="Password"
             class="form-input"
-            [(ngModel)]="regPassword" />
+            [(ngModel)]="regKey" />
         </ng-container>
       </div>
 
