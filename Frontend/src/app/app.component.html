@@ -1,6 +1,7 @@
 <nav id="navbar">
   <img src="assets/images/InconV2png.png" id="logo" alt="Logo">
-  <div id="nav-page-container">
+  <button id="menu-toggle" (click)="toggleMenu()">☰</button>
+  <div id="nav-page-container" [ngClass]="{open: menuOpen}">
     <a class="bigLink" routerLink="home"
        >
       Home

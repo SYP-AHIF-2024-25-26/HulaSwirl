@@ -76,3 +76,38 @@
 .logout-btn:hover {
   /*color: #FF3C3C;*/
 }
+
+#menu-toggle {
+  display: none;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #fefde6;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  #navbar {
+    flex-wrap: wrap;
+  }
+  #logo {
+    height: 60px;
+  }
+  #nav-page-container {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  #nav-page-container.open {
+    display: flex;
+  }
+  .link,
+  .bigLink {
+    font-size: 24px;
+  }
+  #menu-toggle {
+    display: block;
+  }
+}
