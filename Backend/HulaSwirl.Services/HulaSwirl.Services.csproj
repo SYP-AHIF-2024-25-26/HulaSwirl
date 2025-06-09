@@ -18,10 +18,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
     <PackageReference Include="System.Device.Gpio" Version="3.2.0" />
   </ItemGroup>
-  <ItemGroup>
-  <None Update="..\appsettings.json">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    <Link>appsettings.json</Link>
+<ItemGroup>
+  <None Include="..\appsettings.json" Link="appsettings.json">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
 </ItemGroup>
 

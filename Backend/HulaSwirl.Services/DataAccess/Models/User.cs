@@ -4,13 +4,12 @@ namespace HulaSwirl.Services.DataAccess.Models;
 
 public class User(
     string username,
-    string email,
     string keyHash,
     string role,
     ICollection<Order>? orders = null,
     ICollection<UserDrinkStatistic>? drinkStatistics = null)
 {
-    public User() : this(string.Empty, string.Empty, string.Empty, string.Empty) { }
+    public User() : this(string.Empty, string.Empty, string.Empty) { }
 
     [Key]
     [StringLength(50)]

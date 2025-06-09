@@ -16,10 +16,9 @@
       <ProjectReference Include="..\HulaSwirl.Services\HulaSwirl.Services.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Update="..\SharedConfig\appsettings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <Link>appsettings.json</Link>
-        </None>
+    <None Include="..\appsettings.json" Link="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     </ItemGroup>
 
 </Project>
