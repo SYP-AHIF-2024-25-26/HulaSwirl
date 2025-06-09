@@ -81,3 +81,16 @@
 #order-ingredient-add:hover {
   scale: 1.1;
 }
+
+@media (max-width: 768px) {
+  #add-order-ingredient {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .order-buttons {
+    flex-direction: column;
+  }
+  #order-ingredient-select {
+    min-width: 120px;
+  }
+}
