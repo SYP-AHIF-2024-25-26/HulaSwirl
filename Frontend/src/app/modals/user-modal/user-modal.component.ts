@@ -3,10 +3,8 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { ModalService, ModalType } from '../../services/modal.service';
+import { ModalService } from '../../services/modal.service';
 import { StatusService } from '../../services/status.service';
-import {HttpClient} from '@angular/common/http';
-import {firstValueFrom} from 'rxjs';
 
 /**
  * Modal für Login & Registrierung.
@@ -27,17 +25,16 @@ export class UserModalComponent {
   mode = signal<'login' | 'register'>('login');
 
   // login
-  loginEmail = signal('');
-  loginPassword = signal('');
+  loginUsername = signal('');
+  loginKey = signal('');
 
   // register
   regUsername = signal('');
-  regEmail = signal('');
-  regPassword = signal('');
+  regKey = signal('');
 
   async login() {
     try {
-      await this.userService.login(this.loginEmail(), this.loginPassword());
+      await this.userService.login(this.loginUsername(), this.loginKey());
       if (this.userService.isLoggedIn()) {
         this.closeModal();
       }
@@ -50,8 +47,7 @@ export class UserModalComponent {
     try {
       await this.userService.register(
         this.regUsername(),
-        this.regEmail(),
-        this.regPassword()
+        this.regKey()
       );
       if (this.userService.isLoggedIn()) {
         this.closeModal();

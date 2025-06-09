@@ -7,13 +7,12 @@ import {Router} from '@angular/router';
 
 interface RegisterRequest {
   username: string;
-  email: string;
-  password: string;
+  key: string;
 }
 
 interface LoginRequest {
-  email: string;
-  password: string;
+  username: string;
+  key: string;
 }
 
 interface AuthResponse {
@@ -68,16 +67,16 @@ export class UserService {
     this.username.set(null);
   }
 
-  async register(username: string, email: string, password: string): Promise<void> {
+  async register(username: string, key: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users`;
-    const payload: RegisterRequest = {username, email, password};
+    const payload: RegisterRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
   }
 
-  async login(email: string, password: string): Promise<void> {
+  async login(username: string, key: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users/login`;
-    const payload: LoginRequest = {email, password};
+    const payload: LoginRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
     await this.updateUserRole();
