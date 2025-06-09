@@ -55,3 +55,18 @@ input.form-input {
   display: flex;
   justify-content: center;
 }
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  input.form-input {
+    width: 100%;
+  }
+  .buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

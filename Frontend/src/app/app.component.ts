@@ -1,6 +1,6 @@
 import {Component, inject, Signal} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {NgIf} from '@angular/common';
+import {NgIf, NgClass} from '@angular/common';
 import {ModalService, ModalType} from './services/modal.service';
 import {OrderCustomDrinkModalComponent} from './modals/order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from './modals/order-drink-modal/order-drink-modal.component';
@@ -15,7 +15,7 @@ import {UserService} from './services/user.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive, StatusModalComponent, UserModalComponent, NgIf],
+  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, AddDrinkModalComponent, EditDrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive, StatusModalComponent, UserModalComponent, NgIf, NgClass],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
@@ -28,6 +28,7 @@ export class AppComponent {
 
   title = 'Frontend';
   displayedModal: Signal<ModalType | null> = this.modalService.getDisplayedModal();
+  menuOpen = false;
 
   async ngOnInit() {
     await this.ingredientService.loadIngredients();
@@ -36,6 +37,10 @@ export class AppComponent {
 
   openLoginModal(){
     this.modalService.openModal(ModalType.U,null)
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
   protected readonly ModalType = ModalType;
