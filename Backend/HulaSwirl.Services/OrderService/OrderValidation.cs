@@ -4,12 +4,12 @@ using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace HulaSwirl.Services.OrderService;
 
 public static class OrderValidation
 {
-    public static double ML_PER_SECOND = 13;
     /// <summary>
     /// Validates a collection of <see cref="DrinkIngredientDto"/> for an order request.
     /// </summary>
@@ -30,21 +30,31 @@ public static class OrderValidation
     /// <param name="drinkIngredients">Ingredients of the drink.</param>
     /// <param name="context">The Database connection</param>
     /// <returns>Result NotFound if an ingredient is not available or Ok</returns>
-    public static async Task<IResult> ValidateConfirmation(IReadOnlyCollection<OrderIngredient> drinkIngredients, AppDbContext context)
+    public static async Task<IResult> ValidateConfirmation(IReadOnlyCollection<OrderIngredient> drinkIngredients, AppDbContext context, IConfiguration config)
     {
         var ingredientNames = drinkIngredients.Select(i => i.IngredientName).ToList();
         var availableIngredients = await IngredientService.GetAllAvailableIngredientsAsync(ingredientNames, context);
 
+        if (drinkIngredients.Count > 6)
+        {
+            return Results.BadRequest("You can only order up to 6 ingredients at a time.");
+        }
+        
+        var availablePumps = config.GetValue<int>("HulaConfig:AvailablePumpCount");
+        if (drinkIngredients.Count > availablePumps)
+        {
+            return Results.BadRequest($"You can only order up to {availablePumps} ingredients.");
+        }
+        
         foreach (var di in drinkIngredients)
         {
             var stored = availableIngredients.First(i => i.IngredientName == di.IngredientName);
             if (stored.RemainingAmount < di.Amount)
             {
-                return Results.BadRequest(
-                    $"Not enough {di.IngredientName}: available {stored.RemainingAmount}ml, needed {di.Amount}ml");
+                return Results.BadRequest($"Not enough {di.IngredientName}: available {stored.RemainingAmount}ml, needed {di.Amount}ml");
             }
         }
-        var durationSec = drinkIngredients.Max(i => i.Amount) / ML_PER_SECOND;
+        var durationSec = drinkIngredients.Max(i => i.Amount) / config.GetValue<double>("HulaConfig:MlPerSecond");
         return Results.Ok(durationSec);
     }
 }

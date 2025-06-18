@@ -1,15 +1,17 @@
 ﻿using HulaSwirl.Services.DataAccess.Models;
 using HulaSwirl.Services.UserServices;
+using Microsoft.Extensions.Configuration;
 
 namespace HulaSwirl.Services.DataAccess;
 
 public static class PumpSeeder
 {
-    private const int InstalledPumps = 10;
-    public static void SeedPumps(AppDbContext db)
+    public static void SeedPumps(AppDbContext db, IConfiguration config)
     {
+        var pumpCount = config.GetValue<int>("HulaConfig:AvailablePumpCount");
+        
         if (db.Pump.Any()) return;
-        for (var i = 1; i <= InstalledPumps; i++)
+        for (var i = 1; i <= pumpCount; i++)
         {
             db.Pump.Add(new Pump(i, true));
         }

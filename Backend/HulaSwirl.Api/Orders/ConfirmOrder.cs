@@ -17,8 +17,9 @@ public static class ConfirmOrder
     public static async Task<IResult> HandleConfirmOrder(
         [FromRoute] int orderId,
         AppDbContext context,
-        PumpManager manager,
+        //PumpManager manager,
         ObservableOrderService orderService,
+        IConfiguration config,
         HttpContext httpContext)
     {
         if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
@@ -29,7 +30,7 @@ public static class ConfirmOrder
         if (order is null) return Results.NotFound("Order not found");
         if (order.Status != OrderStatus.Pending) return Results.BadRequest("Order was already processed");
 
-        var res = await OrderValidation.ValidateConfirmation(order.OrderIngredients, context);
+        var res = await OrderValidation.ValidateConfirmation(order.OrderIngredients, context, config);
         if (res is not Ok<double>) return res;
 
         await using var tx = await context.Database.BeginTransactionAsync();
@@ -55,12 +56,14 @@ public static class ConfirmOrder
                 })
                 .ToList();
 
+            /*
             lock (PumpLock)
             {
                 if (manager.Running) throw new InvalidOperationException();
 
                 _ = Task.Run(async () => await manager.RunOrderAsync(jobs));
             }
+            */
 
             var orders = await context.Order
                 .Include(o => o.OrderIngredients)
