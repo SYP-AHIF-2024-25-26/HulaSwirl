@@ -77,7 +77,7 @@ export class OrderCustomDrinkModalComponent {
           amount: ing.amount
         })));
         this.closeModal();
-        this.modalService.openModal(ModalType.E, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
+        this.modalService.openModal(ModalType.Error, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
       }
     } catch (e: unknown) {
       this.errorService.handleError(e);

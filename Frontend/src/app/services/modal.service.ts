@@ -1,6 +1,12 @@
 import {effect, EventEmitter, Injectable, Output, signal, WritableSignal} from '@angular/core';
 export enum ModalType{
-  ODC,OD,AD,ED,E,U
+  CustomOrder,
+  Order,
+  AddDrink,
+  EditDrink,
+  Error,
+  Status,
+  User
 }
 @Injectable({
   providedIn: 'root'

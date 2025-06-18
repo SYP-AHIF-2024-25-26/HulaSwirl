@@ -26,7 +26,7 @@
     </div>
     <div id="button-container">
       <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="openModal(ModalType.ODC)" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
+      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
     </div>
   </div>
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
@@ -39,7 +39,7 @@
       <div id="slide-track">
         @for (drink of recommendedDrinks(); track $index) {
           <div class="drink-card"
-               (click)="openModal(ModalType.OD, drink)"
+               (click)="openModal(ModalType.Order, drink)"
                [class.slide-focus]="getSlideState($index) === 'focus'"
                [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
                [class.hidden]="getSlideState($index) === 'hidden'">
@@ -56,7 +56,7 @@
 <div class="container" id="all-drinks">
   <h2>All Drinks</h2>
   <div class="drink-filter-container">
-    <button class="button submit-btn" (click)="openModal(ModalType.ODC)">Order Custom Drink</button>
+    <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Order Custom Drink</button>
     <input
       type="text"
       placeholder="🔍 Search for a drink..."
@@ -72,7 +72,7 @@
   </div>
   <div id="filtered-drinks">
     @for(drink of filteredDrinks(); track $index) {
-      <div class="drink-card" (click)="openModal(ModalType.OD, drink)">
+      <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
         <div class="drink-card-image-container">
           <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
         </div>
