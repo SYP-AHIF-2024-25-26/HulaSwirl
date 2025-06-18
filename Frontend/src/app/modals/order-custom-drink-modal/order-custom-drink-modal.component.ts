@@ -24,13 +24,11 @@ export class OrderCustomDrinkModalComponent {
     effect(() => {
       const all = this.ingredientsService.ingredients().filter(i => i.pumpSlot !== null);
       this.availableIngredients.set(all);
-      const current = {...this.ingredientAmounts()};
       for (const ing of all) {
-        if (!(ing.ingredientName in current)) {
-          current[ing.ingredientName] = 10;
+        if (!(ing.ingredientName in this.ingredientAmounts())) {
+          this.ingredientAmounts()[ing.ingredientName] = 10;
         }
       }
-      this.ingredientAmounts.set(current);
     });
   }
 
@@ -38,7 +36,8 @@ export class OrderCustomDrinkModalComponent {
     return this.orderIngredients().some(i => i.ingredientName === name);
   }
 
-  toggleIngredient(ingredient: Ingredient, checked: boolean) {
+  toggleIngredient(ingredient: Ingredient, cb: EventTarget) {
+    const checked = (cb as HTMLInputElement).checked;
     const name = ingredient.ingredientName;
     const amount = this.getAmount(name);
     if (checked) {
