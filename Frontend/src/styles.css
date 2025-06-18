@@ -4,9 +4,10 @@
   --container-bg-color: #9dc2d5;
   --ingredient-bg-color: #f4f3f2;
   --ingredient-quantity-bg-color: #f1e1c3;
+  --ingredient-selected-bg-color: #eeffe4;
   --element-primary-outline: #cacaca;
-  --pump-active-slot-bg: #c3ffac;
-  --pump-inactive-slot-bg: #ff9898;
+  --active-bg: #c3ffac;
+  --inactive-bg: #ff9898;
   --cancel-btn-bg: #df6b6b;
   --order-btn-bg:#fc5d5b;
   --sunset-gradient: linear-gradient(to bottom right, rgb(255, 194, 108) 0%, rgb(255, 125, 114) 100%);

@@ -24,7 +24,7 @@ export class AddDrinkModalComponent {
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   drinkTitle: WritableSignal<string> = signal('');
   drinkToppings: WritableSignal<string> = signal('');
-  selectedIngredient: WritableSignal<string> = signal('');
+  selectedIngredient: WritableSignal<string> = signal("");
   selectedAmount: WritableSignal<number> = signal(10);
 
   imageBase64: string  = "";
@@ -47,7 +47,7 @@ export class AddDrinkModalComponent {
 
   selectIngredient() {
     const first = this.availableIngredients()[0];
-    this.selectedIngredient.set(first ? first.ingredientName : '');
+    this.selectedIngredient.set(first ? first.ingredientName : "");
   }
 
   deleteIngredient(index: number) {

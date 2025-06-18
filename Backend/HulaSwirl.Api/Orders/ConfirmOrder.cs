@@ -17,7 +17,7 @@ public static class ConfirmOrder
     public static async Task<IResult> HandleConfirmOrder(
         [FromRoute] int orderId,
         AppDbContext context,
-        //PumpManager manager,
+        PumpManager manager,
         ObservableOrderService orderService,
         IConfiguration config,
         HttpContext httpContext)
@@ -55,15 +55,13 @@ public static class ConfirmOrder
                     return (slot, di.Amount);
                 })
                 .ToList();
-
-            /*
+            
             lock (PumpLock)
             {
                 if (manager.Running) throw new InvalidOperationException();
 
                 _ = Task.Run(async () => await manager.RunOrderAsync(jobs));
             }
-            */
 
             var orders = await context.Order
                 .Include(o => o.OrderIngredients)
