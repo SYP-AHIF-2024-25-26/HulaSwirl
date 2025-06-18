@@ -52,7 +52,7 @@
 }
 
 .slot.inactive .slot-num {
-  background-color: var(--pump-inactive-slot-bg);
+  background-color: var(--inactive-bg);
 }
 
 .slot-num {
@@ -65,7 +65,7 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
-  background-color: var(--pump-active-slot-bg);
+  background-color: var(--active-bg);
   transition: background-color 0.2s ease;
 }
 

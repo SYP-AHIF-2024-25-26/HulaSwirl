@@ -7,7 +7,7 @@
 #ingredient-list .order-ingredient {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   margin: 5px 0;
   padding: 5px 15px;
   border-radius: 5px;
@@ -24,11 +24,38 @@
 
 
 #ingredient-list .order-ingredient.selected {
-  background-color: var(--form-input-bg-yellow);
+  background-color: var(--ingredient-selected-bg-color);
 }
 
 .ingredient-check {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--primary-font-color);
+  border-radius: 4px;
+  background: #fff;
   margin-right: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ingredient-check:checked {
+  background-color: var(--ingredient-selected-bg-color);
+  border-color: var(--ingredient-selected-bg-color);
+}
+
+.ingredient-check:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0;
+  width: 6px;
+  height: 12px;
+  border: solid var(--primary-font-color);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  display: block;
 }
 
 .order-ingredient-details {
@@ -45,9 +72,9 @@
 
 .ingredient-properties {
   display: flex;
-  margin: 7px 0;
-  gap: 5px;
   align-items: center;
+  margin: 7px 0 5px;
+  gap: 5px;
 }
 
 .order-ingredient-amount {

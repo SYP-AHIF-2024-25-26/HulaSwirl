@@ -7,13 +7,14 @@
       <div class="modal-body" id="ingredient-list">
         @for(ingredient of availableIngredients(); track $index){
           <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)">
-            <input type="checkbox" class="ingredient-check"
+            <input type="checkbox" class="ingredient-check" tabindex="0"
                    [checked]="isSelected(ingredient.ingredientName)"
                    (change)="toggleIngredient(ingredient, $event.target!)">
             <div class="order-ingredient-details">
               <div class="ingredient-properties">
                 <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
                 <input min="1" max="100" type="number" class="order-ingredient-amount form-input"
+                       [attr.tabindex]="$index + 1"
                        [ngModel]="getAmount(ingredient.ingredientName)"
                        (ngModelChange)="updateAmount(ingredient.ingredientName, $event)"
                        [disabled]="!isSelected(ingredient.ingredientName)">
