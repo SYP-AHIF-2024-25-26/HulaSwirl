@@ -1,22 +1,12 @@
-import {
-  Component, effect,
-  EventEmitter,
-  inject,
-  Output,
-  signal,
-  WritableSignal
-} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService, ModalType} from '../../services/modal.service';
 import {StatusService} from '../../services/status.service';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
-  imports: [
-    FormsModule,
-    ReactiveFormsModule
-  ],
+  imports: [FormsModule],
   templateUrl: './order-custom-drink-modal.component.html',
   standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'
@@ -25,59 +15,66 @@ export class OrderCustomDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
   private readonly errorService = inject(StatusService);
-  allIngredients: Ingredient[] = [];
+
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
-  selectedIngredient: WritableSignal<string> = signal("");
-  selectedAmount: WritableSignal<number> = signal(10);
+  ingredientAmounts: WritableSignal<Record<string, number>> = signal({});
 
   constructor() {
     effect(() => {
-      this.allIngredients = this.ingredientsService.ingredients();
-      this.availableIngredients.set(this.allIngredients.filter(ing => !this.orderIngredients().some(i => i.ingredientName == ing.ingredientName)).filter(ing => ing.pumpSlot !== null));
-      this.selectIngredient()
+      const all = this.ingredientsService.ingredients().filter(i => i.pumpSlot !== null);
+      this.availableIngredients.set(all);
+      const current = {...this.ingredientAmounts()};
+      for (const ing of all) {
+        if (!(ing.ingredientName in current)) {
+          current[ing.ingredientName] = 10;
+        }
+      }
+      this.ingredientAmounts.set(current);
     });
   }
 
-  selectIngredient() {
-    const ing = this.availableIngredients()[0];
-    if(ing){
-      this.selectedIngredient.set(ing.ingredientName);
+  isSelected(name: string): boolean {
+    return this.orderIngredients().some(i => i.ingredientName === name);
+  }
+
+  toggleIngredient(ingredient: Ingredient, checked: boolean) {
+    const name = ingredient.ingredientName;
+    const amount = this.getAmount(name);
+    if (checked) {
+      if (!this.isSelected(name) && ingredient.remainingAmount >= amount && amount > 0 && amount <= 500) {
+        this.orderIngredients.set([...this.orderIngredients(), {ingredientName: name, amount, status: ''}]);
+      }
     } else {
-      this.selectedIngredient.set("");
+      this.orderIngredients.set(this.orderIngredients().filter(i => i.ingredientName !== name));
     }
   }
 
-  deleteIngredient($index: number) {
-    const ing = this.orderIngredients()[$index];
-    if(ing) {
-      this.orderIngredients.set(this.orderIngredients().filter((_, i) => i !== $index));
-      const availableIng = this.allIngredients.find(i => i.ingredientName === ing.ingredientName);
-      if(availableIng) this.availableIngredients.set([...this.availableIngredients(), availableIng!]);
-      this.selectIngredient();
+  getAmount(name: string): number {
+    return this.ingredientAmounts()[name] ?? 10;
+  }
+
+  updateAmount(name: string, value: number) {
+    this.ingredientAmounts.set({...this.ingredientAmounts(), [name]: value});
+    if (this.isSelected(name)) {
+      this.orderIngredients.set(this.orderIngredients().map(i => i.ingredientName === name ? {...i, amount: value} : i));
     }
   }
 
-  addIngredient() {
-    const avIng = this.availableIngredients().find(ing => ing.ingredientName === this.selectedIngredient());
-    if(avIng && avIng!.remainingAmount >= this.selectedAmount() && this.selectedAmount() > 0 && this.selectedAmount() <= 500) {
-      this.orderIngredients.set([...this.orderIngredients(), { ingredientName: this.selectedIngredient(), amount: this.selectedAmount(), status: "" }]);
-      this.availableIngredients.set(this.availableIngredients().filter(ing => ing.ingredientName !== this.selectedIngredient()));
-      this.selectIngredient();
-      this.selectedAmount.set(10);
-    }
+  getStatus(name: string): string {
+    const item = this.orderIngredients().find(i => i.ingredientName === name);
+    return item ? item.status : '';
   }
-
 
   async submitOrder() {
     try {
-      if (this.orderIngredients().every(ing => ing.status === "")) {
+      if (this.orderIngredients().every(ing => ing.status === '')) {
         await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
           ingredientName: ing.ingredientName,
           amount: ing.amount
         })));
         this.closeModal();
-        this.modalService.openModal(ModalType.E, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
+        this.modalService.openModal(ModalType.E, {message: 'Successfully ordered drink!\nGo to the bar to confirm your order.'});
       }
     } catch (e: unknown) {
       this.errorService.handleError(e);
@@ -86,8 +83,7 @@ export class OrderCustomDrinkModalComponent {
 
   closeModal() {
     this.orderIngredients.set([]);
-    this.selectedIngredient.set("");
-    this.selectedAmount.set(10);
+    this.ingredientAmounts.set({});
     this.modalService.closeModal();
   }
 }
