@@ -2,6 +2,7 @@
 #ingredient-list {
   max-height: 220px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #ingredient-list .order-ingredient {
@@ -15,6 +16,10 @@
   color: var(--primary-font-color);
 }
 
+.order-ingredient {
+  transition: background-color 0.5s ease-in-out;
+}
+
 .order-buttons {
   display: flex;
   justify-content: center;
@@ -22,6 +27,17 @@
   margin-top: 20px;
 }
 
+.order-ingredient:not(.order-ingredient-amount, #no-ingredients) {
+  cursor: pointer;
+}
+
+#no-ingredients {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-font-color);
+  font-size: 20px;
+}
 
 #ingredient-list .order-ingredient.selected {
   background-color: var(--ingredient-selected-bg-color);
@@ -29,13 +45,12 @@
 
 .ingredient-check {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
   border: 1px solid var(--primary-font-color);
   border-radius: 4px;
   background: #fff;
   margin-right: 10px;
-  cursor: pointer;
   position: relative;
   transition: border-color 0.2s, box-shadow 0.2s;
 }

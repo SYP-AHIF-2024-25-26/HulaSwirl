@@ -26,7 +26,7 @@ export class OrderCustomDrinkModalComponent {
       this.availableIngredients.set(all);
       for (const ing of all) {
         if (!(ing.ingredientName in this.ingredientAmounts())) {
-          this.ingredientAmounts()[ing.ingredientName] = 10;
+          this.ingredientAmounts()[ing.ingredientName] = 0;
         }
       }
     });
@@ -36,14 +36,16 @@ export class OrderCustomDrinkModalComponent {
     return this.orderIngredients().some(i => i.ingredientName === name);
   }
 
-  toggleIngredient(ingredient: Ingredient, cb: EventTarget) {
-    const checked = (cb as HTMLInputElement).checked;
+  toggleIngredient(ingredient: Ingredient, e: EventTarget) {
+    const checked = this.isSelected(ingredient.ingredientName)
+    if(e instanceof HTMLInputElement) {
+      e.select()
+      if(checked) return;
+    }
     const name = ingredient.ingredientName;
     const amount = this.getAmount(name);
-    if (checked) {
-      if (!this.isSelected(name) && ingredient.remainingAmount >= amount && amount > 0 && amount <= 500) {
-        this.orderIngredients.set([...this.orderIngredients(), {ingredientName: name, amount, status: ''}]);
-      }
+    if (!checked) {
+      this.orderIngredients.set([...this.orderIngredients(), {ingredientName: name, amount, status: ''}]);
     } else {
       this.orderIngredients.set(this.orderIngredients().filter(i => i.ingredientName !== name));
     }
@@ -68,6 +70,7 @@ export class OrderCustomDrinkModalComponent {
   async submitOrder() {
     try {
       if (this.orderIngredients().every(ing => ing.status === '')) {
+        //TODO: Add loading indicator
         await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
           ingredientName: ing.ingredientName,
           amount: ing.amount
@@ -76,7 +79,7 @@ export class OrderCustomDrinkModalComponent {
         this.modalService.openModal(ModalType.Error, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
       }
     } catch (e: unknown) {
-      this.errorService.handleError(e);
+
     }
   }
 
