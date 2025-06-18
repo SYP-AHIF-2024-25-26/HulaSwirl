@@ -14,7 +14,7 @@
           {{ ingredient }}
         </option>
       </select>
-      <button class="button submit-btn" (click)="openModal(ModalType.AD)">Add Drink</button>
+      <button class="button submit-btn" (click)="openModal(ModalType.AddDrink)">Add Drink</button>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
     <h2>Available Drinks</h2>
     <div id="D_AvailableDrinks" class="D_DrinksContainer">
       @for (drink of filteredDrinks(); track $index){
-        <div *ngIf="drink.available" class="D_Drink" (click)="openModal(ModalType.ED,drink)">
+        <div *ngIf="drink.available" class="D_Drink" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="D_imgContainer">
             <img class="D_img" [src]="drink.imgUrl" [alt]="drink.name">
           </div>
@@ -50,7 +50,7 @@
     <h2>Hidden Drinks</h2>
     <div id="D_NotAvailableDrinks" class="D_DrinksContainer">
       @for (drink of filteredDrinks(); track $index){
-        <div *ngIf="!drink.available" class="D_Drink" (click)="openModal(ModalType.ED,drink)">
+        <div *ngIf="!drink.available" class="D_Drink" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="D_imgContainer">
             <img class="D_img" [src]="drink.imgUrl" [alt]="drink.name">
           </div>

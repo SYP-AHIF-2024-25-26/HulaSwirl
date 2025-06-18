@@ -31,11 +31,11 @@ export class StatusService {
 
   showProgress(progressDuration: number) {
     this.modalService.closeModal();
-    this.modalService.openModal(ModalType.E, { progressDuration: progressDuration });
+    this.modalService.openModal(ModalType.Error, { progressDuration: progressDuration });
   }
 
   showStatus(message: string) {
     this.modalService.closeModal();
-    this.modalService.openModal(ModalType.E, { message: message });
+    this.modalService.openModal(ModalType.Error, { message: message });
   }
 }

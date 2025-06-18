@@ -1,6 +1,7 @@
 using System.Device.Gpio;
 using System.Device.Pwm.Drivers;
 using HulaSwirl.Services.OrderService;
+using Microsoft.Extensions.Configuration;
 
 namespace HulaSwirl.Services.Pumps;
 
@@ -14,11 +15,13 @@ public class VPump : IDisposable
     private readonly int _in2Pin;
     private bool _disposed;
     private bool _isRunning;
+    private readonly double _mlPerSecond;
 
-    public VPump(int pwmPin, int in2Pin, GpioController controller)
+    public VPump(int pwmPin, int in2Pin, GpioController controller, IConfiguration config)
     {
         _controller = controller;
         _in2Pin = in2Pin;
+        _mlPerSecond = config.GetValue<double>("HulaConfig:MlPerSecond");
 
         _pwm = new SoftwarePwmChannel(pwmPin, Frequency, 0);
         _controller.OpenPin(in2Pin, PinMode.Output);
@@ -37,7 +40,7 @@ public class VPump : IDisposable
         if(_isRunning) throw new InvalidOperationException("Pump is already running.");
         _isRunning = true;
         _pwm.Start();
-        await Task.Delay(TimeSpan.FromSeconds(ml / OrderValidation.ML_PER_SECOND));
+        await Task.Delay(TimeSpan.FromSeconds(ml / _mlPerSecond));
         _pwm.Stop();
         _isRunning = false;
     }

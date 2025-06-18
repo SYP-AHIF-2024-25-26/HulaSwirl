@@ -9,7 +9,7 @@
           <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)">
             <input type="checkbox" class="ingredient-check"
                    [checked]="isSelected(ingredient.ingredientName)"
-                   (change)="toggleIngredient(ingredient, $event.target.checked)">
+                   (change)="toggleIngredient(ingredient, $event.target!)">
             <div class="order-ingredient-details">
               <div class="ingredient-properties">
                 <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>

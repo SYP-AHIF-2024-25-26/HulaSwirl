@@ -36,7 +36,7 @@ export class AppComponent {
   }
 
   openLoginModal(){
-    this.modalService.openModal(ModalType.U,null)
+    this.modalService.openModal(ModalType.User,null)
   }
 
   toggleMenu() {

@@ -24,7 +24,7 @@ export class StatusModalComponent {
 
   constructor() {
     effect(() => {
-      if(this.modalService.getDisplayedModal()() == ModalType.E) {
+      if(this.modalService.getDisplayedModal()() == ModalType.Error) {
         if (this.currentModalData() && this.currentModalData().message) {
           this.errorMessage.set(this.currentModalData().message);
         } else if (this.currentModalData() && this.currentModalData().progressDuration && this.currentModalData().progressDuration >= 0) {

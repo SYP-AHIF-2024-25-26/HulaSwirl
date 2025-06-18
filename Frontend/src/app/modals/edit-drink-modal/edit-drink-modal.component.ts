@@ -38,7 +38,7 @@ export class EditDrinkModalComponent {
 
   constructor() {
     effect(() => {
-      if(this.modalService.getDisplayedModal()() == ModalType.ED){
+      if(this.modalService.getDisplayedModal()() == ModalType.EditDrink){
         this.allIngredients = this.ingredientsService.ingredients();
         if(!this.dataloaded){
           this.orderIngredients.set(this.currentModalData()?.drinkIngredients.map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount, status: '' })) ?? []);

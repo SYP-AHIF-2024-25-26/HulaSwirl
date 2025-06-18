@@ -40,11 +40,12 @@ builder.Services.AddCors(options =>
 });
 
 //custom services
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddSingleton<ObservableOrderService>();
-builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<IOtpService, InMemoryOtpService>();
 builder.Services.AddSingleton<JwtService>();
-builder.Services.AddSingleton<GpioController>();
+//builder.Services.AddSingleton<PumpManager>();
+//builder.Services.AddSingleton<GpioController>();
 
 //swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -118,7 +119,7 @@ app
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    PumpSeeder.SeedPumps(db);
+    PumpSeeder.SeedPumps(db, builder.Configuration);
     UserSeeder.SeedUsers(db);
 }
 
