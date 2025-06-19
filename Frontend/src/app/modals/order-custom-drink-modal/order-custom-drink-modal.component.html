@@ -28,9 +28,11 @@
           </div>
         }
     </div>
-      <div class="global-errors" *ngIf="globalErrors().length">
+    @if (globalErrors().length) {
+      <div class="global-errors">
         <p *ngFor="let err of globalErrors()">{{ err }}</p>
       </div>
+    }
       <div class="order-buttons">
         <div class="button cancel-btn" (click)="closeModal()">Cancel</div>
         <div class="button submit-btn" (click)="submitOrder()">Order</div>

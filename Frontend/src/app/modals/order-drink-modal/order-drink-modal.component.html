@@ -16,9 +16,11 @@
       </div>
     </div>
     <div class="modal-footer">
-      <div class="global-errors" *ngIf="globalErrors().length">
-        <p *ngFor="let err of globalErrors()">{{ err }}</p>
-      </div>
+      @if (globalErrors().length) {
+        <div class="global-errors">
+          <p *ngFor="let err of globalErrors()">{{ err }}</p>
+        </div>
+      }
       <div id="toppings">
         <h4>Toppings:</h4>
         <p>{{selectedDrink()?.toppings}}</p>

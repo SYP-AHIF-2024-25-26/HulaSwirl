@@ -3,10 +3,11 @@ import {FormsModule} from '@angular/forms';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService, ModalType} from '../../services/modal.service';
 import {ErrorService} from '../../services/error.service';
+import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
-  imports: [FormsModule],
+  imports: [FormsModule, NgForOf],
   templateUrl: './order-custom-drink-modal.component.html',
   standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'
@@ -38,6 +39,8 @@ export class OrderCustomDrinkModalComponent {
   }
 
   toggleIngredient(ingredient: Ingredient, e: EventTarget) {
+    this.clearGlobalError();
+    this.clearFieldError(ingredient.ingredientName);
     const checked = this.isSelected(ingredient.ingredientName)
     if(e instanceof HTMLInputElement) {
       e.select()
@@ -53,11 +56,12 @@ export class OrderCustomDrinkModalComponent {
   }
 
   getAmount(name: string): number {
-    return this.ingredientAmounts()[name] ?? 10;
+    return this.ingredientAmounts()[name] ?? 1;
   }
 
   updateAmount(name: string, value: number) {
-    this.ingredientAmounts.set({...this.ingredientAmounts(), [name]: value});
+    this.clearFieldError(name);
+    this.ingredientAmounts.set({...this.ingredientAmounts(), [name]: value && value > 0 ? value < 500 ? value : 500 : 1});
     if (this.isSelected(name)) {
       this.orderIngredients.set(this.orderIngredients().map(i => i.ingredientName === name ? {...i, amount: value} : i));
     }
@@ -69,8 +73,8 @@ export class OrderCustomDrinkModalComponent {
   }
 
   async submitOrder() {
-    this.globalErrors.set([]);
-    this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
+    this.clearGlobalError();
+    this.clearFieldError();
     try {
       if (this.orderIngredients().every(ing => ing.status === '')) {
         await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
@@ -93,6 +97,21 @@ export class OrderCustomDrinkModalComponent {
         m => this.globalErrors.set([...this.globalErrors(), m])
       );
     }
+  }
+
+  clearFieldError(fieldName: string = "") {
+    if( fieldName) {
+      const updatedIngredients = this.orderIngredients().map(i =>
+        i.ingredientName === fieldName ? { ...i, status: '' } : i
+      );
+      this.orderIngredients.set(updatedIngredients);
+    } else {
+      this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
+    }
+  }
+
+  clearGlobalError() {
+    this.globalErrors.set([]);
   }
 
   closeModal() {
