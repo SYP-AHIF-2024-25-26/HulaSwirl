@@ -4,7 +4,7 @@ import {Ingredient, IngredientsService, OrderPreparation} from '../../services/i
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {DrinkBase, DrinkService} from '../../services/drink.service';
-import {ErrorService} from '../../services/error.service';
+import {ErrorHandlingComponent} from '../../services/error-handling';
 import {Router} from '@angular/router';
 
 @Component({
@@ -14,14 +14,12 @@ import {Router} from '@angular/router';
   standalone: true,
   styleUrls: ['./add-drink-modal.component.css']
 })
-export class AddDrinkModalComponent {
+export class AddDrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
-  globalErrors = signal<string[]>([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   drinkTitle: WritableSignal<string> = signal('');
   drinkToppings: WritableSignal<string> = signal('');
@@ -34,6 +32,7 @@ export class AddDrinkModalComponent {
   allIngredients: Ingredient[] = [];
 
   constructor() {
+    super();
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
       this.availableIngredients.set(
@@ -113,18 +112,27 @@ export class AddDrinkModalComponent {
         this.closeModal();
       }
     } catch (e: unknown) {
-      this.errorService.handleError(
-        e,
-        (t, m) => {
-          const idx = this.orderIngredients().findIndex(i => i.ingredientName === t);
-          if (idx >= 0) {
-            const arr = [...this.orderIngredients()];
-            arr[idx] = { ...arr[idx], status: m };
-            this.orderIngredients.set(arr);
-          }
-        },
-        m => this.globalErrors.set([...this.globalErrors(), m])
+      this.handleError(e);
+    }
+  }
+
+  setFieldError(fieldName: string, message: string) {
+    const idx = this.orderIngredients().findIndex(i => i.ingredientName === fieldName);
+    if (idx >= 0) {
+      const arr = [...this.orderIngredients()];
+      arr[idx] = { ...arr[idx], status: message };
+      this.orderIngredients.set(arr);
+    }
+  }
+
+  clearFieldError(fieldName: string = '') {
+    if (fieldName) {
+      const updated = this.orderIngredients().map(i =>
+        i.ingredientName === fieldName ? { ...i, status: '' } : i
       );
+      this.orderIngredients.set(updated);
+    } else {
+      this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
     }
   }
 

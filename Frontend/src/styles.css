@@ -312,6 +312,18 @@ html{
   margin: auto 0;
 }
 
+.global-errors {
+  background-color: var(--cancel-btn-bg);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.global-errors p {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
   .modal-form {
     width: 90%;

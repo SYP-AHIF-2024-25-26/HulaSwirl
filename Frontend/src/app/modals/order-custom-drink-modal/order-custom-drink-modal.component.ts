@@ -2,7 +2,7 @@ import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService, ModalType} from '../../services/modal.service';
-import {ErrorService} from '../../services/error.service';
+import {ErrorHandlingComponent} from '../../services/error-handling';
 import {NgForOf} from '@angular/common';
 
 @Component({
@@ -12,17 +12,16 @@ import {NgForOf} from '@angular/common';
   standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'
 })
-export class OrderCustomDrinkModalComponent {
+export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
 
-  globalErrors = signal<string[]>([]);
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   ingredientAmounts: WritableSignal<Record<string, number>> = signal({});
 
   constructor() {
+    super();
     effect(() => {
       const all = this.ingredientsService.ingredients().filter(i => i.pumpSlot !== null);
       this.availableIngredients.set(all);
@@ -72,6 +71,15 @@ export class OrderCustomDrinkModalComponent {
     return item ? item.status : '';
   }
 
+  setFieldError(fieldName: string, message: string) {
+    const idx = this.orderIngredients().findIndex(i => i.ingredientName === fieldName);
+    if (idx >= 0) {
+      const arr = [...this.orderIngredients()];
+      arr[idx] = { ...arr[idx], status: message };
+      this.orderIngredients.set(arr);
+    }
+  }
+
   async submitOrder() {
     this.clearGlobalError();
     this.clearFieldError();
@@ -84,18 +92,7 @@ export class OrderCustomDrinkModalComponent {
         this.closeModal();
       }
     } catch (e: unknown) {
-      this.errorService.handleError(
-        e,
-        (t, m) => {
-          const idx = this.orderIngredients().findIndex(i => i.ingredientName === t);
-          if (idx >= 0) {
-            const arr = [...this.orderIngredients()];
-            arr[idx] = { ...arr[idx], status: m };
-            this.orderIngredients.set(arr);
-          }
-        },
-        m => this.globalErrors.set([...this.globalErrors(), m])
-      );
+      this.handleError(e);
     }
   }
 
@@ -109,11 +106,6 @@ export class OrderCustomDrinkModalComponent {
       this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
     }
   }
-
-  clearGlobalError() {
-    this.globalErrors.set([]);
-  }
-
   closeModal() {
     this.orderIngredients.set([]);
     this.ingredientAmounts.set({});
