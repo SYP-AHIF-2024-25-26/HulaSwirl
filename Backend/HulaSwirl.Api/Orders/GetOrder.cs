@@ -1,5 +1,6 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.UserServices;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,6 @@ public static class GetOrder
         var order = await context.Order
             .Include(o => o.OrderIngredients)
             .FirstOrDefaultAsync(o => o.Id == orderId);
-        return order is null ? Results.NotFound("Order not found") : Results.Ok(order);
+        return order is null ? ErrorResults.NotFound("Order not found") : Results.Ok(order);
     }
 }

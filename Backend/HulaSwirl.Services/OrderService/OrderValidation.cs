@@ -21,7 +21,13 @@ public static class OrderValidation
         var availableIngredients = await IngredientService.GetAllAvailableIngredientsAsync(ingredientNames, context);
 
         var missing = ingredientNames.Except(availableIngredients.Select(i => i.IngredientName)).ToList();
-        return missing.Count != 0 ? Results.BadRequest($"The following ingredients are not available: {string.Join(", ", missing)}") : Results.Ok();
+        return missing.Count != 0
+            ? ErrorResults.BadRequest(new ErrorDto
+                {
+                    Message = $"The following ingredients are not available: {string.Join(", ", missing)}",
+                    Target = string.Empty
+                })
+            : Results.Ok();
     }
 
     /// <summary>
@@ -37,13 +43,21 @@ public static class OrderValidation
 
         if (drinkIngredients.Count > 6)
         {
-            return Results.BadRequest("You can only order up to 6 ingredients at a time.");
+            return ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = "You can only order up to 6 ingredients at a time.",
+                Target = string.Empty
+            });
         }
         
         var availablePumps = config.GetValue<int>("HulaConfig:AvailablePumpCount");
         if (drinkIngredients.Count > availablePumps)
         {
-            return Results.BadRequest($"You can only order up to {availablePumps} ingredients.");
+            return ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = $"You can only order up to {availablePumps} ingredients.",
+                Target = string.Empty
+            });
         }
         
         foreach (var di in drinkIngredients)
@@ -51,7 +65,11 @@ public static class OrderValidation
             var stored = availableIngredients.First(i => i.IngredientName == di.IngredientName);
             if (stored.RemainingAmount < di.Amount)
             {
-                return Results.BadRequest($"Not enough {di.IngredientName}: available {stored.RemainingAmount}ml, needed {di.Amount}ml");
+                return ErrorResults.BadRequest(new ErrorDto
+                {
+                    Message = $"Not enough {di.IngredientName}: available {stored.RemainingAmount}ml, needed {di.Amount}ml",
+                    Target = di.IngredientName
+                });
             }
         }
         var durationSec = drinkIngredients.Max(i => i.Amount) / config.GetValue<double>("HulaConfig:MlPerSecond");

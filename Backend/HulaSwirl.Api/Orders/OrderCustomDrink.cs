@@ -5,6 +5,7 @@ using HulaSwirl.Services.Dtos;
 using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.Pumps;
 using HulaSwirl.Services.UserServices;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +41,7 @@ public static class OrderCustomDrink
             return Results.Created($"/api/orders", order);
         } catch (Exception ex)
         {
-            return Results.Problem("An error occurred while processing the order: " + ex.Message);
+            return ErrorResults.Problem("An error occurred while processing the order: " + ex.Message);
         }
     }
 }

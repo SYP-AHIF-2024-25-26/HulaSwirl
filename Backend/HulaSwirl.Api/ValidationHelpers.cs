@@ -1,11 +1,12 @@
 using HulaSwirl.Services.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace HulaSwirl.Api;
 
 public static class ValidationHelpers
 {
     public static Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>> GetEndpointFilter<T>(
-        Func<T, List<string>> validationResult)
+        Func<T, List<ErrorDto>> validationResult)
     {
         return async (context, next) =>
         {
@@ -13,44 +14,62 @@ public static class ValidationHelpers
             var errors = validationResult(computer);
             if (errors.Count > 0)
             {
-                return Results.BadRequest(errors);
+                return ErrorResults.BadRequest(errors.ToArray());
             }
 
             return await next(context);
         };
     }
 
-    public static List<string> ValidateDrink(string name, DrinkIngredientDto[] ingredients)
+    public static List<ErrorDto> ValidateDrink(string name, DrinkIngredientDto[] ingredients)
     {
         const int maxPerIngredientMl = 500;
         const int maxTotalMl = 500;
-        var errors = new List<string>();
+        var errors = new List<ErrorDto>();
 
         if (string.IsNullOrWhiteSpace(name))
         {
-            errors.Add("Name is required.");
+            errors.Add(new ErrorDto
+            {
+                Message = "Name is required.",
+                Target = "name"
+            });
         }
 
         if (ingredients.Length == 0)
         {
-            errors.Add("At least one ingredient is required.");
+            errors.Add(new ErrorDto
+            {
+                Message = "At least one ingredient is required.",
+                Target = string.Empty
+            });
         }
 
         if (ingredients.Any(i => string.IsNullOrWhiteSpace(i.IngredientName)))
         {
-            errors.Add("Ingredient names must not be empty.");
+            errors.Add(new ErrorDto
+            {
+                Message = "Ingredient names must not be empty.",
+                Target = "ingredientName"
+            });
         }
 
         if (ingredients.GroupBy(i => i.IngredientName.ToLower()).Any(g => g.Count() > 1))
         {
-            errors.Add("Please provide unique ingredients");
+            errors.Add(new ErrorDto
+            {
+                Message = "Please provide unique ingredients",
+                Target = "ingredientName"
+            });
         }
 
         var ingredientErrors = ingredients
             .Where(ing => ing.Amount <= 0 || ing.Amount > maxPerIngredientMl)
-            .Select(ing =>
-                $"Invalid amount for ingredient '{ing.IngredientName}': {ing.Amount}ml (allowed: 1–{maxPerIngredientMl})"
-            )
+            .Select(ing => new ErrorDto
+            {
+                Message = $"Invalid amount for ingredient '{ing.IngredientName}': {ing.Amount}ml (allowed: 1–{maxPerIngredientMl})",
+                Target = ing.IngredientName
+            })
             .ToArray();
 
         if (ingredientErrors.Length > 0)
@@ -60,7 +79,11 @@ public static class ValidationHelpers
 
         if (ingredients.Sum(i => i.Amount) > maxTotalMl)
         {
-            errors.Add($"Your drink can't contain more than {maxTotalMl}ml");
+            errors.Add(new ErrorDto
+            {
+                Message = $"Your drink can't contain more than {maxTotalMl}ml",
+                Target = string.Empty
+            });
         }
 
         return errors;

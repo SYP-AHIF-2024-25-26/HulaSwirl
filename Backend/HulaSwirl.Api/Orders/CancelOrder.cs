@@ -1,5 +1,6 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.OrderService;
+using HulaSwirl.Services.Dtos;
 using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,14 @@ public static class CancelOrder
         if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
 
         var order = await context.Order.FirstOrDefaultAsync(o => o.Id == orderId);
-        if (order is null) return Results.NotFound("Order not found");
-        if (order.Status != OrderStatus.Pending) return Results.BadRequest("Order was already processed");
+        if (order is null)
+            return ErrorResults.NotFound("Order not found");
+        if (order.Status != OrderStatus.Pending)
+            return ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = "Order was already processed",
+                Target = string.Empty
+            });
         order.Status = OrderStatus.Cancelled;
         await context.SaveChangesAsync();
         var orders = await context.Order

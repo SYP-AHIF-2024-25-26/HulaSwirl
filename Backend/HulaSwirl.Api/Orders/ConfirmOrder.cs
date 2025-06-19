@@ -3,7 +3,9 @@ using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.Pumps;
 using HulaSwirl.Services.UserServices;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
@@ -27,8 +29,13 @@ public static class ConfirmOrder
         var order = await context.Order
             .Include(o => o.OrderIngredients)
             .FirstOrDefaultAsync(o => o.Id == orderId);
-        if (order is null) return Results.NotFound("Order not found");
-        if (order.Status != OrderStatus.Pending) return Results.BadRequest("Order was already processed");
+        if (order is null) return ErrorResults.NotFound("Order not found");
+        if (order.Status != OrderStatus.Pending)
+            return ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = "Order was already processed",
+                Target = string.Empty
+            });
 
         var res = await OrderValidation.ValidateConfirmation(order.OrderIngredients, context, config);
         if (res is not Ok<double>) return res;
@@ -74,12 +81,19 @@ public static class ConfirmOrder
         catch (InvalidOperationException)
         {
             await tx.RollbackAsync();
-            return Results.Conflict("Another drink is currently mixing, please wait a few seconds.");
+            return Results.Json(new[]
+            {
+                new ErrorDto
+                {
+                    Message = "Another drink is currently mixing, please wait a few seconds.",
+                    Target = string.Empty
+                }
+            }, statusCode: StatusCodes.Status409Conflict);
         }
         catch (Exception ex)
         {
             await tx.RollbackAsync();
-            return Results.Problem("An error occurred while processing the order: " + ex.Message);
+            return ErrorResults.Problem("An error occurred while processing the order: " + ex.Message);
         }
     }
 }

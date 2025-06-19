@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-
-export interface ErrorMessage {
-  code: string;
-  message: string;
-  target: string;
-  scope: 'field' | 'global';
-}
+import { ApiError } from './api-error';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +16,8 @@ export class ErrorService {
       const errors = Array.isArray(payload) ? payload : [payload];
       for (const err of errors) {
         if (err && typeof err === 'object' && 'message' in err) {
-          const em = err as ErrorMessage;
-          if (em.scope === 'field') {
+          const em = err as ApiError;
+          if (em.target) {
             setFieldError(em.target, em.message);
           } else {
             addGlobalError(em.message);

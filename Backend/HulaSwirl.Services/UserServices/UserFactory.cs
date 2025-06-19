@@ -16,14 +16,30 @@ public static class UserFactory
     /// </summary>
     public static async Task<IResult> CreateUserAsync(AppDbContext context, UserDto dto, JwtService jwtService)
     {
-        var errors = new List<string>();
-        if (!dto.TryValidate(out var validationErrors))
-            errors.AddRange(validationErrors);
+        var errors = new List<ErrorDto>();
+
+        if (string.IsNullOrWhiteSpace(dto.Username))
+            errors.Add(new ErrorDto
+            {
+                Message = "Username is required.",
+                Target = "username"
+            });
+
+        if (string.IsNullOrWhiteSpace(dto.Key))
+            errors.Add(new ErrorDto
+            {
+                Message = "Key is required.",
+                Target = "key"
+            });
 
         if (await context.User.AnyAsync(u => u.Username == dto.Username))
-            errors.Add("Username already exists.");
+            errors.Add(new ErrorDto
+            {
+                Message = "Username already exists.",
+                Target = "username"
+            });
 
-        if (errors.Count != 0) return Results.Conflict(errors);
+        if (errors.Count != 0) return ErrorResults.Conflict(errors.ToArray());
 
         var user = new User
         {

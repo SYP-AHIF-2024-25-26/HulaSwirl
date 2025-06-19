@@ -1,6 +1,7 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.UserServices;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ public static class DeleteDrink
             return Results.Forbid();
 
         var drink = await context.Drink.Include(d => d.DrinkIngredients).FirstOrDefaultAsync(d => d.Id == id);
-        if (drink is null) return Results.NotFound("Drink with id not found");
+        if (drink is null) return ErrorResults.NotFound("Drink with id not found");
 
         await using var tx = await context.Database.BeginTransactionAsync();
         try
@@ -27,7 +28,7 @@ public static class DeleteDrink
         } catch (DbUpdateException e)
         {
             await tx.RollbackAsync();
-            return Results.Problem(e.Message, statusCode: 500);
+            return ErrorResults.Problem(e.Message);
         }
     }
 }
