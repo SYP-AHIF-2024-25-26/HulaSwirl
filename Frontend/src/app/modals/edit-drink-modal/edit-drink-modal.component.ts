@@ -5,7 +5,7 @@ import {ModalService, ModalType} from '../../services/modal.service';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {subscribeOn} from 'rxjs';
-import {StatusService} from '../../services/status.service';
+import {ErrorService} from '../../services/error.service';
 
 @Component({
   selector: 'app-edit-drink-modal',
@@ -18,9 +18,10 @@ export class EditDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(StatusService);
+  private readonly errorService = inject(ErrorService);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
+  globalErrors = signal<string[]>([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   drinkTitle = signal('');
   drinkToppings = signal('');
@@ -111,6 +112,7 @@ export class EditDrinkModalComponent {
 
   async submitDrink() {
     if(this.currentModalData()){
+      this.globalErrors.set([]);
       try {
         this.currentModalData()!.name = this.drinkTitle();
         this.currentModalData()!.toppings = this.drinkToppings();
@@ -132,7 +134,18 @@ export class EditDrinkModalComponent {
         }
         this.closeModal();
       } catch (e) {
-        this.errorService.handleError(e);
+        this.errorService.handleError(
+          e,
+          (t, m) => {
+            const idx = this.orderIngredients().findIndex(i => i.ingredientName === t);
+            if (idx >= 0) {
+              const arr = [...this.orderIngredients()];
+              arr[idx] = { ...arr[idx], status: m };
+              this.orderIngredients.set(arr);
+            }
+          },
+          m => this.globalErrors.set([...this.globalErrors(), m])
+        );
       }
     }
   }
@@ -177,7 +190,11 @@ export class EditDrinkModalComponent {
       await this.drinkService.deleteDrink(this.currentModalData()!.id);
       this.modalService.closeModal();
     } catch (e) {
-      this.errorService.handleError(e);
+      this.errorService.handleError(
+        e,
+        () => {},
+        m => this.globalErrors.set([...this.globalErrors(), m])
+      );
     }
   }
 }

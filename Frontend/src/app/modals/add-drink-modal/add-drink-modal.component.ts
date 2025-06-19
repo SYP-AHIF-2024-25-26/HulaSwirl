@@ -4,7 +4,7 @@ import {Ingredient, IngredientsService, OrderPreparation} from '../../services/i
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {DrinkBase, DrinkService} from '../../services/drink.service';
-import {StatusService} from '../../services/status.service';
+import {ErrorService} from '../../services/error.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -18,9 +18,10 @@ export class AddDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(StatusService);
+  private readonly errorService = inject(ErrorService);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
+  globalErrors = signal<string[]>([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   drinkTitle: WritableSignal<string> = signal('');
   drinkToppings: WritableSignal<string> = signal('');
@@ -97,23 +98,33 @@ export class AddDrinkModalComponent {
   }
 
   async submitDrink() {
+    this.globalErrors.set([]);
+    this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: "" })));
     try {
-      if (this.orderIngredients().every(ing => ing.status === '' || ing.status === 'New Ingredient')) {
+      if (this.orderIngredients().every(ing => ing.status === "" || ing.status === "New Ingredient")) {
         const drinkData: DrinkBase = {
           name: this.drinkTitle(),
           imgUrl: this.imageBase64,
           available: true,
           toppings: this.drinkToppings(),
-          drinkIngredients: this.orderIngredients().map(ing => ({
-            ingredientName: ing.ingredientName,
-            amount: ing.amount
-          }))
+          drinkIngredients: this.orderIngredients().map(ing => ({ ingredientName: ing.ingredientName, amount: ing.amount }))
         };
         await this.drinkService.postNewDrink(drinkData);
         this.closeModal();
       }
     } catch (e: unknown) {
-      this.errorService.handleError(e);
+      this.errorService.handleError(
+        e,
+        (t, m) => {
+          const idx = this.orderIngredients().findIndex(i => i.ingredientName === t);
+          if (idx >= 0) {
+            const arr = [...this.orderIngredients()];
+            arr[idx] = { ...arr[idx], status: m };
+            this.orderIngredients.set(arr);
+          }
+        },
+        m => this.globalErrors.set([...this.globalErrors(), m])
+      );
     }
   }
 

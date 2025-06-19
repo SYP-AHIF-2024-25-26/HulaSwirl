@@ -4,7 +4,7 @@ import {IncomingOrder, OrdersService} from '../services/orders.service';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../services/user.service';
 import {BASE_URL} from '../app.config';
-import {StatusService} from '../services/status.service';
+import {ErrorService} from '../services/error.service';
 
 
 
@@ -22,7 +22,8 @@ import {StatusService} from '../services/status.service';
 export class OrderTerminalComponent {
   private readonly userService   = inject(UserService);
   private readonly ordersService = inject(OrdersService);
-  private readonly statusService = inject(StatusService);
+  private readonly statusService = inject(ErrorService);
+  globalErrors = signal<string[]>([]);
   private apiBaseUrl = inject(BASE_URL);
   public orders: WritableSignal<IncomingOrder[]> = this.ordersService.orders;
 
@@ -43,7 +44,11 @@ export class OrderTerminalComponent {
       }));
       this.statusService.showProgress(duration);
     } catch (e) {
-      this.statusService.handleError(e);
+      this.statusService.handleError(
+        e,
+        () => {},
+        m => this.globalErrors.set([...this.globalErrors(), m])
+      );
     }
   }
 

@@ -1,4 +1,5 @@
 <div id="ingredient-manager">
+<div class="global-errors" *ngIf="globalErrors().length"><p *ngFor="let err of globalErrors()">{{ err }}</p></div>
   <!-- Bereich: Available Ingredients -->
   <div id="available-ingredients" class="container">
     <div id="available-ingredients-header">

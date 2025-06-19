@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
-import { StatusService } from '../../services/status.service';
+import { ErrorService } from '../../services/error.service';
 
 /**
  * Modal für Login & Registrierung.
@@ -20,7 +20,10 @@ import { StatusService } from '../../services/status.service';
 export class UserModalComponent {
   private readonly userService = inject(UserService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(StatusService);
+  private readonly errorService = inject(ErrorService);
+
+  fieldErrors = signal<Record<string, string>>({});
+  globalErrors = signal<string[]>([]);
 
   mode = signal<'login' | 'register'>('login');
 
@@ -33,17 +36,25 @@ export class UserModalComponent {
   regKey = signal('');
 
   async login() {
+    this.fieldErrors.set({});
+    this.globalErrors.set([]);
     try {
       await this.userService.login(this.loginUsername(), this.loginKey());
       if (this.userService.isLoggedIn()) {
         this.closeModal();
       }
     } catch (e) {
-      this.errorService.handleError(e);
+      this.errorService.handleError(
+        e,
+        (t, m) => this.fieldErrors.set({ ...this.fieldErrors(), [t]: m }),
+        m => this.globalErrors.set([...this.globalErrors(), m])
+      );
     }
   }
 
   async register() {
+    this.fieldErrors.set({});
+    this.globalErrors.set([]);
     try {
       await this.userService.register(
         this.regUsername(),
@@ -53,15 +64,23 @@ export class UserModalComponent {
         this.closeModal();
       }
     } catch (e) {
-      this.errorService.handleError(e);
+      this.errorService.handleError(
+        e,
+        (t, m) => this.fieldErrors.set({ ...this.fieldErrors(), [t]: m }),
+        m => this.globalErrors.set([...this.globalErrors(), m])
+      );
     }
   }
 
   switchMode(to: 'login' | 'register') {
     this.mode.set(to);
+    this.fieldErrors.set({});
+    this.globalErrors.set([]);
   }
 
   closeModal() {
+    this.fieldErrors.set({});
+    this.globalErrors.set([]);
     this.modalService.closeModal();
   }
 

@@ -2,7 +2,7 @@ import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService, ModalType} from '../../services/modal.service';
-import {StatusService} from '../../services/status.service';
+import {ErrorService} from '../../services/error.service';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
@@ -14,8 +14,9 @@ import {StatusService} from '../../services/status.service';
 export class OrderCustomDrinkModalComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(StatusService);
+  private readonly errorService = inject(ErrorService);
 
+  globalErrors = signal<string[]>([]);
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   ingredientAmounts: WritableSignal<Record<string, number>> = signal({});
@@ -68,18 +69,29 @@ export class OrderCustomDrinkModalComponent {
   }
 
   async submitOrder() {
+    this.globalErrors.set([]);
+    this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
     try {
       if (this.orderIngredients().every(ing => ing.status === '')) {
-        //TODO: Add loading indicator
         await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
           ingredientName: ing.ingredientName,
           amount: ing.amount
         })));
         this.closeModal();
-        this.modalService.openModal(ModalType.Error, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
       }
     } catch (e: unknown) {
-
+      this.errorService.handleError(
+        e,
+        (t, m) => {
+          const idx = this.orderIngredients().findIndex(i => i.ingredientName === t);
+          if (idx >= 0) {
+            const arr = [...this.orderIngredients()];
+            arr[idx] = { ...arr[idx], status: m };
+            this.orderIngredients.set(arr);
+          }
+        },
+        m => this.globalErrors.set([...this.globalErrors(), m])
+      );
     }
   }
 

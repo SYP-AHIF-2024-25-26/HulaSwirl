@@ -55,6 +55,9 @@
         </div>
       </div>
     </div>
+    <div class="global-errors" *ngIf="globalErrors().length">
+      <p *ngFor="let err of globalErrors()">{{ err }}</p>
+    </div>
     <div class="order-buttons">
       <div class="button cancel-btn" (click)="closeModal()">Cancel</div>
       <div class="button cancel-btn" (click)="deleteDrink()">Delete Drink</div>

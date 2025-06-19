@@ -1,7 +1,7 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
-import {StatusService} from './status.service';
+import {ErrorService} from './error.service';
 import {UserService} from './user.service';
 import {BASE_URL} from '../app.config';
 
