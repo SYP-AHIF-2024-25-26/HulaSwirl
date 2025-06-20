@@ -12,6 +12,18 @@ public static class ErrorResults
 
     public static IResult Conflict(params ErrorDto[] errors)
         => Results.Json(errors, statusCode: StatusCodes.Status409Conflict);
+    
+    public static IResult Unauthorized() 
+        => Results.Json(new[]
+            {
+                new ErrorDto { Message = "You need to login to do that", Target = string.Empty }
+            }, statusCode: StatusCodes.Status401Unauthorized);
+    
+    public static IResult Forbidden() 
+        => Results.Json(new[]
+            {
+                new ErrorDto { Message = "You are not allowed to do that", Target = string.Empty }
+            }, statusCode: StatusCodes.Status403Forbidden);
 
     public static IResult NotFound(string message, string target = "")
         => Results.Json(new[]

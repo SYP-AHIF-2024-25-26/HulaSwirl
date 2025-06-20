@@ -111,7 +111,7 @@ export class EditDrinkModalComponent extends ErrorHandlingComponent {
 
   async submitDrink() {
     if(this.currentModalData()){
-      this.globalErrors.set([]);
+      this.clearGlobalError();
       try {
         this.currentModalData()!.name = this.drinkTitle();
         this.currentModalData()!.toppings = this.drinkToppings();

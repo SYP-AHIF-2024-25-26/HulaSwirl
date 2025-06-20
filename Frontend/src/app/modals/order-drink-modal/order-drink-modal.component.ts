@@ -17,14 +17,14 @@ export class OrderDrinkModalComponent extends ErrorHandlingComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
   selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
-  
 
   closeModal() {
+    this.clearGlobalError();
     this.modalService.closeModal();
   }
 
   async submitOrder() {
-    this.globalErrors.set([]);
+    this.clearGlobalError();
     try {
       if (this.selectedDrink()) {
         await this.drinkService.orderDrink(this.selectedDrink()!.id);

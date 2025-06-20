@@ -38,8 +38,8 @@ export class UserModalComponent extends ErrorHandlingComponent {
   }
 
   async login() {
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearGlobalError();
+    this.clearFieldError();
     try {
       await this.userService.login(this.loginUsername(), this.loginKey());
       if (this.userService.isLoggedIn()) {
@@ -51,8 +51,8 @@ export class UserModalComponent extends ErrorHandlingComponent {
   }
 
   async register() {
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearGlobalError();
+    this.clearFieldError();
     try {
       await this.userService.register(
         this.regUsername(),
@@ -81,13 +81,13 @@ export class UserModalComponent extends ErrorHandlingComponent {
 
   switchMode(to: 'login' | 'register') {
     this.mode.set(to);
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearFieldError();
+    this.clearGlobalError();
   }
 
   closeModal() {
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearFieldError();
+    this.clearGlobalError();
     this.modalService.closeModal();
   }
 

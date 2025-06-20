@@ -106,9 +106,10 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
       this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
     }
   }
+
   closeModal() {
-    this.orderIngredients.set([]);
-    this.ingredientAmounts.set({});
+    this.clearGlobalError();
+    this.clearFieldError();
     this.modalService.closeModal();
   }
 }

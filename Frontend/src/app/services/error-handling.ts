@@ -2,8 +2,8 @@ import { inject, signal, WritableSignal } from '@angular/core';
 import { ErrorService } from './error.service';
 
 export interface ErrorHandling {
-  globalErrors: WritableSignal<string[]>;
-  addGlobalError(message: string): void;
+  globalError: WritableSignal<string>;
+  setGlobalError(message: string): void;
   clearGlobalError(): void;
   setFieldError(target: string, message: string): void;
   clearFieldError(field?: string): void;
@@ -11,15 +11,15 @@ export interface ErrorHandling {
 }
 
 export abstract class ErrorHandlingComponent implements ErrorHandling {
-  globalErrors: WritableSignal<string[]> = signal([]);
+  globalError: WritableSignal<string> = signal("");
   protected readonly errorService = inject(ErrorService);
 
-  addGlobalError(message: string): void {
-    this.globalErrors.set([...this.globalErrors(), message]);
+  setGlobalError(message: string): void {
+    this.globalError.set(message);
   }
 
   clearGlobalError(): void {
-    this.globalErrors.set([]);
+    this.globalError.set("");
   }
 
   abstract setFieldError(target: string, message: string): void;
@@ -29,7 +29,7 @@ export abstract class ErrorHandlingComponent implements ErrorHandling {
     this.errorService.handleError(
       e,
       (t, m) => this.setFieldError(t, m),
-      m => this.addGlobalError(m)
+      m => this.setGlobalError(m)
     );
   }
 }

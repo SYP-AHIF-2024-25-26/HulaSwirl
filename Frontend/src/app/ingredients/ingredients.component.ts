@@ -20,7 +20,6 @@ export class IngredientsComponent extends ErrorHandlingComponent {
   readonly ingredientSlots = this.ingredientsService.ingredientSlots;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
   avIngredients: WritableSignal<Ingredient[]> = signal([]);
-  globalErrors = signal<string[]>([]);
   unIngredients: WritableSignal<Ingredient[]> = signal([]);
   private draggedIngredient: Ingredient | null = null;
   private sourceContainer: 'available' | 'unavailable' | null = null;
@@ -178,7 +177,7 @@ export class IngredientsComponent extends ErrorHandlingComponent {
   }
 
   async saveIngredients() {
-    this.globalErrors.set([]);
+    this.clearGlobalError();
     try {
       await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
     } catch (e: unknown) {

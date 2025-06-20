@@ -46,14 +46,8 @@
   flex: 1;
 }
 
-#userManagementContainer {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
-
-.admin-section {
+#user-section {
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -65,7 +59,7 @@
   font-family: JosefinSans, sans-serif;
 }
 
-.admin-section #logout-btn {
+#user-section #logout-btn {
   font-size: 23.9px;
   background: transparent;
   border: none;
