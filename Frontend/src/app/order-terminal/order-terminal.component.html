@@ -1,4 +1,4 @@
-<div class="global-errors" *ngIf="globalErrors().length"><p *ngFor="let err of globalErrors()">{{ err }}</p></div>
+<div class="error" *ngIf="globalErrors().length"><p *ngFor="let err of globalErrors()">{{ err }}</p></div>
 <div class="orders" *ngIf="orders().length; else noOrders">
   <div class="order-card" *ngFor="let o of orders()">
     <h3>{{ o.drinkName }}</h3>

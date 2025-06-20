@@ -3,6 +3,7 @@ using HulaSwirl.Services.DataAccess.Models;
 using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.Pumps;
 using HulaSwirl.Services.UserServices;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,10 +23,10 @@ public static class OrderDrink
             .Include(d => d.DrinkIngredients)
             .FirstOrDefaultAsync(d => d.Id == drinkId);
 
-        if (drink is null) return Results.NotFound("Drink not found");
+        if (drink is null) return ErrorResults.NotFound("Drink not found");
 
         var ingredientNames = drink.DrinkIngredients.Select(i => i.IngredientNameFk).ToList();
-        var res = await OrderValidation.ValidateRequest(ingredientNames, context);
+        var res = await ValidationHelpers.ValidateRequest(ingredientNames, context);
         if (res is not Ok)
             return res;
 
@@ -46,7 +47,7 @@ public static class OrderDrink
             return Results.Created($"/api/orders", order);
         } catch (Exception ex)
         {
-            return Results.Problem("An error occurred while processing the order: " + ex.Message);
+            return ErrorResults.Problem("An error occurred while processing the order: " + ex.Message);
         }
 
     }

@@ -5,7 +5,7 @@ import {ModalService, ModalType} from '../../services/modal.service';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {subscribeOn} from 'rxjs';
-import {ErrorService} from '../../services/error.service';
+import {ErrorHandlingComponent} from '../../services/error-handling';
 
 @Component({
   selector: 'app-edit-drink-modal',
@@ -14,14 +14,12 @@ import {ErrorService} from '../../services/error.service';
   standalone: true,
   styleUrl: './edit-drink-modal.component.css'
 })
-export class EditDrinkModalComponent {
+export class EditDrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
-  globalErrors = signal<string[]>([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   drinkTitle = signal('');
   drinkToppings = signal('');
@@ -38,6 +36,7 @@ export class EditDrinkModalComponent {
   dataloaded:boolean=false;
 
   constructor() {
+    super();
     effect(() => {
       if(this.modalService.getDisplayedModal()() == ModalType.EditDrink){
         this.allIngredients = this.ingredientsService.ingredients();
@@ -112,7 +111,7 @@ export class EditDrinkModalComponent {
 
   async submitDrink() {
     if(this.currentModalData()){
-      this.globalErrors.set([]);
+      this.clearGlobalError();
       try {
         this.currentModalData()!.name = this.drinkTitle();
         this.currentModalData()!.toppings = this.drinkToppings();
@@ -134,18 +133,7 @@ export class EditDrinkModalComponent {
         }
         this.closeModal();
       } catch (e) {
-        this.errorService.handleError(
-          e,
-          (t, m) => {
-            const idx = this.orderIngredients().findIndex(i => i.ingredientName === t);
-            if (idx >= 0) {
-              const arr = [...this.orderIngredients()];
-              arr[idx] = { ...arr[idx], status: m };
-              this.orderIngredients.set(arr);
-            }
-          },
-          m => this.globalErrors.set([...this.globalErrors(), m])
-        );
+        this.handleError(e);
       }
     }
   }
@@ -190,11 +178,27 @@ export class EditDrinkModalComponent {
       await this.drinkService.deleteDrink(this.currentModalData()!.id);
       this.modalService.closeModal();
     } catch (e) {
-      this.errorService.handleError(
-        e,
-        () => {},
-        m => this.globalErrors.set([...this.globalErrors(), m])
+      this.handleError(e);
+    }
+  }
+
+  setFieldError(fieldName: string, message: string) {
+    const idx = this.orderIngredients().findIndex(i => i.ingredientName === fieldName);
+    if (idx >= 0) {
+      const arr = [...this.orderIngredients()];
+      arr[idx] = { ...arr[idx], status: message };
+      this.orderIngredients.set(arr);
+    }
+  }
+
+  clearFieldError(fieldName: string = '') {
+    if (fieldName) {
+      const updated = this.orderIngredients().map(i =>
+        i.ingredientName === fieldName ? { ...i, status: '' } : i
       );
+      this.orderIngredients.set(updated);
+    } else {
+      this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
     }
   }
 }

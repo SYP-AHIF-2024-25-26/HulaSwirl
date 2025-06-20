@@ -21,6 +21,10 @@ export interface OrderPreparation extends DrinkIngredient {
   status: string;
 }
 
+export interface ChangingDrinkIngredient extends OrderPreparation {
+  type: "new" | "existing";
+}
+
 @Injectable({
   providedIn: 'root'
 })

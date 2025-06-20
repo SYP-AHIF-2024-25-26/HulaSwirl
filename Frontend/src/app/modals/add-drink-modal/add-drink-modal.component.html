@@ -7,60 +7,70 @@
     <div class="modal-body">
       <div id="left-column">
         <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-          <span *ngIf="!imageBase64">upload image</span>
-          <img *ngIf="imageBase64" [src]="imageBase64" alt="Ausgewähltes Bild" class="preview-image"/>
+          <span *ngIf="!imageBase64">Upload image</span>
+          <img *ngIf="imageBase64" [src]="imageBase64" alt="Drink image" class="preview-image"/>
         </div>
         <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)"/>
-        <h2 id="toppings-header">Toppings:</h2>
-        <textarea id="drink-toppings" placeholder="no toppings" [(ngModel)]="drinkToppings"></textarea>
+        <div>
+          <h2 id="toppings-header">Toppings:</h2>
+          <textarea id="drink-toppings" placeholder="No toppings" [(ngModel)]="drinkToppings"></textarea>
+        </div>
       </div>
       <div id="right-column">
-        <textarea id="drink-title" placeholder="Title" [(ngModel)]="drinkTitle"></textarea>
-        <h2>Ingredients:</h2>
-        <div id="drink-ingredients">
-          @for(ingredient of orderIngredients(); track $index){
-            <div class="order-ingredient">
-              <div class="order-ingredient-details">
-                <div class="ingredient-properties">
-                  @if(ingredient.status=="New Ingredient"){
-                    <textarea class="order-ingredient-name new_ingredient" [(ngModel)]="ingredient.ingredientName"></textarea>
-                  } @else {
-                    <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
-                  }
-                  <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.amount">
-                  <span class="order-ingredient-unit">ml</span>
+        <div class="form-property">
+          <input id="drink-title" placeholder="Title" [(ngModel)]="drinkTitle" (input)="clearFieldError('name')">
+          <p class="error field-error">{{drinkTitleError()}}</p>
+        </div>
+        <div class="form-property">
+          <h2>Ingredients:</h2>
+          <p class="error field-error">{{drinkIngredientsError()}}</p>
+          <div id="drink-ingredients">
+            @for(ingredient of drinkIngredients(); track $index){
+              <div class="order-ingredient">
+                <div class="order-ingredient-details">
+                  <div class="ingredient-properties">
+                    @if(ingredient.type=="new"){
+                      <input class="order-new-ingredient-name" [(ngModel)]="ingredient.ingredientName">
+                    } @else {
+                      <span class="order-new-ingredient">{{ ingredient.ingredientName }}</span>
+                    }
+                    <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.amount" (input)="clearFieldError(ingredient.ingredientName)">
+                    <span class="order-ingredient-unit">ml</span>
+                  </div>
+                  <span class="order-ingredient-delete" (click)="deleteIngredient($index)">❌</span>
                 </div>
-                <p class="order-ingredient-status">{{ingredient.status}}</p>
+                <p class="error field-error">{{ingredient.status}}</p>
               </div>
-              <span class="order-ingredient-delete" (click)="deleteIngredient($index)">❌</span>
-            </div>
-          } @empty {
-            <div class="order-ingredient">
-              <div class="order-ingredient-details">
-                <div class="ingredient-properties">
-                  <span class="order-ingredient-name">No ingredients added</span>
+            } @empty {
+              <div class="order-ingredient">
+                <div class="order-ingredient-details">
+                  <div class="ingredient-properties">
+                    <span class="order-ingredient-name">No ingredients added</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          }
-          <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
-            <option value="newIngredient">New Ingredient</option>
-            @for(ingredient of availableIngredients(); track $index){
-              <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
             }
-          </select>
-          <input type="number" id="order-ingredient-amount" class="form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="100">
-          <span id="order-ingredient-unit">ml</span>
-          <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
+            <div id="add-new-ingredient">
+              <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
+                <option value="newIngredient">New Ingredient</option>
+                @for(ingredient of availableIngredients(); track $index){
+                  <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
+                }
+              </select>
+              <input type="number" id="order-ingredient-amount" class="form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="500">
+              <span id="order-ingredient-unit">ml</span>
+              <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="global-errors" *ngIf="globalErrors().length">
-      <p *ngFor="let err of globalErrors()">{{ err }}</p>
-    </div>
+    @if(globalError()){
+      <p class="error global-error">{{ globalError() }}</p>
+    }
     <div class="order-buttons">
-      <div class="button cancel-btn" (click)="closeModal()">Cancel</div>
-      <div class="button submit-btn" (click)="submitDrink()">Add Drink</div>
+      <button class="button cancel-btn" (click)="closeModal()">Discard</button>
+      <button class="button submit-btn" (click)="submitDrink()">Add Drink</button>
     </div>
   </div>
 </div>

@@ -1,17 +1,13 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-
-export interface ErrorMessage {
-  code: string;
-  message: string;
-  target: string;
-  scope: 'field' | 'global';
-}
+import { ApiError } from './api-error';
+import { ModalService, ModalType } from './modal.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorService {
+  private readonly modalService = inject(ModalService);
   handleError(
     e: any,
     setFieldError: (target: string, message: string) => void,
@@ -22,8 +18,8 @@ export class ErrorService {
       const errors = Array.isArray(payload) ? payload : [payload];
       for (const err of errors) {
         if (err && typeof err === 'object' && 'message' in err) {
-          const em = err as ErrorMessage;
-          if (em.scope === 'field') {
+          const em = err as ApiError;
+          if (em.target) {
             setFieldError(em.target, em.message);
           } else {
             addGlobalError(em.message);
@@ -39,6 +35,11 @@ export class ErrorService {
     }
   }
 
-  showProgress(_duration: number) { }
-  showStatus(_message: string) { }
+  showProgress(duration: number) {
+    this.modalService.openModal(ModalType.Error, { progressDuration: duration });
+  }
+
+  showStatus(message: string) {
+    this.modalService.openModal(ModalType.Error, { message });
+  }
 }

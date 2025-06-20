@@ -16,14 +16,14 @@
       </div>
     </div>
     <div class="modal-footer">
-      <div class="global-errors" *ngIf="globalErrors().length">
-        <p *ngFor="let err of globalErrors()">{{ err }}</p>
-      </div>
       <div id="toppings">
         <h4>Toppings:</h4>
         <p>{{selectedDrink()?.toppings}}</p>
       </div>
       <button class="button submit-btn" (click)="submitOrder()">Order</button>
     </div>
+    @if (globalError()){
+      <p class="error global-error">{{ globalError() }}</p>
+    }
   </div>
 </div>

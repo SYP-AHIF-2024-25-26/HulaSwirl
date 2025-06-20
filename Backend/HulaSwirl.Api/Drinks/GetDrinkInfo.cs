@@ -1,4 +1,5 @@
 using HulaSwirl.Services.DataAccess;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,8 @@ public static class GetDrinkInfo
         var drink = await context.Drink
             .Include(drink => drink.DrinkIngredients)
             .FirstOrDefaultAsync(drink => drink.Id == int.Parse(id));
-        return drink != null ? Results.Ok(drink) : Results.NotFound("Drink not found");
+        return drink != null
+            ? Results.Ok(drink)
+            : ErrorResults.NotFound("Drink not found");
     }
 }

@@ -63,7 +63,7 @@ public static class OrderApi
         return app;
     }
     
-    private static List<string> ValidateCustomOrder(DrinkIngredientDto[] ingredients)
+    private static List<ErrorDto> ValidateCustomOrder(DrinkIngredientDto[] ingredients)
     {
         return ValidationHelpers.ValidateDrink("Custom drink", ingredients);
     }
