@@ -13,7 +13,7 @@ import {Drink} from '../../services/drink.service';
 export class StatusModalComponent {
   private modalService = inject(ModalService);
 
-  errorMessage = signal('');
+  statusMessage = signal('');
   progress: number = 0;
   progressVisible: boolean = false;
   currentModalData: WritableSignal<any>=signal(null);
@@ -24,14 +24,14 @@ export class StatusModalComponent {
 
   constructor() {
     effect(() => {
-      if(this.modalService.getDisplayedModal()() == ModalType.Error) {
+      if(this.modalService.getDisplayedModal()() == ModalType.Status) {
         if (this.currentModalData() && this.currentModalData().message) {
-          this.errorMessage.set(this.currentModalData().message);
+          this.statusMessage.set(this.currentModalData().message);
         } else if (this.currentModalData() && this.currentModalData().progressDuration && this.currentModalData().progressDuration >= 0) {
           this.startProgress(this.currentModalData().progressDuration);
-          this.errorMessage.set("Your drink is being prepared...");
+          this.statusMessage.set("Your drink is being prepared...");
         } else {
-          this.errorMessage.set('Unbekannter Fehler');
+          this.statusMessage.set('Unbekannter Fehler');
         }
       }
     });
@@ -51,19 +51,21 @@ export class StatusModalComponent {
         clearInterval(interval);
 
         // 👉 Zeige "Getränk fertig!" nach dem Fortschritt
-        this.errorMessage.set("Your drink is ready!");
+        this.statusMessage.set("Your drink is ready!");
 
         // Optional: Fortschrittsbalken nach kurzer Zeit ausblenden
 
         setTimeout(() => {
           this.closeModal()
-        }, 3000);
+        }, 1500);
       }
     }, 100);
   }
 
   closeModal() {
     this.progressVisible = false;
+    this.progress = 0;
+    this.statusMessage.set('');
     this.modalService.closeModal();
   }
 }

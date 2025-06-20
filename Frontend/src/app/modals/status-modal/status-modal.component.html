@@ -7,7 +7,7 @@
     <div *ngIf="progressVisible" class="progress-container">
       <div class="progress-bar" [style.width.%]="progress"></div>
     </div>
-
+    <p id="statusMessage">{{statusMessage()}}</p>
     <div class="button submit-btn" (click)="closeModal()">OK</div>
   </div>
 </div>

@@ -10,10 +10,11 @@ import {IngredientsService} from './services/ingredients.service';
 import {DrinkService} from './services/drink.service';
 import {UserModalComponent} from './modals/user-modal/user-modal.component';
 import {UserService} from './services/user.service';
+import {StatusModalComponent} from './modals/status-modal/status-modal.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, DrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive, UserModalComponent, NgIf, NgClass],
+  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, DrinkModalComponent, BackgroundLeavesComponent, RouterLinkActive, UserModalComponent, NgIf, NgClass, StatusModalComponent],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'

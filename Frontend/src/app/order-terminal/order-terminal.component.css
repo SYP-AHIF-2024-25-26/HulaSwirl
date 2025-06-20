@@ -69,7 +69,7 @@
 }
 
 /* Fallback, wenn keine Bestellungen da sind */
-:host ::ng-deep p {
+:host ::ng-deep h3 {
   text-align: center;
   color: #666;
   margin: 2rem 0;

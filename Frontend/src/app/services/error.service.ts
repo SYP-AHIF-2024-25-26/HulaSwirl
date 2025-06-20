@@ -11,7 +11,7 @@ export class ErrorService {
   handleError(
     e: any,
     setFieldError: (target: string, message: string) => void,
-    addGlobalError: (message: string) => void
+    setGlobalError: (message: string) => void
   ): void {
     if (e instanceof HttpErrorResponse) {
       const payload = e.error;
@@ -22,24 +22,24 @@ export class ErrorService {
           if (em.target) {
             setFieldError(em.target, em.message);
           } else {
-            addGlobalError(em.message);
+            setGlobalError(em.message);
           }
         } else if (typeof err === 'string') {
-          addGlobalError(err);
+          setGlobalError(err);
         }
       }
     } else if (e instanceof Error) {
-      addGlobalError(e.message);
+      setGlobalError(e.message);
     } else {
-      addGlobalError('Unknown error');
+      setGlobalError('Unknown error');
     }
   }
 
   showProgress(duration: number) {
-    this.modalService.openModal(ModalType.Error, { progressDuration: duration });
+    this.modalService.openModal(ModalType.Status, { progressDuration: duration });
   }
 
-  showStatus(message: string) {
-    this.modalService.openModal(ModalType.Error, { message });
+  showMessage(message: string) {
+    this.modalService.openModal(ModalType.Status, { message });
   }
 }

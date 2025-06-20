@@ -164,6 +164,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
         } else if (this.currentDrink()) {
           await this.drinkService.editDrink(drinkData, this.currentDrink()!.id);
         }
+        await this.ingredientsService.loadIngredients();
         this.closeModal();
       }
     } catch (e: unknown) {
@@ -175,6 +176,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
     if (this.mode() === 'edit' && this.currentDrink()) {
       try {
         await this.drinkService.deleteDrink(this.currentDrink()!.id);
+        await this.ingredientsService.loadIngredients();
         this.modalService.closeModal();
       } catch (e) {
         this.handleError(e);
@@ -191,7 +193,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
       this.drinkIngredientsError.set(message);
       return;
     }
-    const idx = this.drinkIngredients().toReversed().findIndex(i => i.ingredientName.toLowerCase() === fieldName);
+    const idx = this.drinkIngredients().toReversed().findIndex(i => i.ingredientName.toLowerCase() === fieldName.toLowerCase());
     if (idx >= 0) {
       const arr = [...this.drinkIngredients().toReversed()];
       arr[idx] = { ...arr[idx], status: message };

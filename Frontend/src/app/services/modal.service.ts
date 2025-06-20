@@ -4,7 +4,6 @@ export enum ModalType{
   Order,
   AddDrink,
   EditDrink,
-  Error,
   Status,
   User
 }
