@@ -1,6 +1,7 @@
 import {Component, inject, signal, WritableSignal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {IncomingOrder, OrdersService} from '../services/orders.service';
+import { firstValueFrom } from 'rxjs';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../services/user.service';
 import {BASE_URL} from '../app.config';
@@ -52,10 +53,17 @@ export class OrderTerminalComponent {
     }
   }
 
-  cancel(id: number) {
-    this.ordersService.cancel(id).subscribe(() => {
+  async cancel(id: number) {
+    try {
+      await firstValueFrom(this.ordersService.cancel(id));
       this.orders.set(this.orders().filter(o => o.id !== id));
-    });
+    } catch (e) {
+      this.statusService.handleError(
+        e,
+        () => {},
+        m => this.globalErrors.set([...this.globalErrors(), m])
+      );
+    }
   }
 
   ngOnDestroy(): void {
