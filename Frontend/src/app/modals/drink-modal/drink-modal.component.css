@@ -23,9 +23,55 @@
 
 .order-buttons {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: start;
   gap: 10px;
   margin-top: 20px;
+}
+
+#drink-available-checkbox {
+  background-color: var(--form-input-bg-yellow);
+  padding: 6px 9px;
+  display: flex;
+  align-items: center;
+}
+
+#drink-available-checkbox label {
+  padding-top: 3px;
+  cursor: pointer;
+}
+
+#drink-available-checkbox input {
+  appearance: none;
+  min-width: 20px;
+  min-height: 20px;
+  border: 1px solid var(--element-primary-outline);
+  border-radius: 4px;
+  background: #fff;
+  margin-right: 10px;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+#drink-available-checkbox input:checked {
+}
+
+#drink-available-checkbox input:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 0;
+  width: 6px;
+  height: 12px;
+  border: solid var(--primary-font-color);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  display: block;
+}
+
+.submit-btn {
+  margin-left: auto;
 }
 
 .order-ingredient {

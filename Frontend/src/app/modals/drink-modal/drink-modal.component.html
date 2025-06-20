@@ -69,18 +69,16 @@
       <p class="error global-error">{{ globalError() }}</p>
     }
     <div class="order-buttons">
-      <button class="button cancel-btn" (click)="closeModal()">{{ mode() === 'add' ? 'Discard' : 'Cancel' }}</button>
       @if(mode() === 'edit'){
-        <button class="button cancel-btn" (click)="deleteDrink()">Delete Drink</button>
+        <button class="button cancel-btn" (click)="deleteDrink()">Delete</button>
+        <div id="drink-available-checkbox" class="button" (click)="drinkAvailable.set(!drinkAvailable())">
+          <input type="checkbox" [(ngModel)]="drinkAvailable">
+          <label>
+            Available
+          </label>
+        </div>
       }
-      <button class="button submit-btn" (click)="submitDrink()">{{ mode() === 'add' ? 'Add Drink' : 'Submit Drink' }}</button>
-      @if(mode() === 'edit'){
-        @if(drinkAvailable()){
-          <button class="button submit-btn" (click)="drinkAvailable.set(false)">Hide Drink</button>
-        } @else {
-          <button class="button submit-btn" (click)="drinkAvailable.set(true)">Show Drink</button>
-        }
-      }
+      <button class="button submit-btn" (click)="submitDrink()">{{ mode() === 'add' ? 'Add' : 'Update' }}</button>
     </div>
   </div>
 </div>

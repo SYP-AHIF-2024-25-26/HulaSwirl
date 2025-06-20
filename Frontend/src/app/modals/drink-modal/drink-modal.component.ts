@@ -149,9 +149,9 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
 
   async submitDrink() {
     this.clearGlobalError();
-    this.drinkIngredients.set(this.drinkIngredients().map(i => ({ ...i, status: '' })));
+    this.clearFieldError();
     try {
-      if (this.drinkIngredients().every(ing => ing.status === '' || ing.status === 'New Ingredient')) {
+      if (this.drinkIngredients().every(ing => ing.status === '')) {
         const drinkData: DrinkBase = {
           name: this.drinkTitle(),
           imgUrl: this.imageBase64,
@@ -260,4 +260,6 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
     };
     reader.readAsDataURL(file);
   }
+
+  protected readonly console = console;
 }
