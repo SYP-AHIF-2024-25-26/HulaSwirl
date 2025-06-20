@@ -21,21 +21,21 @@ public static class UserFactory
         if (string.IsNullOrWhiteSpace(dto.Username))
             errors.Add(new ErrorDto
             {
-                Message = "Username is required.",
+                Message = "A username is required",
                 Target = "username"
             });
 
         if (string.IsNullOrWhiteSpace(dto.Key))
             errors.Add(new ErrorDto
             {
-                Message = "Key is required.",
+                Message = "A key is required",
                 Target = "key"
             });
 
         if (await context.User.AnyAsync(u => u.Username == dto.Username))
             errors.Add(new ErrorDto
             {
-                Message = "Username already exists.",
+                Message = "A user with this username already exists",
                 Target = "username"
             });
 

@@ -21,7 +21,7 @@ public static class OrderCustomDrink
         JwtService jwtService)
     {
         var orderedNames = ingredientDtos.Select(i => i.IngredientName).ToList();
-        var res = await OrderValidation.ValidateRequest(orderedNames, context);
+        var res = await ValidationHelpers.ValidateRequest(orderedNames, context);
         if (res is not Ok)
             return res;
 

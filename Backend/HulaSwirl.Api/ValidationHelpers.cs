@@ -1,3 +1,5 @@
+using HulaSwirl.Services.DataAccess;
+using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http;
 
@@ -31,7 +33,7 @@ public static class ValidationHelpers
         {
             errors.Add(new ErrorDto
             {
-                Message = "Name is required.",
+                Message = "Please provide a name for the drink",
                 Target = "name"
             });
         }
@@ -40,8 +42,8 @@ public static class ValidationHelpers
         {
             errors.Add(new ErrorDto
             {
-                Message = "At least one ingredient is required.",
-                Target = string.Empty
+                Message = "At least one ingredient is required",
+                Target = "ingredients"
             });
         }
 
@@ -49,26 +51,39 @@ public static class ValidationHelpers
         {
             errors.Add(new ErrorDto
             {
-                Message = "Ingredient names must not be empty.",
-                Target = "ingredientName"
+                Message = "Ingredient names must not be empty",
+                Target = "ingredients"
             });
         }
-
-        if (ingredients.GroupBy(i => i.IngredientName.ToLower()).Any(g => g.Count() > 1))
+        
+        if (ingredients.Length > 6)
         {
             errors.Add(new ErrorDto
             {
-                Message = "Please provide unique ingredients",
-                Target = "ingredientName"
+                Message = "You can only add up to 6 ingredients to a drink",
+                Target = "ingredients"
             });
+        }
+        
+        var dupes = ingredients.GroupBy(d => d.IngredientName.ToLower())
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key)
+            .ToList();
+        if (dupes.Count != 0)
+        {
+            errors.AddRange(dupes.Select(d => new ErrorDto
+            {
+                Message = "Duplicate ingredient",
+                Target = d
+            }));
         }
 
         var ingredientErrors = ingredients
             .Where(ing => ing.Amount <= 0 || ing.Amount > maxPerIngredientMl)
             .Select(ing => new ErrorDto
             {
-                Message = $"Invalid amount for ingredient '{ing.IngredientName}': {ing.Amount}ml (allowed: 1–{maxPerIngredientMl})",
-                Target = ing.IngredientName
+                Message = $"Amount must be between 1-{maxPerIngredientMl}ml",
+                Target = ing.IngredientName.ToLower()
             })
             .ToArray();
 
@@ -87,5 +102,19 @@ public static class ValidationHelpers
         }
 
         return errors;
+    }
+    
+    public static async Task<IResult> ValidateRequest(IReadOnlyCollection<string> ingredientNames, AppDbContext context)
+    {
+        var availableIngredients = await IngredientService.GetAllAvailableIngredientsAsync(ingredientNames, context);
+
+        var missing = ingredientNames.Except(availableIngredients.Select(i => i.IngredientName)).ToList();
+        return missing.Count != 0
+            ? ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = $"The following ingredients are not available: {string.Join(", ", missing)}",
+                Target = string.Empty
+            })
+            : Results.Ok();
     }
 }

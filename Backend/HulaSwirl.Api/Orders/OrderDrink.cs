@@ -26,7 +26,7 @@ public static class OrderDrink
         if (drink is null) return ErrorResults.NotFound("Drink not found");
 
         var ingredientNames = drink.DrinkIngredients.Select(i => i.IngredientNameFk).ToList();
-        var res = await OrderValidation.ValidateRequest(ingredientNames, context);
+        var res = await ValidationHelpers.ValidateRequest(ingredientNames, context);
         if (res is not Ok)
             return res;
 

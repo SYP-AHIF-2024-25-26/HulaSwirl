@@ -14,14 +14,14 @@ public static class Login
         if (string.IsNullOrWhiteSpace(dto.Username))
             fieldErrors.Add(new ErrorDto
             {
-                Message = "Username is required.",
+                Message = "A username is required",
                 Target = "username"
             });
 
         if (string.IsNullOrWhiteSpace(dto.Key))
             fieldErrors.Add(new ErrorDto
             {
-                Message = "Key is required.",
+                Message = "A key is required",
                 Target = "key"
             });
 
@@ -32,14 +32,14 @@ public static class Login
         if (user == null)
             return ErrorResults.BadRequest(new ErrorDto
             {
-                Message = "User not found.",
+                Message = "This user was not found",
                 Target = "username"
             });
 
         if (!BCryptHasher.Verify(user.KeyHash, dto.Key))
             return ErrorResults.BadRequest(new ErrorDto
             {
-                Message = "Invalid key.",
+                Message = "The key for this user is incorrect",
                 Target = "key"
             });
 

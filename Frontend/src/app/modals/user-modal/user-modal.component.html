@@ -28,8 +28,9 @@
             type="text"
             placeholder="Username"
             class="form-input"
+            (input)="clearFieldError('username')"
             [(ngModel)]="loginUsername" />
-          <div class="field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</div>
+          <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
           <input
             name="key"
             ngModel
@@ -37,8 +38,9 @@
             type="password"
             placeholder="Key"
             class="form-input"
+            (input)="clearFieldError('key')"
             [(ngModel)]="loginKey" />
-          <div class="field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</div>
+          <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
         </ng-container>
 
         <ng-container *ngIf="mode() === 'register'">
@@ -49,8 +51,9 @@
             type="text"
             placeholder="Username"
             class="form-input"
+            (input)="clearFieldError('username')"
             [(ngModel)]="regUsername" />
-          <div class="field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</div>
+          <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
           <input
             name="key"
             ngModel
@@ -58,14 +61,15 @@
             type="password"
             placeholder="Key"
             class="form-input"
+            (input)="clearFieldError('key')"
             [(ngModel)]="regKey" />
-          <div class="field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</div>
+          <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
         </ng-container>
       </div>
 
       <div class="modal-footer">
-        <div class="global-errors" *ngIf="globalErrors().length">
-          <p *ngFor="let err of globalErrors()">{{ err }}</p>
+        <div class="error" *ngIf="globalError().length">
+          <p *ngFor="let err of globalError()">{{ err }}</p>
         </div>
         <div class="buttons">
           <!-- Submit-Button löst onSubmit() per Enter oder Klick aus -->

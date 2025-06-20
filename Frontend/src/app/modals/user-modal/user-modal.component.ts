@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
-import { ErrorService } from '../../services/error.service';
+import { ErrorHandlingComponent } from '../../services/error-handling';
 
 /**
  * Modal für Login & Registrierung.
@@ -17,13 +17,11 @@ import { ErrorService } from '../../services/error.service';
   templateUrl: './user-modal.component.html',
   styleUrls: ['./user-modal.component.css']
 })
-export class UserModalComponent {
+export class UserModalComponent extends ErrorHandlingComponent {
   private readonly userService = inject(UserService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
 
   fieldErrors = signal<Record<string, string>>({});
-  globalErrors = signal<string[]>([]);
 
   mode = signal<'login' | 'register'>('login');
 
@@ -35,26 +33,26 @@ export class UserModalComponent {
   regUsername = signal('');
   regKey = signal('');
 
+  constructor() {
+    super();
+  }
+
   async login() {
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearGlobalError();
+    this.clearFieldError();
     try {
       await this.userService.login(this.loginUsername(), this.loginKey());
       if (this.userService.isLoggedIn()) {
         this.closeModal();
       }
     } catch (e) {
-      this.errorService.handleError(
-        e,
-        (t, m) => this.fieldErrors.set({ ...this.fieldErrors(), [t]: m }),
-        m => this.globalErrors.set([...this.globalErrors(), m])
-      );
+      this.handleError(e);
     }
   }
 
   async register() {
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearGlobalError();
+    this.clearFieldError();
     try {
       await this.userService.register(
         this.regUsername(),
@@ -64,23 +62,32 @@ export class UserModalComponent {
         this.closeModal();
       }
     } catch (e) {
-      this.errorService.handleError(
-        e,
-        (t, m) => this.fieldErrors.set({ ...this.fieldErrors(), [t]: m }),
-        m => this.globalErrors.set([...this.globalErrors(), m])
-      );
+      this.handleError(e);
+    }
+  }
+
+  setFieldError(field: string, message: string) {
+    this.fieldErrors.set({ ...this.fieldErrors(), [field]: message });
+  }
+
+  clearFieldError(field: string = '') {
+    if (field) {
+      const { [field]: _, ...rest } = this.fieldErrors();
+      this.fieldErrors.set(rest);
+    } else {
+      this.fieldErrors.set({});
     }
   }
 
   switchMode(to: 'login' | 'register') {
     this.mode.set(to);
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearFieldError();
+    this.clearGlobalError();
   }
 
   closeModal() {
-    this.fieldErrors.set({});
-    this.globalErrors.set([]);
+    this.clearFieldError();
+    this.clearGlobalError();
     this.modalService.closeModal();
   }
 

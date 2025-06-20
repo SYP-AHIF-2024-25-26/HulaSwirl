@@ -37,8 +37,32 @@ public static class ConfirmOrder
                 Target = string.Empty
             });
 
-        var res = await OrderValidation.ValidateConfirmation(order.OrderIngredients, context, config);
-        if (res is not Ok<double>) return res;
+        var ingredientNames = order.OrderIngredients.Select(i => i.IngredientName).ToList();
+        var availableIngredients = await IngredientService.GetAllAvailableIngredientsAsync(ingredientNames, context);
+        
+        var availablePumps = config.GetValue<int>("HulaConfig:AvailablePumpCount");
+        if (order.OrderIngredients.Count > availablePumps)
+        {
+            return ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = $"You can only order up to {availablePumps} ingredients.",
+                Target = string.Empty
+            });
+        }
+        
+        foreach (var di in order.OrderIngredients)
+        {
+            var stored = availableIngredients.First(i => i.IngredientName == di.IngredientName);
+            if (stored.RemainingAmount < di.Amount)
+            {
+                return ErrorResults.BadRequest(new ErrorDto
+                {
+                    Message = $"Need {di.Amount}ml of {di.IngredientName} but only {stored.MaxAmount}ml are available",
+                    Target = di.IngredientName
+                });
+            }
+        }
+        var durationSec = order.OrderIngredients.Max(i => i.Amount) / config.GetValue<double>("HulaConfig:MlPerSecond");
 
         await using var tx = await context.Database.BeginTransactionAsync();
         try
@@ -76,7 +100,7 @@ public static class ConfirmOrder
             await orderService.BroadcastAsync(orders);
 
             await tx.CommitAsync();
-            return res;
+            return Results.Ok(durationSec);
         }
         catch (InvalidOperationException)
         {

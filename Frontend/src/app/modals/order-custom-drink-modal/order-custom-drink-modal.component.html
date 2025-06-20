@@ -19,7 +19,7 @@
                        (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
                 <span class="order-ingredient-unit">ml</span>
               </div>
-              <p class="order-ingredient-status">{{ getStatus(ingredient.ingredientName) }}</p>
+              <p class="error field-error">{{ getStatus(ingredient.ingredientName) }}</p>
             </div>
           </div>
         } @empty {
@@ -28,10 +28,8 @@
           </div>
         }
     </div>
-    @if (globalErrors().length) {
-      <div class="global-errors">
-        <p *ngFor="let err of globalErrors()">{{ err }}</p>
-      </div>
+    @if(globalError()) {
+      <p class="error global-error">{{ globalError() }}</p>
     }
       <div class="order-buttons">
         <div class="button cancel-btn" (click)="closeModal()">Cancel</div>
