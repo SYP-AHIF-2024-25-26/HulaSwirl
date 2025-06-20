@@ -57,8 +57,8 @@ public static class ConfirmOrder
             {
                 return ErrorResults.BadRequest(new ErrorDto
                 {
-                    Message = $"Need {di.Amount}ml of {di.IngredientName} but only {stored.MaxAmount}ml are available",
-                    Target = di.IngredientName
+                    Message = $"Needed {di.Amount}ml of {di.IngredientName} but only {stored.MaxAmount}ml are available",
+                    Target = string.Empty
                 });
             }
         }
@@ -105,14 +105,12 @@ public static class ConfirmOrder
         catch (InvalidOperationException)
         {
             await tx.RollbackAsync();
-            return Results.Json(new[]
-            {
+            return ErrorResults.Conflict(
                 new ErrorDto
                 {
                     Message = "Another drink is currently mixing, please wait a few seconds.",
                     Target = string.Empty
-                }
-            }, statusCode: StatusCodes.Status409Conflict);
+                });
         }
         catch (Exception ex)
         {

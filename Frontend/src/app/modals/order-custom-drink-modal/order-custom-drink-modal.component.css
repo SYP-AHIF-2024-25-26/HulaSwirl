@@ -53,6 +53,7 @@
   margin-right: 10px;
   position: relative;
   transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
 
 .ingredient-check:checked {
@@ -86,7 +87,7 @@
 }
 
 .order-ingredient-amount {
-  width: 25px;
+  width: 30px;
   text-align: end;
 }
 

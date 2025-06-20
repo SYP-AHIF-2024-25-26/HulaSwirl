@@ -7,7 +7,7 @@ import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
-  imports: [FormsModule, NgForOf],
+  imports: [FormsModule],
   templateUrl: './order-custom-drink-modal.component.html',
   standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'
@@ -72,7 +72,11 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   }
 
   setFieldError(fieldName: string, message: string) {
-    const idx = this.orderIngredients().findIndex(i => i.ingredientName === fieldName);
+    if(fieldName == "ingredients") {
+      this.setGlobalError(message);
+      return;
+    }
+    const idx = this.orderIngredients().findIndex(i => i.ingredientName.toLowerCase() === fieldName.toLowerCase());
     if (idx >= 0) {
       const arr = [...this.orderIngredients()];
       arr[idx] = { ...arr[idx], status: message };
@@ -110,6 +114,8 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   closeModal() {
     this.clearGlobalError();
     this.clearFieldError();
+    this.orderIngredients.set([]);
+    this.ingredientAmounts.set({});
     this.modalService.closeModal();
   }
 }
