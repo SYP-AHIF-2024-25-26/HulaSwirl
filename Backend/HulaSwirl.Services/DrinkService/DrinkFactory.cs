@@ -35,7 +35,7 @@ public static class DrinkFactory
         } catch (DbUpdateException e)
         {
             await tx.RollbackAsync();
-            return Results.Problem(e.Message, statusCode: 500);
+            return ErrorResults.Problem(e.Message);
         }
     }
 
@@ -48,7 +48,7 @@ public static class DrinkFactory
             .Include(d => d.DrinkIngredients)
             .FirstOrDefaultAsync(d => d.Id == id);
 
-        if (drink is null) return Results.NotFound("Drink not found");
+        if (drink is null) return ErrorResults.NotFound("Drink not found");
 
         drink.Name = dto.Name;
         drink.Available = dto.Available;
@@ -91,7 +91,7 @@ public static class DrinkFactory
         } catch (DbUpdateException e)
         {
             await tx.RollbackAsync();
-            return Results.Problem(e.Message, statusCode: 500);
+            return ErrorResults.Problem(e.Message);
         }
     }
 }

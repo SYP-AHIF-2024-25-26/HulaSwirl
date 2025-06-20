@@ -1,8 +1,8 @@
-import {Component, inject, Signal} from '@angular/core';
+import {Component, inject, signal, Signal, WritableSignal} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {Drink, DrinkService} from '../../services/drink.service';
 import {ModalService, ModalType} from '../../services/modal.service';
-import {StatusService} from '../../services/status.service';
+import {ErrorHandlingComponent} from '../../services/error-handling';
 
 @Component({
   selector: 'app-order-drink-modal',
@@ -13,25 +13,29 @@ import {StatusService} from '../../services/status.service';
   standalone: true,
   styleUrl: './order-drink-modal.component.css'
 })
-export class OrderDrinkModalComponent {
+export class OrderDrinkModalComponent extends ErrorHandlingComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(StatusService);
   selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
 
   closeModal() {
+    this.clearGlobalError();
     this.modalService.closeModal();
   }
 
   async submitOrder() {
+    this.clearGlobalError();
     try {
       if (this.selectedDrink()) {
         await this.drinkService.orderDrink(this.selectedDrink()!.id);
         this.closeModal();
-        this.modalService.openModal(ModalType.Error, {message: "Successfully ordered drink!\nGo to the bar to confirm your order."});
       }
     } catch (e) {
-      this.errorService.handleError(e);
+      this.handleError(e);
     }
   }
+
+  setFieldError(_t: string, _m: string): void {}
+
+  clearFieldError(): void {}
 }

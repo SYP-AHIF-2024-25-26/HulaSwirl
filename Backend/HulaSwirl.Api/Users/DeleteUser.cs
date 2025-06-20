@@ -13,9 +13,9 @@ public static class DeleteUser
         IOtpService otp,
         HttpContext http)
     {
-        if (!http.IsAdmin()) return Results.Forbid();
+        if (!http.IsAdmin()) return ErrorResults.Forbidden();
         var user = await db.User.FindAsync(username);
-        if (user == null) return Results.NotFound("User not found.");
+        if (user == null) return ErrorResults.NotFound("User not found.");
 
         db.User.Remove(user);
         await db.SaveChangesAsync();

@@ -2,7 +2,7 @@ import {Component, effect, HostListener, inject, Signal, signal, WritableSignal}
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
-import {StatusService} from '../services/status.service';
+import {ErrorHandlingComponent} from '../services/error-handling';
 
 @Component({
   selector: 'app-ingredients',
@@ -15,9 +15,8 @@ import {StatusService} from '../services/status.service';
   standalone: true,
   styleUrls: ['./ingredients.component.css']
 })
-export class IngredientsComponent {
+export class IngredientsComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService)
-  private readonly errorService = inject(StatusService);
   readonly ingredientSlots = this.ingredientsService.ingredientSlots;
   activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
   avIngredients: WritableSignal<Ingredient[]> = signal([]);
@@ -29,6 +28,7 @@ export class IngredientsComponent {
   private draggedElement: HTMLElement | null = null;
 
   constructor() {
+    super();
     effect(async () => {
       await this.ingredientsService.loadIngredients();
       const allIngredients = this.ingredientsService.ingredients();
@@ -177,10 +177,15 @@ export class IngredientsComponent {
   }
 
   async saveIngredients() {
+    this.clearGlobalError();
     try {
       await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);
     } catch (e: unknown) {
-      this.errorService.handleError(e);
+      this.handleError(e);
     }
   }
+
+  setFieldError(_t: string, _m: string): void {}
+
+  clearFieldError(_f?: string): void {}
 }
