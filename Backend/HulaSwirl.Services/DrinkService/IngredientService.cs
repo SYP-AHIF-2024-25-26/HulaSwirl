@@ -55,8 +55,38 @@ public static class IngredientService
         AppDbContext context,
         IReadOnlyCollection<IngredientDto> dto)
     {
-        var errors = Validate(dto);
-        if (errors.Count > 0) return Results.BadRequest(errors);
+        var errors = new List<ErrorDto>();
+
+        if (dto.Count == 0) return Results.UnprocessableEntity();
+
+        // Shouldn't even be possible, but just in case
+        var dupes = dto.GroupBy(d => d.IngredientName.ToLower())
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key);
+        errors.AddRange(dupes.Select(d => new ErrorDto
+        {
+            Message = $"Duplicate ingredient '{d}'",
+            Target = d
+        }));
+
+        foreach (var ing in dto)
+        {
+            // Shouldn't even be possible, but just in case
+            if (string.IsNullOrWhiteSpace(ing.IngredientName))
+                errors.Add(new ErrorDto
+                {
+                    Message = "Ingredients must have a name",
+                    Target = string.Empty
+                });
+
+            if (ing.MaxAmount < 0 || ing.RemainingAmount < 0)
+                errors.Add(new ErrorDto
+                {
+                    Message = $"Amounts for '{ing.IngredientName}' must be non-negative.",
+                    Target = ing.IngredientName
+                });
+        }
+        if (errors.Count > 0) return ErrorResults.BadRequest(errors.ToArray());
 
         var updated = new List<string>();
 
@@ -67,7 +97,11 @@ public static class IngredientService
 
             if (ingredient is null)
             {
-                errors.Add($"Ingredient '{ing.IngredientName}' not found");
+                errors.Add(new ErrorDto
+                {
+                    Message = $"Ingredient '{ing.IngredientName}' not found",
+                    Target = ing.IngredientName
+                });
                 continue;
             }
 
@@ -77,36 +111,9 @@ public static class IngredientService
             updated.Add(ingredient.IngredientName);
         }
 
-        if (errors.Count > 0) Results.BadRequest(errors);
+        if (errors.Count > 0) return ErrorResults.BadRequest(errors.ToArray());
 
         await context.SaveChangesAsync();
         return Results.Ok(updated);
-    }
-
-    private static List<string> Validate(IReadOnlyCollection<IngredientDto> dto)
-    {
-        var errors = new List<string>();
-
-        if (dto.Count == 0)
-        {
-            errors.Add("At least one ingredient must be supplied.");
-            return errors;
-        }
-
-        var dupes = dto.GroupBy(d => d.IngredientName.ToLower())
-            .Where(g => g.Count() > 1)
-            .Select(g => g.Key);
-        errors.AddRange(dupes.Select(d => $"Duplicate ingredient '{d}'."));
-
-        foreach (var ing in dto)
-        {
-            if (string.IsNullOrWhiteSpace(ing.IngredientName))
-                errors.Add("IngredientName cannot be empty.");
-
-            if (ing.MaxAmount < 0 || ing.RemainingAmount < 0)
-                errors.Add($"Amounts for '{ing.IngredientName}' must be non-negative.");
-        }
-
-        return errors;
     }
 }

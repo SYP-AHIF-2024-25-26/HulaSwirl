@@ -35,10 +35,10 @@
   <div class="spacer"></div>
 
 
-  <div class="admin-section">
+  <div id="user-section">
     <ng-container *ngIf="userService.isLoggedIn(); else loginRegister">
       <span>🦩</span>
-      <span class="user-info"> {{ userService.username() || 'User' }}</span>
+      <a id="user-info"> {{ userService.username() || 'N/A' }}</a>
       <button id="logout-btn" (click)="userService.logout()">Logout</button>
     </ng-container>
     <ng-template #loginRegister>
@@ -59,7 +59,6 @@
 
   <app-edit-drink-modal id="edit-drink-modal" [hidden]="displayedModal()!=ModalType.EditDrink"></app-edit-drink-modal>
 
-  <app-status-modal id="error-model" [hidden]="displayedModal()!=ModalType.Error"></app-status-modal>
 
   <app-user-modal id="user-modal" [hidden]="displayedModal()!=ModalType.User"></app-user-modal>
 

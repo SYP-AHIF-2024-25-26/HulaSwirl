@@ -28,7 +28,9 @@
             type="text"
             placeholder="Username"
             class="form-input"
+            (input)="clearFieldError('username')"
             [(ngModel)]="loginUsername" />
+          <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
           <input
             name="key"
             ngModel
@@ -36,7 +38,9 @@
             type="password"
             placeholder="Key"
             class="form-input"
+            (input)="clearFieldError('key')"
             [(ngModel)]="loginKey" />
+          <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
         </ng-container>
 
         <ng-container *ngIf="mode() === 'register'">
@@ -47,7 +51,9 @@
             type="text"
             placeholder="Username"
             class="form-input"
+            (input)="clearFieldError('username')"
             [(ngModel)]="regUsername" />
+          <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
           <input
             name="key"
             ngModel
@@ -55,11 +61,16 @@
             type="password"
             placeholder="Key"
             class="form-input"
+            (input)="clearFieldError('key')"
             [(ngModel)]="regKey" />
+          <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
         </ng-container>
       </div>
 
       <div class="modal-footer">
+        <div class="error" *ngIf="globalError().length">
+          <p *ngFor="let err of globalError()">{{ err }}</p>
+        </div>
         <div class="buttons">
           <!-- Submit-Button löst onSubmit() per Enter oder Klick aus -->
           <button

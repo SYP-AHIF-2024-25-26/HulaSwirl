@@ -3,7 +3,9 @@ using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.Pumps;
 using HulaSwirl.Services.UserServices;
+using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
@@ -27,11 +29,40 @@ public static class ConfirmOrder
         var order = await context.Order
             .Include(o => o.OrderIngredients)
             .FirstOrDefaultAsync(o => o.Id == orderId);
-        if (order is null) return Results.NotFound("Order not found");
-        if (order.Status != OrderStatus.Pending) return Results.BadRequest("Order was already processed");
+        if (order is null) return ErrorResults.NotFound("Order not found");
+        if (order.Status != OrderStatus.Pending)
+            return ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = "Order was already processed",
+                Target = string.Empty
+            });
 
-        var res = await OrderValidation.ValidateConfirmation(order.OrderIngredients, context, config);
-        if (res is not Ok<double>) return res;
+        var ingredientNames = order.OrderIngredients.Select(i => i.IngredientName).ToList();
+        var availableIngredients = await IngredientService.GetAllAvailableIngredientsAsync(ingredientNames, context);
+        
+        var availablePumps = config.GetValue<int>("HulaConfig:AvailablePumpCount");
+        if (order.OrderIngredients.Count > availablePumps)
+        {
+            return ErrorResults.BadRequest(new ErrorDto
+            {
+                Message = $"You can only order up to {availablePumps} ingredients.",
+                Target = string.Empty
+            });
+        }
+        
+        foreach (var di in order.OrderIngredients)
+        {
+            var stored = availableIngredients.First(i => i.IngredientName == di.IngredientName);
+            if (stored.RemainingAmount < di.Amount)
+            {
+                return ErrorResults.BadRequest(new ErrorDto
+                {
+                    Message = $"Need {di.Amount}ml of {di.IngredientName} but only {stored.MaxAmount}ml are available",
+                    Target = di.IngredientName
+                });
+            }
+        }
+        var durationSec = order.OrderIngredients.Max(i => i.Amount) / config.GetValue<double>("HulaConfig:MlPerSecond");
 
         await using var tx = await context.Database.BeginTransactionAsync();
         try
@@ -69,17 +100,24 @@ public static class ConfirmOrder
             await orderService.BroadcastAsync(orders);
 
             await tx.CommitAsync();
-            return res;
+            return Results.Ok(durationSec);
         }
         catch (InvalidOperationException)
         {
             await tx.RollbackAsync();
-            return Results.Conflict("Another drink is currently mixing, please wait a few seconds.");
+            return Results.Json(new[]
+            {
+                new ErrorDto
+                {
+                    Message = "Another drink is currently mixing, please wait a few seconds.",
+                    Target = string.Empty
+                }
+            }, statusCode: StatusCodes.Status409Conflict);
         }
         catch (Exception ex)
         {
             await tx.RollbackAsync();
-            return Results.Problem("An error occurred while processing the order: " + ex.Message);
+            return ErrorResults.Problem("An error occurred while processing the order: " + ex.Message);
         }
     }
 }

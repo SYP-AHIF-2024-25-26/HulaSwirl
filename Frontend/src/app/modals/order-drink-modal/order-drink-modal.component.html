@@ -22,5 +22,8 @@
       </div>
       <button class="button submit-btn" (click)="submitOrder()">Order</button>
     </div>
+    @if (globalError()){
+      <p class="error global-error">{{ globalError() }}</p>
+    }
   </div>
 </div>

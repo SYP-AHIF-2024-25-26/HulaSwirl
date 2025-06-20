@@ -48,6 +48,12 @@ h4 {
   font-size: 1.25rem;
 }
 
+p, span, label, input, textarea, select {
+  color: var(--primary-font-color);
+  font-family: var(--default-font), serif;
+  font-size: 1rem;
+}
+
 body::-webkit-scrollbar {
   display: none;
 }
@@ -310,6 +316,21 @@ html{
   white-space: normal;
   font-size: 20px;
   margin: auto 0;
+}
+
+.error {
+  color: red !important;
+  font-weight: lighter !important;
+}
+
+.field-error {
+  margin: 0;
+  font-size: 14px !important;
+}
+
+.global-error {
+  font-size: 16px !important;
+  margin-top: 1rem !important;
 }
 
 @media (max-width: 600px) {
