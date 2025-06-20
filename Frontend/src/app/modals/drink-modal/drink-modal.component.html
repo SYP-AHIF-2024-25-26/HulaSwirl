@@ -1,7 +1,7 @@
 <div class="modal-frame">
   <div class="modal-form">
     <div class="modal-head">
-      <h1>Add Drink</h1>
+      <h1>{{ mode() === 'add' ? 'Add Drink' : 'Edit Drink' }}</h1>
       <div class="close-modal-button" (click)="closeModal()"></div>
     </div>
     <div class="modal-body">
@@ -29,7 +29,7 @@
               <div class="order-ingredient">
                 <div class="order-ingredient-details">
                   <div class="ingredient-properties">
-                    @if(ingredient.type=="new"){
+                    @if(ingredient.type=='new'){
                       <input class="order-new-ingredient-name" [(ngModel)]="ingredient.ingredientName">
                     } @else {
                       <span class="order-new-ingredient">{{ ingredient.ingredientName }}</span>
@@ -69,8 +69,18 @@
       <p class="error global-error">{{ globalError() }}</p>
     }
     <div class="order-buttons">
-      <button class="button cancel-btn" (click)="closeModal()">Discard</button>
-      <button class="button submit-btn" (click)="submitDrink()">Add Drink</button>
+      <button class="button cancel-btn" (click)="closeModal()">{{ mode() === 'add' ? 'Discard' : 'Cancel' }}</button>
+      @if(mode() === 'edit'){
+        <button class="button cancel-btn" (click)="deleteDrink()">Delete Drink</button>
+      }
+      <button class="button submit-btn" (click)="submitDrink()">{{ mode() === 'add' ? 'Add Drink' : 'Submit Drink' }}</button>
+      @if(mode() === 'edit'){
+        @if(drinkAvailable()){
+          <button class="button submit-btn" (click)="drinkAvailable.set(false)">Hide Drink</button>
+        } @else {
+          <button class="button submit-btn" (click)="drinkAvailable.set(true)">Show Drink</button>
+        }
+      }
     </div>
   </div>
 </div>
