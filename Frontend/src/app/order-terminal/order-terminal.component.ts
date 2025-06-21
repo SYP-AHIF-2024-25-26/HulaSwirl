@@ -6,6 +6,7 @@ import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../services/user.service';
 import {BASE_URL} from '../app.config';
 import {ErrorService} from '../services/error.service';
+import {ErrorHandlingComponent} from '../services/error-handling';
 
 
 
@@ -20,12 +21,10 @@ import {ErrorService} from '../services/error.service';
   standalone: true,
   styleUrl: './order-terminal.component.css'
 })
-export class OrderTerminalComponent {
-  private readonly userService   = inject(UserService);
+export class OrderTerminalComponent extends ErrorHandlingComponent {
   private readonly ordersService = inject(OrdersService);
   private readonly statusService = inject(ErrorService);
-  globalErrors = signal<string[]>([]);
-  private apiBaseUrl = inject(BASE_URL);
+  globalErrors = signal<string>("");
   public orders: WritableSignal<IncomingOrder[]> = this.ordersService.orders;
 
   ngOnInit(): void {
@@ -48,7 +47,7 @@ export class OrderTerminalComponent {
       this.statusService.handleError(
         e,
         () => {},
-        m => this.globalErrors.set([...this.globalErrors(), m])
+        m => this.setGlobalError(m),
       );
     }
   }
@@ -61,13 +60,22 @@ export class OrderTerminalComponent {
       this.statusService.handleError(
         e,
         () => {},
-        m => this.globalErrors.set([...this.globalErrors(), m])
+        m => this.setGlobalError(m)
       );
     }
   }
 
+  override setGlobalError(message: string) {
+    this.statusService.showMessage(message);
+  }
+
+  override setFieldError(target: string, message: string) {
+    this.statusService.showMessage(message);
+  }
+
+  override clearFieldError(field: string) { }
+
   ngOnDestroy(): void {
     this.ordersService.disconnectWebSocket();
   }
-
 }

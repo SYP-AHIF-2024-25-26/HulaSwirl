@@ -3,7 +3,7 @@
   <div class="order-card" *ngFor="let o of orders()">
     <h3>{{ o.drinkName }}</h3>
     <p class="meta">
-      Von <strong>{{ o.user }}</strong> –
+      By <strong>{{ o.user }}</strong> –
       <small>{{ o.orderDate | date:'short' }}</small>
     </p>
     <ul>
@@ -12,12 +12,12 @@
       </li>
     </ul>
     <div class="actions">
-      <button  (click)="confirm(o.id)">Mischen</button>
-      <button  (click)="cancel(o.id)">Abbrechen</button>
+      <button  (click)="confirm(o.id)">Mix</button>
+      <button  (click)="cancel(o.id)">Discard</button>
     </div>
   </div>
 </div>
 
 <ng-template #noOrders>
-  <p>Keine ausstehenden Bestellungen.</p>
+  <h3>There aren't any orders yet</h3>
 </ng-template>

@@ -11,7 +11,7 @@ button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
 }
-#errorMessage{
+#statusMessage {
   font-size: 1.7rem;
   white-space: pre-line;
 }
