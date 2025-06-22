@@ -1,7 +1,9 @@
 import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
-import {ModalService, ModalType} from '../../services/modal.service';
+import {ModalType} from '../../services/modal.service';
+import {UniversalModalService} from '../../shared/modal/universal-modal.service';
+import {MODAL_ID} from '../../shared/modal/modal.tokens';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {NgForOf} from '@angular/common';
 
@@ -14,7 +16,8 @@ import {NgForOf} from '@angular/common';
 })
 export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
-  private readonly modalService = inject(ModalService);
+  private readonly modal = inject(UniversalModalService);
+  private readonly modalId: string = inject(MODAL_ID);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
@@ -116,6 +119,6 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
     this.clearFieldError();
     this.orderIngredients.set([]);
     this.ingredientAmounts.set({});
-    this.modalService.closeModal();
+    this.modal.close(this.modalId);
   }
 }

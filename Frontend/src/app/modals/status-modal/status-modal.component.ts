@@ -1,5 +1,6 @@
-import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
-import {ModalService, ModalType} from '../../services/modal.service';
+import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {UniversalModalService} from '../../shared/modal/universal-modal.service';
+import {MODAL_ID, MODAL_DATA} from '../../shared/modal/modal.tokens';
 import { NgIf } from '@angular/common';
 import {Drink} from '../../services/drink.service';
 
@@ -11,30 +12,23 @@ import {Drink} from '../../services/drink.service';
   styleUrl: './status-modal.component.css'
 })
 export class StatusModalComponent {
-  private modalService = inject(ModalService);
+  private modal = inject(UniversalModalService);
+  private readonly modalId: string = inject(MODAL_ID);
+  private readonly data = inject(MODAL_DATA) as any;
 
   statusMessage = signal('');
   progress: number = 0;
   progressVisible: boolean = false;
-  currentModalData: WritableSignal<any>=signal(null);
 
-  async ngOnInit() {
-    this.currentModalData = this.modalService.getModalData();
-  }
-
-  constructor() {
-    effect(() => {
-      if(this.modalService.getDisplayedModal()() == ModalType.Status) {
-        if (this.currentModalData() && this.currentModalData().message) {
-          this.statusMessage.set(this.currentModalData().message);
-        } else if (this.currentModalData() && this.currentModalData().progressDuration && this.currentModalData().progressDuration >= 0) {
-          this.startProgress(this.currentModalData().progressDuration);
-          this.statusMessage.set("Your drink is being prepared...");
-        } else {
-          this.statusMessage.set('Unbekannter Fehler');
-        }
-      }
-    });
+  ngOnInit() {
+    if (this.data && this.data.message) {
+      this.statusMessage.set(this.data.message);
+    } else if (this.data && this.data.progressDuration >= 0) {
+      this.startProgress(this.data.progressDuration);
+      this.statusMessage.set("Your drink is being prepared...");
+    } else {
+      this.statusMessage.set('Unbekannter Fehler');
+    }
   }
 
   startProgress(durationInSeconds: number) {
@@ -66,6 +60,6 @@ export class StatusModalComponent {
     this.progressVisible = false;
     this.progress = 0;
     this.statusMessage.set('');
-    this.modalService.closeModal();
+    this.modal.close(this.modalId);
   }
 }

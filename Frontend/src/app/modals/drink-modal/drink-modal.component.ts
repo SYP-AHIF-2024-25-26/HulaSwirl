@@ -1,5 +1,7 @@
 import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
-import { ModalService, ModalType } from '../../services/modal.service';
+import { ModalType } from '../../services/modal.service';
+import { UniversalModalService } from '../../shared/modal/universal-modal.service';
+import { MODAL_DATA, MODAL_ID } from '../../shared/modal/modal.tokens';
 import {
   ChangingDrinkIngredient,
   Ingredient,
@@ -20,7 +22,9 @@ import { ErrorHandlingComponent } from '../../services/error-handling';
 export class DrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalService);
+  private readonly modal = inject(UniversalModalService);
+  private readonly modalId: string = inject(MODAL_ID);
+  private readonly modalData = inject(MODAL_DATA) as { mode: 'add' | 'edit'; drink?: Drink };
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   drinkIngredients: WritableSignal<ChangingDrinkIngredient[]> = signal([]);
@@ -54,35 +58,27 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
       this.selectIngredient();
     });
 
-    effect(() => {
-      const modal = this.modalService.getDisplayedModal()();
-      if (modal === ModalType.EditDrink) {
-        this.mode.set('edit');
-        if (!this.dataloaded) {
-          const drink = this.modalService.getModalData()() as Drink | null;
-          if (drink) {
-            this.currentDrink.set(drink);
-            this.drinkIngredients.set(
-              drink.drinkIngredients.map(di => ({
-                ingredientName: di.ingredientName,
-                amount: di.amount,
-                status: '',
-                type: 'existing',
-              }))
-            );
-            this.drinkTitle.set(drink.name);
-            this.drinkToppings.set(drink.toppings);
-            this.imageBase64 = drink.imgUrl;
-            this.drinkAvailable.set(drink.available);
-            this.dataloaded = true;
-          }
-        }
-      } else if (modal === ModalType.AddDrink) {
-        this.mode.set('add');
-      } else {
-        this.dataloaded = false;
-      }
-    });
+    const data = this.modalData;
+    if (data && data.mode === 'edit' && data.drink) {
+      this.mode.set('edit');
+      const drink = data.drink;
+      this.currentDrink.set(drink);
+      this.drinkIngredients.set(
+        drink.drinkIngredients.map(di => ({
+          ingredientName: di.ingredientName,
+          amount: di.amount,
+          status: '',
+          type: 'existing',
+        }))
+      );
+      this.drinkTitle.set(drink.name);
+      this.drinkToppings.set(drink.toppings);
+      this.imageBase64 = drink.imgUrl;
+      this.drinkAvailable.set(drink.available);
+      this.dataloaded = true;
+    } else {
+      this.mode.set('add');
+    }
   }
 
   selectIngredient() {
@@ -177,7 +173,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
       try {
         await this.drinkService.deleteDrink(this.currentDrink()!.id);
         await this.ingredientsService.loadIngredients();
-        this.modalService.closeModal();
+        this.modal.close(this.modalId);
       } catch (e) {
         this.handleError(e);
       }
@@ -220,7 +216,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
   }
 
   closeModal() {
-    this.modalService.closeModal();
+    this.modal.close(this.modalId);
     this.drinkTitle.set('');
     this.drinkToppings.set('');
     this.drinkIngredients.set([]);

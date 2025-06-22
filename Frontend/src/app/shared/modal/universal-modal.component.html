@@ -1,0 +1,46 @@
+<div class="modal-backdrop" (click)="onBackdropClick()">
+  <div (click)="$event.stopPropagation()" [class.modal]="!config.rawBody">
+    <ng-template #renderBody>
+      <ng-container *ngIf="isTemplate(config.body); else bodyBlock">
+        <ng-container *ngTemplateOutlet="config.body; context:{ $implicit: config.data }"></ng-container>
+      </ng-container>
+      <ng-template #bodyBlock>
+        <ng-container *ngIf="isComponent(config.body); else bodyText">
+          <ng-container *ngComponentOutlet="config.body; injector: componentInjector()"></ng-container>
+        </ng-container>
+        <ng-template #bodyText>
+          <p>{{ config.body }}</p>
+        </ng-template>
+      </ng-template>
+    </ng-template>
+
+    <ng-container *ngIf="!config.rawBody">
+      <header *ngIf="config.title" class="modal-header">
+        <h3>{{ config.title }}</h3>
+      </header>
+      <section class="modal-body">
+        <ng-container *ngTemplateOutlet="renderBody"></ng-container>
+      </section>
+    </ng-container>
+    <ng-container *ngIf="config.rawBody">
+      <ng-container *ngTemplateOutlet="renderBody"></ng-container>
+    </ng-container>
+
+    <footer *ngIf="!config.rawBody && config.footer !== null" class="modal-footer">
+      <ng-container *ngIf="isTemplate(config.footer); else footerBlock">
+        <ng-container *ngTemplateOutlet="config.footer; context:{ $implicit: config.data }"></ng-container>
+      </ng-container>
+      <ng-template #footerBlock>
+        <ng-container *ngIf="isComponent(config.footer); else footerText">
+          <ng-container *ngComponentOutlet="config.footer; injector: componentInjector()"></ng-container>
+        </ng-container>
+        <ng-template #footerText>
+          <span>{{ config.footer }}</span>
+        </ng-template>
+      </ng-template>
+      <div class="buttons" *ngIf="config.buttons?.length">
+        <button *ngFor="let btn of config.buttons" [class]="btn.cssClass" (click)="onButtonClick(btn)">{{ btn.label }}</button>
+      </div>
+    </footer>
+  </div>
+</div>
