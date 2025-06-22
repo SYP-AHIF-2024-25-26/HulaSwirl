@@ -44,6 +44,9 @@ public static class Login
             });
 
         var token = jwtService.GenerateToken(user);
+        user.LastLogin = DateTime.Now;
+        db.User.Update(user);
+        await db.SaveChangesAsync();
         return Results.Ok(new { user.Username, token });
     }
 }

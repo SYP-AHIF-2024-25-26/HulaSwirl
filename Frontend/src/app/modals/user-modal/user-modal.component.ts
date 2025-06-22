@@ -38,6 +38,17 @@ export class UserModalComponent extends ErrorHandlingComponent {
     super();
   }
 
+  showLoginPassword = signal(false);
+  showRegPassword = signal(false);
+
+  togglePasswordVisibility(field: 'login' | 'register') {
+    if (field === 'login') {
+      this.showLoginPassword.update(show => !show);
+    } else {
+      this.showRegPassword.update(show => !show);
+    }
+  }
+
   async login() {
     this.clearGlobalError();
     this.clearFieldError();

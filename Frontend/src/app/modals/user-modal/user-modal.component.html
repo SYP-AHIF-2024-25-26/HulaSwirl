@@ -1,16 +1,30 @@
 <app-generic-modal [title]="mode() === 'login' ? 'Login' : 'Register'" (closed)="closeModal()">
   <form (ngSubmit)="onSubmit()" modal-body #authForm="ngForm">
     <ng-container *ngIf="mode() === 'login'">
-      <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="loginUsername" />
+      <div class="flex-row">
+        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="loginUsername" />
+      </div>
       <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
-      <input name="key" ngModel required type="password" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="loginKey" />
+      <div class="flex-row">
+        <input name="key" ngModel required [type]="showLoginPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="loginKey" />
+        <span class="password-toggle" (click)="togglePasswordVisibility('login')">
+          <i class="fa" [class.fa-eye]="!showLoginPassword()" [class.fa-eye-slash]="showLoginPassword()"></i>
+        </span>
+      </div>
       <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
       <small>Don't have an account yet? <a (click)="switchMode('register')">Register</a></small>
     </ng-container>
     <ng-container *ngIf="mode() === 'register'">
-      <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="regUsername" />
+      <div class="flex-row">
+        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="regUsername" />
+      </div>
       <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
-      <input name="key" ngModel required type="password" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="regKey" />
+      <div class="flex-row">
+        <input name="key" ngModel required [type]="showRegPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="regKey" />
+        <span class="password-toggle" (click)="togglePasswordVisibility('register')">
+          <i class="fa" [class.fa-eye]="!showRegPassword()" [class.fa-eye-slash]="showRegPassword()"></i>
+        </span>
+      </div>
       <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
       <small>Already have an account? <a (click)="switchMode('login')">Login</a></small>
     </ng-container>

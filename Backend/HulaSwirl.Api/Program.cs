@@ -42,7 +42,6 @@ builder.Services.AddCors(options =>
 //custom services
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddSingleton<ObservableOrderService>();
-builder.Services.AddSingleton<IOtpService, InMemoryOtpService>();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<GpioController>();

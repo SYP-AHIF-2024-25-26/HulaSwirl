@@ -6,6 +6,7 @@ export enum ModalType{
   EditDrink,
   Status,
   User,
+  Account,
   Generic
 }
 @Injectable({
