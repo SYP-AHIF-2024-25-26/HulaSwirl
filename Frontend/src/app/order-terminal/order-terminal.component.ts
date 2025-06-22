@@ -24,7 +24,6 @@ import {ErrorHandlingComponent} from '../services/error-handling';
 export class OrderTerminalComponent extends ErrorHandlingComponent {
   private readonly ordersService = inject(OrdersService);
   private readonly statusService = inject(ErrorService);
-  globalErrors = signal<string>("");
   public orders: WritableSignal<IncomingOrder[]> = this.ordersService.orders;
 
   ngOnInit(): void {

@@ -45,12 +45,11 @@ export class ModalService {
       data = this.persistedData[modal];
     }
     const stack = [...this.modalStack()];
-    stack.push({ type: modal, data, persist });
-    this.modalStack.set(stack);
-  }
-
-  openGenericModal(config: any, persist: boolean = false) {
-    this.openModal(ModalType.Generic, config, persist);
+    const existingIndex = stack.findIndex(m => m.type === modal);
+    if (existingIndex == -1) {
+      stack.push({type: modal, data, persist});
+      this.modalStack.set(stack);
+    }
   }
 
   getModalStack() {

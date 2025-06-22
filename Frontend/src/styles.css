@@ -1,7 +1,7 @@
 :root {
   --body-bg: #faeee1;
   --popup-bg: #f4e3cd;
-  --container-bg-color: #9dc2d5;
+  --link-color: #6091af;
   --ingredient-bg-color: #f4f3f2;
   --ingredient-quantity-bg-color: #f1e1c3;
   --ingredient-selected-bg-color: #eeffe4;
@@ -14,7 +14,6 @@
   --sunrise-gradient: linear-gradient(to bottom right, #f65a5a 0%, #ffd15e 100%);
   --primary-font-color: #575757;
   --heavy-font-color: #3f3f3f;
-  --form-input-bg: #f4f3f2;
   --form-input-bg-yellow: #fdfded;
 
   --default-font: 'JosefinSans';
@@ -107,7 +106,7 @@ html{
 }
 
 .button:hover {
-  scale: calc(1.05);
+  scale: 1.05;
 }
 
 .cancel-btn {
@@ -122,7 +121,7 @@ html{
 }
 
 .form-input {
-  background-color: var(--form-input-bg);
+  background-color: var(--form-input-bg-yellow);
   border: 1px solid var(--element-primary-outline);
   border-radius: 5px;
   padding: 5px 10px;
@@ -158,79 +157,6 @@ html{
 
 ::-webkit-scrollbar-thumb:hover {
   background: #c43a3a;
-}
-
-/* Modal */
-.modal-frame {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(1px);
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-form {
-  background-color: var(--popup-bg);
-  border-radius: 10px;
-  padding: 20px;
-  max-width: 550px;
-  width: 80%;
-  box-shadow: 0 0 10px 3px rgb(64, 64, 64);
-}
-
-.modal-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  color: var(--primary-font-color);
-}
-
-.modal-head h1 {
-  margin: 0;
-}
-
-.close-modal-button {
-  font-size: 24px;
-  font-weight: bold;
-  height: 20px;
-  width: 20px;
-  text-align: center;
-  line-height: 24px;
-  transition: 0.3s transform ease;
-  margin: -7px -7px 0 0;
-}
-.close-modal-button:after{
-  content: '✖';
-}
-.close-modal-button:hover {
-  cursor: pointer;
-  transform: rotate(10deg);
-}
-
-.modal-body {
-  margin: 20px 0;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
 }
 
 /* Drink filter */
@@ -288,7 +214,7 @@ html{
   overflow: hidden;
   background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
   linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 20px;
+  border-radius: 15px;
   border: 4px solid transparent;
   filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.25)) saturate(110%);
   padding: 0;
@@ -325,24 +251,16 @@ html{
 }
 
 .error {
+  margin: 0;
   color: red !important;
   font-weight: lighter !important;
 }
 
 .field-error {
-  margin: 0;
   font-size: 14px !important;
 }
 
 .global-error {
   font-size: 16px !important;
-  margin-top: 1rem !important;
-}
-
-@media (max-width: 600px) {
-  .modal-form {
-    width: 90%;
-    max-width: 90%;
-    padding: 15px;
-  }
+  margin: 0.5rem;
 }

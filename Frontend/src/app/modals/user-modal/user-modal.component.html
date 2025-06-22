@@ -1,29 +1,28 @@
 <app-generic-modal [title]="mode() === 'login' ? 'Login' : 'Register'" (closed)="closeModal()">
-  <form modal-body (ngSubmit)="onSubmit()" #authForm="ngForm">
-    <div class="tab-switch centered">
-      <button type="button" [class.active]="mode() === 'login'" (click)="switchMode('login')">Login</button>
-      <button type="button" [class.active]="mode() === 'register'" (click)="switchMode('register')">Register</button>
-    </div>
+  <form (ngSubmit)="onSubmit()" modal-body #authForm="ngForm">
     <ng-container *ngIf="mode() === 'login'">
       <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="loginUsername" />
       <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
       <input name="key" ngModel required type="password" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="loginKey" />
       <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
+      <small>Don't have an account yet? <a (click)="switchMode('register')">Register</a></small>
     </ng-container>
     <ng-container *ngIf="mode() === 'register'">
       <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="regUsername" />
       <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
       <input name="key" ngModel required type="password" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="regKey" />
       <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
+      <small>Already have an account? <a (click)="switchMode('login')">Login</a></small>
     </ng-container>
-    <div modal-footer>
-      <div class="error" *ngIf="globalError().length">
-        <p *ngFor="let err of globalError()">{{ err }}</p>
-      </div>
-    </div>
-    <div modal-buttons class="buttons">
-      <button type="submit" class="button submit-btn" [disabled]="authForm.invalid">{{ mode() === 'login' ? 'Login' : 'Register' }}</button>
-      <button type="button" class="button cancel-btn" (click)="closeModal()">Cancel</button>
-    </div>
+    <button type="submit" [disabled]="authForm.invalid" hidden></button>
   </form>
+  <div modal-footer>
+    <div class="error" *ngIf="globalError().length">
+      <p *ngFor="let err of globalError()">{{ err }}</p>
+    </div>
+  </div>
+  <div modal-buttons class="buttons">
+    <button type="submit" class="button submit-btn" (click)="onSubmit()" [disabled]="authForm.invalid">{{ mode() === 'login' ? 'Login' : 'Register' }}</button>
+    <button type="button" class="button cancel-btn" (click)="closeModal()">Cancel</button>
+  </div>
 </app-generic-modal>

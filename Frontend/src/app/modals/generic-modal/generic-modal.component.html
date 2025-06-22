@@ -5,7 +5,6 @@
       <span class="close-modal-button" (click)="close()"></span>
     </div>
     <div class="modal-body">
-      <img *ngIf="imageUrl" [src]="imageUrl" class="modal-image" />
       <ng-content select="[modal-body]"></ng-content>
     </div>
     <div class="modal-footer">

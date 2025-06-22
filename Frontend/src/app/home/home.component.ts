@@ -46,14 +46,6 @@ export class HomeComponent {
     this.modalService.openModal(modal, data);
   }
 
-  openInfoModal() {
-    this.modalService.openGenericModal({
-      title: 'Welcome',
-      body: 'This is a reusable modal example.',
-      buttons: [{ label: 'Close', action: () => this.modalService.closeModal() }]
-    });
-  }
-
   @ViewChild('targetElement', { static: false }) targetElement!: ElementRef;
   scrollToElement() {
     this.targetElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start',alignToTop:true });

@@ -67,6 +67,6 @@ export class StatusModalComponent {
     this.progressVisible = false;
     this.progress = 0;
     this.statusMessage.set('');
-    this.modalService.closeModal();
+    this.modalService.closeAll();
   }
 }

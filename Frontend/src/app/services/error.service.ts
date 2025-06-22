@@ -14,7 +14,15 @@ export class ErrorService {
     setGlobalError: (message: string) => void
   ): void {
     if (e instanceof HttpErrorResponse) {
+      if( e.status === 401) {
+        this.showMessage('You need to log in to perform this action.');
+        return;
+      }
       const payload = e.error;
+      if (e.status === 403) {
+        this.showMessage(payload[0].message);
+        return;
+      }
       const errors = Array.isArray(payload) ? payload : [payload];
       for (const err of errors) {
         if (err && typeof err === 'object' && 'message' in err) {

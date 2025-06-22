@@ -6,6 +6,7 @@ import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
 import { ErrorHandlingComponent } from '../../services/error-handling';
+import {RouterLink} from '@angular/router';
 
 /**
  * Modal für Login & Registrierung.

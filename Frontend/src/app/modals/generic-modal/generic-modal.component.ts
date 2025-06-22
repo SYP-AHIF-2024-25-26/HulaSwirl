@@ -16,7 +16,7 @@ export interface GenericModalButton {
 })
 export class GenericModalComponent {
   @Input() title: string = '';
-  @Input() imageUrl: string | null = null;
+  //@Input() imageUrl: string | null = null;
   @Input() buttons: GenericModalButton[] = [];
   @Output() closed = new EventEmitter<void>();
 

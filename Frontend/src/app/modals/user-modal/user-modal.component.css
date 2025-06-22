@@ -45,20 +45,23 @@ input.form-input {
 
 }
 
-.modal-body{
+[modal-body]{
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.modal-footer{
-  display: flex;
-  justify-content: center;
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .buttons {
+  justify-content: center;
   display: flex;
   gap: 10px;
+
 }
 
 .field-error {

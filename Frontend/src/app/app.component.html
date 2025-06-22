@@ -42,7 +42,7 @@
       <button id="logout-btn" (click)="userService.logout()">Logout</button>
     </ng-container>
     <ng-template #loginRegister>
-      <a class="login-link" (click)="openLoginModal()">Login/Register</a>
+      <a class="login-link" (click)="openLoginModal()">Login</a>
     </ng-template>
   </div>
 
@@ -50,25 +50,11 @@
 
 <app-background-leaves>
   <router-outlet></router-outlet>
-
   <app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != ModalType.CustomOrder"></app-order-custom-drink-modal>
-
   <app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != ModalType.Order"></app-order-drink-modal>
-
-  <app-drink-modal id="drink-modal"
-                   [hidden]="displayedModal()!=ModalType.AddDrink && displayedModal()!=ModalType.EditDrink"></app-drink-modal>
-
-
+  <app-drink-modal id="drink-modal" [hidden]="displayedModal()!=ModalType.AddDrink && displayedModal()!=ModalType.EditDrink"></app-drink-modal>
   <app-user-modal id="user-modal" [hidden]="displayedModal()!=ModalType.User"></app-user-modal>
-
   <app-status-modal id="status-modal" [hidden]="displayedModal()!=ModalType.Status"></app-status-modal>
-
-  <ng-container *ngFor="let m of modalStack()">
-    <app-generic-modal *ngIf="m.type === ModalType.Generic" [title]="m.data?.title" [imageUrl]="m.data?.imageUrl" [buttons]="m.data?.buttons">
-      <ng-container *ngIf="m.data?.body" [innerHTML]="m.data.body"></ng-container>
-    </app-generic-modal>
-  </ng-container>
-
 </app-background-leaves>
 
 <app-loading-spinner></app-loading-spinner>

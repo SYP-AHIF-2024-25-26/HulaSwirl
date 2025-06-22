@@ -52,7 +52,7 @@
                 <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
               }
             </select>
-            <input type="number" id="order-ingredient-amount" class="form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="500">
+            <input type="number" class="order-ingredient-amount form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="500">
             <span id="order-ingredient-unit">ml</span>
             <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
           </div>
@@ -65,7 +65,7 @@
       <p class="error global-error">{{ globalError() }}</p>
     }
   </div>
-  <div modal-buttons class="order-buttons">
+  <div modal-buttons class="action-buttons">
     @if(mode() === 'edit'){
       <button class="button cancel-btn" (click)="deleteDrink()">Delete</button>
       <div id="drink-available-checkbox" class="button" (click)="drinkAvailable.set(!drinkAvailable())">
