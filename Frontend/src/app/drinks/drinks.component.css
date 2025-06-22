@@ -28,7 +28,7 @@
   border-radius: 15px;
   border: 3px solid transparent;
   color: var(--primary-font-color);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #D_FilterDropdown {
@@ -41,7 +41,7 @@
   linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
   border-radius: 15px;
   border: 3px solid transparent;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   appearance: none;
 }
 
@@ -68,7 +68,7 @@ h2 {
   margin: 0;
   border-radius: 15px;
   background-color: var(--ingredient-bg-color);
-  box-shadow: 0px 0px 8px rgba(53, 30, 15, 0.12);
+  box-shadow: 0 0 8px rgba(53, 30, 15, 0.12);
   filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.07));
   overflow: hidden;
   display: flex;

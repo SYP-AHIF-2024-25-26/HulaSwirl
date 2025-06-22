@@ -1,9 +1,8 @@
-<nav id="navbar" #navbar>
-  <img src="assets/images/InconV2png.png" id="logo" alt="Logo">
+<nav id="navbar" [ngClass]="{open: menuOpen, home: isAtHomeScreen()}" #navbar>
   <button id="menu-toggle" (click)="toggleMenu()">☰</button>
+  <img src="assets/images/InconV2png.png" id="logo" alt="Logo" routerLink="home">
   <div id="nav-page-container" [ngClass]="{open: menuOpen}">
-    <a class="bigLink" routerLink="home"
-       >
+    <a class="bigLink" routerLink="home">
       Home
     </a>
     <a class="link"
@@ -31,34 +30,16 @@
        routerLinkActive="active">
       Orders
     </a>
-
-    <div id="mobile-user-section">
-      <button id="account-toggle" (click)="toggleAccountMenu()">👤</button>
-      <div id="account-details" *ngIf="accountMenuOpen">
-        <ng-container *ngIf="userService.isLoggedIn(); else mobileLogin">
-          <span>{{ userService.username() || 'N/A' }}</span>
-          <button class="logout-btn" (click)="userService.logout(); closeMenus()">Logout</button>
-        </ng-container>
-        <ng-template #mobileLogin>
-          <a class="login-link" (click)="openLoginModal(); closeMenus()">Login</a>
-        </ng-template>
-      </div>
+  </div>
+  @if(userInitials()) {
+    <div id="account-toggle" (click)="openAccountModal()">
+      <p>{{userInitials()}}</p>
     </div>
-  </div>
-  <div class="spacer"></div>
-
-
-  <div id="user-section">
-    <ng-container *ngIf="userService.isLoggedIn(); else loginRegister">
-      <span>🦩</span>
-      <a id="user-info"> {{ userService.username() || 'N/A' }}</a>
-      <button id="logout-btn" (click)="userService.logout()">Logout</button>
-    </ng-container>
-    <ng-template #loginRegister>
-      <a class="login-link" (click)="openLoginModal()">Login</a>
-    </ng-template>
-  </div>
-
+  } @else {
+    <div id="login" (click)="openLoginModal()">
+      <p>Login</p>
+    </div>
+  }
 </nav>
 
 <app-background-leaves>
@@ -68,6 +49,7 @@
   <app-drink-modal id="drink-modal" [hidden]="displayedModal()!=ModalType.AddDrink && displayedModal()!=ModalType.EditDrink"></app-drink-modal>
   <app-user-modal id="user-modal" [hidden]="displayedModal()!=ModalType.User"></app-user-modal>
   <app-status-modal id="status-modal" [hidden]="displayedModal()!=ModalType.Status"></app-status-modal>
+  <app-account-modal id="account-modal" [hidden]="displayedModal()!=ModalType.Account"></app-account-modal>
 </app-background-leaves>
 
 <app-loading-spinner></app-loading-spinner>

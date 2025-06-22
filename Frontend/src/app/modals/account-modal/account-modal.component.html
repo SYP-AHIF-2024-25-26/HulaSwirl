@@ -1,0 +1,45 @@
+@if(userInfo()) {
+  <app-generic-modal title="My Account" (closed)="close()">
+    <div modal-body class="account-content">
+      <div class="user-info">
+          <div id="identity" class="row">
+            <h3>{{userInfo()!.username}}</h3>
+            <h5 class="badge"
+                id="{{userInfo()!.role == 'admin' ? 'admin' : userInfo()!.role == 'operator' ? 'operator' : 'user'}}">
+              [{{userInfo()!.role.toUpperCase()}}]
+            </h5>
+          </div>
+          <div class="row">
+            <b>Account created on: </b>
+            <p>{{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
+          </div>
+          <div class="row">
+            <b>Last logged in on: </b>
+            @if(userInfo()!.lastLogin) {
+              <p>{{userInfo()!.lastLogin | date:'MMM d, y, HH:mm'}}</p>
+            } @else {
+              <p>Never</p>
+            }
+          </div>
+      </div>
+    </div>
+
+    <div modal-buttons class="action-buttons">
+      <button class="button" (click)="logout()">
+        Log Out
+      </button>
+    </div>
+  </app-generic-modal>
+} @else {
+  <app-generic-modal title="Error" (closed)="close()">
+    <div modal-body class="account-content">
+      <p>You are not logged in.</p>
+    </div>
+
+    <div modal-buttons class="action-buttons">
+      <button class="button secondary-btn" (click)="close()">
+        Close
+      </button>
+    </div>
+  </app-generic-modal>
+}

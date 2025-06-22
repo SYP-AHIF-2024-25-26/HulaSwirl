@@ -10,7 +10,6 @@ public static class DeleteUser
     public static async Task<IResult> HandleDelete(
         [FromRoute] string username,
         AppDbContext db,
-        IOtpService otp,
         HttpContext http)
     {
         if (!http.IsAdmin()) return ErrorResults.Forbidden();

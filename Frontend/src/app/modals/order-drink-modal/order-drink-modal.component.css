@@ -39,12 +39,12 @@ p:not(.error) {
 }
 
 .modal-image {
-  width: 260px;
-  height: 260px;
+  width: 250px;
+  height: 250px;
   box-sizing: border-box;
   overflow: hidden;
   border-radius: 10px;
-  border: 2px dashed var(--element-primary-outline);
+  background-color: var(--body-bg);
   display: flex;
   justify-content: center;
   align-items: center;

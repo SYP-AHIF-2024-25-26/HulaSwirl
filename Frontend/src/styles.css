@@ -1,5 +1,8 @@
 :root {
   --body-bg: #faeee1;
+  --nav-bg: #0e2d3e;
+  --nav-overlay-bg: rgb(18, 54, 74);
+  --nav-overlay-bg-deep: #224b61;
   --popup-bg: #f4e3cd;
   --link-color: #6091af;
   --ingredient-bg-color: #f4f3f2;
