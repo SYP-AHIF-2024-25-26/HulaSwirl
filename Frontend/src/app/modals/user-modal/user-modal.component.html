@@ -1,93 +1,29 @@
-<div class="modal-frame">
-  <div class="modal-form">
-    <form (ngSubmit)="onSubmit()" #authForm="ngForm">
-      <div class="modal-head flex-row">
-        <div class="tab-switch centered">
-          <button
-            type="button"
-            [class.active]="mode() === 'login'"
-            (click)="switchMode('login')">
-            Login
-          </button>
-          <button
-            type="button"
-            [class.active]="mode() === 'register'"
-            (click)="switchMode('register')">
-            Register
-          </button>
-        </div>
-        <span class="close-modal-button right" (click)="closeModal()"></span>
+<app-generic-modal [title]="mode() === 'login' ? 'Login' : 'Register'" (closed)="closeModal()">
+  <form modal-body (ngSubmit)="onSubmit()" #authForm="ngForm">
+    <div class="tab-switch centered">
+      <button type="button" [class.active]="mode() === 'login'" (click)="switchMode('login')">Login</button>
+      <button type="button" [class.active]="mode() === 'register'" (click)="switchMode('register')">Register</button>
+    </div>
+    <ng-container *ngIf="mode() === 'login'">
+      <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="loginUsername" />
+      <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
+      <input name="key" ngModel required type="password" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="loginKey" />
+      <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
+    </ng-container>
+    <ng-container *ngIf="mode() === 'register'">
+      <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="regUsername" />
+      <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
+      <input name="key" ngModel required type="password" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="regKey" />
+      <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
+    </ng-container>
+    <div modal-footer>
+      <div class="error" *ngIf="globalError().length">
+        <p *ngFor="let err of globalError()">{{ err }}</p>
       </div>
-
-      <div class="modal-body">
-        <ng-container *ngIf="mode() === 'login'">
-          <input
-            name="username"
-            ngModel
-            required
-            type="text"
-            placeholder="Username"
-            class="form-input"
-            (input)="clearFieldError('username')"
-            [(ngModel)]="loginUsername" />
-          <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
-          <input
-            name="key"
-            ngModel
-            required
-            type="password"
-            placeholder="Key"
-            class="form-input"
-            (input)="clearFieldError('key')"
-            [(ngModel)]="loginKey" />
-          <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
-        </ng-container>
-
-        <ng-container *ngIf="mode() === 'register'">
-          <input
-            name="username"
-            ngModel
-            required
-            type="text"
-            placeholder="Username"
-            class="form-input"
-            (input)="clearFieldError('username')"
-            [(ngModel)]="regUsername" />
-          <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
-          <input
-            name="key"
-            ngModel
-            required
-            type="password"
-            placeholder="Key"
-            class="form-input"
-            (input)="clearFieldError('key')"
-            [(ngModel)]="regKey" />
-          <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
-        </ng-container>
-      </div>
-
-      <div class="modal-footer">
-        <div class="error" *ngIf="globalError().length">
-          <p *ngFor="let err of globalError()">{{ err }}</p>
-        </div>
-        <div class="buttons">
-          <!-- Submit-Button löst onSubmit() per Enter oder Klick aus -->
-          <button
-            type="submit"
-            class="button submit-btn"
-            [disabled]="authForm.invalid">
-            {{ mode() === 'login' ? 'Login' : 'Register' }}
-          </button>
-          <!-- Abbrechen bleibt type="button" -->
-          <button
-            type="button"
-            class="button cancel-btn"
-            (click)="closeModal()">
-            Cancel
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+    </div>
+    <div modal-buttons class="buttons">
+      <button type="submit" class="button submit-btn" [disabled]="authForm.invalid">{{ mode() === 'login' ? 'Login' : 'Register' }}</button>
+      <button type="button" class="button cancel-btn" (click)="closeModal()">Cancel</button>
+    </div>
+  </form>
+</app-generic-modal>

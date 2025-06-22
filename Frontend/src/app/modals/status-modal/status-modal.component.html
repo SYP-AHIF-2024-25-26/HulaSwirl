@@ -1,13 +1,11 @@
-<div class="modal-frame">
-  <div class="modal-form">
-    <div class="modal-head">
-      <h1>Status</h1>
-    </div>
-    <!-- Fortschrittsbalken -->
+<app-generic-modal title="Status" (closed)="closeModal()">
+  <div modal-body>
     <div *ngIf="progressVisible" class="progress-container">
       <div class="progress-bar" [style.width.%]="progress"></div>
     </div>
     <p id="statusMessage">{{statusMessage()}}</p>
+  </div>
+  <div modal-buttons>
     <div class="button submit-btn" (click)="closeModal()">OK</div>
   </div>
-</div>
+</app-generic-modal>

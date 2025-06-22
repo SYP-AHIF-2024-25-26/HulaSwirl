@@ -4,10 +4,11 @@ import {Ingredient, IngredientsService, OrderPreparation} from '../../services/i
 import {ModalService, ModalType} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {NgForOf} from '@angular/common';
+import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
-  imports: [FormsModule],
+  imports: [FormsModule, GenericModalComponent, NgForOf],
   templateUrl: './order-custom-drink-modal.component.html',
   standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'

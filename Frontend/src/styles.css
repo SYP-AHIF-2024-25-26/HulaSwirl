@@ -226,6 +226,13 @@ html{
   gap: 20px;
 }
 
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 /* Drink filter */
 .drink-filter-container {
   max-width: 1200px;

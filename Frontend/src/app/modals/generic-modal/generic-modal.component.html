@@ -6,9 +6,13 @@
     </div>
     <div class="modal-body">
       <img *ngIf="imageUrl" [src]="imageUrl" class="modal-image" />
-      <ng-content></ng-content>
+      <ng-content select="[modal-body]"></ng-content>
     </div>
-    <div class="modal-footer" *ngIf="buttons.length > 0">
+    <div class="modal-footer">
+      <ng-content select="[modal-footer]"></ng-content>
+    </div>
+    <div class="modal-buttons">
+      <ng-content select="[modal-buttons]"></ng-content>
       <button *ngFor="let btn of buttons" class="button" (click)="btn.action()">{{ btn.label }}</button>
     </div>
   </div>
