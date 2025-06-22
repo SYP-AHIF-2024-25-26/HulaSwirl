@@ -8,26 +8,26 @@
     </a>
     <a class="link"
        *ngIf="userService.getAdminStatus()"
-       routerLink="admin/drinks"
+       routerLink="drinks"
        routerLinkActive="active">
       Drinks
     </a>
     <a class="link"
        *ngIf="userService.getAdminStatus()"
-       routerLink="admin/ingredients"
+       routerLink="ingredients"
        routerLinkActive="active">
       Ingredients
     </a>
 
     <a class="link"
        *ngIf="userService.getAdminStatus()"
-       routerLink="admin/statistics"
+       routerLink="statistics"
        routerLinkActive="active">
       Statistics
     </a>
     <a class="link"
        *ngIf="userService.getAdminStatus() || userService.getOperatorStatus()"
-       routerLink="admin/orderTerminal"
+       routerLink="orders"
        routerLinkActive="active">
       Orders
     </a>

@@ -12,6 +12,7 @@ import {UserModalComponent} from './modals/user-modal/user-modal.component';
 import {UserService} from './services/user.service';
 import {StatusModalComponent} from './modals/status-modal/status-modal.component';
 import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
+import {LoadingService} from './services/loading.service';
 
 @Component({
   selector: 'app-root',
