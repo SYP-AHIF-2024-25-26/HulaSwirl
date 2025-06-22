@@ -32,7 +32,7 @@ export class ErrorService {
           } else {
             setGlobalError(em.message);
           }
-        } else if (typeof err === 'string') {
+        } else {
           setGlobalError(err);
         }
       }

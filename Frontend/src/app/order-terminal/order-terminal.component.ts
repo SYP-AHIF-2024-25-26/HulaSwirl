@@ -1,10 +1,7 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Component, inject, WritableSignal} from '@angular/core';
 import {IncomingOrder, OrdersService} from '../services/orders.service';
 import { firstValueFrom } from 'rxjs';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
-import {UserService} from '../services/user.service';
-import {BASE_URL} from '../app.config';
 import {ErrorService} from '../services/error.service';
 import {ErrorHandlingComponent} from '../services/error-handling';
 
