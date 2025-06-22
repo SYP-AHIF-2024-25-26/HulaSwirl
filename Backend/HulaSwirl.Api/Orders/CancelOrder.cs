@@ -15,7 +15,7 @@ public static class CancelOrder
         ObservableOrderService orderService,
         HttpContext httpContext)
     {
-        if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
+        if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return ErrorResults.Forbidden();
 
         var order = await context.Order.FirstOrDefaultAsync(o => o.Id == orderId);
         if (order is null)

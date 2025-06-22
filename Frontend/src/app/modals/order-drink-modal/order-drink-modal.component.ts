@@ -1,5 +1,6 @@
 import {Component, inject, signal, Signal, WritableSignal} from '@angular/core';
 import {NgForOf} from "@angular/common";
+import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import {Drink, DrinkService} from '../../services/drink.service';
 import {ModalService, ModalType} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
@@ -7,7 +8,8 @@ import {ErrorHandlingComponent} from '../../services/error-handling';
 @Component({
   selector: 'app-order-drink-modal',
   imports: [
-    NgForOf
+    NgForOf,
+    GenericModalComponent
   ],
   templateUrl: './order-drink-modal.component.html',
   standalone: true,

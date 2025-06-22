@@ -11,8 +11,7 @@ public static class DeleteDrink
 {
     public static async Task<IResult> HandleDeleteDrink([FromRoute] int id, AppDbContext context, HttpContext httpContext)
     {
-        if (!httpContext.IsAdmin()) 
-            return Results.Forbid();
+        if (!httpContext.IsAdmin()) return ErrorResults.Forbidden();
 
         var drink = await context.Drink.Include(d => d.DrinkIngredients).FirstOrDefaultAsync(d => d.Id == id);
         if (drink is null) return ErrorResults.NotFound("Drink with id not found");

@@ -57,6 +57,7 @@
   color: #FFF5E1;
   font-size: 25px;
   font-family: JosefinSans, sans-serif;
+  cursor: pointer;
 }
 
 #user-section #logout-btn {
