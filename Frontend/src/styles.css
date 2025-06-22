@@ -239,7 +239,7 @@ html{
   transform: scale(103%);
 }
 
-.drink-card p {
+.drink-card p:not(.drink-card-image-container > p) {
   font-weight: bold;
   color: var(--primary-font-color);
   max-width: 90%;

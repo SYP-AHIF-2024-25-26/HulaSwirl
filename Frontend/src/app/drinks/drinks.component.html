@@ -25,7 +25,11 @@
       @for (drink of filteredDrinks(); track $index){
         <div *ngIf="drink.available" class="D_Drink" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="D_imgContainer">
-            <img class="D_img" [src]="drink.imgUrl" [alt]="drink.name">
+            @if (drink.imgUrl) {
+              <img class="D_img" [src]="drink.imgUrl" [alt]="drink.name">
+            } @else {
+              <p>No image available</p>
+            }
           </div>
           <p class="D_DrinkText">{{ drink.name }}</p>
         </div>
