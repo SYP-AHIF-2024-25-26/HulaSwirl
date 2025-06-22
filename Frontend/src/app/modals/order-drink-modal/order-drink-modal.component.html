@@ -1,6 +1,4 @@
-<div class="modal-frame">
-  <div class="modal-form">
-    <div class="modal-head">
+<div class="modal-head">
       <h1>{{selectedDrink()?.name}}</h1>
       <span class="close-modal-button" (click)="closeModal()"></span>
     </div>
@@ -25,5 +23,4 @@
     @if (globalError()){
       <p class="error global-error">{{ globalError() }}</p>
     }
-  </div>
-</div>
+

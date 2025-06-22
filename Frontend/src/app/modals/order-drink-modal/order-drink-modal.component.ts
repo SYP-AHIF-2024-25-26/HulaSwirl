@@ -1,7 +1,8 @@
-import {Component, inject, signal, Signal, WritableSignal} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {Component, inject, signal, Signal} from '@angular/core';
+import {NgForOf} from '@angular/common';
 import {Drink, DrinkService} from '../../services/drink.service';
-import {ModalService, ModalType} from '../../services/modal.service';
+import {UniversalModalService} from '../../shared/modal/universal-modal.service';
+import {MODAL_DATA, MODAL_ID} from '../../shared/modal/modal.tokens';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 
 @Component({
@@ -15,12 +16,13 @@ import {ErrorHandlingComponent} from '../../services/error-handling';
 })
 export class OrderDrinkModalComponent extends ErrorHandlingComponent {
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalService);
-  selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
+  private readonly modal = inject(UniversalModalService);
+  private readonly modalId = inject(MODAL_ID);
+  selectedDrink = signal<Drink | null>(inject(MODAL_DATA));
 
   closeModal() {
     this.clearGlobalError();
-    this.modalService.closeModal();
+    this.modal.close(this.modalId);
   }
 
   async submitOrder() {

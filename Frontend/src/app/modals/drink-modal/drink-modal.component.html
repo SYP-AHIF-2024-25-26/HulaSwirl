@@ -1,6 +1,4 @@
-<div class="modal-frame">
-  <div class="modal-form">
-    <div class="modal-head">
+<div class="modal-head">
       <h1>{{ mode() === 'add' ? 'Add Drink' : 'Edit Drink' }}</h1>
       <div class="close-modal-button" (click)="closeModal()"></div>
     </div>
@@ -80,5 +78,3 @@
       }
       <button class="button submit-btn" (click)="submitDrink()">{{ mode() === 'add' ? 'Add' : 'Update' }}</button>
     </div>
-  </div>
-</div>

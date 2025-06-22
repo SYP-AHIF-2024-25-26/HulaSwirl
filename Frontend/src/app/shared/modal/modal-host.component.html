@@ -1,0 +1,3 @@
+<ng-container *ngFor="let modal of modals(); let i = index">
+  <app-universal-modal [modalId]="modal.id" [config]="modal.config"></app-universal-modal>
+</ng-container>

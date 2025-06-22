@@ -1,13 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiError } from './api-error';
-import { ModalService, ModalType } from './modal.service';
+import { ModalType } from './modal.service';
+import { UniversalModalService } from '../shared/modal/universal-modal.service';
+import { StatusModalComponent } from '../modals/status-modal/status-modal.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorService {
-  private readonly modalService = inject(ModalService);
+  private readonly modal = inject(UniversalModalService);
   handleError(
     e: any,
     setFieldError: (target: string, message: string) => void,
@@ -36,10 +38,10 @@ export class ErrorService {
   }
 
   showProgress(duration: number) {
-    this.modalService.openModal(ModalType.Status, { progressDuration: duration });
+    this.modal.open({ body: StatusModalComponent, data: { progressDuration: duration } });
   }
 
   showMessage(message: string) {
-    this.modalService.openModal(ModalType.Status, { message });
+    this.modal.open({ body: StatusModalComponent, data: { message } });
   }
 }

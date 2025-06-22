@@ -3,7 +3,10 @@ import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../services/drink.service';
-import {ModalService, ModalType} from '../services/modal.service';
+import {ModalType} from '../services/modal.service';
+import {UniversalModalService} from '../shared/modal/universal-modal.service';
+import {OrderCustomDrinkModalComponent} from '../modals/order-custom-drink-modal/order-custom-drink-modal.component';
+import {OrderDrinkModalComponent} from '../modals/order-drink-modal/order-drink-modal.component';
 import {ErrorService} from '../services/error.service';
 
 @Component({
@@ -19,7 +22,7 @@ import {ErrorService} from '../services/error.service';
 export class HomeComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalService);
+  private readonly modal = inject(UniversalModalService);
   private readonly errorService = inject(ErrorService);
 
   allAvailableDrinks = signal<Drink[]>([]);
@@ -43,7 +46,14 @@ export class HomeComponent {
   }
 
   openModal(modal: ModalType, data: any = null) {
-    this.modalService.openModal(modal, data);
+    switch(modal) {
+      case ModalType.CustomOrder:
+        this.modal.open({ body: OrderCustomDrinkModalComponent });
+        break;
+      case ModalType.Order:
+        this.modal.open({ body: OrderDrinkModalComponent, data });
+        break;
+    }
   }
 
   @ViewChild('targetElement', { static: false }) targetElement!: ElementRef;

@@ -1,5 +1,6 @@
-import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
-import { ModalService, ModalType } from '../../services/modal.service';
+import {Component, effect, inject, signal, WritableSignal, Inject} from '@angular/core';
+import { UniversalModalService } from '../../shared/modal/universal-modal.service';
+import { MODAL_DATA, MODAL_ID } from '../../shared/modal/modal.tokens';
 import {
   ChangingDrinkIngredient,
   Ingredient,
@@ -10,6 +11,11 @@ import { CommonModule } from '@angular/common';
 import { Drink, DrinkBase, DrinkService } from '../../services/drink.service';
 import { ErrorHandlingComponent } from '../../services/error-handling';
 
+export interface DrinkModalData {
+  mode: 'add' | 'edit';
+  drink?: Drink;
+}
+
 @Component({
   selector: 'app-drink-modal',
   imports: [FormsModule, CommonModule],
@@ -17,10 +23,12 @@ import { ErrorHandlingComponent } from '../../services/error-handling';
   standalone: true,
   styleUrls: ['./drink-modal.component.css'],
 })
+
 export class DrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalService);
+  private readonly modal = inject(UniversalModalService);
+  private readonly modalId = inject(MODAL_ID);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   drinkIngredients: WritableSignal<ChangingDrinkIngredient[]> = signal([]);
@@ -42,8 +50,26 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
   currentDrink: WritableSignal<Drink | null> = signal(null);
   private dataloaded = false;
 
-  constructor() {
+  constructor(@Inject(MODAL_DATA) modalData: DrinkModalData) {
     super();
+    this.mode.set(modalData.mode);
+    if (modalData.drink) {
+      this.currentDrink.set(modalData.drink);
+      this.drinkIngredients.set(
+        modalData.drink.drinkIngredients.map(di => ({
+          ingredientName: di.ingredientName,
+          amount: di.amount,
+          status: '',
+          type: 'existing',
+        }))
+      );
+      this.drinkTitle.set(modalData.drink.name);
+      this.drinkToppings.set(modalData.drink.toppings);
+      this.imageBase64 = modalData.drink.imgUrl;
+      this.drinkAvailable.set(modalData.drink.available);
+      this.dataloaded = true;
+    }
+
     effect(() => {
       this.allIngredients = this.ingredientsService.ingredients();
       this.availableIngredients.set(
@@ -52,36 +78,6 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
         )
       );
       this.selectIngredient();
-    });
-
-    effect(() => {
-      const modal = this.modalService.getDisplayedModal()();
-      if (modal === ModalType.EditDrink) {
-        this.mode.set('edit');
-        if (!this.dataloaded) {
-          const drink = this.modalService.getModalData()() as Drink | null;
-          if (drink) {
-            this.currentDrink.set(drink);
-            this.drinkIngredients.set(
-              drink.drinkIngredients.map(di => ({
-                ingredientName: di.ingredientName,
-                amount: di.amount,
-                status: '',
-                type: 'existing',
-              }))
-            );
-            this.drinkTitle.set(drink.name);
-            this.drinkToppings.set(drink.toppings);
-            this.imageBase64 = drink.imgUrl;
-            this.drinkAvailable.set(drink.available);
-            this.dataloaded = true;
-          }
-        }
-      } else if (modal === ModalType.AddDrink) {
-        this.mode.set('add');
-      } else {
-        this.dataloaded = false;
-      }
     });
   }
 
@@ -177,7 +173,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
       try {
         await this.drinkService.deleteDrink(this.currentDrink()!.id);
         await this.ingredientsService.loadIngredients();
-        this.modalService.closeModal();
+        this.modal.close(this.modalId);
       } catch (e) {
         this.handleError(e);
       }
@@ -220,7 +216,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
   }
 
   closeModal() {
-    this.modalService.closeModal();
+    this.modal.close(this.modalId);
     this.drinkTitle.set('');
     this.drinkToppings.set('');
     this.drinkIngredients.set([]);

@@ -3,7 +3,8 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { ModalService } from '../../services/modal.service';
+import { UniversalModalService } from '../../shared/modal/universal-modal.service';
+import { MODAL_ID } from '../../shared/modal/modal.tokens';
 import { ErrorHandlingComponent } from '../../services/error-handling';
 
 /**
@@ -19,7 +20,8 @@ import { ErrorHandlingComponent } from '../../services/error-handling';
 })
 export class UserModalComponent extends ErrorHandlingComponent {
   private readonly userService = inject(UserService);
-  private readonly modalService = inject(ModalService);
+  private readonly modal = inject(UniversalModalService);
+  private readonly modalId = inject(MODAL_ID);
 
   fieldErrors = signal<Record<string, string>>({});
 
@@ -88,7 +90,7 @@ export class UserModalComponent extends ErrorHandlingComponent {
   closeModal() {
     this.clearFieldError();
     this.clearGlobalError();
-    this.modalService.closeModal();
+    this.modal.close(this.modalId);
   }
 
   async onSubmit() {

@@ -3,7 +3,9 @@ import {Drink, DrinkService} from '../services/drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
-import {ModalService, ModalType} from '../services/modal.service';
+import {ModalType} from '../services/modal.service';
+import {UniversalModalService} from '../shared/modal/universal-modal.service';
+import {DrinkModalComponent} from '../modals/drink-modal/drink-modal.component';
 import {ErrorService} from '../services/error.service';
 
 @Component({
@@ -19,7 +21,7 @@ import {ErrorService} from '../services/error.service';
 export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
-  private readonly modalService = inject(ModalService);
+  private readonly modal = inject(UniversalModalService);
   private readonly errorService = inject(ErrorService);
   protected readonly ModalType = ModalType;
 
@@ -64,6 +66,13 @@ export class DrinksComponent {
     });
   }
   openModal(m:ModalType,data:any=null) {
-    this.modalService.openModal(m,data)
+    switch(m) {
+      case ModalType.AddDrink:
+        this.modal.open({ body: DrinkModalComponent, data: { mode: 'add' } });
+        break;
+      case ModalType.EditDrink:
+        this.modal.open({ body: DrinkModalComponent, data: { mode: 'edit', drink: data } });
+        break;
+    }
   }
 }

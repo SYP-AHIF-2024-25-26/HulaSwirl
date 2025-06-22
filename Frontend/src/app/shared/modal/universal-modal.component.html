@@ -1,0 +1,39 @@
+<div class="modal-frame" (click)="onBackdropClick()">
+  <div class="modal-form" (click)="$event.stopPropagation()">
+    <div class="modal-head" *ngIf="config.title">
+      <h1>{{ config.title }}</h1>
+      <span class="close-modal-button" (click)="close()"></span>
+    </div>
+
+    <div class="modal-body">
+      <ng-container *ngIf="isTemplate(config.body); else bodyBlock">
+        <ng-container *ngTemplateOutlet="config.body; context:{ $implicit: config.data }"></ng-container>
+      </ng-container>
+      <ng-template #bodyBlock>
+        <ng-container *ngIf="isComponent(config.body); else bodyText">
+          <ng-container *ngComponentOutlet="config.body; injector: componentInjector()"></ng-container>
+        </ng-container>
+        <ng-template #bodyText>
+          <p>{{ config.body }}</p>
+        </ng-template>
+      </ng-template>
+    </div>
+
+    <div *ngIf="config.footer !== null" class="modal-footer">
+      <ng-container *ngIf="isTemplate(config.footer); else footerBlock">
+        <ng-container *ngTemplateOutlet="config.footer; context:{ $implicit: config.data }"></ng-container>
+      </ng-container>
+      <ng-template #footerBlock>
+        <ng-container *ngIf="isComponent(config.footer); else footerText">
+          <ng-container *ngComponentOutlet="config.footer; injector: componentInjector()"></ng-container>
+        </ng-container>
+        <ng-template #footerText>
+          <span>{{ config.footer }}</span>
+        </ng-template>
+      </ng-template>
+      <div class="buttons" *ngIf="config.buttons?.length">
+        <button *ngFor="let btn of config.buttons" [class]="btn.cssClass" (click)="onButtonClick(btn)">{{ btn.label }}</button>
+      </div>
+    </div>
+  </div>
+</div>
