@@ -24,8 +24,7 @@
   font-size: 1rem;
   outline: none;
   transition: all 0.3s ease-in-out;
-  background: linear-gradient(var(--form-input-bg), var(--form-input-bg)) padding-box,
-  linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
+  background: linear-gradient(white, white) padding-box, linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
   border-radius: 15px;
   border: 3px solid transparent;
   color: var(--primary-font-color);
@@ -43,6 +42,7 @@
   border-radius: 15px;
   border: 3px solid transparent;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  appearance: none;
 }
 
 h2 {
@@ -66,7 +66,7 @@ h2 {
 .D_Drink {
   width: 180px;
   margin: 0;
-  border-radius: 25px;
+  border-radius: 15px;
   background-color: var(--ingredient-bg-color);
   box-shadow: 0px 0px 8px rgba(53, 30, 15, 0.12);
   filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.07));
@@ -87,6 +87,9 @@ h2 {
   height: 180px;
   overflow: hidden;
   background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .D_img {

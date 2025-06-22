@@ -235,3 +235,9 @@ video {
   justify-content: center;
   gap: 20px;
 }
+
+.drink-card-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
