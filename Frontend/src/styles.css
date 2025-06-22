@@ -9,7 +9,7 @@
   --active-bg: #c3ffac;
   --inactive-bg: #ff9898;
   --cancel-btn-bg: #df6b6b;
-  --order-btn-bg:#fc5d5b;
+  --order-btn-bg: #fc5d5b;
   --sunset-gradient: linear-gradient(to bottom right, rgb(255, 194, 108) 0%, rgb(255, 125, 114) 100%);
   --sunrise-gradient: linear-gradient(to bottom right, #f65a5a 0%, #ffd15e 100%);
   --primary-font-color: #575757;
@@ -170,16 +170,15 @@ html{
   height: 100%;
   backdrop-filter: blur(1px);
   background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-form {
   background-color: var(--popup-bg);
   border-radius: 10px;
   padding: 20px;
-  position: fixed;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
   max-width: 550px;
   width: 80%;
   box-shadow: 0 0 10px 3px rgb(64, 64, 64);
