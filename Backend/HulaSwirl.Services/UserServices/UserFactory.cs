@@ -32,7 +32,7 @@ public static class UserFactory
                 Target = "key"
             });
 
-        if (await context.User.AnyAsync(u => u.Username == dto.Username))
+        if (await context.User.AnyAsync(u => u.Username.ToLower() == dto.Username.ToLower()))
             errors.Add(new ErrorDto
             {
                 Message = "A user with this username already exists",

@@ -17,7 +17,7 @@ public static class EditDrink
         HttpContext httpContext)
     {
         if (!httpContext.IsAdmin()) 
-            return Results.Forbid();
+            return ErrorResults.Forbidden();
 
         return await DrinkFactory.UpdateDrinkAsync(context, id, drinkDto);
     }

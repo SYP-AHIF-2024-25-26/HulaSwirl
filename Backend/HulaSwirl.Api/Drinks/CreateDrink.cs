@@ -14,8 +14,7 @@ public static class CreateDrink
         AppDbContext context,
         HttpContext httpContext)
     {
-        if (!httpContext.IsAdmin()) 
-            return Results.Forbid();
+        if (!httpContext.IsAdmin()) return ErrorResults.Forbidden();
 
         return await DrinkFactory.CreateDrinkAsync(context, drinkDto);
     }
