@@ -7,12 +7,13 @@ import {
 } from '../../services/ingredients.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import { Drink, DrinkBase, DrinkService } from '../../services/drink.service';
 import { ErrorHandlingComponent } from '../../services/error-handling';
 
 @Component({
   selector: 'app-drink-modal',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, GenericModalComponent],
   templateUrl: './drink-modal.component.html',
   standalone: true,
   styleUrls: ['./drink-modal.component.css'],

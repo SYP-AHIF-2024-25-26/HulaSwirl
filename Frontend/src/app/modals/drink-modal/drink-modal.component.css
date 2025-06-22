@@ -21,16 +21,15 @@
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
 }
 
-.order-buttons {
+.action-buttons {
   display: flex;
   align-items: center;
   justify-content: start;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 #drink-available-checkbox {
-  background-color: var(--form-input-bg-yellow);
   padding: 6px 9px;
   display: flex;
   align-items: center;
@@ -52,9 +51,6 @@
   position: relative;
   transition: border-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
-}
-
-#drink-available-checkbox input:checked {
 }
 
 #drink-available-checkbox input:checked::after {
@@ -109,11 +105,10 @@
 #order-ingredient-amount {
   box-sizing: border-box;
   height: 30px;
-  width: 50px;
+  width: 60px;
 }
 
 #order-ingredient-add {
-  background-color: var(--form-input-bg-yellow);
   color: var(--primary-font-color);
   padding: 5px 10px;
   border-radius: 5px;
@@ -127,7 +122,7 @@
   scale: 1.05;
 }
 
-.modal-body {
+[modal-body] {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -148,10 +143,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.form-property > .error {
-  margin: 5px 0;
 }
 
 .modal-body {
@@ -179,7 +170,7 @@ h2 {
   linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
   border-radius: 10px;
   border: 3px solid transparent;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-height:30px;
   width: 97%;
   height:30px;
@@ -193,7 +184,7 @@ h2 {
 }
 
 @media (max-width: 650px) {
-  .modal-body {
+  [modal-body] {
     flex-direction: column-reverse;
     gap: 20px;
   }
@@ -205,6 +196,27 @@ h2 {
   }
   #order-ingredient-add {
     margin-left: 3px;
+  }
+}
+
+@media (max-width: 350px) {
+  .action-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  #drink-available-checkbox {
+    order: 1
+  }
+
+  .submit-btn {
+    margin-left: 0;
+    order: 2;
+  }
+
+  .cancel-btn {
+    margin-top: 10px;
+    order: 3;
   }
 }
 
@@ -224,7 +236,7 @@ h2 {
   transition: background-color 0.3s ease;
   position: relative;
   background-color: #fdfded;
-  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.18);
   overflow: hidden;
   height: 200px;
 }
@@ -272,6 +284,8 @@ h2 {
 
 .order-ingredient-amount{
   background-color: #fdfded;
+  box-sizing: border-box;
+  width: 55px;
 }
 
 .order-ingredient-name, .order-new-ingredient-name{

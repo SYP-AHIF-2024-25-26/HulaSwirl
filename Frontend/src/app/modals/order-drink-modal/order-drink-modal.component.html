@@ -1,12 +1,12 @@
-<div class="modal-frame">
-  <div class="modal-form">
-    <div class="modal-head">
-      <h1>{{selectedDrink()?.name}}</h1>
-      <span class="close-modal-button" (click)="closeModal()"></span>
-    </div>
-    <div class="modal-body">
+<app-generic-modal title="{{selectedDrink()?.name}}" (closed)="closeModal()">
+  <div modal-body>
+    <div id="drink-overview">
       <div class="modal-image">
-        <img [src]="selectedDrink()?.imgUrl" alt="Drink Image" class="drink-image">
+        @if (selectedDrink()?.imgUrl) {
+          <img [src]="selectedDrink()?.imgUrl" alt="Drink Image" class="drink-image" />
+        } @else {
+          <p>No image available</p>
+        }
       </div>
       <div id="modal-ingredient-list">
         <h3>Ingredients:</h3>
@@ -15,15 +15,15 @@
         </ul>
       </div>
     </div>
-    <div class="modal-footer">
-      <div id="toppings">
-        <h4>Toppings:</h4>
-        <p>{{selectedDrink()?.toppings}}</p>
-      </div>
-      <button class="button submit-btn" (click)="submitOrder()">Order</button>
+    <div id="toppings">
+      <h4>Toppings:</h4>
+      <p>{{selectedDrink()?.toppings}}</p>
     </div>
-    @if (globalError()){
-      <p class="error global-error">{{ globalError() }}</p>
-    }
   </div>
-</div>
+  <div modal-footer>
+    <p class="error global-error">{{ globalError() }}</p>
+  </div>
+  <div modal-buttons>
+    <button class="button submit-btn" (click)="submitOrder()">Order</button>
+  </div>
+</app-generic-modal>

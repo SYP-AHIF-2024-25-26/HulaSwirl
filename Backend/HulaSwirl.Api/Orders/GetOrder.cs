@@ -13,7 +13,7 @@ public static class GetOrder
         AppDbContext context,
         HttpContext httpContext)
     {
-        if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return Results.Forbid();
+        if (!httpContext.IsAdmin() && !httpContext.IsOperator()) return ErrorResults.Forbidden();
 
         var order = await context.Order
             .Include(o => o.OrderIngredients)

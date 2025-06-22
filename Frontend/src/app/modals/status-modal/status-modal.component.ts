@@ -1,12 +1,12 @@
-import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
+import {Component, effect, inject, signal, Signal} from '@angular/core';
 import {ModalService, ModalType} from '../../services/modal.service';
 import { NgIf } from '@angular/common';
-import {Drink} from '../../services/drink.service';
+import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 
 @Component({
   selector: 'app-status-modal',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, GenericModalComponent],
   templateUrl: './status-modal.component.html',
   styleUrl: './status-modal.component.css'
 })
@@ -16,7 +16,7 @@ export class StatusModalComponent {
   statusMessage = signal('');
   progress: number = 0;
   progressVisible: boolean = false;
-  currentModalData: WritableSignal<any>=signal(null);
+  currentModalData: Signal<any> = signal(null);
 
   async ngOnInit() {
     this.currentModalData = this.modalService.getModalData();
@@ -66,6 +66,6 @@ export class StatusModalComponent {
     this.progressVisible = false;
     this.progress = 0;
     this.statusMessage.set('');
-    this.modalService.closeModal();
+    this.modalService.closeAll();
   }
 }

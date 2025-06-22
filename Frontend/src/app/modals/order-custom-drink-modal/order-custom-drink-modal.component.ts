@@ -1,13 +1,13 @@
 import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
-import {ModalService, ModalType} from '../../services/modal.service';
+import {ModalService} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
-import {NgForOf} from '@angular/common';
+import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
-  imports: [FormsModule],
+  imports: [FormsModule, GenericModalComponent],
   templateUrl: './order-custom-drink-modal.component.html',
   standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'

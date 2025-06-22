@@ -1,17 +1,15 @@
-.modal-body {
+#drink-overview {
   display: flex;
   gap: 20px;
-  color: var(--primary-font-color);
-  overflow: hidden;
+  margin-bottom: 10px;
 }
 
-@media screen and (max-width: 600px) {
-  .modal-body {
+@media screen and (max-width: 650px) {
+  #drink-overview {
     flex-direction: column;
     max-height: 100%;
   }
-
-  .modal-body .modal-image {
+  .modal-image {
     align-self: center;
   }
 }
@@ -40,17 +38,19 @@ p:not(.error) {
   overflow-wrap: break-word;
 }
 
-.modal-body .modal-image {
+.modal-image {
+  width: 260px;
+  height: 260px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 2px dashed var(--element-primary-outline);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 265px;
-  height: 265px;
-  overflow: hidden;
-  border-radius: 10px;
 }
 
-.modal-body .modal-image img {
+.modal-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -102,4 +102,9 @@ ul li:nth-child(6n+5)::before {
 
 ul li:nth-child(6n+6)::before {
   content: "🦩";
+}
+
+[modal-buttons] {
+  display: flex;
+  justify-content: end;
 }
