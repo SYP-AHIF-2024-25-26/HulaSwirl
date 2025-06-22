@@ -45,7 +45,8 @@ public static class UserFactory
         {
             Username = dto.Username,
             KeyHash = BCryptHasher.Hash(dto.Key),
-            Role = "user"
+            Role = "user",
+            CreatedAt = DateTime.UtcNow,
         };
 
         context.User.Add(user);

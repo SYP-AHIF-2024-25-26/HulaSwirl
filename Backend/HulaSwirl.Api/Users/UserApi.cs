@@ -36,6 +36,14 @@ public static class UserApi
             .WithTags("Users")
             .Produces(StatusCodes.Status200OK);
         
+        app.MapGet($"{baseUrl}/info", GetUserInfo.HandleGetUserInfo)
+            .WithName(nameof(GetUserInfo.HandleGetUserInfo))
+            .WithDescription("Get information about the current user via JWT")
+            .WithTags("Users")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized);
+        
         // Login
         app.MapPost($"{baseUrl}/login", Login.HandleLogin)
             .WithName(nameof(Login.HandleLogin))

@@ -1,4 +1,4 @@
-import {Component, inject, Signal} from '@angular/core';
+import {Component, inject, Signal, HostListener, ViewChild, ElementRef, effect, signal} from '@angular/core';
 import {Router, NavigationStart, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgIf, NgClass} from '@angular/common';
 import {ModalService, ModalType} from './services/modal.service';
@@ -12,10 +12,25 @@ import {UserService} from './services/user.service';
 import {StatusModalComponent} from './modals/status-modal/status-modal.component';
 import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
+import {AccountModalComponent} from './modals/account-modal/account-modal.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, OrderCustomDrinkModalComponent, OrderDrinkModalComponent, DrinkModalComponent, RouterLinkActive, UserModalComponent, NgIf, NgClass, StatusModalComponent, LoadingSpinnerComponent, BackgroundLeavesComponent],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    OrderCustomDrinkModalComponent,
+    OrderDrinkModalComponent,
+    DrinkModalComponent,
+    RouterLinkActive,
+    UserModalComponent,
+    NgIf,
+    NgClass,
+    StatusModalComponent,
+    LoadingSpinnerComponent,
+    BackgroundLeavesComponent,
+    AccountModalComponent
+  ],
   templateUrl: './app.component.html',
   standalone: true,
   styleUrl: './app.component.css'
@@ -29,6 +44,23 @@ export class AppComponent {
 
   displayedModal: Signal<ModalType | null> = this.modalService.getDisplayedModal();
   menuOpen = false;
+  accountMenuOpen = false;
+  isAtHomeScreen = signal(false);
+
+  protected userInitials = signal("");
+
+  @ViewChild('navbar') navbar!: ElementRef;
+
+  constructor() {
+    effect(() => {
+      const user = this.userService.username();
+      if (user) {
+        this.userInitials.set(user.split(" ").slice(0, 2).map(sub => sub.charAt(0).toUpperCase()).join(""));
+      } else {
+        this.userInitials.set("");
+      }
+    });
+  }
 
   async ngOnInit() {
     await this.ingredientService.loadIngredients();
@@ -36,6 +68,7 @@ export class AppComponent {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.modalService.closeAll();
+        this.closeMenus();
       }
     });
   }
@@ -46,6 +79,26 @@ export class AppComponent {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+    if (!this.menuOpen) {
+      this.accountMenuOpen = false;
+    }
+  }
+
+  openAccountModal() {
+    this.modalService.openModal(ModalType.Account, null);
+  }
+
+  closeMenus(){
+    this.menuOpen = false;
+    this.accountMenuOpen = false;
+  }
+
+  @HostListener('document:click', ['$event.target'])
+  onDocumentClick(target: HTMLElement) {
+    if (this.menuOpen && this.navbar && !this.navbar.nativeElement.contains(target)) {
+      this.closeMenus();
+    }
+    this.isAtHomeScreen.set(this.router.url === '/' || this.router.url === '/home');
   }
 
   protected readonly ModalType = ModalType;

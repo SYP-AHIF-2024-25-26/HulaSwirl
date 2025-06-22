@@ -20,6 +20,13 @@ interface AuthResponse {
   username: string;
 }
 
+export interface AccountInfo {
+  username: string;
+  role: string;
+  createdAt: Date;
+  lastLogin: Date;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -127,5 +134,17 @@ export class UserService {
       "Authorization": `Bearer ${token}`
     };
     return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-operator", {headers}));
+  }
+
+  async getUserInfo() {
+    const token = this.getTokenFromStorage();
+    if (!token) {
+      return null;
+    }
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    return await firstValueFrom(this.http.get<AccountInfo>(this.apiBaseUrl + "/users/info", {headers}));
   }
 }
