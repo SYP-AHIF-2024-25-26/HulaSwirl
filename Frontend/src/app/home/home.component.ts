@@ -20,7 +20,6 @@ export class HomeComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
 
   allAvailableDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
