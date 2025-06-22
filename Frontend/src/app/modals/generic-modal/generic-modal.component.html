@@ -1,0 +1,15 @@
+<div class="modal-frame">
+  <div class="modal-form">
+    <div class="modal-head">
+      <h1>{{ title }}</h1>
+      <span class="close-modal-button" (click)="close()"></span>
+    </div>
+    <div class="modal-body">
+      <img *ngIf="imageUrl" [src]="imageUrl" class="modal-image" />
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer" *ngIf="buttons.length > 0">
+      <button *ngFor="let btn of buttons" class="button" (click)="btn.action()">{{ btn.label }}</button>
+    </div>
+  </div>
+</div>

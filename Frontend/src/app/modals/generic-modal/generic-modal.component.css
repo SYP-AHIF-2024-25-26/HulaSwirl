@@ -1,0 +1,6 @@
+/* Generic modal specific tweaks if needed */
+.modal-image {
+  max-width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}

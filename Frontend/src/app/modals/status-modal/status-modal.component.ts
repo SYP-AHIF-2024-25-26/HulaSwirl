@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
+import {Component, effect, inject, signal, Signal} from '@angular/core';
 import {ModalService, ModalType} from '../../services/modal.service';
 import { NgIf } from '@angular/common';
 import {Drink} from '../../services/drink.service';
@@ -16,7 +16,7 @@ export class StatusModalComponent {
   statusMessage = signal('');
   progress: number = 0;
   progressVisible: boolean = false;
-  currentModalData: WritableSignal<any>=signal(null);
+  currentModalData: Signal<any> = signal(null);
 
   async ngOnInit() {
     this.currentModalData = this.modalService.getModalData();

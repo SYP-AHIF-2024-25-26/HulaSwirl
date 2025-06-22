@@ -63,6 +63,12 @@
 
   <app-status-modal id="status-modal" [hidden]="displayedModal()!=ModalType.Status"></app-status-modal>
 
+  <ng-container *ngFor="let m of modalStack()">
+    <app-generic-modal *ngIf="m.type === ModalType.Generic" [title]="m.data?.title" [imageUrl]="m.data?.imageUrl" [buttons]="m.data?.buttons">
+      <ng-container *ngIf="m.data?.body" [innerHTML]="m.data.body"></ng-container>
+    </app-generic-modal>
+  </ng-container>
+
 </app-background-leaves>
 
 <app-loading-spinner></app-loading-spinner>

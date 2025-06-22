@@ -1,11 +1,12 @@
-import {effect, EventEmitter, Injectable, Output, signal, WritableSignal} from '@angular/core';
+import {effect, computed, Injectable, signal, WritableSignal} from '@angular/core';
 export enum ModalType{
   CustomOrder,
   Order,
   AddDrink,
   EditDrink,
   Status,
-  User
+  User,
+  Generic
 }
 @Injectable({
   providedIn: 'root'
@@ -14,28 +15,59 @@ export class ModalService {
 
   constructor() {
     effect(() => {
-      document.body.style.overflow = this.displayedModal() !== null ? 'hidden' : '';
+      document.body.style.overflow = this.modalStack().length > 0 ? 'hidden' : '';
     });
   }
 
-  private displayedModal: WritableSignal<null|ModalType> = signal(null);
-  private modalData: WritableSignal<any> = signal(null);
+  private modalStack: WritableSignal<{type: ModalType; data: any; persist: boolean;}[]> = signal([]);
+  private persistedData: Record<ModalType, any> = {} as Record<ModalType, any>;
 
-  closeModal() {
-    this.modalData.set(null);
-    this.displayedModal.set(null);
+  closeModal(keepData: boolean = false) {
+    const stack = [...this.modalStack()];
+    const modal = stack.pop();
+    if (modal) {
+      if (modal.persist && !keepData) {
+        this.persistedData[modal.type] = modal.data;
+      } else if (!modal.persist) {
+        delete this.persistedData[modal.type];
+      }
+    }
+    this.modalStack.set(stack);
   }
 
-  openModal(modal: ModalType, data: any ) {
-    this.modalData.set(data);
-    this.displayedModal.set(modal);
+  closeAll() {
+    this.modalStack.set([]);
+    this.persistedData = {} as Record<ModalType, any>;
+  }
+
+  openModal(modal: ModalType, data: any = null, persist: boolean = false) {
+    if (data === null && this.persistedData[modal]) {
+      data = this.persistedData[modal];
+    }
+    const stack = [...this.modalStack()];
+    stack.push({ type: modal, data, persist });
+    this.modalStack.set(stack);
+  }
+
+  openGenericModal(config: any, persist: boolean = false) {
+    this.openModal(ModalType.Generic, config, persist);
+  }
+
+  getModalStack() {
+    return this.modalStack;
   }
 
   getDisplayedModal() {
-    return this.displayedModal;
+    return computed(() => {
+      const stack = this.modalStack();
+      return stack.length > 0 ? stack[stack.length - 1].type : null;
+    });
   }
 
   getModalData() {
-    return this.modalData;
+    return computed(() => {
+      const stack = this.modalStack();
+      return stack.length > 0 ? stack[stack.length - 1].data : null;
+    });
   }
 }
