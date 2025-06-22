@@ -1,4 +1,4 @@
-import {Component, inject, Signal} from '@angular/core';
+import {Component, inject, Signal, HostListener, ViewChild, ElementRef} from '@angular/core';
 import {Router, NavigationStart, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgIf, NgClass} from '@angular/common';
 import {ModalService, ModalType} from './services/modal.service';
@@ -29,6 +29,9 @@ export class AppComponent {
 
   displayedModal: Signal<ModalType | null> = this.modalService.getDisplayedModal();
   menuOpen = false;
+  accountMenuOpen = false;
+
+  @ViewChild('navbar') navbar!: ElementRef;
 
   async ngOnInit() {
     await this.ingredientService.loadIngredients();
@@ -36,6 +39,7 @@ export class AppComponent {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.modalService.closeAll();
+        this.closeMenus();
       }
     });
   }
@@ -46,6 +50,25 @@ export class AppComponent {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+    if (!this.menuOpen) {
+      this.accountMenuOpen = false;
+    }
+  }
+
+  toggleAccountMenu(){
+    this.accountMenuOpen = !this.accountMenuOpen;
+  }
+
+  closeMenus(){
+    this.menuOpen = false;
+    this.accountMenuOpen = false;
+  }
+
+  @HostListener('document:click', ['$event.target'])
+  onDocumentClick(target: HTMLElement) {
+    if (this.menuOpen && this.navbar && !this.navbar.nativeElement.contains(target)) {
+      this.closeMenus();
+    }
   }
 
   protected readonly ModalType = ModalType;

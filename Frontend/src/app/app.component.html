@@ -1,4 +1,4 @@
-<nav id="navbar">
+<nav id="navbar" #navbar>
   <img src="assets/images/InconV2png.png" id="logo" alt="Logo">
   <button id="menu-toggle" (click)="toggleMenu()">☰</button>
   <div id="nav-page-container" [ngClass]="{open: menuOpen}">
@@ -31,6 +31,19 @@
        routerLinkActive="active">
       Orders
     </a>
+
+    <div id="mobile-user-section">
+      <button id="account-toggle" (click)="toggleAccountMenu()">👤</button>
+      <div id="account-details" *ngIf="accountMenuOpen">
+        <ng-container *ngIf="userService.isLoggedIn(); else mobileLogin">
+          <span>{{ userService.username() || 'N/A' }}</span>
+          <button class="logout-btn" (click)="userService.logout(); closeMenus()">Logout</button>
+        </ng-container>
+        <ng-template #mobileLogin>
+          <a class="login-link" (click)="openLoginModal(); closeMenus()">Login</a>
+        </ng-template>
+      </div>
+    </div>
   </div>
   <div class="spacer"></div>
 

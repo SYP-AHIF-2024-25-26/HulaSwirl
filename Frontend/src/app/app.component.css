@@ -33,6 +33,7 @@
   display: flex;
   gap: 20px;
   align-items: center;
+  transition: max-height 0.3s ease;
 }
 
 .active {
@@ -72,6 +73,36 @@
   /*color: #FF3C3C;*/
 }
 
+#mobile-user-section {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+#mobile-user-section #account-toggle {
+  background: none;
+  border: none;
+  color: #fefde6;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+#mobile-user-section #account-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1rem;
+}
+
+#mobile-user-section .logout-btn {
+  background: transparent;
+  border: none;
+  color: #FF6B6B;
+  cursor: pointer;
+}
+
 #menu-toggle {
   display: none;
   margin-left: auto;
@@ -94,9 +125,13 @@
     flex-direction: column;
     width: 100%;
     gap: 10px;
+    overflow: hidden;
+    max-height: 0;
   }
   #nav-page-container.open {
     display: flex;
+    align-items: flex-start;
+    max-height: 500px;
   }
   .link,
   .bigLink {
@@ -104,5 +139,17 @@
   }
   #menu-toggle {
     display: block;
+  }
+  #user-section {
+    display: none;
+  }
+  #mobile-user-section {
+    display: flex;
+  }
+}
+
+@media (min-width: 769px) {
+  #mobile-user-section {
+    display: none;
   }
 }
