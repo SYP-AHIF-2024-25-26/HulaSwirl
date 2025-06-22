@@ -8,8 +8,8 @@ import {OrderTerminalComponent} from './order-terminal/order-terminal.component'
 export const routes: Routes = [
   {path: '', pathMatch:'full',redirectTo: 'home'},
   {path: 'home', component: HomeComponent},
-  {path: 'admin/drinks',component: DrinksComponent},
-  {path: 'admin/ingredients',component: IngredientsComponent},
-  {path: 'admin/statistics',component: StatisticsComponent},
-  {path: 'admin/orderTerminal',component: OrderTerminalComponent},
+  {path: 'drinks',component: DrinksComponent},
+  {path: 'ingredients',component: IngredientsComponent},
+  {path: 'statistics',component: StatisticsComponent},
+  {path: 'orders',component: OrderTerminalComponent},
 ];

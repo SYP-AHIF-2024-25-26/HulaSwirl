@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
+import {AsyncPipe, NgIf} from '@angular/common';
 import { LoadingService } from '../services/loading.service';
 
 @Component({
   selector: 'app-loading-spinner',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, AsyncPipe],
   templateUrl: './loading-spinner.component.html',
   styleUrl: './loading-spinner.component.css'
 })

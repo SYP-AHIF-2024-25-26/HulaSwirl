@@ -262,6 +262,4 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
     };
     reader.readAsDataURL(file);
   }
-
-  protected readonly console = console;
 }

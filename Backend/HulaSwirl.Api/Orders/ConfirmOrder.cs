@@ -57,7 +57,7 @@ public static class ConfirmOrder
             {
                 return ErrorResults.BadRequest(new ErrorDto
                 {
-                    Message = $"Needed {di.Amount}ml of {di.IngredientName} but only {stored.MaxAmount}ml are available",
+                    Message = $"Needed {di.Amount}ml of {di.IngredientName} but only {stored.RemainingAmount}ml are available",
                     Target = string.Empty
                 });
             }
