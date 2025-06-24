@@ -28,7 +28,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
   drinkTitle: WritableSignal<string> = signal('');
   drinkToppings: WritableSignal<string> = signal('');
   selectedIngredient: WritableSignal<string> = signal('');
-  selectedAmount: WritableSignal<number> = signal(10);
+  selectedAmount: WritableSignal<number> = signal(0);
 
   drinkTitleError: WritableSignal<string> = signal('');
   drinkIngredientsError: WritableSignal<string> = signal('');
@@ -88,6 +88,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
 
   selectIngredient() {
     const first = this.availableIngredients()[0];
+    console.log("Selected ingredient:", first);
     this.selectedIngredient.set(first ? first.ingredientName : 'newIngredient');
   }
 
@@ -115,7 +116,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
       ing => ing.ingredientName === this.selectedIngredient()
     );
     this.clearFieldError('ingredients');
-    if (avIng && this.selectedAmount() > 0 && this.selectedAmount() <= 500) {
+    if (avIng) {
       this.availableIngredients.set(
         this.availableIngredients().filter(
           ing => ing.ingredientName !== this.selectedIngredient()
@@ -130,9 +131,6 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
           type: 'existing',
         },
       ]);
-
-      this.selectIngredient();
-      this.selectedAmount.set(10);
     } else {
       this.drinkIngredients.set([
         ...this.drinkIngredients(),
@@ -143,9 +141,9 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
           type: 'new',
         },
       ]);
-      this.selectIngredient();
-      this.selectedAmount.set(10);
     }
+    this.selectIngredient();
+    this.selectedAmount.set(0);
   }
 
   async submitDrink() {

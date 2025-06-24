@@ -2,11 +2,11 @@
   <form (ngSubmit)="onSubmit()" modal-body #authForm="ngForm">
     <ng-container *ngIf="mode() === 'login'">
       <div class="flex-row">
-        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="loginUsername" />
+        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="username" />
       </div>
       <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
       <div class="flex-row">
-        <input name="key" ngModel required [type]="showLoginPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="loginKey" />
+        <input name="key" ngModel required [type]="showLoginPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="key" />
         <span class="password-toggle" (click)="togglePasswordVisibility('login')">
           <i class="fa" [class.fa-eye]="!showLoginPassword()" [class.fa-eye-slash]="showLoginPassword()"></i>
         </span>
@@ -16,11 +16,11 @@
     </ng-container>
     <ng-container *ngIf="mode() === 'register'">
       <div class="flex-row">
-        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="regUsername" />
+        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="username" />
       </div>
       <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
       <div class="flex-row">
-        <input name="key" ngModel required [type]="showRegPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="regKey" />
+        <input name="key" ngModel required [type]="showRegPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="key" />
         <span class="password-toggle" (click)="togglePasswordVisibility('register')">
           <i class="fa" [class.fa-eye]="!showRegPassword()" [class.fa-eye-slash]="showRegPassword()"></i>
         </span>

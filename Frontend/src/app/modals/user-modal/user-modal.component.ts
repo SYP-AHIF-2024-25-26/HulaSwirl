@@ -26,13 +26,8 @@ export class UserModalComponent extends ErrorHandlingComponent {
 
   mode = signal<'login' | 'register'>('login');
 
-  // login
-  loginUsername = signal('');
-  loginKey = signal('');
-
-  // register
-  regUsername = signal('');
-  regKey = signal('');
+  username = signal('');
+  key = signal('');
 
   constructor() {
     super();
@@ -53,7 +48,7 @@ export class UserModalComponent extends ErrorHandlingComponent {
     this.clearGlobalError();
     this.clearFieldError();
     try {
-      await this.userService.login(this.loginUsername(), this.loginKey());
+      await this.userService.login(this.username(), this.key());
       if (this.userService.isLoggedIn()) {
         this.closeModal();
       }
@@ -67,8 +62,8 @@ export class UserModalComponent extends ErrorHandlingComponent {
     this.clearFieldError();
     try {
       await this.userService.register(
-        this.regUsername(),
-        this.regKey()
+        this.username(),
+        this.key()
       );
       if (this.userService.isLoggedIn()) {
         this.closeModal();

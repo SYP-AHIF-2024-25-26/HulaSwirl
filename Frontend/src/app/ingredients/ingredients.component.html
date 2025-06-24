@@ -14,14 +14,16 @@
         <div class="slot-ingredient" (dragover)="dragOver($event)" (drop)="availableDrop($event, i)">
           <div *ngIf="getIngredientByIndex(i)" class="ingredient"
                draggable="true"
-               (dragstart)="dragStart($event, i)">
+               (dragstart)="dragStart($event, i)"
+               (click)="moveToUnavailable(getIngredientByIndex(i)!)">
             <div class="ingredient-name">
               {{ getIngredientByIndex(i)!.ingredientName }}
             </div>
             <div class="ingredient-quantity">
               <input type="number"
-                     (blur)="updateRemaining($event, i)" (mousedown)="$event.stopPropagation()"
-                     value="{{ getIngredientByIndex(i)!.remainingAmount }}" max="9999" min="0">
+                     (blur)="updateRemaining($event, i)"
+                     value="{{ getIngredientByIndex(i)!.remainingAmount }}" max="9999" min="0"
+                     (click)="$event.stopPropagation()">
               <span>ml</span>
             </div>
             <div class="liquid-bar"
@@ -38,7 +40,8 @@
     <div id="ingredient-pool">
       <div *ngFor="let ingredient of unIngredients(); let j = index" class="ingredient"
            draggable="true"
-           (dragstart)="dragStart($event, j, false)">
+           (dragstart)="dragStart($event, j, false)"
+      (click)="moveToAvailable(ingredient)">
         <div class="ingredient-name">
           {{ ingredient.ingredientName }}
         </div>

@@ -6,7 +6,7 @@
             <h3>{{userInfo()!.username}}</h3>
             <h5 class="badge"
                 id="{{userInfo()!.role == 'admin' ? 'admin' : userInfo()!.role == 'operator' ? 'operator' : 'user'}}">
-              [{{userInfo()!.role.toUpperCase()}}]
+              {{userInfo()!.role.toUpperCase()}}
             </h5>
           </div>
           <div class="row">

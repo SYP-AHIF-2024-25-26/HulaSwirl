@@ -52,6 +52,7 @@ export class AppComponent {
   @ViewChild('navbar') navbar!: ElementRef;
 
   constructor() {
+    this.isAtHome();
     effect(() => {
       const user = this.userService.username();
       if (user) {
@@ -71,6 +72,7 @@ export class AppComponent {
         this.closeMenus();
       }
     });
+    this.isAtHome();
   }
 
   openLoginModal(){
@@ -80,6 +82,7 @@ export class AppComponent {
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
     if (!this.menuOpen) {
+
       this.accountMenuOpen = false;
     }
   }
@@ -98,7 +101,11 @@ export class AppComponent {
     if (this.menuOpen && this.navbar && !this.navbar.nativeElement.contains(target)) {
       this.closeMenus();
     }
-    this.isAtHomeScreen.set(this.router.url === '/' || this.router.url === '/home');
+    this.isAtHome();
+  }
+
+  private isAtHome() {
+    return this.isAtHomeScreen.set(this.router.url === '/' || this.router.url === '/home');
   }
 
   protected readonly ModalType = ModalType;

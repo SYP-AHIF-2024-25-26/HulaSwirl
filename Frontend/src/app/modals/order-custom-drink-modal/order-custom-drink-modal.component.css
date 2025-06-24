@@ -87,7 +87,8 @@
 }
 
 .order-ingredient-amount {
-  width: 30px;
+  box-sizing: border-box;
+  width: 55px;
   text-align: end;
 }
 

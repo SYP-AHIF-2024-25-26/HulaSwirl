@@ -5,41 +5,39 @@
     <a class="bigLink" routerLink="home">
       Home
     </a>
-    <a class="link"
+    <a class="link" [ngClass]="{light: !menuOpen}"
        *ngIf="userService.getAdminStatus()"
        routerLink="drinks"
        routerLinkActive="active">
       Drinks
     </a>
-    <a class="link"
+    <a class="link" [ngClass]="{light: !menuOpen}"
        *ngIf="userService.getAdminStatus()"
        routerLink="ingredients"
        routerLinkActive="active">
       Ingredients
     </a>
 
-    <a class="link"
+    <a class="link" [ngClass]="{light: !menuOpen}"
        *ngIf="userService.getAdminStatus()"
        routerLink="statistics"
        routerLinkActive="active">
       Statistics
     </a>
-    <a class="link"
+    <a class="link" [ngClass]="{light: !menuOpen}"
        *ngIf="userService.getAdminStatus() || userService.getOperatorStatus()"
        routerLink="orders"
        routerLinkActive="active">
       Orders
     </a>
   </div>
+  <div id="account-toggle" [ngClass]="{light: !menuOpen}" (click)="userInitials() ? openAccountModal() : openLoginModal()">
   @if(userInitials()) {
-    <div id="account-toggle" (click)="openAccountModal()">
-      <p>{{userInitials()}}</p>
-    </div>
+    <p class="noselect">{{userInitials()}}</p>
   } @else {
-    <div id="login" (click)="openLoginModal()">
-      <p>Login</p>
-    </div>
+    <p>🦩</p>
   }
+  </div>
 </nav>
 
 <app-background-leaves>

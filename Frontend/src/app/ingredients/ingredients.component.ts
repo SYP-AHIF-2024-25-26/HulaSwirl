@@ -39,6 +39,7 @@ export class IngredientsComponent extends ErrorHandlingComponent {
 
   dragStart(event: DragEvent, index: number, available: boolean = true) {
     const ingredient = available ? this.getIngredientByIndex(index) : this.unIngredients()[index];
+    console.log(event.target);
     if (!ingredient) return;
     this.draggedIngredient = ingredient;
     this.sourceContainer = available ? 'available' : 'unavailable';
@@ -135,6 +136,19 @@ export class IngredientsComponent extends ErrorHandlingComponent {
     this.unIngredients.update(ings => [...ings, ingredient]);
     this.avIngredients.update(ings => ings.filter(ing => ing.pumpSlot !== ingredient.pumpSlot));
     ingredient.pumpSlot = null;
+    ingredient.maxAmount = ingredient.remainingAmount;
+  }
+
+  moveToAvailable(ingredient: Ingredient) {
+    if (!ingredient || ingredient.pumpSlot !== null || this.avIngredients().length == this.ingredientSlots) return;
+    this.avIngredients.update(ings => [...ings, ingredient]);
+    this.unIngredients.update(ings => ings.filter(ing => ing.ingredientName !== ingredient.ingredientName));
+    for(let i = 0; i < this.ingredientSlots; i++) {
+      if (!this.avIngredients().some(ing => ing.pumpSlot === i + 1)) {
+        ingredient.pumpSlot = i + 1;
+        break;
+      }
+    }
     ingredient.maxAmount = ingredient.remainingAmount;
   }
 
