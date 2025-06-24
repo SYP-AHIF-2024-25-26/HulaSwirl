@@ -37,12 +37,12 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
     return this.orderIngredients().some(i => i.ingredientName === name);
   }
 
-  toggleIngredient(ingredient: Ingredient, e: EventTarget) {
+  toggleIngredient(ingredient: Ingredient, e: EventTarget, select: boolean = false) {
     this.clearGlobalError();
     this.clearFieldError(ingredient.ingredientName);
     const checked = this.isSelected(ingredient.ingredientName)
     if(e instanceof HTMLInputElement) {
-      e.select()
+      if(select) e.select()
       if(checked) return;
     }
     const name = ingredient.ingredientName;

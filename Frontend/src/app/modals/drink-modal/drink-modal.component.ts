@@ -88,7 +88,6 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
 
   selectIngredient() {
     const first = this.availableIngredients()[0];
-    console.log("Selected ingredient:", first);
     this.selectedIngredient.set(first ? first.ingredientName : 'newIngredient');
   }
 

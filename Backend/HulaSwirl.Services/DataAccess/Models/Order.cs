@@ -3,9 +3,9 @@ using HulaSwirl.Services.OrderService;
 
 namespace HulaSwirl.Services.DataAccess.Models;
 
-public class Order(string username, DateTime orderDate, string drinkName, List<OrderIngredient> ingredients)
+public class Order(string username, DateTime orderDate, string drinkName, List<OrderIngredient> ingredients, bool containsIce)
 {
-    public Order() : this(string.Empty, DateTime.MinValue, string.Empty, []) { }
+    public Order() : this(string.Empty, DateTime.MinValue, string.Empty, [], false) { }
 
     public int Id { get; set; }
     [StringLength(50)]
@@ -15,4 +15,5 @@ public class Order(string username, DateTime orderDate, string drinkName, List<O
     public string DrinkName { get; set; } = drinkName;
     public List<OrderIngredient> OrderIngredients { get; set; } = ingredients;
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
+    public bool ContainsIce { get; set; } = containsIce;
 }

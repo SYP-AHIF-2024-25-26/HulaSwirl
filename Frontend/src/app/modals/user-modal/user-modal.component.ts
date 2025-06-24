@@ -93,8 +93,7 @@ export class UserModalComponent extends ErrorHandlingComponent {
   }
 
   closeModal() {
-    this.clearFieldError();
-    this.clearGlobalError();
+    this.switchMode("login");
     this.modalService.closeModal();
   }
 

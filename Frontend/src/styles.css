@@ -121,13 +121,48 @@ html{
 
 .cancel-btn {
   background-color: var(--cancel-btn-bg);
-  color: white;
 }
 
 .submit-btn {
   background: var(--sunset-gradient);
-  color: white;
   transition: 0.3s;
+}
+
+.checkbox-container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container label {
+  padding-top: 4px;
+  cursor: pointer;
+}
+
+.checkbox-container input {
+  appearance: none;
+  min-width: 20px;
+  min-height: 20px;
+  border: 1px solid var(--element-primary-outline);
+  border-radius: 4px;
+  background: #fff;
+  margin: 0 8px 0 0;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.checkbox-container input:checked:after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 0;
+  width: 6px;
+  height: 12px;
+  border: solid var(--primary-font-color);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  display: block;
 }
 
 .form-input {

@@ -1,11 +1,8 @@
 .orders {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 400px);
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
   justify-content: center;
 }
 
@@ -16,56 +13,65 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  min-width: 300px;
+  width: 400px;
+  box-sizing: border-box;
+  flex: -1;
 }
 
 /* Titel und Meta */
-.order-card h3 {
-  font-size: 1.25rem;
+.order-card h2 {
   margin: 0 0 0.5rem;
   text-align: center;
 }
+
+.ice {
+  font-size: 1.2rem;
+}
+
 .meta {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #555;
   margin-bottom: 0.75rem;
   text-align: center;
   margin-top: 3px;
 }
 
-/* Zutatenliste */
-.order-card ul {
+.ingredient-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 0;
+  margin: 0;
+  flex: 1;
 }
-.order-card ul li {
+
+.ingredient-list-item {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 0.25rem;
+}
+
+.ingredient-list-item p {
+  margin: 0.1rem 0;
+  font-size: 1.2rem;
+}
+
+.line-full-w {
+  margin-top: auto;
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+  border-radius: 50%;
 }
 
 /* Buttons nebeneinander */
 .actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 10px;
+  transition: transform .5s ease;
 }
+
 .actions button {
   flex: 1;
-  padding: 0.5rem 0;
-  border: none;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: transform .1s ease;
-}
-.actions button:active {
-  transform: scale(0.98);
-}
-.actions button:first-child {
-  background: var(--sunrise-gradient);
-  color: #fff;
-}
-.actions button:last-child {
-  background: var(  --order-btn-bg);
-  color: #fff;
 }
 
 /* Fallback, wenn keine Bestellungen da sind */
@@ -75,16 +81,25 @@
   margin: 2rem 0;
 }
 
-.full-w-line {
-  width: 100%;
-  height: 2px;
-  border-radius: 10px;
-  background: var(--sunset-gradient);
-  margin: 0.5rem 0;
+.total {
+  margin: 0.5rem 0 !important;
 }
 
-#total {
-  margin-bottom: 1rem;
+.order-content {
   display: flex;
-  gap: 5px;
+  gap: 1rem;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.glass-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.total {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
