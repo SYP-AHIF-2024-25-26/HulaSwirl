@@ -5,11 +5,23 @@
       By <strong>{{ o.user }}</strong> –
       <small>{{ o.orderDate | date:'short' }}</small>
     </p>
-    <ul>
-      <li *ngFor="let i of o.orderIngredients">
-        {{ i.ingredientName }} – {{ i.amount }} ml
-      </li>
-    </ul>
+    <div class="order-content">
+      <div class="glass-wrapper">
+        <div class="glass">
+          <div class="layer" *ngFor="let i of o.orderIngredients"
+               [style.background]="getIngredientColor(i.ingredientName)"
+               [style.height.%]="getHeight(i.amount)">
+            <span class="layer-text">{{ i.ingredientName }} – {{ i.amount }} ml</span>
+          </div>
+        </div>
+        <p class="total">{{ getTotal(o.orderIngredients) }} / 500 ml</p>
+      </div>
+      <ul class="ingredient-list">
+        <li *ngFor="let i of o.orderIngredients">
+          {{ i.ingredientName }} – {{ i.amount }} ml
+        </li>
+      </ul>
+    </div>
     <div class="actions">
       <button  (click)="confirm(o.id)">Mix</button>
       <button  (click)="cancel(o.id)">Discard</button>

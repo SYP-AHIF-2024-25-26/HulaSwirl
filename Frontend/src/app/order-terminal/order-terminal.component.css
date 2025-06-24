@@ -74,3 +74,55 @@
   color: #666;
   margin: 2rem 0;
 }
+
+/* New glass layout */
+.order-content {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.glass-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.glass {
+  width: 120px;
+  height: 240px;
+  border: 3px solid #555;
+  border-radius: 0 0 15px 15px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  background: #fff;
+}
+
+.layer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 2px;
+}
+
+.total {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.ingredient-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+.ingredient-list li {
+  margin-bottom: 0.25rem;
+}

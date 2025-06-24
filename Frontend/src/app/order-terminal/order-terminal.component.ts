@@ -26,6 +26,20 @@ export class OrderTerminalComponent extends ErrorHandlingComponent {
   ngOnInit(): void {
     this.connectWebSocket();
   }
+
+  getIngredientColor(name: string): string {
+    const hash = Array.from(name).reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    const hue = hash % 360;
+    return `hsl(${hue}, 70%, 60%)`;
+  }
+
+  getHeight(amount: number): number {
+    return Math.min(amount / 500 * 100, 100);
+  }
+
+  getTotal(ings: { amount: number }[]): number {
+    return ings.reduce((sum, i) => sum + i.amount, 0);
+  }
   connectWebSocket(): void {
     this.ordersService.connectWebSocket()
   }
