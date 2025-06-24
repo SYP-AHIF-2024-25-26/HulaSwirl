@@ -1,68 +1,54 @@
-#D_Container {
+h1, h2, h3, h4 {
+  margin: 0;
+}
+
+#drinks-admin {
   width: 90%;
   margin: 0 auto 4vw auto;
 }
 
-#D_DrinksFilterSearchContainer {
+.filter-section {
   width: 95%;
   margin: 3vh auto;
 }
 
-#D_FilterSearchWrapper {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: flex-end;
+/* use global drink-filter-container styles */
+.filter-section .drink-filter-container {
   margin-bottom: 20px;
+  justify-content: flex-end;
 }
 
-#D_SearchInput {
-  width: 67%;
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  background: linear-gradient(white, white) padding-box, linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  color: var(--primary-font-color);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#D_FilterDropdown {
-  padding: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  appearance: none;
+@media (max-width: 600px) {
+  .filter-section .drink-filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-section .drink-filter-container input,
+  .filter-section .drink-filter-container select {
+    width: 100%;
+  }
 }
 
 h2 {
   color: var(--primary-font-color);
-  padding: 1vw;
-  font-size: 2.5vw;
+  padding: 1rem 0;
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
   text-align: start;
   font-family: AdlamDisplay, serif;
-  margin-top: 2vw;
-  margin-bottom: 1vw;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
   font-weight: lighter;
 }
 
-.D_DrinksContainer {
+.drinks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 0.9rem;
   justify-items: start;
 }
 
-.D_Drink {
-  width: 180px;
+.drink-tile {
+  width: 100%;
   margin: 0;
   border-radius: 15px;
   background-color: var(--ingredient-bg-color);
@@ -76,11 +62,11 @@ h2 {
   transition: transform 0.2s ease-in-out;
 }
 
-.D_Drink:hover {
+.drink-tile:hover {
   transform: scale(1.05);
 }
 
-.D_imgContainer {
+.drink-image-container {
   width: 100%;
   height: 180px;
   overflow: hidden;
@@ -90,13 +76,13 @@ h2 {
   align-items: center;
 }
 
-.D_img {
+.drink-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.D_DrinkText {
+.drink-name {
   height: 3em;
   overflow: hidden;
   text-overflow: ellipsis;
