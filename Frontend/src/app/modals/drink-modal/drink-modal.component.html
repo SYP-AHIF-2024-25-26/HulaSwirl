@@ -68,7 +68,7 @@
   <div modal-buttons class="action-buttons">
     @if(mode() === 'edit'){
       <button class="button cancel-btn" (click)="deleteDrink()">Delete</button>
-      <div id="drink-available-checkbox" class="button" (click)="drinkAvailable.set(!drinkAvailable())">
+      <div class="checkbox-container button" (click)="drinkAvailable.set(!drinkAvailable())">
         <input type="checkbox" [(ngModel)]="drinkAvailable">
         <label>
           Available

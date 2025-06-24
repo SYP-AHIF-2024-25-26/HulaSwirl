@@ -64,6 +64,10 @@ p:not(.error) {
   flex-direction: column;
 }
 
+.checkbox-container label {
+  font-size: 1.2rem;
+}
+
 ul {
   margin: 10px 0;
   padding: 0;

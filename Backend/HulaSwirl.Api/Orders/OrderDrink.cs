@@ -17,7 +17,8 @@ public static class OrderDrink
         AppDbContext context, 
         HttpContext httpContext,
         ObservableOrderService orderService,
-        JwtService jwtService)
+        JwtService jwtService,
+        [FromQuery] bool containsIce = false)
     {
         var drink = await context.Drink
             .Include(d => d.DrinkIngredients)
@@ -34,10 +35,10 @@ public static class OrderDrink
         {
             var orderIngredients = drink.DrinkIngredients
                 .Select(i =>
-                    new OrderIngredient(i.IngredientNameFk, i.Amount))
+                    new OrderIngredient(i.IngredientNameFk, (int) (i.Amount * (containsIce ? 0.75 : 1))))
                 .ToList();
             var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
-            var order = new Order(username, DateTime.Now, drink.Name, orderIngredients);
+            var order = new Order(username, DateTime.Now, drink.Name, orderIngredients, containsIce);
             context.Order.Add(order);
             await context.SaveChangesAsync();
             var orders = await context.Order

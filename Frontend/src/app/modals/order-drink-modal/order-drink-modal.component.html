@@ -1,24 +1,28 @@
 <app-generic-modal title="{{selectedDrink()?.name}}" (closed)="closeModal()">
   <div modal-body>
     <div id="drink-overview">
+      @if (selectedDrink()?.imgUrl) {
       <div class="modal-image">
-        @if (selectedDrink()?.imgUrl) {
-          <img [src]="selectedDrink()?.imgUrl" alt="Drink Image" class="drink-image" />
-        } @else {
-          <p>No image available</p>
-        }
+        <img [src]="selectedDrink()!.imgUrl" alt="Drink Image" class="drink-image" />
       </div>
+      }
       <div id="modal-ingredient-list">
         <h3>Ingredients:</h3>
         <ul>
           <li *ngFor="let drink of selectedDrink()?.drinkIngredients">{{drink.amount}}ml {{drink.ingredientName}}</li>
+          <li class="checkbox-container" (click)="containsIce.set(!containsIce())">
+            <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
+            <label for="containsIce">Ice</label>
+          </li>
         </ul>
       </div>
     </div>
+    @if(selectedDrink()?.toppings) {
     <div id="toppings">
       <h4>Toppings:</h4>
-      <p>{{selectedDrink()?.toppings}}</p>
+      <p>{{selectedDrink()!.toppings}}</p>
     </div>
+    }
   </div>
   <div modal-footer>
     <p class="error global-error">{{ globalError() }}</p>

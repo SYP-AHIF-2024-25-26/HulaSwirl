@@ -6,7 +6,7 @@
         <div class="order-ingredient-details">
           <div class="ingredient-properties">
             <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
-            <input min="1" max="500" type="number" class="order-ingredient-amount form-input" (click)="toggleIngredient(ingredient, $event.target!)" [attr.tabindex]="$index + 1" [ngModel]="getAmount(ingredient.ingredientName)" (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
+            <input min="1" max="500" type="number" class="order-ingredient-amount form-input" (input)="toggleIngredient(ingredient, $event.target!)" (click)="toggleIngredient(ingredient, $event.target!, true)" [attr.tabindex]="$index + 1" [ngModel]="getAmount(ingredient.ingredientName)" (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
             <span class="order-ingredient-unit">ml</span>
           </div>
           <p class="error field-error">{{ getStatus(ingredient.ingredientName) }}</p>

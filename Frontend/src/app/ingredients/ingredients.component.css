@@ -11,38 +11,32 @@
   gap: 10px;
   justify-content: center;
   margin: 20px 10%;
-
 }
 
 #available-ingredients {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex: 1;
-  min-width: 400px;
+  min-width: 350px;
 }
 
 #unavailable-ingredients {
-  flex: 2;
-  min-width: 450px;
-}
-
-#available-ingredients-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex: 1.3;
+  min-width: 350px;
 }
 
 #save-button {
+  margin-top: 20px;
   background-color: #2880b1;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
+  width: 30%;
 }
 
 #ingredient-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .slot {
@@ -159,5 +153,8 @@ input[type=number] {
   }
   #available-ingredients, #unavailable-ingredients {
     min-width: 300px;
+  }
+  #save-button {
+    width: 70%;
   }
 }

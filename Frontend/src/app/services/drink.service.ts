@@ -47,12 +47,12 @@ export class DrinkService {
     await this.loadDrinks();
   }
 
-  async orderDrink(ID: number) {
+  async orderDrink(ID: number, containsIce: boolean = false) {
     const jwt = this.userService.getTokenFromStorage();
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    const res = await firstValueFrom(this.httpClient.post(this.apiBaseUrl + "/orders/drink/" + ID, {}, {
+    const res = await firstValueFrom(this.httpClient.post(this.apiBaseUrl + `/orders/drink/${ID}?containsIce=${containsIce}`, {}, {
       headers,
       observe: 'response'
     }));

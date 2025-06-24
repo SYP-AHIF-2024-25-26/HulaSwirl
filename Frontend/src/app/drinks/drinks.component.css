@@ -1,8 +1,6 @@
 #D_Container {
   width: 90%;
-  min-height: 30vh;
   margin: 0 auto 4vw auto;
-  max-width: 1200px;
 }
 
 #D_DrinksFilterSearchContainer {

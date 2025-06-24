@@ -25,6 +25,7 @@ export class OrderTerminalComponent extends ErrorHandlingComponent {
 
   ngOnInit(): void {
     this.connectWebSocket();
+    console.log(this.orders());
   }
   connectWebSocket(): void {
     this.ordersService.connectWebSocket()

@@ -28,7 +28,7 @@ public static class OrderCustomDrink
             var drinkIngredients = ingredientDtos.Select(dto =>
                 new OrderIngredient(dto.IngredientName, dto.Amount)
             ).ToList();
-            var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients);
+            var order = new Order(username, DateTime.Now, "Custom drink", drinkIngredients, false);
             context.Order.Add(order);
             await context.SaveChangesAsync();
             var orders = await context.Order

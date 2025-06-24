@@ -1,24 +1,30 @@
 <div class="orders" *ngIf="orders().length; else noOrders">
   <div class="order-card" *ngFor="let o of orders()">
-    <h3>{{ o.drinkName }}</h3>
+    @if(o.containsIce) {
+      <h2>{{ o.drinkName }} <span class="ice">(❄️)</span></h2>
+    } @else {
+      <h2>{{ o.drinkName }}</h2>
+    }
     <p class="meta">
       By <strong>{{ o.user }}</strong> –
       <small>{{ o.orderDate | date:'short' }}</small>
     </p>
-    <span class="full-w-line"></span>
-    <ul>
-      <li *ngFor="let i of o.orderIngredients">
-        {{ i.ingredientName }} – {{ i.amount }} ml
-      </li>
-    </ul>
-    <span class="full-w-line"></span>
-    <div id="total">
-      <b>Total:</b>
-      <span>{{ o.totalAmount }}ml</span>
+    <div class="order-content">
+      <ul class="ingredient-list">
+        <li class="ingredient-list-item" *ngFor="let i of o.orderIngredients">
+          <p>{{ i.ingredientName }}</p>
+          <p>{{ i.amount }} ml</p>
+        </li>
+      </ul>
+    </div>
+    <div class="line-full-w"></div>
+    <div class="ingredient-list-item total">
+      <p>Total:</p>
+      <p>{{ o.totalAmount }} ml</p>
     </div>
     <div class="actions">
-      <button  (click)="confirm(o.id)">Mix</button>
-      <button  (click)="cancel(o.id)">Discard</button>
+      <button class="button cancel-btn" (click)="cancel(o.id)">Discard</button>
+      <button class="button submit-btn" (click)="confirm(o.id)">Mix</button>
     </div>
   </div>
 </div>

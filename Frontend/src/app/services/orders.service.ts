@@ -16,6 +16,7 @@ export interface IncomingOrder {
   orderIngredients: OrderIngredient[];
   status: 0 | 1 | 2;
   user: string;
+  containsIce: boolean;
   totalAmount: number | undefined;
 }
 

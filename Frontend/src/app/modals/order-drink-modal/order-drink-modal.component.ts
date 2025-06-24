@@ -4,12 +4,14 @@ import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import {Drink, DrinkService} from '../../services/drink.service';
 import {ModalService, ModalType} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-order-drink-modal',
   imports: [
     NgForOf,
-    GenericModalComponent
+    GenericModalComponent,
+    FormsModule
   ],
   templateUrl: './order-drink-modal.component.html',
   standalone: true,
@@ -19,9 +21,11 @@ export class OrderDrinkModalComponent extends ErrorHandlingComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
   selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
+  containsIce = signal(false);
 
   closeModal() {
     this.clearGlobalError();
+    this.containsIce.set(false);
     this.modalService.closeModal();
   }
 
@@ -29,7 +33,7 @@ export class OrderDrinkModalComponent extends ErrorHandlingComponent {
     this.clearGlobalError();
     try {
       if (this.selectedDrink()) {
-        await this.drinkService.orderDrink(this.selectedDrink()!.id);
+        await this.drinkService.orderDrink(this.selectedDrink()!.id, this.containsIce());
         this.closeModal();
       }
     } catch (e) {

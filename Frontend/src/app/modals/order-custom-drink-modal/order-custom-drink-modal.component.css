@@ -93,7 +93,7 @@
 }
 
 @media (max-width: 768px) {
-  .order-buttons {
-    flex-direction: column;
+  .button {
+    flex: 1;
   }
 }
