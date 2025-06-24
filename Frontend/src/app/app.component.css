@@ -45,7 +45,7 @@
   text-decoration-thickness: 2px;
 }
 
-#account-toggle, #login {
+#account-toggle {
   margin-left: auto;
   cursor: pointer;
   display: flex;
@@ -60,19 +60,13 @@
   border-radius: 50% !important;
 }
 
-#login {
-  padding: 15px 20px;
-  border-radius: 30px;
-}
-
-#account-toggle p, #login p {
+#account-toggle p {
   font-size: 20px;
   color: var(--body-bg);
   letter-spacing: 2px;
   font-weight: 1000;
   margin: 4px 0 0 1px;
 }
-
 #menu-toggle {
   display: none;
   justify-self: end;
@@ -86,7 +80,6 @@
 @media screen and (max-width: 1000px) {
   #logo {
     height: 80px;
-    margin: 0 auto;
   }
 
   .link, .bigLink {
@@ -125,6 +118,7 @@
     text-align: start;
     font-size: 24px;
   }
+
   #menu-toggle {
     display: block;
     width: 60px;
@@ -139,12 +133,14 @@
     height: auto;
     flex-wrap: wrap;
     gap: 15px;
+    justify-content: space-between;
   }
   #nav-page-container {
     order: 3;
   }
 
-  #account-toggle, #login {
+  #account-toggle {
+    background: var(--nav-overlay-bg);
     margin: 0;
   }
 }
@@ -175,7 +171,7 @@
     text-align: center;
   }
 
-  #login, #account-toggle {
+  #account-toggle {
     margin-left: auto;
   }
 }

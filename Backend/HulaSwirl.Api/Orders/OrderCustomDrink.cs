@@ -1,11 +1,8 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DataAccess.Models;
-using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.Dtos;
 using HulaSwirl.Services.OrderService;
-using HulaSwirl.Services.Pumps;
 using HulaSwirl.Services.UserServices;
-using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 

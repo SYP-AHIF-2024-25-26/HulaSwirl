@@ -5,11 +5,17 @@
       By <strong>{{ o.user }}</strong> –
       <small>{{ o.orderDate | date:'short' }}</small>
     </p>
+    <span class="full-w-line"></span>
     <ul>
       <li *ngFor="let i of o.orderIngredients">
         {{ i.ingredientName }} – {{ i.amount }} ml
       </li>
     </ul>
+    <span class="full-w-line"></span>
+    <div id="total">
+      <b>Total:</b>
+      <span>{{ o.totalAmount }}ml</span>
+    </div>
     <div class="actions">
       <button  (click)="confirm(o.id)">Mix</button>
       <button  (click)="cancel(o.id)">Discard</button>

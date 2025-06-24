@@ -28,7 +28,7 @@
   font-size: 0.875rem;
   color: #555;
   margin-bottom: 0.75rem;
-  text-align: left;
+  text-align: center;
   margin-top: 3px;
 }
 
@@ -73,4 +73,18 @@
   text-align: center;
   color: #666;
   margin: 2rem 0;
+}
+
+.full-w-line {
+  width: 100%;
+  height: 2px;
+  border-radius: 10px;
+  background: var(--sunset-gradient);
+  margin: 0.5rem 0;
+}
+
+#total {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 5px;
 }

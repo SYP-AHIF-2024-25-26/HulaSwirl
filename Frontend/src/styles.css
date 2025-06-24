@@ -1,8 +1,7 @@
 :root {
   --body-bg: #faeee1;
   --nav-bg: #0e2d3e;
-  --nav-overlay-bg: rgb(18, 54, 74);
-  --nav-overlay-bg-deep: #224b61;
+  --nav-overlay-bg: rgba(21, 60, 81, 0.65);
   --popup-bg: #f4e3cd;
   --link-color: #6091af;
   --ingredient-bg-color: #f4f3f2;
@@ -54,6 +53,14 @@ p, span, label, input, textarea, select {
   color: var(--primary-font-color);
   font-family: var(--default-font), serif;
   font-size: 1rem;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently */
 }
 
 body::-webkit-scrollbar {
@@ -265,5 +272,5 @@ html{
 
 .global-error {
   font-size: 16px !important;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
 }

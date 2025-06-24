@@ -16,6 +16,7 @@ export interface IncomingOrder {
   orderIngredients: OrderIngredient[];
   status: 0 | 1 | 2;
   user: string;
+  totalAmount: number | undefined;
 }
 
 @Injectable({
@@ -33,6 +34,11 @@ export class OrdersService {
     this.ws = new WebSocket(this.wsUrl);
     this.ws.onmessage = evt => {
       const all: IncomingOrder[] = JSON.parse(evt.data);
+      all.forEach(order => {
+        order.totalAmount = order.orderIngredients.reduce((sum, ingredient) => {
+          return sum + (ingredient.amount || 0);
+        }, 0);
+      })
       this.orders.set(all.filter(o => o.status === 0));
       console.log(this.orders());
     };

@@ -1,5 +1,5 @@
-import {Component, inject, WritableSignal} from '@angular/core';
-import {IncomingOrder, OrdersService} from '../services/orders.service';
+import {Component, inject, Input, WritableSignal} from '@angular/core';
+import {IncomingOrder, OrderIngredient, OrdersService} from '../services/orders.service';
 import { firstValueFrom } from 'rxjs';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {ErrorService} from '../services/error.service';
