@@ -73,13 +73,17 @@ video {
   font-weight: lighter;
 }
 
+#recommendations {
+  text-align: center;
+}
+
 #button-container {
   display: flex;
   gap: 20px;
   margin-top: 40px;
 }
 
-.button{
+#button-container .button{
   border-radius: 100px;
   border: 3px solid var(--order-btn-bg);
   padding: 15px;
@@ -87,23 +91,11 @@ video {
 }
 
 #order-button {
-  color:var(--order-btn-bg);
+  background: var(--order-btn-bg);
 }
 
 #order-custom-button {
-  background: var(--order-btn-bg);
-
-}
-#order-custom-button:hover{
-  filter: brightness(120%) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.13));
-}
-
-@media screen and (max-width: 710px) {
-  .drink-filter-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
+  color:var(--order-btn-bg);
 }
 
 @media screen and (max-width: 830px) {
@@ -234,10 +226,4 @@ video {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-}
-
-.drink-card-image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
