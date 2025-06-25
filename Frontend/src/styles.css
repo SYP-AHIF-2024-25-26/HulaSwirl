@@ -113,6 +113,7 @@ html{
   transition: 0.3s;
   filter:saturate(200%);
   height: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .button:hover {
@@ -125,7 +126,6 @@ html{
 
 .submit-btn {
   background: var(--sunset-gradient);
-  transition: 0.3s;
 }
 
 .checkbox-container {
@@ -172,6 +172,7 @@ html{
   padding: 5px 10px;
   height: 100%;
   outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .form-input::-webkit-outer-spin-button,
@@ -205,36 +206,38 @@ html{
 }
 
 /* Drink filter */
-.drink-filter-container {
+.filter-container {
   max-width: 1200px;
   width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 25px;
 }
 
-.drink-filter-container button {
+.filter-container > * {
+  box-sizing: border-box;
+  height: 45px;
+}
+
+.filter-container button {
   font-weight: bold;
   border: none !important;
   border-radius: 20px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.drink-filter-container input {
+.filter-container input {
   flex: 1;
   padding: 10px;
   font-size: 1rem;
   background: linear-gradient(#F6F6F6, #F6F6F6) padding-box, var(--sunrise-gradient) border-box;
   border-radius: 15px;
   border: 3px solid transparent;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.drink-filter-container select {
+.filter-container select {
   padding: 10px;
   font-size: 1rem;
   cursor: pointer;
@@ -242,7 +245,6 @@ html{
   var(--sunrise-gradient) border-box;
   border-radius: 15px;
   border: 3px solid transparent;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -269,6 +271,9 @@ html{
 .drink-card-image-container {
   width: 265px;
   height: 265px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .drink-card-image-container img {

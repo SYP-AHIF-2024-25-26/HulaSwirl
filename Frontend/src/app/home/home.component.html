@@ -26,7 +26,7 @@
     </div>
     <div id="button-container">
       <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">ORDER CUSTOM DRINK</button>
+      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">MIX YOUR OWN</button>
     </div>
   </div>
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
@@ -59,8 +59,7 @@
 </div>
 <div class="container" id="all-drinks">
   <h2>All Drinks</h2>
-  <div class="drink-filter-container">
-    <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Order Custom Drink</button>
+  <div class="filter-container">
     <input
       type="text"
       placeholder="🔍 Search for a drink..."
@@ -68,11 +67,11 @@
       (input)="filterDrinksByQuery()"
       class="form-input"
     />
-
     <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input">
       <option value="">All Ingredients</option>
       <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
     </select>
+    <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
   </div>
   <div id="filtered-drinks">
     @for(drink of filteredDrinks(); track $index) {
