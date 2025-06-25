@@ -96,4 +96,12 @@
   .button {
     flex: 1;
   }
+
+  .order-ingredient-details {
+    flex: 1;
+  }
+
+  .order-ingredient-amount{
+    margin-left: auto;
+  }
 }

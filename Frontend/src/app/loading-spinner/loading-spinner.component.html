@@ -1,3 +1,14 @@
 <div class="loading-overlay" *ngIf="loadingService.isLoading$ | async">
-  <div class="spinner"></div>
+  <div class="watermelon">
+    <div class="slice">
+      <!-- Saatkörner -->
+      <span class="seed" style="--x:25%; --y:25%; --r:5deg;"></span>
+      <span class="seed" style="--x:37%; --y:60%; --r:35deg;"></span>
+      <span class="seed" style="--x:53%; --y:34%; --r:-5deg;"></span>
+      <span class="seed" style="--x:68%; --y:60%; --r:-20deg;"></span>
+      <span class="seed" style="--x:77%; --y:21%; --r:-20deg;"></span>
+    </div>
+    <!-- Schatten darunter -->
+    <div class="shadow"></div>
+  </div>
 </div>

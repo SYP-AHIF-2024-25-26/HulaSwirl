@@ -1,14 +1,14 @@
 <div id="drinks-page">
   <div id="drink-controls">
-    <div class="filter-search">
+    <div class="filter-container">
       <input
         type="text"
         placeholder="🔍 Search for a drink..."
         [(ngModel)]="searchQuery"
         (input)="searchDrinks()"
-        id="drink-search"
+        class="form-input"
       />
-      <select [(ngModel)]="selectedIngredient" (change)="filterDrinks()" id="ingredient-filter">
+      <select [(ngModel)]="selectedIngredient" (change)="filterDrinks()" class="form-input">
         <option value="">All Ingredients</option>
         <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">
           {{ ingredient }}
@@ -56,7 +56,11 @@
       @for (drink of filteredDrinks(); track $index){
         <div *ngIf="!drink.available" class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="drink-card-image-container">
-            <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+            @if (drink.imgUrl) {
+              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+            } @else {
+              <p>No image available</p>
+            }
           </div>
           <p class="drink-name">{{ drink.name }}</p>
         </div>
