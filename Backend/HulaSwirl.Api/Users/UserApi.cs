@@ -22,10 +22,34 @@ public static class UserApi
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
 
+        app.MapGet(baseUrl, GetAllUsers.HandleGetAll)
+            .WithName(nameof(GetAllUsers.HandleGetAll))
+            .WithDescription("Get all users")
+            .WithTags("Users")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden);
+
+        app.MapPatch($"{baseUrl}/{{username}}/role", UpdateUserRole.HandleUpdate)
+            .WithName(nameof(UpdateUserRole.HandleUpdate))
+            .WithDescription("Update role of user")
+            .WithTags("Users")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
         // 4) Admin-Check
         app.MapGet($"{baseUrl}/is-admin", RoleCheck.HandleAdminCheck)
             .WithName(nameof(RoleCheck.HandleAdminCheck))
             .WithDescription("Check if a user has admin role")
+            .WithTags("Users")
+            .Produces(StatusCodes.Status200OK);
+
+        app.MapGet($"{baseUrl}/is-system", RoleCheck.HandleSystemCheck)
+            .WithName(nameof(RoleCheck.HandleSystemCheck))
+            .WithDescription("Check if a user has system role")
             .WithTags("Users")
             .Produces(StatusCodes.Status200OK);
         

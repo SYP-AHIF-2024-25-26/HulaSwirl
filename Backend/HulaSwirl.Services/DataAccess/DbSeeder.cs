@@ -25,8 +25,7 @@ public static class UserSeeder
     {
         var users = new []
         {
-            new User("HulaSwirl Admin", BCryptHasher.Hash(config.GetValue<string>("HulaConfig:AdminKey")!), "admin", DateTime.Now, null),
-            new User("HulaSwirl Operator", BCryptHasher.Hash(config.GetValue<string>("HulaConfig:OpKey")!), "operator", DateTime.Now, null)
+            new User("System", BCryptHasher.Hash(config.GetValue<string>("HulaConfig:SystemKey")!), "system", DateTime.Now, null)
         };
         foreach (var user in users)
         {

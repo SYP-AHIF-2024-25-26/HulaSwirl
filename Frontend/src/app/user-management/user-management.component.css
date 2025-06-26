@@ -1,0 +1,56 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-details {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  background: #f1e3cc;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.name-date {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.name-date > * {
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cancel-btn {
+  padding: 0.4rem 0.8rem;
+}
+
+@media (max-width: 520px) {
+  .user-details {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .form-input {
+    flex: 2;
+  }
+
+  .cancel-btn {
+    flex: 1;
+  }
+}

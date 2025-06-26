@@ -14,4 +14,9 @@ public static class RoleCheck
     {
         return Results.Ok(httpContext.IsOperator());
     }
+
+    public static IResult HandleSystemCheck(AppDbContext db, HttpContext httpContext)
+    {
+        return Results.Ok(httpContext.IsSystem());
+    }
 }

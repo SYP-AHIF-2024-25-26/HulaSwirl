@@ -1,0 +1,20 @@
+<div class="users container">
+  <div class="user" *ngFor="let user of users()">
+    <div class="user-details">
+      <div class="name-date">
+        <h4 class="name">{{user.username}}</h4>
+        <p>{{user.createdAt | date:'MMM d, y, HH:mm'}}</p>
+      </div>
+      <div *ngIf="user.role !== 'system'" class="actions">
+        <select
+          class="form-input"
+          (change)="changeRole(user, $event)"
+          [ngModel]="getUserRole(user)">
+          <option *ngFor="let r of allowedRoles()" [value]="r">{{r}}</option>
+        </select>
+        <button class="button cancel-btn" (click)="deleteUser(user.username)">Delete</button>
+      </div>
+    </div>
+    <p class="error field-error">{{user.status}}</p>
+  </div>
+</div>
