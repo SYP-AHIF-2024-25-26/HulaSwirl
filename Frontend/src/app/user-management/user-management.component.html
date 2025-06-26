@@ -1,0 +1,14 @@
+<div class="users">
+  <div class="user" *ngFor="let user of users()">
+    <div class="name-date">
+      <p class="name">{{user.username}}</p>
+      <small>{{user.createdAt | date:'MMM d, y, HH:mm'}}</small>
+    </div>
+    <div class="actions">
+      <select [ngModel]="user.role" (ngModelChange)="changeRole(user.username, $event)" [disabled]="user.username==='system'">
+        <option *ngFor="let r of allowedRoles()" [value]="r">{{r}}</option>
+      </select>
+      <button class="delete" (click)="deleteUser(user.username)" [disabled]="user.username==='system'">Delete</button>
+    </div>
+  </div>
+</div>

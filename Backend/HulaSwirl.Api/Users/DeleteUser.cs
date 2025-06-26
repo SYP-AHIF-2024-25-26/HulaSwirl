@@ -12,9 +12,11 @@ public static class DeleteUser
         AppDbContext db,
         HttpContext http)
     {
-        if (!http.IsAdmin()) return ErrorResults.Forbidden();
+        if (!http.IsAdmin() && !http.IsSystem()) return ErrorResults.Forbidden();
         var user = await db.User.FindAsync(username);
         if (user == null) return ErrorResults.NotFound("User not found.");
+
+        if (user.Username == "system") return ErrorResults.Forbidden();
 
         db.User.Remove(user);
         await db.SaveChangesAsync();

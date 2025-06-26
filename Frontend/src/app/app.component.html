@@ -30,6 +30,12 @@
        routerLinkActive="active">
       Orders
     </a>
+    <a class="link" [ngClass]="{light: !menuOpen}"
+       *ngIf="userService.getAdminStatus()"
+       routerLink="users"
+       routerLinkActive="active">
+      Users
+    </a>
   </div>
   <div id="account-toggle" [ngClass]="{light: !menuOpen}" (click)="userInitials() ? openAccountModal() : openLoginModal()">
   @if(userInitials()) {

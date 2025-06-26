@@ -39,6 +39,7 @@ export class UserService {
   username = signal<string | null>(this.getUsernameFromStorage());
   private isAdminFlag = signal<boolean>(false);
   private isOperatorFlag = signal<boolean>(false);
+  private isSystemFlag = signal<boolean>(false);
 
   constructor() {
     effect(async () => {
@@ -102,14 +103,19 @@ export class UserService {
   private async updateUserRole() {
     this.isAdminFlag.set(await this.isAdmin());
     this.isOperatorFlag.set(await this.isOperator());
+    this.isSystemFlag.set(await this.isSystem());
   }
 
   getAdminStatus() {
-    return this.isAdminFlag()
+    return this.isAdminFlag() || this.isSystemFlag();
   }
 
   getOperatorStatus() {
     return this.isOperatorFlag();
+  }
+
+  getSystemStatus() {
+    return this.isSystemFlag();
   }
 
   private async isAdmin(): Promise<boolean> {
@@ -136,6 +142,18 @@ export class UserService {
     return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-operator", {headers}));
   }
 
+  private async isSystem(): Promise<boolean> {
+    const token = this.getTokenFromStorage();
+    if (!token) {
+      return false;
+    }
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-system", {headers}));
+  }
+
   async getUserInfo() {
     const token = this.getTokenFromStorage();
     if (!token) {
@@ -146,5 +164,32 @@ export class UserService {
       "Authorization": `Bearer ${token}`
     };
     return await firstValueFrom(this.http.get<AccountInfo>(this.apiBaseUrl + "/users/info", {headers}));
+  }
+
+  async getAllUsers() {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    return await firstValueFrom(this.http.get<AccountInfo[]>(`${this.apiBaseUrl}/users`, {headers}));
+  }
+
+  async updateRole(username: string, role: string) {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    await firstValueFrom(this.http.patch(`${this.apiBaseUrl}/users/${username}/role`, {role}, {headers}));
+  }
+
+  async deleteUser(username: string) {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    await firstValueFrom(this.http.delete(`${this.apiBaseUrl}/users/${username}`, {headers}));
   }
 }

@@ -1,0 +1,33 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1e3cc;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+.name {
+  margin: 0;
+  font-weight: bold;
+}
+
+.actions select {
+  margin-right: 0.5rem;
+}
+
+.delete {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -18,3 +18,9 @@ public record UserInfoDto
     
     public required DateTime? LastLogin { get; init; } = DateTime.UtcNow;
 }
+
+public record UpdateRoleDto
+{
+    [Required]
+    public string Role { get; init; } = null!;
+}
