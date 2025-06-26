@@ -21,7 +21,7 @@ public static class OrderApi
             .Produces(StatusCodes.Status201Created);
 
         app.MapPost($"{baseUrl}/custom-drink", OrderCustomDrink.HandleOrderCustomDrink)
-            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<DrinkIngredientDto[]>(ValidateCustomOrder))
+            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<DrinkIngredientDto[], IConfiguration>(ValidateCustomOrder))
             .WithName(nameof(OrderCustomDrink.HandleOrderCustomDrink))
             .WithDescription("Order custom drink")
             .WithTags("Orders")
@@ -63,8 +63,8 @@ public static class OrderApi
         return app;
     }
     
-    private static List<ErrorDto> ValidateCustomOrder(DrinkIngredientDto[] ingredients)
+    private static List<ErrorDto> ValidateCustomOrder(DrinkIngredientDto[] ingredients, IConfiguration config)
     {
-        return ValidationHelpers.ValidateDrink("Custom drink", ingredients);
+        return ValidationHelpers.ValidateDrink("Custom drink", ingredients, config);
     }
 }

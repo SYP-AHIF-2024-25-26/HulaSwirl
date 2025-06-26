@@ -2,18 +2,20 @@ using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.DrinkService;
 using HulaSwirl.Services.Dtos;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HulaSwirl.Api;
 
 public static class ValidationHelpers
 {
-    public static Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>> GetEndpointFilter<T>(
-        Func<T, List<ErrorDto>> validationResult)
+    public static Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>> GetEndpointFilter<T, TConfig>(
+        Func<T, TConfig, List<ErrorDto>> validationResult)
     {
         return async (context, next) =>
         {
             var computer = context.GetArgument<T>(0);
-            var errors = validationResult(computer);
+            var config = context.GetArgument<TConfig>(1);
+            var errors = validationResult(computer, config);
             if (errors.Count > 0)
             {
                 return ErrorResults.BadRequest(errors.ToArray());
@@ -23,10 +25,11 @@ public static class ValidationHelpers
         };
     }
 
-    public static List<ErrorDto> ValidateDrink(string name, DrinkIngredientDto[] ingredients)
+    public static List<ErrorDto> ValidateDrink(string name, DrinkIngredientDto[] ingredients, IConfiguration config)
     {
-        const int maxPerIngredientMl = 500;
-        const int maxTotalMl = 500;
+        var maxPerIngredientMl = config.GetValue<int>("HulaConfig:MaxMlPerIngredient");
+        var maxTotalMl = config.GetValue<int>("HulaConfig:MaxMlPerDrink");
+        var maxIngredientsPerDrink = config.GetValue<int>("HulaConfig:MaxIngredientsPerDrink");
         var errors = new List<ErrorDto>();
 
         if (string.IsNullOrWhiteSpace(name))
@@ -56,11 +59,11 @@ public static class ValidationHelpers
             });
         }
         
-        if (ingredients.Length > 6)
+        if (ingredients.Length > maxIngredientsPerDrink)
         {
             errors.Add(new ErrorDto
             {
-                Message = "You can only add up to 6 ingredients to a drink",
+                Message = $"You can only add up to {maxIngredientsPerDrink} ingredients to a drink",
                 Target = "ingredients"
             });
         }

@@ -21,12 +21,12 @@ public static class PumpSeeder
 
 public static class UserSeeder
 {
-    public static void SeedUsers(AppDbContext db)
+    public static void SeedUsers(AppDbContext db, IConfiguration config)
     {
         var users = new []
         {
-            new User("HulaSwirl Admin", BCryptHasher.Hash("admin"), "admin", DateTime.Now, null),
-            new User("HulaSwirl Operator", BCryptHasher.Hash("operator"), "operator", DateTime.Now, null)
+            new User("HulaSwirl Admin", BCryptHasher.Hash(config.GetValue<string>("HulaConfig:AdminKey")!), "admin", DateTime.Now, null),
+            new User("HulaSwirl Operator", BCryptHasher.Hash(config.GetValue<string>("HulaConfig:OpKey")!), "operator", DateTime.Now, null)
         };
         foreach (var user in users)
         {

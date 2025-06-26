@@ -23,7 +23,7 @@ public static class DrinkApi
             .Produces(StatusCodes.Status200OK);
 
         app.MapPost($"{baseUrl}/create", CreateDrink.HandleCreateDrink)
-            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<EditDrinkDto>(ValidateEditDrinkDto))
+            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<EditDrinkDto, IConfiguration>(ValidateEditDrinkDto))
             .WithName(nameof(CreateDrink.HandleCreateDrink))
             .WithDescription("Create drink")
             .WithTags("Drinks")
@@ -44,7 +44,7 @@ public static class DrinkApi
             .Produces(StatusCodes.Status403Forbidden);
 
         app.MapPatch($"{baseUrl}/update/{{id:int}}", EditDrink.HandleEditDrink)
-            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<EditDrinkDto>(ValidateEditDrinkDto))
+            .AddEndpointFilter(ValidationHelpers.GetEndpointFilter<EditDrinkDto, IConfiguration>(ValidateEditDrinkDto))
             .WithName(nameof(EditDrink.HandleEditDrink))
             .WithDescription("Edit drink")
             .RequireAuthorization()
@@ -58,8 +58,8 @@ public static class DrinkApi
         return app;
     }
     
-    private static List<ErrorDto> ValidateEditDrinkDto(EditDrinkDto dto)
+    private static List<ErrorDto> ValidateEditDrinkDto(EditDrinkDto dto, IConfiguration config)
     {
-        return ValidationHelpers.ValidateDrink(dto.Name, dto.DrinkIngredients);
+        return ValidationHelpers.ValidateDrink(dto.Name, dto.DrinkIngredients, config);
     }
 }
