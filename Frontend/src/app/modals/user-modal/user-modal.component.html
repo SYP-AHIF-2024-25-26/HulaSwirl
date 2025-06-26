@@ -31,9 +31,7 @@
     <button type="submit" [disabled]="authForm.invalid" hidden></button>
   </form>
   <div modal-footer>
-    <div class="error" *ngIf="globalError().length">
-      <p *ngFor="let err of globalError()">{{ err }}</p>
-    </div>
+    <p class="error">{{globalError()}}</p>
   </div>
   <div modal-buttons class="buttons">
     <button type="submit" class="button submit-btn" (click)="onSubmit()" [disabled]="authForm.invalid">{{ mode() === 'login' ? 'Login' : 'Register' }}</button>

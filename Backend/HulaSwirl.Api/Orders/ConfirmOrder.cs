@@ -33,7 +33,7 @@ public static class ConfirmOrder
         if (order.Status != OrderStatus.Pending)
             return ErrorResults.BadRequest(new ErrorDto
             {
-                Message = "Order was already processed",
+                Message = "Order was already processed, please refresh",
                 Target = string.Empty
             });
 
@@ -45,7 +45,7 @@ public static class ConfirmOrder
         {
             return ErrorResults.BadRequest(new ErrorDto
             {
-                Message = $"You can only order up to {availablePumps} ingredients.",
+                Message = $"You can only order up to {availablePumps} ingredients",
                 Target = string.Empty
             });
         }
@@ -108,7 +108,7 @@ public static class ConfirmOrder
             return ErrorResults.Conflict(
                 new ErrorDto
                 {
-                    Message = "Another drink is currently mixing, please wait a few seconds.",
+                    Message = "Another drink is currently mixing, please wait a few seconds",
                     Target = string.Empty
                 });
         }

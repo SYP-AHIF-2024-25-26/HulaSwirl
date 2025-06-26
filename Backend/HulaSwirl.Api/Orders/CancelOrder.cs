@@ -23,7 +23,7 @@ public static class CancelOrder
         if (order.Status != OrderStatus.Pending)
             return ErrorResults.BadRequest(new ErrorDto
             {
-                Message = "Order was already processed",
+                Message = "Order was already processed, please refresh",
                 Target = string.Empty
             });
         order.Status = OrderStatus.Cancelled;

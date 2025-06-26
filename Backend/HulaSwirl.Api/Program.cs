@@ -119,7 +119,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     PumpSeeder.SeedPumps(db, builder.Configuration);
-    UserSeeder.SeedUsers(db);
+    UserSeeder.SeedUsers(db, builder.Configuration);
 }
 
 app.Run();
