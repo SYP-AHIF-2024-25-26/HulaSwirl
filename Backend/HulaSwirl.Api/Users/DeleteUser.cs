@@ -10,6 +10,7 @@ public static class DeleteUser
     public static async Task<IResult> HandleDelete(
         [FromRoute] string username,
         AppDbContext db,
+        ObservableUserService userObservable,
         HttpContext http)
     {
         if (!http.IsAdmin()) return ErrorResults.Forbidden();
@@ -22,6 +23,7 @@ public static class DeleteUser
         
         db.User.Remove(user);
         await db.SaveChangesAsync();
+        await userObservable.BroadcastAsync(new UserUpdate { Username = username, Type = "deleted" });
         return Results.NoContent();
     }
 }

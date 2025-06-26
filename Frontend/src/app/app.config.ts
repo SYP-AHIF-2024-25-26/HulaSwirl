@@ -7,6 +7,7 @@ import {loadingInterceptor} from './services/loading.interceptor';
 
 export const BASE_URL = new InjectionToken<string>('BaseUrl');
 export const WS_URL = new InjectionToken<string>('WsUrl');
+export const USER_WS_URL = new InjectionToken<string>('UserWsUrl');
 const IP = "192.168.0.200:8080";
 //const IP = "localhost:5110";
 
@@ -17,5 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([loadingInterceptor])),
     { provide: BASE_URL, useValue: `http://${IP}/api/v1` },
     { provide: WS_URL, useValue: `ws://${IP}/ws/orders` },
+    { provide: USER_WS_URL, useValue: `ws://${IP}/ws/user-updates` },
   ]
 };

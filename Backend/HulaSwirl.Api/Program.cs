@@ -8,6 +8,8 @@ using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.Pumps;
 using HulaSwirl.Services.UserServices;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -42,6 +44,7 @@ builder.Services.AddCors(options =>
 //custom services
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddSingleton<ObservableOrderService>();
+builder.Services.AddSingleton<ObservableUserService>();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<GpioController>();
@@ -70,6 +73,37 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var db = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
+                var username = context.Principal?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
+                if (string.IsNullOrWhiteSpace(username))
+                {
+                    context.Fail("Username missing");
+                    return;
+                }
+
+                var user = await db.User.FindAsync(username);
+                if (user is null)
+                {
+                    context.Fail("User not found");
+                    return;
+                }
+
+                var identity = context.Principal!.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    foreach (var roleClaim in identity.FindAll(ClaimTypes.Role).ToList())
+                        identity.RemoveClaim(roleClaim);
+                    identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+                    if (!identity.HasClaim(c => c.Type == ClaimTypes.Name))
+                        identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+                }
+            }
         };
     });
 builder.Services.AddAuthorization();

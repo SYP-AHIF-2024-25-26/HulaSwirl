@@ -22,6 +22,7 @@ public class JwtService
     {
         var claims = new[] {
             new Claim(JwtRegisteredClaimNames.Sub, user.Username),
+            new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Role, user.Role)
         };
 
@@ -29,6 +30,7 @@ public class JwtService
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Audience"],
+            expires: DateTime.UtcNow.AddHours(1),
             claims: claims,
             signingCredentials: creds);
 

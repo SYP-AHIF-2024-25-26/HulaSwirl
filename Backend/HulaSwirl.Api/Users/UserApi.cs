@@ -6,6 +6,7 @@ public static class UserApi
 
     public static IEndpointRouteBuilder MapUserApi(this IEndpointRouteBuilder app)
     {
+        app.Map("ws/user-updates", UserUpdates.HandleUserUpdates);
         // 1) User erstellen
         app.MapPost(baseUrl, CreateUser.HandleCreate)
             .WithName(nameof(CreateUser.HandleCreate))

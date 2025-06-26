@@ -12,6 +12,7 @@ public static class UpdateUserRole
         [FromRoute] string username,
         [FromQuery] string role,
         AppDbContext db,
+        ObservableUserService userObservable,
         HttpContext http)
     {
         var isSystem = http.IsSystem();
@@ -32,6 +33,7 @@ public static class UpdateUserRole
         user.Role = role.ToLower();
         db.User.Update(user);
         await db.SaveChangesAsync();
+        await userObservable.BroadcastAsync(new UserUpdate { Username = user.Username, Role = user.Role, Type = "role" });
         return Results.Ok();
     }
 }

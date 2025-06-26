@@ -2,7 +2,7 @@ import {effect, inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {ErrorService} from './error.service';
-import {BASE_URL} from '../app.config';
+import {BASE_URL, USER_WS_URL} from '../app.config';
 import {Router} from '@angular/router';
 
 interface RegisterRequest {
@@ -18,6 +18,12 @@ interface LoginRequest {
 interface AuthResponse {
   token: string;
   username: string;
+}
+
+interface UserUpdate {
+  username: string;
+  type: string;
+  role?: string;
 }
 
 export interface AccountInfo {
@@ -41,6 +47,8 @@ export class UserService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private apiBaseUrl = inject(BASE_URL);
+  private userWsUrl = inject(USER_WS_URL);
+  private userWs?: WebSocket;
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());
@@ -52,6 +60,30 @@ export class UserService {
     effect(async () => {
       await this.updateUserRole();
     });
+    if (this.isLoggedIn()) {
+      this.connectWebSocket();
+    }
+  }
+
+  private connectWebSocket() {
+    if (this.userWs) {
+      this.userWs.close();
+    }
+    this.userWs = new WebSocket(this.userWsUrl);
+    this.userWs.onmessage = async evt => {
+      const update: UserUpdate = JSON.parse(evt.data);
+      if (update.username !== this.username()) return;
+      if (update.type === 'deleted') {
+        await this.logout();
+      } else if (update.type === 'role') {
+        await this.updateUserRole();
+      }
+    };
+  }
+
+  private disconnectWebSocket() {
+    this.userWs?.close();
+    this.userWs = undefined;
   }
 
   public getTokenFromStorage(): string | null {
@@ -87,6 +119,7 @@ export class UserService {
     const payload: RegisterRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
+    this.connectWebSocket();
   }
 
   async login(username: string, key: string): Promise<void> {
@@ -94,10 +127,12 @@ export class UserService {
     const payload: LoginRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
+    this.connectWebSocket();
     await this.updateUserRole();
   }
 
   async logout() {
+    this.disconnectWebSocket();
     this.clearToken();
     await this.updateUserRole();
     await this.router.navigate(['/home']);
