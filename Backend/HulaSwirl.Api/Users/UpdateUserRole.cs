@@ -12,7 +12,8 @@ public static class UpdateUserRole
         [FromRoute] string username,
         [FromQuery] string role,
         AppDbContext db,
-        HttpContext http)
+        HttpContext http,
+        ObservableUserService userService)
     {
         var isSystem = http.IsSystem();
         var isAdmin = http.IsAdmin();
@@ -32,6 +33,7 @@ public static class UpdateUserRole
         user.Role = role.ToLower();
         db.User.Update(user);
         await db.SaveChangesAsync();
+        await userService.BroadcastAsync(username, new UserEvent { EventType = "role-changed", Role = user.Role });
         return Results.Ok();
     }
 }

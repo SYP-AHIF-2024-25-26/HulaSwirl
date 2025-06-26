@@ -11,6 +11,7 @@ using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 var solutionRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
@@ -42,6 +43,7 @@ builder.Services.AddCors(options =>
 //custom services
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddSingleton<ObservableOrderService>();
+builder.Services.AddSingleton<ObservableUserService>();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<PumpManager>();
 builder.Services.AddSingleton<GpioController>();
@@ -67,9 +69,34 @@ builder.Services.AddAuthentication(options =>
         {
             ValidateIssuer = false,
             ValidateAudience = false,
-            ValidateLifetime = false,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var db = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
+                var username = context.Principal?.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+                if (string.IsNullOrEmpty(username))
+                {
+                    context.Fail("Invalid token");
+                    return;
+                }
+                var user = await db.User.FindAsync(username);
+                if (user == null)
+                {
+                    context.Fail("User deleted");
+                    return;
+                }
+                var identity = context.Principal!.Identity as ClaimsIdentity;
+                var roleClaim = identity!.FindFirst(ClaimTypes.Role);
+                if (roleClaim != null)
+                    identity.RemoveClaim(roleClaim);
+                identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+            }
         };
     });
 builder.Services.AddAuthorization();

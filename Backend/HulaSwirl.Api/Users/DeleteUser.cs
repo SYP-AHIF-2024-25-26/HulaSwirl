@@ -10,7 +10,8 @@ public static class DeleteUser
     public static async Task<IResult> HandleDelete(
         [FromRoute] string username,
         AppDbContext db,
-        HttpContext http)
+        HttpContext http,
+        ObservableUserService userService)
     {
         if (!http.IsAdmin()) return ErrorResults.Forbidden();
         var user = await db.User.FindAsync(username);
@@ -22,6 +23,7 @@ public static class DeleteUser
         
         db.User.Remove(user);
         await db.SaveChangesAsync();
+        await userService.BroadcastAsync(username, new UserEvent { EventType = "deleted" });
         return Results.NoContent();
     }
 }
