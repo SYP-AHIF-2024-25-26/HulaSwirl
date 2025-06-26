@@ -17,6 +17,7 @@
   </div>
 
   <div id="drinks-section">
+    @if(filteredDrinks().length > 0) {
     <!-- Available Drinks -->
     <h2>Available Drinks</h2>
     <div id="available-drinks" class="drink-grid">
@@ -64,5 +65,8 @@
         </div>
       }
     </div>
+    } @else {
+      <h3>There aren't any drinks yet</h3>
+    }
   </div>
 </div>

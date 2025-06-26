@@ -10,7 +10,7 @@ public static class GetAllUsers
 {
     public static async Task<IResult> HandleGetAll(AppDbContext db, HttpContext http)
     {
-        if (!http.IsAdmin() && !http.IsSystem()) return Results.Forbid();
+        if (!http.IsAdmin()) return Results.Forbid();
 
         var users = await db.User
             .Select(u => new UserInfoDto

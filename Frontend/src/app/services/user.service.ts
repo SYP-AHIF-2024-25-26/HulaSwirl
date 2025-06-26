@@ -27,6 +27,13 @@ export interface AccountInfo {
   lastLogin: Date;
 }
 
+export interface ManagedUser {
+  username: string;
+  role: string;
+  createdAt: Date;
+  status: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -172,7 +179,7 @@ export class UserService {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     };
-    return await firstValueFrom(this.http.get<AccountInfo[]>(`${this.apiBaseUrl}/users`, {headers}));
+    return await firstValueFrom(this.http.get<ManagedUser[]>(`${this.apiBaseUrl}/users`, {headers}));
   }
 
   async updateRole(username: string, role: string) {
@@ -181,7 +188,7 @@ export class UserService {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     };
-    await firstValueFrom(this.http.patch(`${this.apiBaseUrl}/users/${username}/role`, {role}, {headers}));
+    await firstValueFrom(this.http.patch(`${this.apiBaseUrl}/users/${username}/role?role=${role}`, null, {headers}));
   }
 
   async deleteUser(username: string) {

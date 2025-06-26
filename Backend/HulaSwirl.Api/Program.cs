@@ -76,12 +76,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-/*
- * THIS IS FOR THE Raspberry Pi
- * CHANGE THIS WHEN DEPLOYING
-*/
-//app.Urls.Add("http://192.168.0.200:8080");
-// If url is set in appsettings.json, it will be used instead
 var url = builder.Configuration["Url"];
 if (!string.IsNullOrWhiteSpace(url))
 {

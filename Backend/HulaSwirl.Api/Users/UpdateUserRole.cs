@@ -10,23 +10,26 @@ public static class UpdateUserRole
 {
     public static async Task<IResult> HandleUpdate(
         [FromRoute] string username,
-        [FromBody] UpdateRoleDto dto,
+        [FromQuery] string role,
         AppDbContext db,
         HttpContext http)
     {
         var isSystem = http.IsSystem();
         var isAdmin = http.IsAdmin();
-        if (!isSystem && !isAdmin) return Results.Forbid();
+        if (!isAdmin) return Results.Forbid();
+        if(string.IsNullOrWhiteSpace(role)) return ErrorResults.BadRequest(new ErrorDto { Message = "Role must be specified", Target = string.Empty });
 
         var user = await db.User.FirstOrDefaultAsync(u => u.Username == username);
-        if (user == null) return ErrorResults.NotFound("User not found.");
-        if (user.Username == "system") return Results.Forbid();
+        
+        if (user == null) return ErrorResults.NotFound("User not found");
+        if(http.IsSelf(username)) return ErrorResults.BadRequest(new ErrorDto { Message = "Cannot change your own role", Target = username });
+        if (user.Role == "system") return ErrorResults.Forbidden("Cannot change system user role");
+        if (!isSystem && user.Role == "admin") return ErrorResults.Forbidden("Cannot change admin role unless you are a system user");
 
         var allowedRoles = isSystem ? new[] { "user", "operator", "admin" } : new[] { "user", "operator" };
-        if (!allowedRoles.Contains(dto.Role))
-            return ErrorResults.BadRequest(new ErrorDto { Message = "Invalid role", Target = "role" });
+        if (!allowedRoles.Contains(role.ToLower())) return ErrorResults.BadRequest(new ErrorDto { Message = "Invalid role", Target = username });
 
-        user.Role = dto.Role;
+        user.Role = role.ToLower();
         db.User.Update(user);
         await db.SaveChangesAsync();
         return Results.Ok();
