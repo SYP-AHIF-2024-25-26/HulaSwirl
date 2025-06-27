@@ -115,7 +115,9 @@ export class UserService {
       return;
     }
     this.ws = new WebSocket(`${this.userWsUrl}?token=${token}`);
+    console.log("Connecting to WebSocket at", this.userWsUrl);
     this.ws.onmessage = async evt => {
+      console.log(evt.data);
       const data: { eventType: string; role?: string } = JSON.parse(evt.data);
       console.log(data);
       if (data.eventType === 'deleted') {
