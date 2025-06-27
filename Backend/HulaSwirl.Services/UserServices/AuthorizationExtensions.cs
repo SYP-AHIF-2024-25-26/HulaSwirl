@@ -11,9 +11,8 @@ public static class AuthorizationExtensions
     public static bool IsAdmin(this HttpContext context) => context.User.IsInRole("admin") || context.User.IsInRole("system");
     public static bool IsOperator(this HttpContext context) => context.User.IsInRole("operator");
     public static bool IsSystem(this HttpContext context) => context.User.IsInRole("system");
-    public static bool IsSelf(this HttpContext context, string username)
+    public static bool IsSelf(this HttpContext context, JwtService jwtService, string username)
     {
-        var userNameClaim = context.User.FindFirst(ClaimTypes.Name)?.Value;
-        return string.Equals(userNameClaim, username, StringComparison.OrdinalIgnoreCase);
+        return string.Equals(jwtService.GetUsernameFromToken(context.Request.Headers.Authorization!), username, StringComparison.CurrentCultureIgnoreCase);
     }
 }

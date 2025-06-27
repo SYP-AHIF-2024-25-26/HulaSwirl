@@ -25,7 +25,7 @@ public static class UserEventsWebSocket
             var username = jwtService.GetUsernameFromToken($"Bearer {token}");
             var socket = await httpContext.WebSockets.AcceptWebSocketAsync();
             var observer = new UserWebSocketObserver(socket);
-            var subscription = service.Subscribe(username, observer);
+            var subscription = service.Subscribe(username.ToLower(), observer);
 
             var buffer = new byte[1024 * 4];
             while (socket.State == WebSocketState.Open)

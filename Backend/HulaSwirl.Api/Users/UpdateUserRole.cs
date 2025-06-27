@@ -13,6 +13,7 @@ public static class UpdateUserRole
         [FromQuery] string role,
         AppDbContext db,
         HttpContext http,
+        JwtService jwtService,
         ObservableUserService userService)
     {
         var isSystem = http.IsSystem();
@@ -20,10 +21,10 @@ public static class UpdateUserRole
         if (!isAdmin) return Results.Forbid();
         if(string.IsNullOrWhiteSpace(role)) return ErrorResults.BadRequest(new ErrorDto { Message = "Role must be specified", Target = string.Empty });
 
-        var user = await db.User.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await db.User.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
         
         if (user == null) return ErrorResults.NotFound("User not found");
-        if(http.IsSelf(username)) return ErrorResults.BadRequest(new ErrorDto { Message = "Cannot change your own role", Target = username });
+        if(http.IsSelf(jwtService, username)) return ErrorResults.BadRequest(new ErrorDto { Message = "Cannot change your own role", Target = username });
         if (user.Role == "system") return ErrorResults.Forbidden("Cannot change system user role");
         if (!isSystem && user.Role == "admin") return ErrorResults.Forbidden("Cannot change admin role unless you are a system user");
 

@@ -5,8 +5,8 @@
           <div id="identity" class="row">
             <h3>{{userInfo()!.username}}</h3>
             <h5 class="badge"
-                id="{{userInfo()!.role == 'admin' ? 'admin' : userInfo()!.role == 'operator' ? 'operator' : 'user'}}">
-              {{userInfo()!.role.toUpperCase()}}
+                id="{{badge()}}">
+              {{badge().toUpperCase()}}
             </h5>
           </div>
           <div class="row">
@@ -37,7 +37,7 @@
     </div>
 
     <div modal-buttons class="action-buttons">
-      <button class="button secondary-btn" (click)="close()">
+      <button class="button secondary-btn" (click)="logout()">
         Close
       </button>
     </div>

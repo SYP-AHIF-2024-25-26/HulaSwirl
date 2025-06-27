@@ -4,6 +4,7 @@ import {firstValueFrom} from 'rxjs';
 import {ErrorService} from './error.service';
 import {BASE_URL, USER_WS_URL} from '../app.config';
 import {Router} from '@angular/router';
+import {ModalService} from './modal.service';
 
 interface RegisterRequest {
   username: string;
@@ -40,6 +41,7 @@ export interface ManagedUser {
 export class UserService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly modalService = inject(ModalService);
   private apiBaseUrl = inject(BASE_URL);
   private userWsUrl = inject(USER_WS_URL);
   private ws?: WebSocket;
@@ -95,6 +97,7 @@ export class UserService {
     this.ws = new WebSocket(`${this.userWsUrl}?token=${token}`);
     this.ws.onmessage = async evt => {
       const data: { eventType: string; role?: string } = JSON.parse(evt.data);
+      console.log(data);
       if (data.eventType === 'deleted') {
         await this.logout();
       } else if (data.eventType === 'role-changed') {
@@ -128,6 +131,7 @@ export class UserService {
   async logout() {
     this.clearToken();
     this.disconnectWebSocket();
+    this.modalService.closeModal();
     await this.updateUserRole();
     await this.router.navigate(['/home']);
   }

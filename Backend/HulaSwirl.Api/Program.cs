@@ -1,4 +1,5 @@
 using System.Device.Gpio;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using HulaSwirl.Api.Drinks;
 using HulaSwirl.Api.Ingredients;
@@ -67,25 +68,28 @@ builder.Services.AddAuthentication(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key)
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = false,
+            ValidateIssuerSigningKey = true
         };
+        
         options.Events = new JwtBearerEvents
         {
             OnTokenValidated = async context =>
             {
                 var db = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
-                var username = context.Principal?.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+                var username = context.Principal?.Claims
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(username))
                 {
                     context.Fail("Invalid token");
                     return;
                 }
-                var user = await db.User.FindAsync(username);
+                var user = await db.User.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
                 if (user == null)
                 {
                     context.Fail("User deleted");
