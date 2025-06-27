@@ -1,7 +1,6 @@
 import {effect, inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
-import {ErrorService} from './error.service';
 import {BASE_URL, USER_WS_URL} from '../app.config';
 import {Router} from '@angular/router';
 import {ModalService} from './modal.service';
@@ -48,13 +47,14 @@ export class UserService {
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());
+  private role = signal<string | null>(this.getRoleFromStorage());
   private isAdminFlag = signal<boolean>(false);
   private isOperatorFlag = signal<boolean>(false);
   private isSystemFlag = signal<boolean>(false);
 
   constructor() {
-    effect(async () => {
-      await this.updateUserRole();
+    effect(() => {
+      this.updateUserRole();
     });
     if (this.jwt()) {
       this.connectWebSocket();
@@ -69,10 +69,29 @@ export class UserService {
     return localStorage.getItem('username');
   }
 
+  private getRoleFromStorage(): string | null {
+    return localStorage.getItem('role');
+  }
+
+  private decodeRole(token: string): string | null {
+    try {
+      const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(atob(base64));
+      return payload["role"] ?? payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? null;
+    } catch {
+      return null;
+    }
+  }
+
   private setToken(token: string | null, username: string | null): void {
     if (token) {
       localStorage.setItem('jwt', token);
       this.jwt.set(token);
+      const role = this.decodeRole(token);
+      if (role) {
+        localStorage.setItem('role', role);
+        this.role.set(role);
+      }
     }
 
     if (username) {
@@ -84,9 +103,10 @@ export class UserService {
   private clearToken(): void {
     localStorage.removeItem('jwt');
     localStorage.removeItem('username');
-    localStorage.removeItem('isAdminFlag')
+    localStorage.removeItem('role');
     this.jwt.set(null);
     this.username.set(null);
+    this.role.set(null);
   }
 
   private connectWebSocket() {
@@ -100,8 +120,8 @@ export class UserService {
       console.log(data);
       if (data.eventType === 'deleted') {
         await this.logout();
-      } else if (data.eventType === 'role-changed') {
-        await this.updateUserRole();
+      } else if (data.eventType === 'role-changed' && data.role) {
+        this.updateUserRole(data.role);
       }
     };
     this.ws.onerror = () => console.error('WS-Error user');
@@ -116,6 +136,7 @@ export class UserService {
     const payload: RegisterRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
+    this.updateUserRole();
     this.connectWebSocket();
   }
 
@@ -124,7 +145,7 @@ export class UserService {
     const payload: LoginRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
-    await this.updateUserRole();
+    this.updateUserRole();
     this.connectWebSocket();
   }
 
@@ -132,7 +153,7 @@ export class UserService {
     this.clearToken();
     this.disconnectWebSocket();
     this.modalService.closeModal();
-    await this.updateUserRole();
+    this.updateUserRole();
     await this.router.navigate(['/home']);
   }
 
@@ -140,10 +161,22 @@ export class UserService {
     return !!this.jwt();
   }
 
-  private async updateUserRole() {
-    this.isAdminFlag.set(await this.isAdmin());
-    this.isOperatorFlag.set(await this.isOperator());
-    this.isSystemFlag.set(await this.isSystem());
+  private updateUserRole(roleOverride?: string) {
+    let role = roleOverride;
+    if (!role) {
+      const token = this.jwt();
+      role = token ? this.decodeRole(token) : null;
+    }
+    if (role) {
+      localStorage.setItem('role', role);
+      this.role.set(role);
+    } else {
+      localStorage.removeItem('role');
+      this.role.set(null);
+    }
+    this.isAdminFlag.set(role === 'admin' || role === 'system');
+    this.isOperatorFlag.set(role === 'operator');
+    this.isSystemFlag.set(role === 'system');
   }
 
   getAdminStatus() {
@@ -158,40 +191,8 @@ export class UserService {
     return this.isSystemFlag();
   }
 
-  private async isAdmin(): Promise<boolean> {
-    const token = this.getTokenFromStorage();
-    if (!token) {
-      return false;
-    }
-    const headers = {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    };
-    return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-admin", {headers}));
-  }
-
-  private async isOperator(): Promise<boolean> {
-    const token = this.getTokenFromStorage();
-    if (!token) {
-      return false;
-    }
-    const headers = {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    };
-    return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-operator", {headers}));
-  }
-
-  private async isSystem(): Promise<boolean> {
-    const token = this.getTokenFromStorage();
-    if (!token) {
-      return false;
-    }
-    const headers = {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    };
-    return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-system", {headers}));
+  getRole(): string | null {
+    return this.role();
   }
 
   async getUserInfo() {
