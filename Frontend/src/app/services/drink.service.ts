@@ -42,7 +42,6 @@ export class DrinkService {
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    console.log(headers)
     await firstValueFrom(this.httpClient.post(this.apiBaseUrl + "/drinks/create", drinkdata, {headers}));
     await this.loadDrinks();
   }

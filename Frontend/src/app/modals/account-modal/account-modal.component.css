@@ -29,6 +29,11 @@
   margin-top: 4px !important;
 }
 
+#system {
+  color: #ffffff;
+  background: #000000;
+}
+
 #admin {
   color: #8c3131;
   background: #ffa1a1;

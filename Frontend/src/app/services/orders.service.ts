@@ -28,7 +28,7 @@ export class OrdersService {
   private apiBaseUrl = inject(BASE_URL);
   private wsUrl = inject(WS_URL);
   private readonly userService =inject(UserService);
-  private ws!: WebSocket;
+  private ws?: WebSocket;
   public orders = signal<IncomingOrder[]>([]);
 
   connectWebSocket(): void {
