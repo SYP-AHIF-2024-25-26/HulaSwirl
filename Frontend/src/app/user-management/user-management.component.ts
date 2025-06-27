@@ -29,7 +29,9 @@ export class UserManagementComponent extends ErrorHandlingComponent {
   }
 
   allowedRoles(): string[] {
-    return this.userService.getSystemStatus() ? ['User', 'Operator', 'Admin'] : ['User', 'Operator'];
+    return this.userService.getRole() === 'system'
+      ? ['User', 'Operator', 'Admin']
+      : ['User', 'Operator'];
   }
 
   async changeRole(user: ManagedUser, ev: Event) {

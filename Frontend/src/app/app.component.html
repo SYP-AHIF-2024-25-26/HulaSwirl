@@ -6,32 +6,32 @@
       Home
     </a>
     <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.getAdminStatus()"
+       *ngIf="userService.hasRole('admin')"
        routerLink="drinks"
        routerLinkActive="active">
       Drinks
     </a>
     <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.getAdminStatus()"
+       *ngIf="userService.hasRole('admin')"
        routerLink="ingredients"
        routerLinkActive="active">
       Ingredients
     </a>
 
     <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.getAdminStatus()"
+       *ngIf="userService.hasRole('admin')"
        routerLink="statistics"
        routerLinkActive="active">
       Statistics
     </a>
     <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.getAdminStatus() || userService.getOperatorStatus()"
+       *ngIf="userService.hasRole('operator')"
        routerLink="orders"
        routerLinkActive="active">
       Orders
     </a>
     <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.getAdminStatus()"
+       *ngIf="userService.hasRole('admin')"
        routerLink="users"
        routerLinkActive="active">
       Users

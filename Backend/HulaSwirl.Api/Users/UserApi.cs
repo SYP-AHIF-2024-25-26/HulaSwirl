@@ -41,25 +41,7 @@ public static class UserApi
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
 
-        // 4) Admin-Check
-        app.MapGet($"{baseUrl}/is-admin", RoleCheck.HandleAdminCheck)
-            .WithName(nameof(RoleCheck.HandleAdminCheck))
-            .WithDescription("Check if a user has admin role")
-            .WithTags("Users")
-            .Produces(StatusCodes.Status200OK);
-
-        app.MapGet($"{baseUrl}/is-system", RoleCheck.HandleSystemCheck)
-            .WithName(nameof(RoleCheck.HandleSystemCheck))
-            .WithDescription("Check if a user has system role")
-            .WithTags("Users")
-            .Produces(StatusCodes.Status200OK);
-        
-        // 5) Operator-Check
-        app.MapGet($"{baseUrl}/is-operator", RoleCheck.HandleOperatorCheck)
-            .WithName(nameof(RoleCheck.HandleOperatorCheck))
-            .WithDescription("Check if a user has operator role")
-            .WithTags("Users")
-            .Produces(StatusCodes.Status200OK);
+        // 4) Admin-Check endpoints removed - roles are now decoded client-side
         
         app.MapGet($"{baseUrl}/info", GetUserInfo.HandleGetUserInfo)
             .WithName(nameof(GetUserInfo.HandleGetUserInfo))
