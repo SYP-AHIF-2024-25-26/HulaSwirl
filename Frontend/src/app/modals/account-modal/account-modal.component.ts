@@ -24,9 +24,10 @@ export class AccountModalComponent {
   protected badge = signal("user");
 
   constructor() {
-    effect(async () => {
+    effect(() => {
       this.userInfo = this.modalService.getModalData() as WritableSignal<AccountInfo>;
-      this.badge.set(this.userService.getSystemStatus() ? "system" : this.userService.getAdminStatus() ? "admin" : this.userService.getOperatorStatus() ? "operator" : "user");
+      const role = this.userService.getRole();
+      this.badge.set(role ? role : "user");
     });
   }
 
