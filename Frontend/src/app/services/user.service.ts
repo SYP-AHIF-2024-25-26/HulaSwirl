@@ -2,8 +2,9 @@ import {effect, inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {ErrorService} from './error.service';
-import {BASE_URL} from '../app.config';
+import {BASE_URL, USER_WS_URL} from '../app.config';
 import {Router} from '@angular/router';
+import {ModalService} from './modal.service';
 
 interface RegisterRequest {
   username: string;
@@ -27,23 +28,37 @@ export interface AccountInfo {
   lastLogin: Date;
 }
 
+export interface ManagedUser {
+  username: string;
+  role: string;
+  createdAt: Date;
+  status: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly modalService = inject(ModalService);
   private apiBaseUrl = inject(BASE_URL);
+  private userWsUrl = inject(USER_WS_URL);
+  private ws?: WebSocket;
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());
   private isAdminFlag = signal<boolean>(false);
   private isOperatorFlag = signal<boolean>(false);
+  private isSystemFlag = signal<boolean>(false);
 
   constructor() {
     effect(async () => {
       await this.updateUserRole();
     });
+    if (this.jwt()) {
+      this.connectWebSocket();
+    }
   }
 
   public getTokenFromStorage(): string | null {
@@ -74,11 +89,34 @@ export class UserService {
     this.username.set(null);
   }
 
+  private connectWebSocket() {
+    const token = this.getTokenFromStorage();
+    if (!token) {
+      return;
+    }
+    this.ws = new WebSocket(`${this.userWsUrl}?token=${token}`);
+    this.ws.onmessage = async evt => {
+      const data: { eventType: string; role?: string } = JSON.parse(evt.data);
+      console.log(data);
+      if (data.eventType === 'deleted') {
+        await this.logout();
+      } else if (data.eventType === 'role-changed') {
+        await this.updateUserRole();
+      }
+    };
+    this.ws.onerror = () => console.error('WS-Error user');
+  }
+
+  private disconnectWebSocket() {
+    this.ws?.close();
+  }
+
   async register(username: string, key: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users`;
     const payload: RegisterRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
+    this.connectWebSocket();
   }
 
   async login(username: string, key: string): Promise<void> {
@@ -87,10 +125,13 @@ export class UserService {
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
     await this.updateUserRole();
+    this.connectWebSocket();
   }
 
   async logout() {
     this.clearToken();
+    this.disconnectWebSocket();
+    this.modalService.closeModal();
     await this.updateUserRole();
     await this.router.navigate(['/home']);
   }
@@ -102,14 +143,19 @@ export class UserService {
   private async updateUserRole() {
     this.isAdminFlag.set(await this.isAdmin());
     this.isOperatorFlag.set(await this.isOperator());
+    this.isSystemFlag.set(await this.isSystem());
   }
 
   getAdminStatus() {
-    return this.isAdminFlag()
+    return this.isAdminFlag() || this.isSystemFlag();
   }
 
   getOperatorStatus() {
     return this.isOperatorFlag();
+  }
+
+  getSystemStatus() {
+    return this.isSystemFlag();
   }
 
   private async isAdmin(): Promise<boolean> {
@@ -136,6 +182,18 @@ export class UserService {
     return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-operator", {headers}));
   }
 
+  private async isSystem(): Promise<boolean> {
+    const token = this.getTokenFromStorage();
+    if (!token) {
+      return false;
+    }
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    return await firstValueFrom(this.http.get<boolean>(this.apiBaseUrl + "/users/is-system", {headers}));
+  }
+
   async getUserInfo() {
     const token = this.getTokenFromStorage();
     if (!token) {
@@ -146,5 +204,32 @@ export class UserService {
       "Authorization": `Bearer ${token}`
     };
     return await firstValueFrom(this.http.get<AccountInfo>(this.apiBaseUrl + "/users/info", {headers}));
+  }
+
+  async getAllUsers() {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    return await firstValueFrom(this.http.get<ManagedUser[]>(`${this.apiBaseUrl}/users`, {headers}));
+  }
+
+  async updateRole(username: string, role: string) {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    await firstValueFrom(this.http.patch(`${this.apiBaseUrl}/users/${username}/role?role=${role}`, null, {headers}));
+  }
+
+  async deleteUser(username: string) {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    await firstValueFrom(this.http.delete(`${this.apiBaseUrl}/users/${username}`, {headers}));
   }
 }

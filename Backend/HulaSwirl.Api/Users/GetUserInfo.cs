@@ -2,6 +2,7 @@ using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.Dtos;
 using HulaSwirl.Services.UserServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HulaSwirl.Api.Users;
 
@@ -19,7 +20,7 @@ public static class GetUserInfo
         try
         {
             var username = jwtService.GetUsernameFromToken(authHeader);
-            var user = await db.User.FindAsync(username);
+            var user = await db.User.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
             if (user == null) return ErrorResults.NotFound("User not found.");
 
             var userDto = new UserInfoDto

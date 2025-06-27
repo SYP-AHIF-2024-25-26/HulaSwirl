@@ -19,29 +19,18 @@ import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 export class AccountModalComponent {
   protected readonly userService = inject(UserService);
   private readonly modalService = inject(ModalService);
-  private readonly router = inject(Router);
 
   protected userInfo: WritableSignal<null | AccountInfo> = signal(null);
+  protected badge = signal("user");
 
   constructor() {
     effect(async () => {
-      const name = this.userService.username();
-      if (name) {
-        this.userInfo.set(await this.userService.getUserInfo());
-      } else {
-        this.userInfo.set(null);
-      }
+      this.userInfo = this.modalService.getModalData() as WritableSignal<AccountInfo>;
+      this.badge.set(this.userService.getSystemStatus() ? "system" : this.userService.getAdminStatus() ? "admin" : this.userService.getOperatorStatus() ? "operator" : "user");
     });
   }
 
   close(): void {
     this.modalService.closeModal();
-  }
-
-  logout(): void {
-    this.userService.logout().then(() => {
-      this.close()
-      this.router.navigate(['/']);
-    });
   }
 }

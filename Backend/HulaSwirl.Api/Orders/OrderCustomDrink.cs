@@ -11,7 +11,8 @@ namespace HulaSwirl.Api.Orders;
 public static class OrderCustomDrink
 {
     public static async Task<IResult> HandleOrderCustomDrink(
-        DrinkIngredientDto[] ingredientDtos, 
+        DrinkIngredientDto[] ingredientDtos,
+        IConfiguration config,
         AppDbContext context,
         HttpContext httpContext,
         ObservableOrderService orderService,

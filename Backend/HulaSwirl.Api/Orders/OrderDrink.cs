@@ -35,7 +35,7 @@ public static class OrderDrink
         {
             var orderIngredients = drink.DrinkIngredients
                 .Select(i =>
-                    new OrderIngredient(i.IngredientNameFk, (int) (i.Amount * (containsIce ? 0.75 : 1))))
+                    new OrderIngredient(i.IngredientNameFk, (int) (i.Amount * (containsIce ? 0.80 : 1))))
                 .ToList();
             var username = jwtService.GetUsernameFromToken(httpContext.Request.Headers.Authorization!);
             var order = new Order(username, DateTime.Now, drink.Name, orderIngredients, containsIce);

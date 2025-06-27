@@ -12,6 +12,7 @@ public static class EditDrink
 {
     public static async Task<IResult> HandleEditDrink(
         [FromBody] EditDrinkDto drinkDto,
+        IConfiguration config,
         [FromRoute] int id,
         AppDbContext context,
         HttpContext httpContext)

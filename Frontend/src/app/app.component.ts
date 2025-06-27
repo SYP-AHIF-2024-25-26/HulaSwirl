@@ -87,8 +87,12 @@ export class AppComponent {
     }
   }
 
-  openAccountModal() {
-    this.modalService.openModal(ModalType.Account, null);
+  async openAccountModal() {
+    try {
+      this.modalService.openModal(ModalType.Account, await this.userService.getUserInfo());
+    } catch (error) {
+      await this.userService.logout();
+    }
   }
 
   closeMenus(){
