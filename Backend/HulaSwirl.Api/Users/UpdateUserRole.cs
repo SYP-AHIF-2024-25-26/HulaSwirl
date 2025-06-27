@@ -12,17 +12,19 @@ public static class UpdateUserRole
         [FromRoute] string username,
         [FromQuery] string role,
         AppDbContext db,
-        HttpContext http)
+        HttpContext http,
+        JwtService jwtService,
+        ObservableUserService userService)
     {
         var isSystem = http.IsSystem();
         var isAdmin = http.IsAdmin();
         if (!isAdmin) return Results.Forbid();
         if(string.IsNullOrWhiteSpace(role)) return ErrorResults.BadRequest(new ErrorDto { Message = "Role must be specified", Target = string.Empty });
 
-        var user = await db.User.FirstOrDefaultAsync(u => u.Username == username);
+        var user = await db.User.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
         
         if (user == null) return ErrorResults.NotFound("User not found");
-        if(http.IsSelf(username)) return ErrorResults.BadRequest(new ErrorDto { Message = "Cannot change your own role", Target = username });
+        if(http.IsSelf(jwtService, username)) return ErrorResults.BadRequest(new ErrorDto { Message = "Cannot change your own role", Target = username });
         if (user.Role == "system") return ErrorResults.Forbidden("Cannot change system user role");
         if (!isSystem && user.Role == "admin") return ErrorResults.Forbidden("Cannot change admin role unless you are a system user");
 
@@ -32,6 +34,7 @@ public static class UpdateUserRole
         user.Role = role.ToLower();
         db.User.Update(user);
         await db.SaveChangesAsync();
+        await userService.BroadcastAsync(username, new UserEvent { EventType = "role-changed", Role = user.Role });
         return Results.Ok();
     }
 }

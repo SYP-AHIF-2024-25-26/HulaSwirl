@@ -46,6 +46,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
   constructor() {
     super();
     effect(() => {
+      const modal = this.modalService.getDisplayedModal()();
       this.allIngredients = this.ingredientsService.ingredients();
       this.availableIngredients.set(
         this.allIngredients.filter(
@@ -53,10 +54,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
         )
       );
       this.selectIngredient();
-    });
 
-    effect(() => {
-      const modal = this.modalService.getDisplayedModal()();
       if (modal === ModalType.EditDrink) {
         this.mode.set('edit');
         if (!this.dataloaded) {

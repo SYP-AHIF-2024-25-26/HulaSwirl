@@ -2,8 +2,9 @@ import {effect, inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
 import {ErrorService} from './error.service';
-import {BASE_URL} from '../app.config';
+import {BASE_URL, USER_WS_URL} from '../app.config';
 import {Router} from '@angular/router';
+import {ModalService} from './modal.service';
 
 interface RegisterRequest {
   username: string;
@@ -40,7 +41,10 @@ export interface ManagedUser {
 export class UserService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly modalService = inject(ModalService);
   private apiBaseUrl = inject(BASE_URL);
+  private userWsUrl = inject(USER_WS_URL);
+  private ws?: WebSocket;
 
   jwt = signal<string | null>(this.getTokenFromStorage());
   username = signal<string | null>(this.getUsernameFromStorage());
@@ -52,6 +56,9 @@ export class UserService {
     effect(async () => {
       await this.updateUserRole();
     });
+    if (this.jwt()) {
+      this.connectWebSocket();
+    }
   }
 
   public getTokenFromStorage(): string | null {
@@ -82,11 +89,34 @@ export class UserService {
     this.username.set(null);
   }
 
+  private connectWebSocket() {
+    const token = this.getTokenFromStorage();
+    if (!token) {
+      return;
+    }
+    this.ws = new WebSocket(`${this.userWsUrl}?token=${token}`);
+    this.ws.onmessage = async evt => {
+      const data: { eventType: string; role?: string } = JSON.parse(evt.data);
+      console.log(data);
+      if (data.eventType === 'deleted') {
+        await this.logout();
+      } else if (data.eventType === 'role-changed') {
+        await this.updateUserRole();
+      }
+    };
+    this.ws.onerror = () => console.error('WS-Error user');
+  }
+
+  private disconnectWebSocket() {
+    this.ws?.close();
+  }
+
   async register(username: string, key: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users`;
     const payload: RegisterRequest = {username, key};
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
+    this.connectWebSocket();
   }
 
   async login(username: string, key: string): Promise<void> {
@@ -95,10 +125,13 @@ export class UserService {
     const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
     this.setToken(res.token, res.username);
     await this.updateUserRole();
+    this.connectWebSocket();
   }
 
   async logout() {
     this.clearToken();
+    this.disconnectWebSocket();
+    this.modalService.closeModal();
     await this.updateUserRole();
     await this.router.navigate(['/home']);
   }
