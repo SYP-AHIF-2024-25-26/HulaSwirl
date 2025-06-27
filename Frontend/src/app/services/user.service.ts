@@ -162,11 +162,7 @@ export class UserService {
   }
 
   private updateUserRole(roleOverride?: string) {
-    let role = roleOverride;
-    if (!role) {
-      const token = this.jwt();
-      role = token ? this.decodeRole(token) : null;
-    }
+    const role = roleOverride ? roleOverride : this.jwt() ? this.decodeRole(this.jwt()!) : null;
     if (role) {
       localStorage.setItem('role', role);
       this.role.set(role);
@@ -174,25 +170,17 @@ export class UserService {
       localStorage.removeItem('role');
       this.role.set(null);
     }
+    this.isOperatorFlag.set(role === 'operator' || role === 'admin' || role === 'system');
     this.isAdminFlag.set(role === 'admin' || role === 'system');
-    this.isOperatorFlag.set(role === 'operator');
     this.isSystemFlag.set(role === 'system');
-  }
-
-  getAdminStatus() {
-    return this.isAdminFlag() || this.isSystemFlag();
-  }
-
-  getOperatorStatus() {
-    return this.isOperatorFlag();
-  }
-
-  getSystemStatus() {
-    return this.isSystemFlag();
   }
 
   getRole(): string | null {
     return this.role();
+  }
+
+  hasRole(role: string): boolean {
+    return this.role()?.toLowerCase() === role.toLowerCase();
   }
 
   async getUserInfo() {
