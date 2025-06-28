@@ -116,7 +116,12 @@ html{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.button:hover {
+.button:disabled {
+  cursor: not-allowed;
+  filter: saturate(100%);
+}
+
+.button:hover:not(:disabled) {
   scale: 1.05;
 }
 
@@ -313,6 +318,49 @@ html{
 .global-error {
   font-size: 16px !important;
   margin: 0.5rem 0;
+}
+
+.identity {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.identity > * {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 4px 0;
+}
+
+.badge {
+  border-radius: 3px;
+  padding: 8px 5px 5px;
+  margin-top: 4px !important;
+}
+
+.system {
+  color: #ffffff;
+  background: #000000;
+}
+
+.admin {
+  color: #8c3131;
+  background: #ffa1a1;
+}
+
+.operator {
+  color: #458c31;
+  background: #caffb8;
+}
+
+.user {
+  color: #4c4ca5;
+  background: #ceceff;
 }
 
 @media screen and (max-width: 400px) {

@@ -1,20 +1,27 @@
 <div class="users container">
-  <div class="user" *ngFor="let user of users()">
+  <div class="user-entry" *ngFor="let user of users()">
     <div class="user-details">
       <div class="name-date">
-        <h4 class="name">{{user.username}}</h4>
-        <p>{{user.createdAt | date:'MMM d, y, HH:mm'}}</p>
+        <div class="row identity">
+          <h3>{{user.username}}</h3>
+          <h5 class="badge {{user.role}}">
+            {{user.role.toUpperCase()}}
+          </h5>
+        </div>
+        <p>Created: {{user.createdAt | date:'MMM d, y, HH:mm'}}</p>
       </div>
-      <div *ngIf="user.role !== 'system'" class="actions">
+      <div *ngIf="user.role !== 'system' && !(userService.role() === 'admin' && user.role === 'admin')" class="actions">
         <select
           class="form-input"
           (change)="changeRole(user, $event)"
-          [ngModel]="getUserRole(user)">
-          <option *ngFor="let r of allowedRoles()" [value]="r">{{r}}</option>
+          [ngModel]="user.role">
+          <option *ngIf="userService.role() === 'system'" value="admin">Admin</option>
+          <option value="operator">Operator</option>
+          <option value="user">User</option>
         </select>
         <button class="button cancel-btn" (click)="deleteUser(user.username)">Delete</button>
       </div>
     </div>
-    <p class="error field-error">{{user.status}}</p>
+    <p *ngIf="user.status" class="error field-error">{{user.status}}</p>
   </div>
 </div>

@@ -7,7 +7,7 @@ namespace HulaSwirl.Services.UserServices;
 public class UserEvent
 {
     public string EventType { get; set; } = string.Empty; // "deleted" or "role-changed"
-    public string? Role { get; set; }
+    public string? Token { get; set; }
 }
 
 public class ObservableUserService

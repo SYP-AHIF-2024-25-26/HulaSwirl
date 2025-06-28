@@ -15,9 +15,9 @@ interface LoginRequest {
   key: string;
 }
 
-interface AuthResponse {
-  token: string;
+interface DecodedUser {
   username: string;
+  role: string;
 }
 
 export interface AccountInfo {
@@ -45,18 +45,14 @@ export class UserService {
   private userWsUrl = inject(USER_WS_URL);
   private ws?: WebSocket;
 
-  jwt = signal<string | null>(this.getTokenFromStorage());
-  username = signal<string | null>(this.getUsernameFromStorage());
-  private role = signal<string | null>(this.getRoleFromStorage());
-  private isAdminFlag = signal<boolean>(false);
-  private isOperatorFlag = signal<boolean>(false);
-  private isSystemFlag = signal<boolean>(false);
+  public username = signal<string | null>(null);
+  public role = signal<string | null>(null);
 
   constructor() {
     effect(() => {
-      this.updateUserRole();
+      this.setUser(this.getTokenFromStorage());
     });
-    if (this.jwt()) {
+    if (this.getTokenFromStorage()) {
       this.connectWebSocket();
     }
   }
@@ -65,48 +61,32 @@ export class UserService {
     return localStorage.getItem('jwt');
   }
 
-  private getUsernameFromStorage(): string | null {
-    return localStorage.getItem('username');
-  }
-
-  private getRoleFromStorage(): string | null {
-    return localStorage.getItem('role');
-  }
-
-  private decodeRole(token: string): string | null {
+  private decodeToken(token: string | null): DecodedUser | null {
+    if (!token) {
+      return null;
+    }
     try {
       const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
       const payload = JSON.parse(atob(base64));
-      return payload["role"] ?? payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? null;
+      return { username: payload.sub, role: payload["role"] ?? payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? null };
     } catch {
       return null;
     }
   }
 
-  private setToken(token: string | null, username: string | null): void {
-    if (token) {
-      localStorage.setItem('jwt', token);
-      this.jwt.set(token);
-      const role = this.decodeRole(token);
-      if (role) {
-        localStorage.setItem('role', role);
-        this.role.set(role);
-      }
-    }
-
-    if (username) {
-      localStorage.setItem('username', username);
-      this.username.set(username);
+  private setUser(token: string | null): void {
+    const user = this.decodeToken(token);
+    if (user) {
+      localStorage.setItem('jwt', token!);
+      this.username.set(user.username);
+      this.updateUserRole(user.role);
     }
   }
 
-  private clearToken(): void {
+  private clearUser(): void {
     localStorage.removeItem('jwt');
-    localStorage.removeItem('username');
-    localStorage.removeItem('role');
-    this.jwt.set(null);
     this.username.set(null);
-    this.role.set(null);
+    this.updateUserRole();
   }
 
   private connectWebSocket() {
@@ -118,12 +98,12 @@ export class UserService {
     console.log("Connecting to WebSocket at", this.userWsUrl);
     this.ws.onmessage = async evt => {
       console.log(evt.data);
-      const data: { eventType: string; role?: string } = JSON.parse(evt.data);
+      const data: { eventType: string; token?: string } = JSON.parse(evt.data);
       console.log(data);
       if (data.eventType === 'deleted') {
         await this.logout();
-      } else if (data.eventType === 'role-changed' && data.role) {
-        this.updateUserRole(data.role);
+      } else if (data.eventType === 'role-changed' && data.token) {
+        this.setUser(data.token);
       }
     };
     this.ws.onerror = () => console.error('WS-Error user');
@@ -136,53 +116,44 @@ export class UserService {
   async register(username: string, key: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users`;
     const payload: RegisterRequest = {username, key};
-    const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
-    this.setToken(res.token, res.username);
-    this.updateUserRole();
+    const res = await firstValueFrom(this.http.post<string>(url, payload));
+    this.setUser(res);
     this.connectWebSocket();
   }
 
   async login(username: string, key: string): Promise<void> {
     const url = `${this.apiBaseUrl}/users/login`;
     const payload: LoginRequest = {username, key};
-    const res = await firstValueFrom(this.http.post<AuthResponse>(url, payload));
-    this.setToken(res.token, res.username);
-    this.updateUserRole();
+    const res = await firstValueFrom(this.http.post<string>(url, payload));
+    this.setUser(res);
     this.connectWebSocket();
   }
 
   async logout() {
-    this.clearToken();
+    this.clearUser();
     this.disconnectWebSocket();
     this.modalService.closeModal();
-    this.updateUserRole();
     await this.router.navigate(['/home']);
   }
 
   isLoggedIn(): boolean {
-    return !!this.jwt();
+    return !!this.getTokenFromStorage();
   }
 
-  private updateUserRole(roleOverride?: string) {
-    const role = roleOverride ? roleOverride : this.jwt() ? this.decodeRole(this.jwt()!) : null;
-    if (role) {
-      localStorage.setItem('role', role);
-      this.role.set(role);
-    } else {
-      localStorage.removeItem('role');
-      this.role.set(null);
-    }
-    this.isOperatorFlag.set(role === 'operator' || role === 'admin' || role === 'system');
-    this.isAdminFlag.set(role === 'admin' || role === 'system');
-    this.isSystemFlag.set(role === 'system');
-  }
-
-  getRole(): string | null {
-    return this.role();
+  private updateUserRole(role?: string) {
+    this.role.set(role ? role.toLowerCase() : null);
   }
 
   hasRole(role: string): boolean {
-    return this.role()?.toLowerCase() === role.toLowerCase();
+    if(role === 'system') {
+      return this.role() === 'system';
+    } else if (role === 'admin') {
+      return this.role() === 'admin' || this.role() === 'system';
+    } else if (role === 'operator') {
+      return this.role() === 'operator' || this.role() === 'admin' || this.role() === 'system';
+    } else {
+      return this.role() === role;
+    }
   }
 
   async getUserInfo() {

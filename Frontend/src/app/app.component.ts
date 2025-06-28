@@ -1,4 +1,14 @@
-import {Component, inject, Signal, HostListener, ViewChild, ElementRef, effect, signal} from '@angular/core';
+import {
+  Component,
+  inject,
+  Signal,
+  HostListener,
+  ViewChild,
+  ElementRef,
+  effect,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {Router, NavigationStart, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgIf, NgClass} from '@angular/common';
 import {ModalService, ModalType} from './services/modal.service';

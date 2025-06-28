@@ -54,9 +54,6 @@ public static class UserFactory
         await context.SaveChangesAsync();
         var token = jwtService.GenerateToken(user);
 
-        return Results.Created($"/api/users", new {
-            user.Username,
-            token
-        });
+        return Results.Created($"/api/users", token);
     }
 }

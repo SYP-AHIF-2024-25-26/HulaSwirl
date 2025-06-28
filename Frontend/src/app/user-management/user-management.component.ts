@@ -13,9 +13,9 @@ import {ErrorService} from '../services/error.service';
   styleUrl: './user-management.component.css'
 })
 export class UserManagementComponent extends ErrorHandlingComponent {
-  private readonly userService = inject(UserService);
+  protected readonly userService = inject(UserService);
   private readonly statusService = inject(ErrorService);
-  users: WritableSignal<ManagedUser[]> = signal([]);
+  protected users: WritableSignal<ManagedUser[]> = signal([]);
 
   constructor() {
     super();
@@ -28,25 +28,15 @@ export class UserManagementComponent extends ErrorHandlingComponent {
     this.users.set(await this.userService.getAllUsers());
   }
 
-  allowedRoles(): string[] {
-    return this.userService.getRole() === 'system'
-      ? ['User', 'Operator', 'Admin']
-      : ['User', 'Operator'];
-  }
-
   async changeRole(user: ManagedUser, ev: Event) {
     const target = ev.target as HTMLSelectElement;
     try {
       await this.userService.updateRole(user.username, target.value);
       await this.loadUsers();
     } catch (e) {
-      target.value = this.getUserRole(user)
+      target.value = user.role
       this.handleError(e);
     }
-  }
-
-  getUserRole(user: ManagedUser): string {
-    return user.role[0].toUpperCase() + user.role.slice(1)
   }
 
   async deleteUser(username: string) {

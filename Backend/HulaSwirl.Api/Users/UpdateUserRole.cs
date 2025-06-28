@@ -34,7 +34,7 @@ public static class UpdateUserRole
         user.Role = role.ToLower();
         db.User.Update(user);
         await db.SaveChangesAsync();
-        await userService.BroadcastAsync(username, new UserEvent { EventType = "role-changed", Role = user.Role });
+        await userService.BroadcastAsync(username, new UserEvent { EventType = "role-changed", Token = jwtService.GenerateToken(user) });
         return Results.Ok();
     }
 }
