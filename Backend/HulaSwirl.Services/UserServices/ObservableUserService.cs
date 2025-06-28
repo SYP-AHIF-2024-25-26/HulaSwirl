@@ -7,7 +7,7 @@ namespace HulaSwirl.Services.UserServices;
 public class UserEvent
 {
     public string EventType { get; set; } = string.Empty; // "deleted" or "role-changed"
-    public string? Role { get; set; }
+    public string? Token { get; set; }
 }
 
 public class ObservableUserService
@@ -16,10 +16,10 @@ public class ObservableUserService
 
     public IDisposable Subscribe(string username, IObserver<UserEvent> observer)
     {
-        if (!_observers.TryGetValue(username, out var list))
+        if (!_observers.TryGetValue(username.ToLower(), out var list))
         {
             list = [];
-            _observers[username] = list;
+            _observers[username.ToLower()] = list;
         }
         if (!list.Contains(observer))
             list.Add(observer);
@@ -28,7 +28,7 @@ public class ObservableUserService
 
     public async Task BroadcastAsync(string username, UserEvent evt)
     {
-        if (_observers.TryGetValue(username, out var list))
+        if (_observers.TryGetValue(username.ToLower(), out var list))
         {
             foreach (var observer in list.ToArray())
             {

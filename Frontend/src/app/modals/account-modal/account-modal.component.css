@@ -18,49 +18,6 @@
   background: var(--cancel-btn-bg);
 }
 
-#identity {
-  display: flex;
-  margin-bottom: 20px;
-}
-
-.badge {
-  border-radius: 3px;
-  padding: 8px 5px 5px;
-  margin-top: 4px !important;
-}
-
-#system {
-  color: #ffffff;
-  background: #000000;
-}
-
-#admin {
-  color: #8c3131;
-  background: #ffa1a1;
-}
-
-#operator {
-  color: #458c31;
-  background: #caffb8;
-}
-
-#user {
-  color: #4c4ca5;
-  background: #ceceff;
-}
-
-#identity > h3, #identity h5 {
-  margin: 0;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 5px;
-  padding: 4px 0;
-}
-
 .row > p {
   margin: 0;
 }

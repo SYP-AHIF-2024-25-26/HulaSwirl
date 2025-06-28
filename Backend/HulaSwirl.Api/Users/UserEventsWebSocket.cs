@@ -22,10 +22,10 @@ public static class UserEventsWebSocket
 
         try
         {
-            var username = jwtService.GetUsernameFromToken($"Bearer {token}");
+            var username = jwtService.GetUsernameFromToken($"Bearer {token}").ToLower();
             var socket = await httpContext.WebSockets.AcceptWebSocketAsync();
             var observer = new UserWebSocketObserver(socket);
-            var subscription = service.Subscribe(username.ToLower(), observer);
+            var subscription = service.Subscribe(username, observer);
 
             var buffer = new byte[1024 * 4];
             while (socket.State == WebSocketState.Open)

@@ -2,10 +2,9 @@
   <app-generic-modal title="My Account" (closed)="close()">
     <div modal-body class="account-content">
       <div class="user-info">
-          <div id="identity" class="row">
+          <div class="row identity">
             <h3>{{userInfo()!.username}}</h3>
-            <h5 class="badge"
-                id="{{badge()}}">
+            <h5 class="badge {{badge()}}">
               {{badge().toUpperCase()}}
             </h5>
           </div>

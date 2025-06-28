@@ -4,15 +4,22 @@
   gap: 0.5rem;
 }
 
+.user-entry {
+  background: #f1e3cc;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+}
+
 .user-details {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: center;
-  background: #f1e3cc;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+}
+
+.field-error {
+  margin-top: 0.5rem;
 }
 
 .name-date {

@@ -21,12 +21,12 @@ export class AccountModalComponent {
   private readonly modalService = inject(ModalService);
 
   protected userInfo: WritableSignal<null | AccountInfo> = signal(null);
-  protected badge = signal("user");
+  protected badge = signal<string>("user");
 
   constructor() {
     effect(() => {
       this.userInfo = this.modalService.getModalData() as WritableSignal<AccountInfo>;
-      const role = this.userService.getRole();
+      const role = this.userService.role()
       this.badge.set(role ? role : "user");
     });
   }

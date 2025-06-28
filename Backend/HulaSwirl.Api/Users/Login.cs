@@ -47,6 +47,6 @@ public static class Login
         user.LastLogin = DateTime.Now;
         db.User.Update(user);
         await db.SaveChangesAsync();
-        return Results.Ok(new { user.Username, token });
+        return Results.Ok(token);
     }
 }

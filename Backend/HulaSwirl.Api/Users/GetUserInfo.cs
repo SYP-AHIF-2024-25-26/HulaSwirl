@@ -19,8 +19,8 @@ public static class GetUserInfo
             return Results.Unauthorized();
         try
         {
-            var username = jwtService.GetUsernameFromToken(authHeader);
-            var user = await db.User.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+            var username = jwtService.GetUsernameFromToken(authHeader).ToLower();
+            var user = await db.User.FirstOrDefaultAsync(u => u.Username.ToLower() == username);
             if (user == null) return ErrorResults.NotFound("User not found.");
 
             var userDto = new UserInfoDto
