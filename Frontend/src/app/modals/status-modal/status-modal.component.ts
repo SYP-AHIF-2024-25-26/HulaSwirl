@@ -2,6 +2,7 @@ import {Component, effect, inject, signal, Signal} from '@angular/core';
 import {ModalService, ModalType} from '../../services/modal.service';
 import { NgIf } from '@angular/common';
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
+import {FpsService} from '../../services/fps.service';
 
 @Component({
   selector: 'app-status-modal',
@@ -12,11 +13,13 @@ import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 })
 export class StatusModalComponent {
   private modalService = inject(ModalService);
+  private fpsService = inject(FpsService);
 
+  currentModalData: Signal<any> = signal(null);
   statusMessage = signal('');
+  lowEndDetected = this.fpsService.lowEndDetected;
   progress: number = 0;
   progressVisible: boolean = false;
-  currentModalData: Signal<any> = signal(null);
 
   async ngOnInit() {
     this.currentModalData = this.modalService.getModalData();
@@ -40,7 +43,7 @@ export class StatusModalComponent {
   startProgress(durationInSeconds: number) {
     this.progressVisible = true;
     this.progress = 0;
-    const steps = durationInSeconds * 10;
+    const steps = durationInSeconds * (this.lowEndDetected() ? 2 : 10);
     let currentStep = 0;
 
     const interval = setInterval(() => {
@@ -59,7 +62,7 @@ export class StatusModalComponent {
           this.closeModal()
         }, 1500);
       }
-    }, 100);
+    }, this.lowEndDetected() ? 500 : 100);
   }
 
   closeModal() {

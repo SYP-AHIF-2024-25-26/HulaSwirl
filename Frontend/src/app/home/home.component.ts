@@ -5,6 +5,7 @@ import {Drink, DrinkService} from '../services/drink.service';
 import {ModalService, ModalType} from '../services/modal.service';
 import {ErrorService} from '../services/error.service';
 import {NgForOf} from '@angular/common';
+import {FpsService} from '../services/fps.service';
 
 @Component({
   selector: 'app-home',
@@ -20,12 +21,14 @@ export class HomeComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
+  private readonly fpsService = inject(FpsService);
 
   allAvailableDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
   recommendedDrinks = signal<Drink[]>([]);
   filteredDrinks = signal<Drink[]>(this.allAvailableDrinks());
   currentSlideIdx = signal(1);
+  lowEndDetected = this.fpsService.lowEndDetected;
   searchQuery: string = '';
   selectedIngredient: string = '';
 

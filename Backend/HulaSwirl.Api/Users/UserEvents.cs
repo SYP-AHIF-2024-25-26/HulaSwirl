@@ -3,7 +3,7 @@ using HulaSwirl.Services.UserServices;
 
 namespace HulaSwirl.Api.Users;
 
-public static class UserEventsWebSocket
+public static class UserEvents
 {
     public static async Task Handle(HttpContext httpContext, ObservableUserService service, JwtService jwtService)
     {
@@ -38,7 +38,8 @@ public static class UserEventsWebSocket
         }
         catch
         {
-            httpContext.Response.StatusCode = 401;
+            if (!httpContext.Response.HasStarted)
+                httpContext.Response.StatusCode = 401;
         }
     }
 }
