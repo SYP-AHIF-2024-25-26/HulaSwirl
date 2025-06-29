@@ -7,14 +7,21 @@ namespace HulaSwirl.Api.Statistics;
 
 public static class GetDrinkStatistics
 {
-    public static async Task<IResult> HandleGetDrinkStats(AppDbContext db, HttpContext http)
+    public static async Task<IResult> HandleGetDrinkStats(AppDbContext db, HttpContext http, DateTime? start, DateTime? end)
     {
         if (!http.IsAdmin()) return Results.Forbid();
 
-        // Step 1: Fetch required data from DB
-        var orders = await db.Order
+        var query = db.Order
             .Include(o => o.OrderIngredients)
-            .ToListAsync();
+            .AsQueryable();
+
+        if (start.HasValue)
+            query = query.Where(o => o.OrderDate >= start.Value);
+
+        if (end.HasValue)
+            query = query.Where(o => o.OrderDate <= end.Value);
+
+        var orders = await query.ToListAsync();
 
         // Step 2: Group and aggregate in memory
         var stats = orders

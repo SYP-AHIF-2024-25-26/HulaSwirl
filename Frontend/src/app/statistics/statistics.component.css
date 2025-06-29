@@ -14,31 +14,30 @@
   min-width: 200px;
 }
 
-.chart {
+.users .stat-card {
+  flex: 1 1 250px;
+}
+
+.date-picker {
   display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  height: 200px;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
-.bar {
-  flex: 1;
+.pie-row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  height: 100%;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
-.bar-inner {
-  width: 100%;
-  background: #6091af;
-  transition: height 0.3s ease;
+.pie-chart {
+  flex: 1 1 300px;
+  max-width: 400px;
 }
 
-.bar span {
-  font-size: 0.7rem;
-  transform: rotate(-20deg);
+canvas {
+  max-width: 100%;
 }
+
