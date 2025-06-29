@@ -5,6 +5,7 @@ using HulaSwirl.Api.Drinks;
 using HulaSwirl.Api.Ingredients;
 using HulaSwirl.Api.Orders;
 using HulaSwirl.Api.Users;
+using HulaSwirl.Api.Statistics;
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.Pumps;
@@ -133,12 +134,13 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
 app.UseHttpsRedirection();
 
-app.UseWebSockets();
-app
-    .MapIngredientApis()
-    .MapDrinkApis()
-    .MapUserApi()
-    .MapOrderApis();
+    app.UseWebSockets();
+    app
+        .MapIngredientApis()
+        .MapDrinkApis()
+        .MapUserApi()
+        .MapOrderApis()
+        .MapStatisticsApi();
 
 using (var scope = app.Services.CreateScope())
 {
