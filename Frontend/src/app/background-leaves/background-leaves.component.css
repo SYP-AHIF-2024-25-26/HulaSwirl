@@ -27,6 +27,14 @@
   background-position: top right;
 }
 
+.edge-left.lowEnd {
+  background-image: url('/assets/images/background_left.png') !important;
+}
+
+.edge-right.lowEnd {
+  background-image: url('/assets/images/background_right.png') !important;
+}
+
 .content {
   position: relative;
   z-index: 1;

@@ -10,8 +10,13 @@ public static class GetAllOrders
 {
     public static async Task HandleGetAllOrders(HttpContext httpContext, ObservableOrderService orderObservable, AppDbContext context)
     {
-        if (httpContext.WebSockets.IsWebSocketRequest)
+        if (!httpContext.WebSockets.IsWebSocketRequest)
         {
+            httpContext.Response.StatusCode = 400;
+            return;
+        }
+        
+        try {
             var socket = await httpContext.WebSockets.AcceptWebSocketAsync();
 
             var observer = new OrdersWebSocketObserver(socket);
@@ -29,9 +34,10 @@ public static class GetAllOrders
             }
             subscription.Dispose();
         }
-        else
+        catch
         {
-            httpContext.Response.StatusCode = 400;
+            if (!httpContext.Response.HasStarted)
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
     }
 }

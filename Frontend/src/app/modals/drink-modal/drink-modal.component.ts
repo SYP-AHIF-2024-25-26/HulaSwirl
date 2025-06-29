@@ -173,7 +173,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
       try {
         await this.drinkService.deleteDrink(this.currentDrink()!.id);
         await this.ingredientsService.loadIngredients();
-        this.modalService.closeModal();
+        this.closeModal();
       } catch (e) {
         this.handleError(e);
       }

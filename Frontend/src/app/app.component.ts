@@ -23,6 +23,7 @@ import {StatusModalComponent} from './modals/status-modal/status-modal.component
 import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
 import {AccountModalComponent} from './modals/account-modal/account-modal.component';
+import {FpsService} from './services/fps.service';
 
 @Component({
   selector: 'app-root',
@@ -51,7 +52,6 @@ export class AppComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly router = inject(Router);
   protected readonly userService = inject(UserService);
-
   displayedModal: Signal<ModalType | null> = this.modalService.getDisplayedModal();
   menuOpen = false;
   accountMenuOpen = false;

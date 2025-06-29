@@ -6,8 +6,7 @@ export enum ModalType{
   EditDrink,
   Status,
   User,
-  Account,
-  Generic
+  Account
 }
 @Injectable({
   providedIn: 'root'
