@@ -9,32 +9,32 @@ public static class StatisticsApi
     {
         const string baseUrl = "api/v1/statistics";
 
-        app.MapGet($"{baseUrl}/drinks", GetDrinkStatistics.Handle)
-            .WithName(nameof(GetDrinkStatistics.Handle))
+        app.MapGet($"{baseUrl}/drinks", GetDrinkStatistics.HandleGetDrinkStats)
+            .WithName(nameof(GetDrinkStatistics.HandleGetDrinkStats))
             .WithDescription("Get statistics per drink")
             .WithTags("Statistics")
             .RequireAuthorization()
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapGet($"{baseUrl}/ingredients", GetIngredientStatistics.Handle)
-            .WithName(nameof(GetIngredientStatistics.Handle))
+        app.MapGet($"{baseUrl}/ingredients", GetIngredientStatistics.HandleGetIngredientStats)
+            .WithName(nameof(GetIngredientStatistics.HandleGetIngredientStats))
             .WithDescription("Get ingredient usage statistics")
             .WithTags("Statistics")
             .RequireAuthorization()
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapGet($"{baseUrl}/users", GetUserStatistics.Handle)
-            .WithName(nameof(GetUserStatistics.Handle))
+        app.MapGet($"{baseUrl}/users", GetUserStatistics.HandleGetUserStats)
+            .WithName(nameof(GetUserStatistics.HandleGetUserStats))
             .WithDescription("Get statistics per user")
             .WithTags("Statistics")
             .RequireAuthorization()
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status403Forbidden);
 
-        app.MapGet($"{baseUrl}/recent-orders", GetRecentOrders.Handle)
-            .WithName(nameof(GetRecentOrders.Handle))
+        app.MapGet($"{baseUrl}/recent-orders", GetRecentOrders.HandleGetRecentOrderStats)
+            .WithName(nameof(GetRecentOrders.HandleGetRecentOrderStats))
             .WithDescription("Get orders in 30 minute intervals for the last 24h")
             .WithTags("Statistics")
             .RequireAuthorization()

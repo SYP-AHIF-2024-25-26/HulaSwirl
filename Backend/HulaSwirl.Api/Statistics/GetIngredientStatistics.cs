@@ -7,11 +7,12 @@ namespace HulaSwirl.Api.Statistics;
 
 public static class GetIngredientStatistics
 {
-    public static async Task<IResult> Handle(AppDbContext db, HttpContext http)
+    public static async Task<IResult> HandleGetIngredientStats(AppDbContext db, HttpContext http)
     {
         if (!http.IsAdmin()) return Results.Forbid();
 
-        var stats = await db.Order
+        var orders = await db.Order.ToListAsync();
+        var stats = orders
             .SelectMany(o => o.OrderIngredients)
             .GroupBy(i => i.IngredientName)
             .Select(g => new IngredientStatisticsDto
@@ -21,7 +22,7 @@ public static class GetIngredientStatistics
                 TotalAmount = g.Sum(x => x.Amount)
             })
             .OrderByDescending(s => s.UsageCount)
-            .ToListAsync();
+            .ToList();
 
         return Results.Ok(stats);
     }

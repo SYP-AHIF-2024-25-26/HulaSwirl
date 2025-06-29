@@ -7,11 +7,12 @@ namespace HulaSwirl.Api.Statistics;
 
 public static class GetUserStatistics
 {
-    public static async Task<IResult> Handle(AppDbContext db, HttpContext http)
+    public static async Task<IResult> HandleGetUserStats(AppDbContext db, HttpContext http)
     {
         if (!http.IsAdmin()) return Results.Forbid();
 
-        var stats = await db.Order
+        var orders = await db.Order.ToListAsync();
+        var stats = orders
             .GroupBy(o => o.User)
             .Select(g => new UserStatisticsDto
             {
@@ -23,7 +24,7 @@ public static class GetUserStatistics
                     .ToList()
             })
             .OrderByDescending(u => u.TotalOrders)
-            .ToListAsync();
+            .ToList();
 
         return Results.Ok(stats);
     }
