@@ -52,8 +52,6 @@ export class AppComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly router = inject(Router);
   protected readonly userService = inject(UserService);
-  private readonly fpsService = inject(FpsService);
-
   displayedModal: Signal<ModalType | null> = this.modalService.getDisplayedModal();
   menuOpen = false;
   accountMenuOpen = false;
@@ -72,9 +70,6 @@ export class AppComponent {
       } else {
         this.userInitials.set("");
       }
-    });
-    this.measureFPS(fps => {
-      this.fpsService.fps.set(fps);
     });
   }
 
@@ -125,20 +120,6 @@ export class AppComponent {
 
   private isAtHome() {
     return this.isAtHomeScreen.set(this.router.url === '/' || this.router.url === '/home');
-  }
-
-  private measureFPS(callback: (fps: number) => void) {
-    let last = performance.now(), frames = 0;
-    const step = (now: number) => {
-      frames++;
-      if (now - last >= 1000) {
-        callback(frames);
-        frames = 0;
-        last = now;
-      }
-      requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
   }
 
   protected readonly ModalType = ModalType;
