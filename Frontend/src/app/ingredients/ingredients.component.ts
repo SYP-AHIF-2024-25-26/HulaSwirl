@@ -39,7 +39,6 @@ export class IngredientsComponent extends ErrorHandlingComponent {
 
   dragStart(event: DragEvent, index: number, available: boolean = true) {
     const ingredient = available ? this.getIngredientByIndex(index) : this.unIngredients()[index];
-    console.log(event.target);
     if (!ingredient) return;
     this.draggedIngredient = ingredient;
     this.sourceContainer = available ? 'available' : 'unavailable';

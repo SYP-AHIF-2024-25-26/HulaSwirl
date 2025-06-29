@@ -41,7 +41,6 @@ export class OrdersService {
         }, 0);
       })
       this.orders.set(all.filter(o => o.status === 0));
-      console.log(this.orders());
     };
     this.ws.onerror = () => console.error('WS-Error OrderTerminal');
   }
