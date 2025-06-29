@@ -1,1 +1,37 @@
-<p>statistics works!</p>
+<div class="container">
+  <h2>Orders per Drink</h2>
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let d of drinks()">
+      <h3>{{ d.drinkName }}</h3>
+      <p>Total Orders: {{ d.count }}</p>
+      <p>Total Amount: {{ d.totalAmount }} ml</p>
+    </div>
+  </div>
+
+  <h2>Orders per User</h2>
+  <div class="stats-grid users">
+    <div class="stat-card" *ngFor="let u of users()">
+      <h3>{{ u.user }} ({{ u.totalOrders }})</h3>
+      <ul>
+        <li *ngFor="let d of u.drinks">{{ d.drinkName }} – {{ d.count }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Ingredient Usage</h2>
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let i of ingredients()">
+      <h3>{{ i.ingredientName }}</h3>
+      <p>Used: {{ i.usageCount }}x</p>
+      <p>Total Amount: {{ i.totalAmount }} ml</p>
+    </div>
+  </div>
+
+  <h2>Last 12h Orders</h2>
+  <div class="chart">
+    <div class="bar" *ngFor="let i of intervals()">
+      <div class="bar-inner" [style.height]="barHeight(i.count)"></div>
+      <span>{{ i.intervalStart | date:'HH:mm' }}</span>
+    </div>
+  </div>
+</div>
