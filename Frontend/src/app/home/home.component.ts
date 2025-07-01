@@ -6,6 +6,7 @@ import {ModalService, ModalType} from '../services/modal.service';
 import {ErrorService} from '../services/error.service';
 import {NgForOf} from '@angular/common';
 import {FpsService} from '../services/fps.service';
+import {StatisticsService} from '../services/statistics.service';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomeComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
   private readonly fpsService = inject(FpsService);
+  private readonly statisticsService = inject(StatisticsService);
 
   allAvailableDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
@@ -39,8 +41,13 @@ export class HomeComponent {
         drink.available &&
         drink.drinkIngredients.every(ing => this.allAvailableIngredients().some(availableIng => availableIng.ingredientName === ing.ingredientName))
       ));
-      this.recommendedDrinks.set(this.allAvailableDrinks().slice(0, 5));
       this.filteredDrinks.set(this.allAvailableDrinks());
+      const top5drinkNames = this.statisticsService.drinkStats().slice(0, 5).map(stat => stat.drinkName);
+      if(top5drinkNames.length > 0) {
+        this.recommendedDrinks.set(this.allAvailableDrinks().filter(drink => top5drinkNames.includes(drink.name)));
+      } else {
+        this.recommendedDrinks.set(this.allAvailableDrinks().slice(0, 5));
+      }
     });
   }
 

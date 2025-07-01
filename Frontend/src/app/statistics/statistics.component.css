@@ -1,4 +1,8 @@
-.stats-grid {
+.container {
+  text-align: center;
+}
+
+.users-stats {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -7,38 +11,52 @@
 }
 
 .stat-card {
-  background: #f1e3cc;
+  background: var(--popup-bg);
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   min-width: 200px;
+  text-align: start;
+  height: fit-content;
 }
 
-.chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  height: 200px;
-  overflow-x: scroll;
-  overflow-y: hidden;
+.stat-card > h3 {
+  margin: 0 0 0.5rem 0;
 }
 
-.bar {
-  flex: 1;
+.stat-card > ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.date-picker {
   display: flex;
-  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.date-picker label {
+  font-weight: bold;
+  display: flex;
   align-items: center;
-  justify-content: flex-end;
-  height: 100%;
+  gap: 0.5rem;
 }
 
-.bar-inner {
-  width: 100%;
-  background: #6091af;
-  transition: height 0.3s ease;
+.pie-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
-.bar span {
-  font-size: 0.7rem;
-  transform: rotate(-20deg);
+.pie-chart {
+  flex: 1 1 300px;
+  max-width: 400px;
 }
+
+canvas {
+  max-width: 100%;
+}
+

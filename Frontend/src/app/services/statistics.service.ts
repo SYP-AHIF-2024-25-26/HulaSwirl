@@ -50,36 +50,55 @@ export class StatisticsService {
     return { Authorization: `Bearer ${jwt}` };
   }
 
-  async loadAll() {
+  async loadAll(start?: string, end?: string) {
     await Promise.all([
-      this.loadDrinkStats(),
-      this.loadIngredientStats(),
-      this.loadUserStats(),
-      this.loadIntervalStats()
+      this.loadDrinkStats(start, end),
+      this.loadIngredientStats(start, end),
+      this.loadUserStats(start, end),
+      this.loadIntervalStats(start, end)
     ]);
   }
 
-  async loadDrinkStats() {
+  private rangeParams(start?: string, end?: string) {
+    const params: any = {};
+    if (start) params.start = start;
+    if (end) params.end = end;
+    return params;
+  }
+
+  async loadDrinkStats(start?: string, end?: string) {
     this.drinkStats.set(
-      await firstValueFrom(this.http.get<DrinkStat[]>(`${this.apiBaseUrl}/statistics/drinks`, {headers: this.headers}))
+      await firstValueFrom(this.http.get<DrinkStat[]>(`${this.apiBaseUrl}/statistics/drinks`, {
+        headers: this.headers,
+        params: this.rangeParams(start, end)
+      }))
     );
   }
 
-  async loadIngredientStats() {
+  async loadIngredientStats(start?: string, end?: string) {
     this.ingredientStats.set(
-      await firstValueFrom(this.http.get<IngredientStat[]>(`${this.apiBaseUrl}/statistics/ingredients`, {headers: this.headers}))
+      await firstValueFrom(this.http.get<IngredientStat[]>(`${this.apiBaseUrl}/statistics/ingredients`, {
+        headers: this.headers,
+        params: this.rangeParams(start, end)
+      }))
     );
   }
 
-  async loadUserStats() {
+  async loadUserStats(start?: string, end?: string) {
     this.userStats.set(
-      await firstValueFrom(this.http.get<UserStat[]>(`${this.apiBaseUrl}/statistics/users`, {headers: this.headers}))
+      await firstValueFrom(this.http.get<UserStat[]>(`${this.apiBaseUrl}/statistics/users`, {
+        headers: this.headers,
+        params: this.rangeParams(start, end)
+      }))
     );
   }
 
-  async loadIntervalStats() {
+  async loadIntervalStats(start?: string, end?: string) {
     this.intervalStats.set(
-      await firstValueFrom(this.http.get<IntervalStat[]>(`${this.apiBaseUrl}/statistics/recent-orders`, {headers: this.headers}))
+      await firstValueFrom(this.http.get<IntervalStat[]>(`${this.apiBaseUrl}/statistics/recent-orders`, {
+        headers: this.headers,
+        params: this.rangeParams(start, end)
+      }))
     );
   }
 }

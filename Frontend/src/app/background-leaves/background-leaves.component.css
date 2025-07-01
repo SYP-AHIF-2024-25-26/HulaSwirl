@@ -47,11 +47,11 @@
   }
 
   .edge-left {
-    left: calc(-50px + 6%) !important;
+    left: calc(-80px + 6%) !important;
     background-position: top right !important;
   }
   .edge-right {
-    right: calc(-50px + 6%) !important;
+    right: calc(-80px + 6%) !important;
     background-position: top left !important;
   }
 }
