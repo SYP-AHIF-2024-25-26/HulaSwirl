@@ -13,23 +13,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<DrinkIngredient> DrinkIngredient { get; set; }
     public DbSet<Pump> Pump { get; set; }
     public DbSet<User> User { get; set; }
-    public DbSet<UserDrinkStatistic> UserDrinkStat { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UserDrinkStatistic>()
-            .HasKey(uds => new { uds.UserName, uds.DrinkId });
-
-        modelBuilder.Entity<UserDrinkStatistic>()
-            .HasOne(uds => uds.User)
-            .WithMany(u => u.DrinkStatistics)
-            .HasForeignKey(uds => uds.UserName);
-
-        modelBuilder.Entity<UserDrinkStatistic>()
-            .HasOne(uds => uds.Drink)
-            .WithMany()
-            .HasForeignKey(uds => uds.DrinkId);
-        
         modelBuilder.Entity<Drink>()
             .HasMany(d => d.DrinkIngredients)
             .WithOne()

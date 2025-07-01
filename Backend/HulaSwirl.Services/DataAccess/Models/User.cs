@@ -8,8 +8,7 @@ public class User(
     string role,
     DateTime createdAt,
     DateTime? lastLogin,
-    ICollection<Order>? orders = null,
-    ICollection<UserDrinkStatistic>? drinkStatistics = null)
+    ICollection<Order>? orders = null)
 {
     public User() : this(string.Empty, string.Empty, string.Empty, DateTime.Now, null) { }
 
@@ -27,5 +26,4 @@ public class User(
 
     // Navigation Properties
     public ICollection<Order> Orders { get; set; } = orders ?? new List<Order>();
-    public ICollection<UserDrinkStatistic> DrinkStatistics { get; set; } = drinkStatistics ?? new List<UserDrinkStatistic>();
 }
