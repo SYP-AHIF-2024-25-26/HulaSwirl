@@ -1,1 +1,46 @@
-<p>statistics works!</p>
+<div class="container">
+  <div class="date-picker">
+    <label>Start
+      <input class="form-input" type="datetime-local" [(ngModel)]="start" (change)="reload()">
+    </label>
+    <label>End
+      <input class="form-input" type="datetime-local" [(ngModel)]="end" (change)="reload()">
+    </label>
+  </div>
+
+  <div class="pie-row">
+    <div class="pie-chart">
+      <h2>Orders per Drink</h2>
+      @if(drinkChartData().labels?.length) {
+        <canvas baseChart [data]="drinkChartData()" [options]="drinkChartOptions" [type]="'pie'"></canvas>
+      } @else {
+        <p>No data available for the selected period.</p>
+      }
+    </div>
+    <div class="pie-chart">
+      <h2>Ingredient Usage</h2>
+      @if (ingredientChartData().labels?.length) {
+        <canvas baseChart [data]="ingredientChartData()" [options]="ingredientChartOptions" [type]="'pie'"></canvas>
+      } @else {
+        <p>No data available for the selected period.</p>
+      }
+    </div>
+  </div>
+
+  <h2>Orders per User</h2>
+  <div class="users-stats">
+    @if(users().length){
+    <div class="stat-card" *ngFor="let u of users()">
+      <h3>{{ u.user }} ({{ u.totalOrders }})</h3>
+      <ul>
+        <li *ngFor="let d of u.drinks">{{ d.count }} {{ d.drinkName }}</li>
+      </ul>
+    </div>
+    } @else {
+      <p>No data available for the selected period.</p>
+    }
+  </div>
+
+  <h2>Order Intervals</h2>
+  <canvas baseChart [data]="intervalChartData()" [options]="intervalChartOptions" [type]="'bar'"></canvas>
+</div>

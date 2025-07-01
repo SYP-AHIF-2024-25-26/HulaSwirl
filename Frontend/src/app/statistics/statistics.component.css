@@ -1,0 +1,62 @@
+.container {
+  text-align: center;
+}
+
+.users-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  background: var(--popup-bg);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  min-width: 200px;
+  text-align: start;
+  height: fit-content;
+}
+
+.stat-card > h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+.stat-card > ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.date-picker {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.date-picker label {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pie-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.pie-chart {
+  flex: 1 1 300px;
+  max-width: 400px;
+}
+
+canvas {
+  max-width: 100%;
+}
+

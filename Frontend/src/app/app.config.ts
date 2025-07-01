@@ -1,5 +1,6 @@
 import {ApplicationConfig, InjectionToken, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
+import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
 
 import { routes } from './app.routes';
 import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
@@ -8,8 +9,8 @@ import {loadingInterceptor} from './services/loading.interceptor';
 export const BASE_URL = new InjectionToken<string>('BaseUrl');
 export const WS_URL = new InjectionToken<string>('WsUrl');
 export const USER_WS_URL = new InjectionToken<string>('UserWsUrl');
-const IP = "192.168.0.200:8080";
-//const IP = "localhost:5110";
+//const IP = "192.168.0.200:8080";
+const IP = "localhost:5110";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
     { provide: BASE_URL, useValue: `http://${IP}/api/v1` },
     { provide: WS_URL, useValue: `ws://${IP}/ws/orders` },
     { provide: USER_WS_URL, useValue: `ws://${IP}/ws/users` },
+    provideCharts(withDefaultRegisterables()),
   ]
 };
