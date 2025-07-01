@@ -1,5 +1,6 @@
 using HulaSwirl.Services.DataAccess;
 using HulaSwirl.Services.Dtos;
+using HulaSwirl.Services.OrderService;
 using HulaSwirl.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,23 +15,22 @@ public static class GetRecentOrders
         var now = DateTime.Now;
         if (!start.HasValue || !end.HasValue)
         {
-            var defaultEnd = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0, DateTimeKind.Local);
+            var defaultEnd = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0, DateTimeKind.Local);
             end ??= defaultEnd;
             start ??= end.Value.AddHours(-12);
         }
+        var stepMinutes = GetStepMinutes(start.Value, end.Value);
+        end = end.Value.AddMinutes(stepMinutes - end.Value.Minute % stepMinutes);
+        start = start.Value.AddMinutes(-start.Value.Minute % stepMinutes);
 
         var grouped = await db.Order
-            .Where(o => o.OrderDate >= start && o.OrderDate <= end)
+            .Where(o => o.OrderDate >= start && o.OrderDate <= end && o.Status == OrderStatus.Confirmed)
             .GroupBy(o => new {
                 o.OrderDate.Year,
                 o.OrderDate.Month,
                 o.OrderDate.Day,
                 o.OrderDate.Hour,
-                Minute = (end.Value - start.Value).TotalHours <= 6
-                    ? (o.OrderDate.Minute < 15 ? 0 : o.OrderDate.Minute < 30 ? 15 : o.OrderDate.Minute < 45 ? 30 : 45)
-                    : (end.Value - start.Value).TotalHours <= 12
-                        ? (o.OrderDate.Minute < 30 ? 0 : 30)
-                        : 0
+                Minute = o.OrderDate.Minute / stepMinutes * stepMinutes
             })
             .Select(g => new IntervalStatisticDto
             {
@@ -39,11 +39,7 @@ public static class GetRecentOrders
             })
             .ToListAsync();
 
-        var step = (end.Value - start.Value).TotalHours <= 6
-            ? TimeSpan.FromMinutes(15)
-            : (end.Value - start.Value).TotalHours <= 12
-                ? TimeSpan.FromMinutes(30)
-                : TimeSpan.FromHours(1);
+        var step = TimeSpan.FromMinutes(stepMinutes);
 
         var result = new List<IntervalStatisticDto>();
         for (var t = start.Value; t < end.Value; t += step)
@@ -57,5 +53,15 @@ public static class GetRecentOrders
         }
 
         return Results.Ok(result);
+    }
+    
+    private static int GetStepMinutes(DateTime start, DateTime end)
+    {
+        return (end - start).TotalHours switch
+        {
+            <= 6 => 15,
+            <= 12 => 30,
+            _ => 60
+        };
     }
 }

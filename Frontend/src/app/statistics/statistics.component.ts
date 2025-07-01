@@ -7,7 +7,7 @@ import {StatisticsService} from '../services/statistics.service';
 
 @Component({
   selector: 'app-statistics',
-  imports: [NgForOf, DatePipe, FormsModule, BaseChartDirective],
+  imports: [NgForOf, FormsModule, BaseChartDirective],
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.css'
 })
@@ -25,10 +25,30 @@ export class StatisticsComponent implements OnInit {
   drinkChartData: WritableSignal<ChartData<'pie'>> = signal({datasets: [], labels: []});
   ingredientChartData: WritableSignal<ChartData<'pie'>> = signal({datasets: [], labels: []});
   intervalChartData: WritableSignal<ChartData<'bar'>> = signal({datasets: [{data: []}], labels: []});
-  intervalChartOptions: ChartOptions<'bar'> = {responsive: true};
+  intervalChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            const count = ctx.parsed.y as number;
+            return ` ${count} drinks at ${ctx.label}`;
+          }
+        }
+      }
+    }
+  };
 
   drinkAmounts: number[] = [];
-  ingredientAmounts: number[] = [];
+  ingredientCounts: number[] = [];
 
   drinkChartOptions: ChartOptions<'pie'> = {
     responsive: true,
@@ -38,7 +58,7 @@ export class StatisticsComponent implements OnInit {
           label: (ctx) => {
             const count = ctx.parsed as number;
             const amount = this.drinkAmounts[ctx.dataIndex];
-            return `${ctx.label}: ${count}x (${amount} ml)`;
+            return ` ${count} ${ctx.label} (${amount} ml)`;
           }
         }
       }
@@ -51,17 +71,16 @@ export class StatisticsComponent implements OnInit {
       tooltip: {
         callbacks: {
           label: (ctx) => {
-            const count = ctx.parsed as number;
-            const amount = this.ingredientAmounts[ctx.dataIndex];
-            return `${ctx.label}: ${count}x (${amount} ml)`;
+            const amount = ctx.parsed as number;
+            const count = this.ingredientCounts[ctx.dataIndex];
+            return ` ${count} ${ctx.label} (${amount} ml)`;
           }
         }
       }
     }
   };
 
-  ngOnInit(): void {
-    this.statisticsService.loadAll();
+  constructor() {
     effect(() => {
       this.buildDrinkChart();
       this.buildIngredientChart();
@@ -69,12 +88,8 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-  maxInterval() {
-    return Math.max(...this.intervals().map(i => i.count), 1);
-  }
-
-  barHeight(count: number): string {
-    return (count / this.maxInterval() * 100) + '%';
+  async ngOnInit() {
+    await this.statisticsService.loadAll();
   }
 
   async reload() {
@@ -101,27 +116,31 @@ export class StatisticsComponent implements OnInit {
   }
 
   private buildIngredientChart() {
-    const data = [...this.ingredients()].sort((a,b) => b.usageCount - a.usageCount);
+    const data = [...this.ingredients()].sort((a,b) => b.totalAmount - a.totalAmount);
     const top = data.slice(0,5);
     const others = data.slice(5);
-    const otherCount = others.reduce((s,i)=>s+i.usageCount,0);
-    const otherAmount = others.reduce((s,i)=>s+i.totalAmount,0);
+    const otherAmounts = others.reduce((s,i)=>s+i.totalAmount,0);
+    const otherCounts = others.reduce((s,i)=>s+i.usageCount,0);
 
     const labels = top.map(i=>i.ingredientName);
-    const counts = top.map(i=>i.usageCount);
-    this.ingredientAmounts = top.map(i=>i.totalAmount);
+    const amounts = top.map(i=>i.totalAmount);
+    this.ingredientCounts = top.map(i=>i.usageCount);
     if(others.length){
       labels.push('Others');
-      counts.push(otherCount);
-      this.ingredientAmounts.push(otherAmount);
+      amounts.push(otherAmounts);
+      this.ingredientCounts.push(otherCounts);
     }
 
-    this.ingredientChartData.set({labels, datasets:[{data: counts}]});
+    this.ingredientChartData.set({labels, datasets:[{data: amounts}]});
   }
 
   private buildIntervalChart() {
     const labels = this.intervals().map(i=>new Date(i.intervalStart).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}));
     const data = this.intervals().map(i=>i.count);
-    this.intervalChartData.set({labels, datasets:[{data}]});
+    this.intervalChartData.set({labels, datasets:[{
+      data,
+      label: 'Orders',
+      backgroundColor: '#ff811a',
+    }]});
   }
 }
