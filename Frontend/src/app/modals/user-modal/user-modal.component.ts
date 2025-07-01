@@ -48,7 +48,7 @@ export class UserModalComponent extends ErrorHandlingComponent {
     this.clearGlobalError();
     this.clearFieldError();
     try {
-      await this.userService.login(this.username(), this.key());
+      await this.userService.login(this.username().trim(), this.key().trim());
       if (this.userService.isLoggedIn()) {
         this.closeModal();
       }
@@ -61,10 +61,7 @@ export class UserModalComponent extends ErrorHandlingComponent {
     this.clearGlobalError();
     this.clearFieldError();
     try {
-      await this.userService.register(
-        this.username(),
-        this.key()
-      );
+      await this.userService.register(this.username().trim(), this.key().trim());
       if (this.userService.isLoggedIn()) {
         this.closeModal();
       }

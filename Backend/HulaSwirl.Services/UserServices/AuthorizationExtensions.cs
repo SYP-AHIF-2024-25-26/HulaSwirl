@@ -13,6 +13,7 @@ public static class AuthorizationExtensions
     public static bool IsSystem(this HttpContext context) => context.User.IsInRole("system");
     public static bool IsSelf(this HttpContext context, JwtService jwtService, string username)
     {
-        return string.Equals(jwtService.GetUsernameFromToken(context.Request.Headers.Authorization!), username, StringComparison.CurrentCultureIgnoreCase);
+        var header = context.Request.Headers.Authorization.FirstOrDefault();
+        return !string.IsNullOrWhiteSpace(header) && string.Equals(jwtService.GetUsernameFromToken(header), username, StringComparison.CurrentCultureIgnoreCase);
     }
 }
