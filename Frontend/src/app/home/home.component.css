@@ -130,11 +130,11 @@ video {
 
 @media screen and (max-width: 1440px) {
   .leaves:first-child {
-    left: calc(-200px + 12%);
+    left: calc(-200px + 10%);
   }
 
   .leaves {
-    right: calc(-200px + 12%);
+    right: calc(-200px + 10%);
   }
 
   #landing-text, #drink-showcase {
