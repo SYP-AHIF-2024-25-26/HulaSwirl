@@ -26,12 +26,6 @@
   min-width: 350px;
 }
 
-#save-button {
-  margin-top: 20px;
-  background-color: #2880b1;
-  width: 30%;
-}
-
 #ingredient-list {
   display: flex;
   flex-direction: column;
@@ -84,9 +78,6 @@
   position: relative;
   transition: transform 0.3s ease;
   overflow: hidden;
-}
-
-.ingredient:active {
 }
 
 .dragging {
@@ -153,8 +144,5 @@ input[type=number] {
   }
   #available-ingredients, #unavailable-ingredients {
     min-width: 300px;
-  }
-  #save-button {
-    width: 70%;
   }
 }

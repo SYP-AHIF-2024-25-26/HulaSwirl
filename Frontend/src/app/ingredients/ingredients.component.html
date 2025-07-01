@@ -7,7 +7,7 @@
     </div>
     <div id="ingredient-list">
       <div *ngFor="let _ of [].constructor(ingredientSlots); let i = index" class="slot" [class.inactive]="!activeSlots[i]">
-        <div class="slot-num" (click)="toggleSlot(i)">
+        <div class="slot-num">
           {{ i + 1 }}
         </div>
         <div class="slot-ingredient" (dragover)="dragOver($event)" (drop)="availableDrop($event, i)">
@@ -32,7 +32,6 @@
         </div>
       </div>
     </div>
-    <button class="button" id="save-button" (click)="saveIngredients()">Save</button>
   </div>
   <div id="unavailable-ingredients" class="container"
        (dragover)="dragOver($event)" (drop)="unavailableDrop($event)">
