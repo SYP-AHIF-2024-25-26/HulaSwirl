@@ -47,7 +47,7 @@
                [class.hidden]="getSlideState($index) === 'hidden'">
             <div class="drink-card-image-container">
             @if(drink.imgUrl) {
-              <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
+              <app-async-image [src]="drink.imgUrl" [alt]="drink.name"></app-async-image>
             } @else {
               <p>No image available</p>
             }
@@ -80,7 +80,7 @@
       <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
         <div class="drink-card-image-container">
           @if(drink.imgUrl) {
-            <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
+            <app-async-image [src]="drink.imgUrl" [alt]="drink.name"></app-async-image>
           } @else {
             <p>No image available</p>
           }

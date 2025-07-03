@@ -1,0 +1,4 @@
+<div class="image-wrapper">
+  <img [src]="src" [alt]="alt" (load)="loaded=true" [class.loaded]="loaded" />
+  <div class="spinner" *ngIf="!loaded"></div>
+</div>
