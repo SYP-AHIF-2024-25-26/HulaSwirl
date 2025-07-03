@@ -75,7 +75,7 @@ export class AppComponent {
 
   async ngOnInit() {
     await this.ingredientService.loadIngredients();
-    await this.drinkService.loadDrinks();
+    this.drinkService.loadDrinks();
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.modalService.closeAll();

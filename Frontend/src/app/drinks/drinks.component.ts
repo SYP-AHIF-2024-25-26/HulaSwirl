@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, computed, effect, inject, signal, WritableSignal} from '@angular/core';
 import {Drink, DrinkService} from '../services/drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
@@ -28,6 +28,7 @@ export class DrinksComponent {
   selectedIngredient: string = '';
   allDrinks = signal<Drink[]>([]);
   allAvailableIngredients = signal<Ingredient[]>([]);
+  imageLoading: WritableSignal<Record<number, boolean>> = signal({});
 
   getUniqueIngredients(): string[] {
     const ingredientsSet = new Set<string>();
@@ -61,8 +62,16 @@ export class DrinksComponent {
       const allDrinks = this.drinkService.drinks();
       this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.pumpSlot !== null));
       this.allDrinks.set(allDrinks);
+      const loadingMap: Record<number, boolean> = {};
+      allDrinks.forEach(d => loadingMap[d.id] = true);
+      this.imageLoading.set(loadingMap);
       this.filterDrinks();
     });
+  }
+  onImageLoad(id: number) {
+    const map = {...this.imageLoading()};
+    map[id] = false;
+    this.imageLoading.set(map);
   }
   openModal(m:ModalType,data:any=null) {
     this.modalService.openModal(m,data)

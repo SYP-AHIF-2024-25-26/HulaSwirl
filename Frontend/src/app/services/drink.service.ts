@@ -1,6 +1,6 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {firstValueFrom, Observable} from 'rxjs';
-import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {ErrorService} from './error.service';
 import {UserService} from './user.service';
 import {BASE_URL} from '../app.config';
@@ -31,7 +31,11 @@ export class DrinkService {
 
   async loadDrinks() {
     try {
-      this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(this.apiBaseUrl + "/drinks")));
+      const headers = new HttpHeaders({'X-Skip-Loader': 'true'});
+      const drinks = await firstValueFrom(
+        this.httpClient.get<Drink[]>(this.apiBaseUrl + "/drinks", {headers})
+      );
+      this.drinks.set(drinks);
     } catch (e) {
       console.error(`An error occurred while loading drinks.`, e);
     }

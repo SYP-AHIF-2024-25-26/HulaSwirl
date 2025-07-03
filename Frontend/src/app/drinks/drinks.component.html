@@ -25,7 +25,8 @@
         <div *ngIf="drink.available" class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="drink-card-image-container">
             @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+              <div class="image-placeholder" *ngIf="imageLoading()[drink.id]"></div>
+              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name" (load)="onImageLoad(drink.id)" [class.hidden]="imageLoading()[drink.id]">
             } @else {
               <p>No image available</p>
             }
@@ -56,7 +57,8 @@
         <div *ngIf="!drink.available" class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="drink-card-image-container">
             @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+              <div class="image-placeholder" *ngIf="imageLoading()[drink.id]"></div>
+              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name" (load)="onImageLoad(drink.id)" [class.hidden]="imageLoading()[drink.id]">
             } @else {
               <p>No image available</p>
             }
