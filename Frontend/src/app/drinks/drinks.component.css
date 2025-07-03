@@ -12,6 +12,11 @@
   text-align: center;
 }
 
+.loading-note {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
 .drink-grid {
   display: flex;
   flex-wrap: wrap;

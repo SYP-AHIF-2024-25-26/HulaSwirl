@@ -1,9 +1,10 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {firstValueFrom, Observable} from 'rxjs';
-import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpResponse, HttpContext} from '@angular/common/http';
 import {ErrorService} from './error.service';
 import {UserService} from './user.service';
 import {BASE_URL} from '../app.config';
+import {SKIP_LOADING} from './loading.interceptor';
 
 export interface DrinkBase {
   name: string;
@@ -28,12 +29,21 @@ export class DrinkService {
   private readonly userService =inject(UserService);
   private apiBaseUrl = inject(BASE_URL);
   drinks: WritableSignal<Drink[]> = signal([]);
+  loading = signal(false);
 
   async loadDrinks() {
+    this.loading.set(true);
     try {
-      this.drinks.set(await firstValueFrom(this.httpClient.get<Drink[]>(this.apiBaseUrl + "/drinks")));
+      const context = new HttpContext().set(SKIP_LOADING, true);
+      this.drinks.set(
+        await firstValueFrom(
+          this.httpClient.get<Drink[]>(this.apiBaseUrl + "/drinks", { context })
+        )
+      );
     } catch (e) {
       console.error(`An error occurred while loading drinks.`, e);
+    } finally {
+      this.loading.set(false);
     }
   }
 

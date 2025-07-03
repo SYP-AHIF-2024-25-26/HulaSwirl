@@ -47,7 +47,7 @@
                [class.hidden]="getSlideState($index) === 'hidden'">
             <div class="drink-card-image-container">
             @if(drink.imgUrl) {
-              <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
+              <img src="{{drink.imgUrl}}" alt="{{drink.name}}" loading="lazy">
             } @else {
               <p>No image available</p>
             }
@@ -75,12 +75,13 @@
     </select>
     <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
   </div>
+  <p class="loading-note" *ngIf="loading()">Loading drinks...</p>
   <div id="filtered-drinks">
     @for(drink of filteredDrinks(); track $index) {
       <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
         <div class="drink-card-image-container">
           @if(drink.imgUrl) {
-            <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
+            <img src="{{drink.imgUrl}}" alt="{{drink.name}}" loading="lazy">
           } @else {
             <p>No image available</p>
           }

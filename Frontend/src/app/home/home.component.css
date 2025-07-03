@@ -160,6 +160,11 @@ video {
   justify-content: center;
 }
 
+.loading-note {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
 #slide-container{
   display: flex;
   position: relative;

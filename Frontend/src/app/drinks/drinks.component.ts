@@ -22,6 +22,7 @@ export class DrinksComponent {
   private readonly modalService = inject(ModalService);
   private readonly errorService = inject(ErrorService);
   protected readonly ModalType = ModalType;
+  protected readonly loading = this.drinkService.loading;
 
   filteredDrinks = signal<Drink[]>([]);
   searchQuery: string = '';

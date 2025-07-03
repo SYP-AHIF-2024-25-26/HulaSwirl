@@ -33,6 +33,7 @@ export class HomeComponent {
   lowEndDetected = this.fpsService.lowEndDetected;
   searchQuery: string = '';
   selectedIngredient: string = '';
+  loading = this.drinkService.loading;
 
   constructor() {
     effect(() => {

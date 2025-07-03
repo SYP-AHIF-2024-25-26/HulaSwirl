@@ -17,6 +17,7 @@
   </div>
 
   <div id="drinks-section">
+    <p class="loading-note" *ngIf="loading()">Loading drinks...</p>
     @if(filteredDrinks().length > 0) {
     <!-- Available Drinks -->
     <h2>Available Drinks</h2>
@@ -25,7 +26,7 @@
         <div *ngIf="drink.available" class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="drink-card-image-container">
             @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name" loading="lazy">
             } @else {
               <p>No image available</p>
             }
@@ -56,7 +57,7 @@
         <div *ngIf="!drink.available" class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="drink-card-image-container">
             @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name" loading="lazy">
             } @else {
               <p>No image available</p>
             }
