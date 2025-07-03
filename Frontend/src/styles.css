@@ -260,7 +260,7 @@ html{
 /* Drink card */
 .drink-card {
   text-align: center;
-  height: 340px;
+  margin: 0;
   transition: transform 0.5s ease, opacity 0.5s ease;
   display: flex;
   flex-direction: column;
@@ -276,8 +276,8 @@ html{
 }
 
 .drink-card-image-container {
-  width: 265px;
-  height: 265px;
+  width: 225px;
+  height: 225px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -364,8 +364,17 @@ html{
   background: #ceceff;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 550px) {
   .container {
     padding: 20px 5%;
+  }
+
+  .drink-card-image-container {
+    width: 150px;
+    height: 150px;
+  }
+
+  .drink-card p:not(.drink-card-image-container > p) {
+    font-size: 16px;
   }
 }

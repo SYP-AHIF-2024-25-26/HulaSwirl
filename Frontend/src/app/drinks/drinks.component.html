@@ -4,7 +4,7 @@
         type="text"
         placeholder="🔍 Search for a drink..."
         [(ngModel)]="searchQuery"
-        (input)="searchDrinks()"
+        (input)="filterDrinks()"
         class="form-input"
       />
       <select [(ngModel)]="selectedIngredient" (change)="filterDrinks()" class="form-input">
@@ -22,7 +22,7 @@
     <h2>Available Drinks</h2>
     <div id="available-drinks" class="drink-grid">
       @for (drink of filteredDrinks(); track $index){
-        <div *ngIf="drink.available" class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
+        <div *ngIf="drink.available" class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
           <div class="drink-card-image-container">
             @if (drink.imgUrl) {
               <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">

@@ -29,7 +29,7 @@ export class HomeComponent {
   allAvailableIngredients = signal<Ingredient[]>([]);
   recommendedDrinks = signal<Drink[]>([]);
   filteredDrinks = signal<Drink[]>(this.allAvailableDrinks());
-  currentSlideIdx = signal(1);
+  currentSlideIdx = signal(0);
   lowEndDetected = this.fpsService.lowEndDetected;
   searchQuery: string = '';
   selectedIngredient: string = '';
@@ -76,7 +76,12 @@ export class HomeComponent {
     const previousIndex = (this.currentSlideIdx() - 1 + totalSlides) % totalSlides;
     const nextIndex = (this.currentSlideIdx() + 1) % totalSlides;
     if (index === this.currentSlideIdx()) return 'focus';
-    if (index === previousIndex || index === nextIndex) return 'neighbour';
+    if (
+      this.currentSlideIdx() > 0 && this.currentSlideIdx() < totalSlides - 1 &&
+      (index === previousIndex || index === nextIndex) ||
+      (this.currentSlideIdx() === 0 && (index === nextIndex + 1 || index === nextIndex)) ||
+      (this.currentSlideIdx() === totalSlides - 1 && (index === previousIndex - 1 || index === previousIndex))
+    ) return 'neighbour';
     return 'hidden';
   }
 
@@ -84,7 +89,7 @@ export class HomeComponent {
     return this.currentSlideIdx() === 0;
   }
   isNextDisabled(): boolean {
-    return this.currentSlideIdx() === this.recommendedDrinks().length - 1;
+    return this.currentSlideIdx() >= this.recommendedDrinks().length - 1;
   }
 
   filterDrinksByQuery() {

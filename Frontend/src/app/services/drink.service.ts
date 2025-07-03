@@ -42,8 +42,8 @@ export class DrinkService {
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    await firstValueFrom(this.httpClient.post(this.apiBaseUrl + "/drinks/create", drinkdata, {headers}));
-    await this.loadDrinks();
+    const drink = await firstValueFrom(this.httpClient.post<Drink>(this.apiBaseUrl + "/drinks/create", drinkdata, {headers}));
+    this.drinks.update(drinks => [...drinks, this.transformDrink(drink)]);
   }
 
   async orderDrink(ID: number, containsIce: boolean = false) {
@@ -51,13 +51,10 @@ export class DrinkService {
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    const res = await firstValueFrom(this.httpClient.post(this.apiBaseUrl + `/orders/drink/${ID}?containsIce=${containsIce}`, {}, {
+    await firstValueFrom(this.httpClient.post(this.apiBaseUrl + `/orders/drink/${ID}?containsIce=${containsIce}`, {}, {
       headers,
       observe: 'response'
     }));
-    if (res.status === 200 || res.status === 201) {
-      await this.loadDrinks();
-    }
   }
 
   async deleteDrink(ID: number) {
@@ -74,7 +71,19 @@ export class DrinkService {
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    await firstValueFrom(this.httpClient.patch(this.apiBaseUrl + "/drinks/update/" + ID, drinkdata, {headers}));
-    await this.loadDrinks();
+    const drink = await firstValueFrom(this.httpClient.patch<Drink>(this.apiBaseUrl + "/drinks/update/" + ID, drinkdata, {headers}));
+    this.drinks.update(drinks => drinks.map(drinkItem => drinkItem.id === ID ? this.transformDrink(drink) : drinkItem));
+  }
+
+  private transformDrink(drink: any): Drink {
+    return {
+      ...drink,
+      drinkIngredients: drink.drinkIngredients.map((ingredient: any) => {
+        return {
+          ...ingredient,
+          ingredientName: ingredient.ingredientNameFk,
+        };
+      })
+    };
   }
 }

@@ -1,10 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { ModalService, ModalType } from './modal.service';
 import { signal, effect } from '@angular/core';
+import {LoadingService} from './loading.service';
 
 @Injectable({ providedIn: 'root' })
 export class FpsService {
   private readonly modalService = inject(ModalService);
+  private readonly loadingService = inject(LoadingService);
 
   lowEndDetected = signal(false);
   fps = signal(60);
@@ -25,7 +27,8 @@ export class FpsService {
         !this.lowEndDetected() &&
         this.stabilized() &&
         this.isVisible() &&
-        this.fps() < 25
+        !this.loadingService.isLoading$ &&
+        this.fps() < 20
       ) {
         this.lowEndDetected.set(true);
         this.modalService.openModal(ModalType.Status, {

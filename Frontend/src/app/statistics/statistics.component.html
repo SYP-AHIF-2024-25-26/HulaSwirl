@@ -8,6 +8,16 @@
     </label>
   </div>
 
+  @if(end && start){
+    <p>Showing statistics from {{ start | date: 'short' }} to {{ end | date: 'short' }}</p>
+  } @else if (end && !start) {
+    <p>Showing statistics from {{ end | date: 'short' }} reaching 12 hours back</p>
+  } @else if (!end && start) {
+    <p>Showing statistics from {{ start | date: 'short' }} to now</p>
+  } @else {
+    <p>Showing statistics for the last 12 hours</p>
+  }
+
   <div class="pie-row">
     <div class="pie-chart">
       <h2>Orders per Drink</h2>

@@ -7,7 +7,7 @@ import {StatisticsService} from '../services/statistics.service';
 
 @Component({
   selector: 'app-statistics',
-  imports: [NgForOf, FormsModule, BaseChartDirective],
+  imports: [NgForOf, FormsModule, BaseChartDirective, DatePipe],
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.css'
 })

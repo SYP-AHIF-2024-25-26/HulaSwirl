@@ -37,13 +37,6 @@ export class DrinksComponent {
     return Array.from(ingredientsSet);
   }
 
-  searchDrinks() {
-    this.filteredDrinks.set(
-      this.allDrinks().filter(drink =>
-        drink.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      )
-    );
-  }
   filterDrinks() {
     if (this.selectedIngredient) {
       this.filteredDrinks.set(
@@ -54,13 +47,21 @@ export class DrinksComponent {
     } else {
       this.filteredDrinks.set(this.allDrinks());
     }
+    if(this.searchQuery) {
+      this.filteredDrinks.set(
+        this.filteredDrinks().filter(drink =>
+          drink.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+      );
+    }
   }
 
   constructor(){
     effect(() => {
-      this.allDrinks.set(this.drinkService.drinks());
-      this.filteredDrinks.set(this.drinkService.drinks());
+      const allDrinks = this.drinkService.drinks();
       this.allAvailableIngredients.set(this.ingredientService.ingredients().filter(ing => ing.pumpSlot !== null));
+      this.allDrinks.set(allDrinks);
+      this.filterDrinks();
     });
   }
   openModal(m:ModalType,data:any=null) {

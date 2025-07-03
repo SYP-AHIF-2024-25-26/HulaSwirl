@@ -132,7 +132,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
       this.drinkIngredients.set([
         ...this.drinkIngredients(),
         {
-          ingredientName: 'New Ingredient',
+          ingredientName: '',
           amount: this.selectedAmount(),
           status: '',
           type: 'new',

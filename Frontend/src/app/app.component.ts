@@ -62,8 +62,8 @@ export class AppComponent {
   @ViewChild('navbar') navbar!: ElementRef;
 
   constructor() {
-    this.isAtHome();
     effect(() => {
+      this.isAtHomeScreen.set(window.location.pathname === '/' || window.location.pathname === '/home');
       const user = this.userService.username();
       if (user) {
         this.userInitials.set(user.split(" ").slice(0, 2).map(sub => sub.charAt(0).toUpperCase()).join(""));
@@ -118,8 +118,8 @@ export class AppComponent {
     this.isAtHome();
   }
 
-  private isAtHome() {
-    return this.isAtHomeScreen.set(this.router.url === '/' || this.router.url === '/home');
+  isAtHome() {
+    this.isAtHomeScreen.set(this.router.url === '/' || this.router.url === '/home');
   }
 
   protected readonly ModalType = ModalType;
