@@ -5,6 +5,7 @@ import {Drink, DrinkService} from '../services/drink.service';
 import {ModalService, ModalType} from '../services/modal.service';
 import {ErrorService} from '../services/error.service';
 import {NgForOf} from '@angular/common';
+import {LazyImageComponent} from '../lazy-image/lazy-image.component';
 import {FpsService} from '../services/fps.service';
 import {StatisticsService} from '../services/statistics.service';
 
@@ -12,7 +13,8 @@ import {StatisticsService} from '../services/statistics.service';
   selector: 'app-home',
   imports: [
     FormsModule,
-    NgForOf
+    NgForOf,
+    LazyImageComponent
   ],
   templateUrl: './home.component.html',
   standalone: true,

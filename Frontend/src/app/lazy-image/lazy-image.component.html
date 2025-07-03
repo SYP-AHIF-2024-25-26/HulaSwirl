@@ -1,0 +1,4 @@
+<div class="lazy-image-wrapper">
+  <img [src]="src" [alt]="alt" (load)="onLoad()" [class.loaded]="loaded" loading="lazy" />
+  <div class="placeholder" *ngIf="!loaded"></div>
+</div>

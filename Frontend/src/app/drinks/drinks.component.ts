@@ -2,6 +2,7 @@ import {Component, computed, effect, inject, signal} from '@angular/core';
 import {Drink, DrinkService} from '../services/drink.service';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
+import {LazyImageComponent} from '../lazy-image/lazy-image.component';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {ModalService, ModalType} from '../services/modal.service';
 import {ErrorService} from '../services/error.service';
@@ -11,7 +12,9 @@ import {ErrorService} from '../services/error.service';
   imports: [
     FormsModule,
     NgForOf,
-    NgIf],
+    NgIf,
+    LazyImageComponent
+  ],
   templateUrl: './drinks.component.html',
   standalone: true,
   styleUrl: './drinks.component.css'
