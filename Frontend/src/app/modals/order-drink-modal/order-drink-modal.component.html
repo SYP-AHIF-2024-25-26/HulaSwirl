@@ -3,7 +3,7 @@
     <div id="drink-overview">
       @if (selectedDrink()?.imgUrl) {
       <div class="modal-image">
-        <img [src]="selectedDrink()!.imgUrl" alt="Drink Image" class="drink-image" />
+        <app-lazy-image [src]="selectedDrink()!.imgUrl" alt="Drink Image" class="drink-image"></app-lazy-image>
       </div>
       }
       <div id="modal-ingredient-list">

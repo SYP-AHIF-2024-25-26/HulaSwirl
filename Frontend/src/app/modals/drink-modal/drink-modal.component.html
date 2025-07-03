@@ -3,7 +3,7 @@
     <div id="left-column">
       <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
         <span *ngIf="!imageBase64">Upload image</span>
-        <img *ngIf="imageBase64" [src]="imageBase64" alt="Drink image" class="preview-image"/>
+        <app-lazy-image *ngIf="imageBase64" [src]="imageBase64" alt="Drink image" class="preview-image"></app-lazy-image>
       </div>
       <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)"/>
       <div>
