@@ -3,26 +3,36 @@
 }
 
 #landing {
+  position: relative;
   width: 100%;
   background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
-  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
+  filter: drop-shadow(0px 0px 15px rgba(47, 10, 10, 0.35)) saturate(110%);
   display:flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 50px;
   overflow: hidden;
-  height: 70vh;
+  min-height: 70vh;
+  padding: 80px 12%;
+}
+
+#landing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(15, 47, 66, 0.25) 0%, rgba(15,47,66,0.65) 55%, rgba(15,47,66,0.1) 100%);
+  z-index: 0;
 }
 
 #drink-showcase {
-  z-index: -1;
+  z-index: 2;
   height: 85%;
 }
 
 .leaves {
   position: absolute;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
   right: 0;
   filter: drop-shadow(0px 15px 4px rgba(0, 0, 0, 0.42));
 }
@@ -52,7 +62,15 @@ video {
 }
 
 #landing-text {
-  margin-top: 10px
+  margin-top: 10px;
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  background: rgba(17, 38, 52, 0.55);
+  padding: 32px 36px;
+  border-radius: 32px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 25px 40px rgba(14, 33, 45, 0.35);
 }
 
 #landing-text > * {
@@ -68,9 +86,49 @@ video {
 }
 
 #landing-subtitle {
-  font-size: 25px;
-  margin-top: 24px;
-  font-weight: lighter;
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: 300;
+  color: #f8f0df;
+}
+
+#landing-subtitle br {
+  display: none;
+}
+
+.landing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(243, 206, 130, 0.25);
+  border: 1px solid rgba(255, 226, 173, 0.4);
+  color: #ffe6ad;
+}
+
+.selling-points {
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.selling-points li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+  color: #fff7e5;
+}
+
+.selling-points i {
+  color: #ffe6ad;
+  font-size: 1.1rem;
 }
 
 #recommendations {
@@ -79,15 +137,21 @@ video {
 
 #button-container {
   display: flex;
-  gap: 20px;
-  margin-top: 40px;
+  gap: 16px;
+  margin-top: 32px;
+  flex-wrap: wrap;
 }
 
 #button-container .button{
   border-radius: 100px;
   border: 3px solid var(--order-btn-bg);
-  padding: 15px;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.01));
+  padding: 15px 24px;
+  filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.15));
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 #order-button {
@@ -96,6 +160,42 @@ video {
 
 #order-custom-button {
   color:var(--order-btn-bg);
+}
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(254, 253, 230, 0.18);
+  font-size: 1rem;
+}
+
+.landing-scroll-hint {
+  margin-top: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #ffe9c6;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  animation: float 3s ease-in-out infinite;
+}
+
+.landing-scroll-hint i {
+  font-size: 1.4rem;
+}
+
+.hint-label {
+  font-weight: 600;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 
 @media screen and (max-width: 830px) {
@@ -114,17 +214,22 @@ video {
 
   #landing {
     justify-content: center;
-    padding: 50px 0;
+    padding: 60px 24px;
   }
 
   #landing-text {
     text-align: center;
-    scale: 0.9 !important;
+    scale: 0.92 !important;
+    padding: 28px 24px;
   }
 
   #button-container {
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  #landing-subtitle br {
+    display: inline;
   }
 }
 
@@ -160,11 +265,12 @@ video {
   justify-content: center;
 }
 
-#slide-container{
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
+  #slide-container{
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
 }
 
 #slide-track {
@@ -175,17 +281,20 @@ video {
 }
 
 .slide-track-arrow {
-  background: none;
-  border: none;
-  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(236, 170, 119, 0.65);
+  font-size: 1.75rem;
   cursor: pointer;
   color: var(--primary-color);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
+  filter: drop-shadow(5px 5px 12px rgba(68, 47, 36, 0.2));
   font-weight: bold;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }
 .drink-card.slide-neighbour {
   opacity: 0.8;
@@ -219,6 +328,7 @@ video {
 .slide-track-arrow:disabled {
   color: var(--element-primary-outline);
   cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.45);
 }
 
 #filtered-drinks {
@@ -226,4 +336,114 @@ video {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  margin-top: 40px;
+}
+
+.section-subtitle {
+  margin: 12px auto 0;
+  max-width: 520px;
+  color: rgba(44, 62, 80, 0.75);
+  font-size: 1rem;
+}
+
+.filter-card {
+  width: 100%;
+  margin-top: 32px;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(19, 45, 64, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filter-card-header h3 {
+  margin: 0;
+}
+
+.filter-card-header p {
+  margin: 8px 0 0;
+  color: rgba(61, 79, 94, 0.85);
+}
+
+.filter-container.enhanced {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: center;
+}
+
+.filter-container.enhanced .form-input,
+.filter-container.enhanced .button {
+  width: 100%;
+}
+
+.filter-container.enhanced .button {
+  justify-content: center;
+}
+
+.results-count {
+  margin: 0;
+  font-weight: 600;
+  color: rgba(44, 62, 80, 0.85);
+}
+
+.empty-state {
+  margin-top: 48px;
+  padding: 48px 32px;
+  border-radius: 32px;
+  border: 2px dashed rgba(236, 170, 119, 0.6);
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  color: rgba(44, 62, 80, 0.8);
+}
+
+.empty-state i {
+  font-size: 2rem;
+  color: var(--order-btn-bg);
+}
+
+.empty-state .button {
+  border-radius: 999px;
+  padding: 12px 32px;
+  background: var(--sunset-gradient);
+  color: #ffffff;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+#filtered-drinks .drink-card {
+  max-width: 260px;
+}
+
+@media screen and (max-width: 600px) {
+  #landing {
+    padding: 48px 16px;
+  }
+
+  #landing-title {
+    font-size: 42px;
+  }
+
+  .filter-card {
+    padding: 24px;
+  }
+
+  .selling-points {
+    font-size: 0.95rem;
+  }
 }

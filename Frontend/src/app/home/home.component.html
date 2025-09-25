@@ -20,15 +20,34 @@
 
 
   <div id="landing-text">
+    <div class="landing-badge">
+      <i class="fa fa-sun-o" aria-hidden="true"></i>
+      Crafted fresh every pour
+    </div>
     <div id="landing-title">
       Make your perfect<br>summer drinks<br> with Hula Swirl!
     </div>
     <div id="landing-subtitle">
-      Mix it easy, mix it smart, mix it fast,<br> ideal for every moment
+      Mix it easy, mix it smart, mix it fast,<br>ideal for every moment.
     </div>
+    <ul class="selling-points">
+      <li><i class="fa fa-leaf" aria-hidden="true"></i> Real fruit infusions and vibrant flavors</li>
+      <li><i class="fa fa-bolt" aria-hidden="true"></i> Ready in seconds with one-touch ordering</li>
+      <li><i class="fa fa-star" aria-hidden="true"></i> Loved by beach bars and backyard parties alike</li>
+    </ul>
     <div id="button-container">
-      <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">MIX YOUR OWN</button>
+      <button type="button" (click)="scrollToElement()" class="button" id="order-button">
+        <span class="button-icon" aria-hidden="true"><i class="fa fa-shopping-bag"></i></span>
+        <span class="button-label">ORDER NOW</span>
+      </button>
+      <button type="button" (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">
+        <span class="button-icon" aria-hidden="true"><i class="fa fa-magic"></i></span>
+        <span class="button-label">MIX YOUR OWN</span>
+      </button>
+    </div>
+    <div class="landing-scroll-hint">
+      <span class="hint-label">Scroll to explore</span>
+      <i class="fa fa-angle-down" aria-hidden="true"></i>
     </div>
   </div>
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
@@ -36,15 +55,24 @@
 
 <div class="container" id="recommendations" #targetElement>
   <h2>Our recommendations</h2>
+  <p class="section-subtitle">Sippable hits curated from our top sellers.</p>
   <div id="slide-container">
-      <button class="slide-track-arrow" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
+      <button
+        type="button"
+        class="slide-track-arrow"
+        id="arrow-left"
+        (click)="prevSlide()"
+        [disabled]="isPrevDisabled()"
+        [class.disabled]="isPrevDisabled()"
+        aria-label="Show previous recommendation"
+      >&#8249;</button>
       <div id="slide-track">
         @for (drink of recommendedDrinks(); track $index) {
           <div class="drink-card"
                (click)="openModal(ModalType.Order, drink)"
                [class.slide-focus]="getSlideState($index) === 'focus'"
-               [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
-               [class.hidden]="getSlideState($index) === 'hidden'">
+                [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
+                [class.hidden]="getSlideState($index) === 'hidden'">
             <div class="drink-card-image-container">
             @if(drink.imgUrl) {
               <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
@@ -56,37 +84,76 @@
           </div>
         }
       </div>
-      <button class="slide-track-arrow" id="arrow-right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
+      <button
+        type="button"
+        class="slide-track-arrow"
+        id="arrow-right"
+        (click)="nextSlide()"
+        [disabled]="isNextDisabled()"
+        [class.disabled]="isNextDisabled()"
+        aria-label="Show next recommendation"
+      >&#8250;</button>
   </div>
 </div>
 <div class="container" id="all-drinks">
   <h2>All Drinks</h2>
-  <div class="filter-container">
-    <input
-      type="text"
-      placeholder="🔍 Search for a drink..."
-      [(ngModel)]="searchQuery"
-      (input)="filterDrinksByQuery()"
-      class="form-input"
-    />
-    <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input">
-      <option value="">All Ingredients</option>
-      <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
-    </select>
-    <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
+  @let filtered = filteredDrinks();
+  <div class="filter-card" role="region" aria-label="Filter drinks">
+    <div class="filter-card-header">
+      <h3>Find your flavor</h3>
+      <p>Refine by name or ingredient to discover your next crowd-pleaser.</p>
+    </div>
+    <div class="filter-container enhanced">
+      <label class="visually-hidden" for="drink-search">Search for a drink</label>
+      <input
+        id="drink-search"
+        type="text"
+        placeholder="🔍 Search for a drink..."
+        [(ngModel)]="searchQuery"
+        (input)="filterDrinksByQuery()"
+        class="form-input"
+      />
+      <label class="visually-hidden" for="ingredient-filter">Filter by ingredient</label>
+      <select
+        id="ingredient-filter"
+        [(ngModel)]="selectedIngredient"
+        (change)="filterDrinksByIngredients()"
+        class="form-input"
+      >
+        <option value="">All Ingredients</option>
+        <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
+      </select>
+      <button type="button" class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">
+        <span class="button-icon" aria-hidden="true"><i class="fa fa-glass"></i></span>
+        <span class="button-label">Mix your own</span>
+      </button>
+    </div>
+    <p class="results-count" aria-live="polite">
+      {{ filtered.length === 1 ? '1 drink ready to pour' : filtered.length + ' drinks ready to pour' }}
+    </p>
   </div>
-  <div id="filtered-drinks">
-    @for(drink of filteredDrinks(); track $index) {
-      <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
-        <div class="drink-card-image-container">
-          @if(drink.imgUrl) {
-            <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
-          } @else {
-            <p>No image available</p>
-          }
+  @if(filtered.length === 0) {
+    <div class="empty-state">
+      <i class="fa fa-search" aria-hidden="true"></i>
+      <p>No drinks match your filters just yet.</p>
+      <button type="button" class="button" (click)="openModal(ModalType.CustomOrder)">
+        Craft a custom creation
+      </button>
+    </div>
+  } @else {
+    <div id="filtered-drinks">
+      @for(drink of filtered; track $index) {
+        <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
+          <div class="drink-card-image-container">
+            @if(drink.imgUrl) {
+              <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
+            } @else {
+              <p>No image available</p>
+            }
+          </div>
+          <p>{{ drink.name }}</p>
         </div>
-        <p>{{ drink.name }}</p>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  }
 </div>
