@@ -1,41 +1,63 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div id="landing">
-  <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
-  <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
+  <img alt="Decorative leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
+  <img alt="Decorative leaves" src="assets/images/sideLeafs.png" class="leaves">
   @if(!lowEndDetected()) {
-    <video autoplay loop muted playsinline class="bgVideo"  style=" transform:  scaleY(1) rotate(180deg)">
+    <video autoplay loop muted playsinline class="bgVideo" style=" transform:  scaleY(1) rotate(180deg)">
       <source src="assets/images/stargif/stars.webm" type="video/webm" />
     </video>
   }
-  <!--
-  <div class="stars-wrapper">
-    <video autoplay loop muted playsinline class="bgVideo normal">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-    <video autoplay loop muted playsinline class="bgVideo mirrored">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-  </div>-->
 
+  <div class="landing-overlay" aria-hidden="true"></div>
 
-  <div id="landing-text">
+  <div id="landing-text" role="presentation">
+    <div class="landing-badge">
+      <i class="fa fa-sun-o" aria-hidden="true"></i>
+      <span>Sun-kissed refreshment, ready in seconds</span>
+    </div>
     <div id="landing-title">
       Make your perfect<br>summer drinks<br> with Hula Swirl!
     </div>
     <div id="landing-subtitle">
-      Mix it easy, mix it smart, mix it fast,<br> ideal for every moment
+      Mix it easy, mix it smart, mix it fast,<br> ideal for every moment.
+    </div>
+    <div class="landing-highlights" aria-label="Service highlights">
+      <div class="highlight">
+        <strong>20+</strong>
+        <span>Signature recipes</span>
+      </div>
+      <div class="divider" aria-hidden="true"></div>
+      <div class="highlight">
+        <strong>3 min</strong>
+        <span>Average prep time</span>
+      </div>
+      <div class="divider" aria-hidden="true"></div>
+      <div class="highlight">
+        <strong>100%</strong>
+        <span>Natural ingredients</span>
+      </div>
     </div>
     <div id="button-container">
-      <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">MIX YOUR OWN</button>
+      <button (click)="scrollToElement()" class="button" id="order-button">Order now</button>
+      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">Mix your own</button>
     </div>
   </div>
-  <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
+
+  <div class="showcase-card" aria-hidden="true">
+    <img alt="Refreshing cocktail" src="assets/images/DrinkImage.png" id="drink-showcase">
+    <div class="showcase-card__content">
+      <p class="showcase-card__title">Featured Mix</p>
+      <p class="showcase-card__subtitle">Pineapple breeze with a hint of mint</p>
+    </div>
   </div>
+</div>
 
 <div class="container" id="recommendations" #targetElement>
-  <h2>Our recommendations</h2>
+  <div class="section-header">
+    <h2>Our recommendations</h2>
+    <p>Curated by our mixologists for your next sunny moment.</p>
+  </div>
   <div id="slide-container">
       <button class="slide-track-arrow" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
       <div id="slide-track">
@@ -45,14 +67,14 @@
                [class.slide-focus]="getSlideState($index) === 'focus'"
                [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
                [class.hidden]="getSlideState($index) === 'hidden'">
-            <div class="drink-card-image-container">
+            <div class="drink-card-image-container" role="img" aria-label="{{ drink.name }}">
             @if(drink.imgUrl) {
               <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
             } @else {
-              <p>No image available</p>
+              <p class="fallback">No image available</p>
             }
             </div>
-            <p>{{ drink.name }}</p>
+            <p class="drink-card-title">{{ drink.name }}</p>
           </div>
         }
       </div>
@@ -60,16 +82,20 @@
   </div>
 </div>
 <div class="container" id="all-drinks">
-  <h2>All Drinks</h2>
-  <div class="filter-container">
+  <div class="section-header">
+    <h2>All Drinks</h2>
+    <p>Filter, explore and fall in love with your new favourite blend.</p>
+  </div>
+  <div class="filter-container" role="search">
     <input
       type="text"
       placeholder="🔍 Search for a drink..."
       [(ngModel)]="searchQuery"
       (input)="filterDrinksByQuery()"
       class="form-input"
+      aria-label="Search drinks"
     />
-    <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input">
+    <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input" aria-label="Filter by ingredient">
       <option value="">All Ingredients</option>
       <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
     </select>
@@ -78,14 +104,14 @@
   <div id="filtered-drinks">
     @for(drink of filteredDrinks(); track $index) {
       <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
-        <div class="drink-card-image-container">
+        <div class="drink-card-image-container" role="img" aria-label="{{ drink.name }}">
           @if(drink.imgUrl) {
             <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
           } @else {
-            <p>No image available</p>
+            <p class="fallback">No image available</p>
           }
         </div>
-        <p>{{ drink.name }}</p>
+        <p class="drink-card-title">{{ drink.name }}</p>
       </div>
     }
   </div>
