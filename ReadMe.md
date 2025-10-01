@@ -16,7 +16,6 @@ Es besteht ein Bedarf an einer automatischen Mischmaschine, mit der man über ei
 ## 3. Zielsetzung
 Da wir selbst nicht gut im manuellen Getränkemischen sind, wollen wir den "Hula Swirl" entwickeln. Der "Hula Swirl" ist ein automatischer Getränkemischer, der 10 flüssige Zutaten halten kann und damit die perfekten Erfrischungsgetränke oder Smoothies in den richtigen Mengen zubereitet. Über eine Web-App teilt man dem Gerät mit, welches Getränk man möchte.
 
-
 ### 3.1 Skizze
 ![](assets/Skizze.jpg)
 
@@ -40,10 +39,8 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
   - Die Web-App zeigt eine Liste verfügbarer Getränke an.
   - Der Nutzer kann ein Getränk auswählen und mit einem Klick den Mischvorgang starten.
   - Der Nutzer kann die Details / Inhalte dieses Rezepts sehen
-  - Der "Hula Swirl" beginnt automatisch mit der Zubereitung.
-- **Technische Anforderungen:**
-  - Echtzeitkommunikation zwischen Web-App und Mischgerät.
-  - Stabile API-Schnittstelle für Befehle und Statusupdates.
+  - Der Nutzer kann das Getränk bestellen, und das Getränkt wird am Orderterminal erscheinen.
+  - Der Nutzer kann am Orderterminal das Getränk bestätigen und die richtige Menge kommt aus den Pumpen herraus.
 
 ### 2. User Story: Als Gastgeber will ich meine verfügbaren Zutaten eingeben können, damit ich weiß, welche Getränke gemischt werden können.
 - **Beschreibung:** Der Gastgeber gibt die aktuell verfügbaren Zutaten in der Web-App ein, sodass die App die passenden Rezepte anzeigt.
@@ -51,28 +48,19 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
   - Eine Übersichtsliste zeigt alle Zutaten von allen Rezepten an
   - Der Gastgeber kann Zutaten als "Leer" makieren, sodass Rezepte, die diese benötigen nicht mehr angezeigt werden.
   - Die Liste der auswählbaren Getränke wird automatisch aktualisiert.
-- **Technische Anforderungen:**
-  - Datenbank zur Speicherung der verfügbaren Zutaten.
-  - Dynamische Filterfunktion für Rezepte basierend auf den eingegebenen Zutaten.
 
 ### 3. User Story: Als Admin will ich neue Getränke zur Auswahl hinzufügen können. Auch will ich die Optionen löschen oder bearbeiten können.
 - **Beschreibung:** Der Admin kann Rezepte hinzufügen, löschen oder bearbeiten.
 - **Akzeptanzkriterien:**
   - Der Admin kann über die Web-App ein neues Getränkerezept erstellen und speichern.
   - Bestehende Rezepte können editiert, verborgen oder entfernt werden.
-  - Max 50 cl In einem Getränk (Insgesampt
-- **Technische Anforderungen:**
-  - Backend-Funktionalität für CRUD (Create, Read, Update, Delete) von Rezepten.
-  - Benutzerrollenverwaltung (Admin-Rechte).
+  - Die Ingredients können Hinzugefügt, Gelöscht und deren menge verändert werden.
 
 ### 4. User Story: Als Admin will ich eine Statistik haben, die zeigt, welche Getränke am meisten bestellt werden.
 - **Beschreibung:** Eine Statistikfunktion gibt dem Admin Einblick, welche Getränke am häufigsten verwendet wurden.
 - **Akzeptanzkriterien:**
   - Ein Graph zeigt die Anzahl der Bestellungen pro Stunde.
   - Es gibt eine all time most ordered Liste.
-- **Technische Anforderungen:**
-  - Tracking- und Logging-Funktion für Getränkebestellungen.
-  - Visualisierungsbibliothek für Diagramme und Tabellen.
 
 ## 6. Web-App
 
@@ -81,24 +69,19 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ##### 6.1.1 GUI-Mockups
 [Figma](https://www.figma.com/design/Kv5zzkLDU8AcD5gaHvIsNp/HulaSwirl?node-id=3-4&t=TftDCDX82oTWYwnj-1)
 
-##### 6.1.2 Url Pfade zu den Mockups
-
-/Home				1.0\
-/Admin/Drinks			2.0	\
-/Admin/Ingredients		3.0\
-/Admin/Statistics		4.0
-
 #### 6.2 Backend
 
 ##### 6.2.1 ERD Diagramm
 ![](assets/ERD.png)
 [ERD text](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/assets/ERD.txt)
 
-##### 6.2.2 API endpoints
-//TODO
-
 ## 7. Kostenschätzung
 
 - Etwa 130€ für den Protoyp (Amazon Prime Day berücksichtigt)
 - Ca. 200€ für das Endprodukt
   [Dokumentation](https://github.com/SYP-AHIF-2024-25-26/HulaSwirl/blob/main/hardware/SYP%20Projekt%20Money%20Managment.xlsx)
+
+## 8. Grobe Planung
+- Bis 21.11(Tag der offenen Tür) Gehäuse und Innenleben Presentierbar machen.
+- Bis 8.1 Ai Drink und Bestellhistory und Drinqueue
+- Bis 10.2  UI Rework + Ingredient Seperator
