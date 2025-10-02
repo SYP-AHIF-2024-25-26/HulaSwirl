@@ -84,4 +84,4 @@ Der "Hula Swirl" bietet großes Marktpotenzial als automatisiertes Getränkemisc
 ## 8. Grobe Planung
 - Bis 21.11(Tag der offenen Tür) Gehäuse und Innenleben Presentierbar machen.
 - Bis 8.1 Ai Drink und Bestellhistory und Drinqueue
-- Bis 10.2  UI Rework + Ingredient Seperator
+- Bis 10.2  UI Rework + Ingredient Seperator + abrechnung
