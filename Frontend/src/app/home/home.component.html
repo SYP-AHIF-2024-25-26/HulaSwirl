@@ -1,41 +1,46 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<div id="landing">
-  <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
-  <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
-  @if(!lowEndDetected()) {
-    <video autoplay loop muted playsinline class="bgVideo"  style=" transform:  scaleY(1) rotate(180deg)">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-  }
-  <!--
-  <div class="stars-wrapper">
-    <video autoplay loop muted playsinline class="bgVideo normal">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-    <video autoplay loop muted playsinline class="bgVideo mirrored">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-  </div>-->
-
-
-  <div id="landing-text">
-    <div id="landing-title">
-      Make your perfect<br>summer drinks<br> with Hula Swirl!
+<div id="landing" class="container">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Feel the island vibe</p>
+      <h1>Make your perfect summer drinks with Hula Swirl</h1>
+      <p class="hero-subtitle">
+        Mix it easy, mix it smart, mix it fast – tailored for every moment from sunset parties to cozy nights in.
+      </p>
+      <div class="hero-actions">
+        <button (click)="scrollToElement()" class="button" id="order-button">Order now</button>
+        <button (click)="openModal(ModalType.CustomOrder)" class="button secondary" id="order-custom-button">Mix your own</button>
+      </div>
+      <div class="hero-pills">
+        <span class="pill accent">1-click orders</span>
+        <span class="pill">Live availability</span>
+        <span class="pill">Bar-quality recipes</span>
+      </div>
     </div>
-    <div id="landing-subtitle">
-      Mix it easy, mix it smart, mix it fast,<br> ideal for every moment
-    </div>
-    <div id="button-container">
-      <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">MIX YOUR OWN</button>
+    <div class="hero-visual">
+      @if(!lowEndDetected()) {
+        <video autoplay loop muted playsinline class="bgVideo">
+          <source src="assets/images/stargif/stars.webm" type="video/webm" />
+        </video>
+      }
+      <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves left">
+      <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves right">
+      <div class="hero-card section-card">
+        <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
+        <p class="hero-card-label">Tropical showcase</p>
+      </div>
     </div>
   </div>
-  <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
-  </div>
+</div>
 
-<div class="container" id="recommendations" #targetElement>
-  <h2>Our recommendations</h2>
+<section class="container section-card" id="recommendations" #targetElement>
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Popular picks</p>
+      <h2>Our recommendations</h2>
+      <p class="section-description">Based on what guests love the most and what is available right now.</p>
+    </div>
+    <p class="helper-text">Tap a card to order instantly.</p>
+  </div>
   <div id="slide-container">
       <button class="slide-track-arrow" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
       <div id="slide-track">
@@ -58,9 +63,16 @@
       </div>
       <button class="slide-track-arrow" id="arrow-right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
   </div>
-</div>
-<div class="container" id="all-drinks">
-  <h2>All Drinks</h2>
+</section>
+
+<section class="container section-card" id="all-drinks">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Full menu</p>
+      <h2>All drinks</h2>
+      <p class="section-description">Search, filter by ingredients, and discover every option our bar bot can serve.</p>
+    </div>
+  </div>
   <div class="filter-container">
     <input
       type="text"
@@ -73,9 +85,9 @@
       <option value="">All Ingredients</option>
       <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
     </select>
-    <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
+    <button class="button secondary" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
   </div>
-  <div id="filtered-drinks">
+  <div id="filtered-drinks" class="card-grid">
     @for(drink of filteredDrinks(); track $index) {
       <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
         <div class="drink-card-image-container">
@@ -89,4 +101,7 @@
       </div>
     }
   </div>
-</div>
+  @if(filteredDrinks().length === 0) {
+    <p class="helper-text empty-state">No drinks match that search yet. Try clearing filters or adjust ingredients.</p>
+  }
+</section>

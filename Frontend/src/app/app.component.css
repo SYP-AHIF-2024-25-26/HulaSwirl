@@ -1,176 +1,208 @@
-/*Nav bar*/
+/* Navigation */
 #navbar {
-  display:flex;
-  align-items: center;
-  background: var(--nav-bg);
-  color: white;
-  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
-  z-index: 3;
   position: sticky;
-  padding: 10px 30px 10px 20px;
-  gap: 20px;
-  box-sizing: border-box;
-  transition: all 0.5s ease;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+  background: linear-gradient(135deg, rgba(12, 41, 59, 0.94), rgba(12, 41, 59, 0.88));
+  box-shadow: 0 14px 28px rgba(12, 41, 59, 0.22);
+  padding: 10px 18px;
+  backdrop-filter: blur(6px);
+}
+
+#navbar.home {
+  background: linear-gradient(135deg, rgba(12, 41, 59, 0.6), rgba(12, 41, 59, 0.35));
+  box-shadow: 0 8px 24px rgba(12, 41, 59, 0.16);
+}
+
+.nav-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand-tagline {
+  margin: 0;
+  color: #d9e6f0;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
 }
 
 #logo {
-  height: 100px;
+  height: 78px;
   cursor: pointer;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.2));
 }
 
-.link{
-  font-size: 32px;
-  font-family: JosefinSans,sans-serif;
-  text-decoration: none;
-  color: var(--body-bg);
-  font-weight: lighter;
-}
-
-.bigLink{
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--order-btn-bg);
-}
-
-#nav-page-container{
+#nav-page-container {
   display: flex;
-  gap: 20px;
+  gap: 18px;
   width: 100%;
   align-items: center;
-  transition: max-height 0.3s ease;
+  margin-left: 28px;
 }
 
-.active {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+.link,
+.bigLink {
+  font-size: 1.1rem;
+  font-family: JosefinSans, sans-serif;
+  text-decoration: none;
+  color: #e8f3fb;
+  font-weight: 500;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.bigLink {
+  font-weight: 700;
+  color: #ffd57a;
+  letter-spacing: 0.02em;
+}
+
+.link.light,
+.bigLink.light {
+  color: #d8e6ef;
+}
+
+.link:hover,
+.bigLink:hover,
+.link.active,
+.bigLink.active {
+  color: #0c293b;
+  background: #e8f3fb;
+  transform: translateY(-1px);
 }
 
 #account-toggle {
   margin-left: auto;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--nav-overlay-bg);
+  min-width: 56px;
+  min-height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(160deg, #ffd57a, #ff9770);
+  color: var(--body-bg);
+  box-shadow: 0 12px 24px rgba(255, 151, 112, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#account-toggle {
-  min-width: 60px;
-  min-height: 60px;
-  border-radius: 50% !important;
+#account-toggle:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 16px 28px rgba(255, 151, 112, 0.35);
 }
 
 #account-toggle p {
   font-size: 20px;
   color: var(--body-bg);
   letter-spacing: 2px;
-  font-weight: 1000;
-  margin: 4px 0 0 1px;
+  font-weight: 900;
+  margin: 0;
 }
+
 #menu-toggle {
   display: none;
-  justify-self: end;
-  background: none;
-  border: none;
-  color: var(--body-bg);
-  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f2f7fb;
+  font-size: 1.6rem;
   cursor: pointer;
+  border-radius: 12px;
+  width: 50px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
 }
 
-@media screen and (max-width: 1000px) {
-  #logo {
-    height: 80px;
-  }
-
-  .link, .bigLink {
-    font-size: 28px;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .link, .bigLink {
-    font-size: 26px;
-  }
-}
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1100px) {
   #nav-page-container {
+    gap: 14px;
+    margin-left: 10px;
+  }
+
+  #logo {
+    height: 70px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .brand-copy {
     display: none;
-    flex-direction: column;
-    width: 100%;
-    gap: 5px;
-    overflow: hidden;
-    max-height: 0;
-  }
-  #nav-page-container.open {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-height: 500px;
-  }
-  .link,
-  .bigLink {
-    background: var(--nav-overlay-bg);
-    padding: 8px 20px;
-    max-width: 120px;
-    border-radius: 5px;
-    text-align: start;
-    font-size: 24px;
   }
 
   #menu-toggle {
-    display: block;
-    width: 60px;
+    display: inline-flex;
   }
-  #navbar.home {
-    background: transparent;
-    position: absolute;
-  }
-  #navbar {
-    width: 100%;
-    padding: 15px 20px;
-    height: auto;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: space-between;
-  }
+
   #nav-page-container {
-    order: 3;
-  }
-
-  #account-toggle {
-    background: var(--nav-overlay-bg);
-    margin: 0;
-  }
-}
-
-@media screen and (max-width: 440px) {
-  #navbar.open {
-      background: var(--nav-bg);
-      position: sticky;
-      width: 100%;
-      transition: none;
-    }
-  }
-
-@media screen and (max-width: 300px) {
-  #logo {
     display: none;
+    position: absolute;
+    left: 0;
+    top: 88px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 14px;
+    background: var(--nav-overlay-bg);
+    border-radius: 12px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+  }
+
+  #nav-page-container.open {
+    display: flex;
+    gap: 10px;
   }
 
   .link,
   .bigLink {
-    width: 100%;
-    max-width: 80%;
-  }
-
-  #nav-page-container.open {
-    flex-direction: column;
+    background: rgba(255, 255, 255, 0.06);
+    width: calc(50% - 12px);
+    justify-content: center;
     text-align: center;
   }
 
   #account-toggle {
-    margin-left: auto;
+    min-width: 50px;
+    min-height: 50px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .nav-inner {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  #nav-page-container.open {
+    flex-direction: column;
+  }
+
+  .link,
+  .bigLink {
+    width: 100%;
+  }
+
+  #logo {
+    height: 64px;
   }
 }
