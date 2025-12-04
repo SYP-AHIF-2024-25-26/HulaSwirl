@@ -9,7 +9,7 @@ import {loadingInterceptor} from './services/loading.interceptor';
 export const BASE_URL = new InjectionToken<string>('BaseUrl');
 export const WS_URL = new InjectionToken<string>('WsUrl');
 export const USER_WS_URL = new InjectionToken<string>('UserWsUrl');
-const IP = "192.168.0.200:8080";
+const IP = "10.0.0.1:8080";
 //const IP = "localhost:5110";
 
 export const appConfig: ApplicationConfig = {

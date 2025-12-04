@@ -148,10 +148,9 @@
 @media screen and (max-width: 440px) {
   #navbar.open {
       background: var(--nav-bg);
-      position: fixed;
-      top: 0;
-      left: 0;
+      position: sticky;
       width: 100%;
+      transition: none;
     }
   }
 

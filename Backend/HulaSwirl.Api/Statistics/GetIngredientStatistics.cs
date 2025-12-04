@@ -12,15 +12,14 @@ public static class GetIngredientStatistics
     {
         if (!http.IsAdmin()) return Results.Forbid();
 
-        var query = db.Order.AsQueryable();
-        if (start.HasValue)
-            query = query.Where(o => o.OrderDate >= start.Value);
-        if (end.HasValue)
-            query = query.Where(o => o.OrderDate <= end.Value);
-
-        query = query.Where(o => o.Status == OrderStatus.Confirmed);
-
-        var orders = await query.ToListAsync();
+        var now = DateTime.Now;
+        if (!start.HasValue || !end.HasValue)
+        {
+            var defaultEnd = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0, DateTimeKind.Local);
+            end ??= defaultEnd;
+            start ??= end.Value.AddHours(-12);
+        }
+        var orders = await db.Order.Where(o => o.OrderDate >= start.Value && o.OrderDate <= end.Value && o.Status == OrderStatus.Confirmed).ToListAsync();
         var stats = orders
             .SelectMany(o => o.OrderIngredients)
             .GroupBy(i => i.IngredientName)
