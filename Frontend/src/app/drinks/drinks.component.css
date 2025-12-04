@@ -1,25 +1,31 @@
 #drinks-page {
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.filter-container {
-  width: 95%;
-  margin: 30px auto;
+.section-subheader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
 }
 
 #drinks-section {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
 }
 
 .drink-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.9rem;
-  justify-items: start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
 }
 
 .drink-name {
   font-weight: bold;
+}
+
+@media screen and (max-width: 640px) {
+  #drinks-page { padding: 18px; }
 }

@@ -1,72 +1,77 @@
-<div id="drinks-page">
-    <div class="filter-container">
-      <input
-        type="text"
-        placeholder="🔍 Search for a drink..."
-        [(ngModel)]="searchQuery"
-        (input)="filterDrinks()"
-        class="form-input"
-      />
-      <select [(ngModel)]="selectedIngredient" (change)="filterDrinks()" class="form-input">
-        <option value="">All Ingredients</option>
-        <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">
-          {{ ingredient }}
-        </option>
-      </select>
-      <button class="button submit-btn" (click)="openModal(ModalType.AddDrink)">Add Drink</button>
+<section id="drinks-page" class="container section">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Manage menu</p>
+      <h2>Drinks</h2>
+      <p class="section-subtitle">Search, filter and update available recipes.</p>
+    </div>
+    <button class="button primary" (click)="openModal(ModalType.AddDrink)">Add Drink</button>
+  </div>
+
+  <div class="filter-container">
+    <input
+      type="text"
+      placeholder="🔍 Search for a drink..."
+      [(ngModel)]="searchQuery"
+      (input)="filterDrinks()"
+      class="form-input"
+      aria-label="Search for a drink"
+    />
+    <select [(ngModel)]="selectedIngredient" (change)="filterDrinks()" class="form-input" aria-label="Filter by ingredient">
+      <option value="">All Ingredients</option>
+      <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">
+        {{ ingredient }}
+      </option>
+    </select>
   </div>
 
   <div id="drinks-section">
     @if(filteredDrinks().length > 0) {
-    <!-- Available Drinks -->
-    <h2>Available Drinks</h2>
-    <div id="available-drinks" class="drink-grid">
-      @for (drink of filteredDrinks(); track $index){
-        <div *ngIf="drink.available" class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
-          <div class="drink-card-image-container">
-            @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
-            } @else {
-              <p>No image available</p>
-            }
-          </div>
-          <p class="drink-name">{{ drink.name }}</p>
+      <div class="drink-section">
+        <div class="section-subheader">
+          <h3>Available Drinks</h3>
+          <p>Visible to guests and ready to order.</p>
         </div>
-      }
-    </div>
+        <div id="available-drinks" class="drink-grid">
+          @for (drink of filteredDrinks(); track $index){
+            <div *ngIf="drink.available" class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
+              <div class="drink-card-image-container">
+                @if (drink.imgUrl) {
+                  <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+                } @else {
+                  <p>No image available</p>
+                }
+              </div>
+              <p class="drink-name">{{ drink.name }}</p>
+            </div>
+          }
+        </div>
+      </div>
 
-    <!-- Hidden Drinks
-    <h2>Hidden Drinks</h2>
-    <div id="D_HiddenDrinks" class="D_DrinksContainer">
-      @for (drink of filteredDrinks(); track $index){
-        <div class="D_Drink" (click)="openModal(ModalType.ED,drink)">
-          <div class="D_imgContainer">
-            <img class="D_img" [src]="drink.imgUrl" [alt]="drink.name">
-          </div>
-          <p class="D_DrinkText">{{ drink.name }}</p>
+      <div class="drink-section">
+        <div class="section-subheader">
+          <h3>Hidden Drinks</h3>
+          <p>Keep recipes organized even when they are not in rotation.</p>
         </div>
-      }
-    </div>
-    -->
-
-    <!-- Not Available Drinks -->
-    <h2>Hidden Drinks</h2>
-    <div id="unavailable-drinks" class="drink-grid">
-      @for (drink of filteredDrinks(); track $index){
-        <div *ngIf="!drink.available" class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
-          <div class="drink-card-image-container">
-            @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
-            } @else {
-              <p>No image available</p>
-            }
-          </div>
-          <p class="drink-name">{{ drink.name }}</p>
+        <div id="unavailable-drinks" class="drink-grid">
+          @for (drink of filteredDrinks(); track $index){
+            <div *ngIf="!drink.available" class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
+              <div class="drink-card-image-container">
+                @if (drink.imgUrl) {
+                  <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+                } @else {
+                  <p>No image available</p>
+                }
+              </div>
+              <p class="drink-name">{{ drink.name }}</p>
+            </div>
+          }
         </div>
-      }
-    </div>
+      </div>
     } @else {
-      <h3>There aren't any drinks yet</h3>
+      <div class="empty-state">
+        <p>There aren't any drinks yet. Add a recipe to get started.</p>
+      </div>
     }
   </div>
-</div>
+</section>

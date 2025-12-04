@@ -1,92 +1,115 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<div id="landing">
-  <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
-  <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
-  @if(!lowEndDetected()) {
-    <video autoplay loop muted playsinline class="bgVideo"  style=" transform:  scaleY(1) rotate(180deg)">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-  }
-  <!--
-  <div class="stars-wrapper">
-    <video autoplay loop muted playsinline class="bgVideo normal">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-    <video autoplay loop muted playsinline class="bgVideo mirrored">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-  </div>-->
-
-
-  <div id="landing-text">
-    <div id="landing-title">
-      Make your perfect<br>summer drinks<br> with Hula Swirl!
+<section id="landing" class="hero">
+  <div class="gradient-overlay"></div>
+  <div class="hero-content">
+    <p class="eyebrow">Tropical robotic bar</p>
+    <h1>Make your perfect summer drinks with Hula Swirl</h1>
+    <p class="subtitle">Mix it easy, mix it smart, mix it fast – ideal for every moment.</p>
+    <div class="pill-row">
+      <span class="pill">Fresh ingredients</span>
+      <span class="pill">Smart pump routing</span>
+      <span class="pill">Queue-friendly ordering</span>
     </div>
-    <div id="landing-subtitle">
-      Mix it easy, mix it smart, mix it fast,<br> ideal for every moment
-    </div>
-    <div id="button-container">
-      <button (click)="scrollToElement()" class="button" id="order-button">ORDER NOW</button>
-      <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">MIX YOUR OWN</button>
+    <div class="button-group">
+      <button type="button" (click)="scrollToElement()" class="button primary">Order now</button>
+      <button type="button" (click)="openModal(ModalType.CustomOrder)" class="button ghost">Mix your own</button>
     </div>
   </div>
-  <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
+  <div class="hero-visual">
+    <div class="visual-frame">
+      @if(!lowEndDetected()) {
+        <video autoplay loop muted playsinline class="bgVideo" aria-hidden="true">
+          <source src="assets/images/stargif/stars.webm" type="video/webm" />
+        </video>
+      }
+      <img alt="Signature drink" src="assets/images/DrinkImage.png" id="drink-showcase">
+      <img alt="Decorative leaves" src="assets/images/sideLeafsLeft.png" class="leaves left">
+      <img alt="Decorative leaves" src="assets/images/sideLeafs.png" class="leaves right">
+    </div>
+  </div>
+</section>
+
+<section class="container section" id="recommendations" #targetElement>
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Curated by data</p>
+      <h2>Our recommendations</h2>
+      <p class="section-subtitle">Popular drinks crafted from what is currently available.</p>
+    </div>
+    <div class="slider-controls">
+      <button class="icon-button" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" aria-label="Previous recommendation">&#8249;</button>
+      <button class="icon-button" id="arrow-right" (click)="nextSlide()" [disabled]="isNextDisabled()" aria-label="Next recommendation">&#8250;</button>
+    </div>
   </div>
 
-<div class="container" id="recommendations" #targetElement>
-  <h2>Our recommendations</h2>
+  @if(recommendedDrinks().length > 0) {
   <div id="slide-container">
-      <button class="slide-track-arrow" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
-      <div id="slide-track">
-        @for (drink of recommendedDrinks(); track $index) {
-          <div class="drink-card"
-               (click)="openModal(ModalType.Order, drink)"
-               [class.slide-focus]="getSlideState($index) === 'focus'"
-               [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
-               [class.hidden]="getSlideState($index) === 'hidden'">
-            <div class="drink-card-image-container">
+    <div id="slide-track">
+      @for (drink of recommendedDrinks(); track $index) {
+        <div class="drink-card"
+             (click)="openModal(ModalType.Order, drink)"
+             [class.slide-focus]="getSlideState($index) === 'focus'"
+             [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
+             [class.hidden]="getSlideState($index) === 'hidden'">
+          <div class="drink-card-image-container">
             @if(drink.imgUrl) {
-              <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
+              <img [src]="drink.imgUrl" [alt]="drink.name">
             } @else {
               <p>No image available</p>
             }
-            </div>
-            <p>{{ drink.name }}</p>
           </div>
-        }
-      </div>
-      <button class="slide-track-arrow" id="arrow-right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
+          <p>{{ drink.name }}</p>
+        </div>
+      }
+    </div>
   </div>
-</div>
-<div class="container" id="all-drinks">
-  <h2>All Drinks</h2>
+  } @else {
+    <div class="empty-state">
+      <p>Recommendations will appear as soon as drinks are available.</p>
+    </div>
+  }
+</section>
+
+<section class="container section" id="all-drinks">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Browse everything</p>
+      <h2>All Drinks</h2>
+      <p class="section-subtitle">Filter by ingredient or search to find your next favorite.</p>
+    </div>
+    <button type="button" class="button primary" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
+  </div>
   <div class="filter-container">
     <input
       type="text"
       placeholder="🔍 Search for a drink..."
       [(ngModel)]="searchQuery"
-      (input)="filterDrinksByQuery()"
+      (input)="applyFilters()"
       class="form-input"
+      aria-label="Search drinks"
     />
-    <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input">
+    <select [(ngModel)]="selectedIngredient" (change)="applyFilters()" class="form-input" aria-label="Filter by ingredient">
       <option value="">All Ingredients</option>
       <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
     </select>
-    <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
   </div>
-  <div id="filtered-drinks">
-    @for(drink of filteredDrinks(); track $index) {
-      <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
-        <div class="drink-card-image-container">
-          @if(drink.imgUrl) {
-            <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
-          } @else {
-            <p>No image available</p>
-          }
+  <div id="filtered-drinks" class="drink-grid">
+    @if(filteredDrinks().length > 0) {
+      @for(drink of filteredDrinks(); track $index) {
+        <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
+          <div class="drink-card-image-container">
+            @if(drink.imgUrl) {
+              <img [src]="drink.imgUrl" [alt]="drink.name">
+            } @else {
+              <p>No image available</p>
+            }
+          </div>
+          <p>{{ drink.name }}</p>
         </div>
-        <p>{{ drink.name }}</p>
+      }
+    } @else {
+      <div class="empty-state">
+        <p>No drinks match your filters yet. Try clearing the filters or check back soon.</p>
       </div>
     }
   </div>
-</div>
+</section>

@@ -1,176 +1,192 @@
-/*Nav bar*/
+/* Navigation */
 #navbar {
-  display:flex;
-  align-items: center;
-  background: var(--nav-bg);
-  color: white;
-  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
-  z-index: 3;
   position: sticky;
-  padding: 10px 30px 10px 20px;
-  gap: 20px;
-  box-sizing: border-box;
-  transition: all 0.5s ease;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  background: rgba(8, 34, 49, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+#navbar.home {
+  background: linear-gradient(90deg, rgba(8, 34, 49, 0.65), rgba(12, 61, 84, 0.65));
+  box-shadow: none;
+}
+
+.nav-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+}
+
+#menu-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  color: #f5f8fb;
+  font-size: 1.8rem;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+#menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #f5f8fb;
+  font-family: var(--primary-font), serif;
+  letter-spacing: 0.5px;
+}
+
+.brand-text {
+  font-size: 1.4rem;
 }
 
 #logo {
-  height: 100px;
+  height: 72px;
+  width: auto;
   cursor: pointer;
+  filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.25));
 }
 
-.link{
-  font-size: 32px;
-  font-family: JosefinSans,sans-serif;
-  text-decoration: none;
-  color: var(--body-bg);
-  font-weight: lighter;
-}
-
-.bigLink{
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--order-btn-bg);
-}
-
-#nav-page-container{
+#nav-page-container {
   display: flex;
-  gap: 20px;
-  width: 100%;
   align-items: center;
-  transition: max-height 0.3s ease;
+  gap: 18px;
+  margin-left: 10px;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
-.active {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
+.bigLink,
+.link {
+  font-size: 1.1rem;
+  font-family: var(--default-font), sans-serif;
+  text-decoration: none;
+  color: #dfeffc;
+  padding: 10px 14px;
+  border-radius: 12px;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.bigLink {
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffb56b, #fc5d5b);
+  color: #0c1824;
+  box-shadow: 0 10px 25px rgba(252, 93, 91, 0.25);
+}
+
+.link.light {
+  color: #dfeffc;
+}
+
+.link:hover,
+.bigLink:hover,
+.link.active {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }
 
 #account-toggle {
   margin-left: auto;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--nav-overlay-bg);
-}
-
-#account-toggle {
-  min-width: 60px;
-  min-height: 60px;
-  border-radius: 50% !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 56px;
+  min-height: 56px;
+  border-radius: 18px !important;
+  padding: 6px 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 
 #account-toggle p {
-  font-size: 20px;
-  color: var(--body-bg);
+  font-size: 1.1rem;
+  color: #f5f8fb;
   letter-spacing: 2px;
-  font-weight: 1000;
-  margin: 4px 0 0 1px;
-}
-#menu-toggle {
-  display: none;
-  justify-self: end;
-  background: none;
-  border: none;
-  color: var(--body-bg);
-  font-size: 2rem;
-  cursor: pointer;
+  font-weight: 800;
+  margin: 0;
 }
 
-@media screen and (max-width: 1000px) {
+#account-toggle:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+@media screen and (max-width: 1040px) {
   #logo {
-    height: 80px;
+    height: 64px;
   }
 
-  .link, .bigLink {
-    font-size: 28px;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .link, .bigLink {
-    font-size: 26px;
-  }
-}
-
-@media screen and (max-width: 768px) {
   #nav-page-container {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    gap: 5px;
-    overflow: hidden;
-    max-height: 0;
+    gap: 12px;
   }
-  #nav-page-container.open {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-height: 500px;
-  }
-  .link,
-  .bigLink {
-    background: var(--nav-overlay-bg);
-    padding: 8px 20px;
-    max-width: 120px;
-    border-radius: 5px;
-    text-align: start;
-    font-size: 24px;
-  }
+}
 
+@media screen and (max-width: 820px) {
   #menu-toggle {
     display: block;
-    width: 60px;
   }
-  #navbar.home {
-    background: transparent;
-    position: absolute;
-  }
-  #navbar {
-    width: 100%;
-    padding: 15px 20px;
-    height: auto;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: space-between;
-  }
+
   #nav-page-container {
-    order: 3;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    padding: 10px 18px 16px;
+    background: rgba(8, 34, 49, 0.96);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 16px 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
   }
 
-  #account-toggle {
-    background: var(--nav-overlay-bg);
-    margin: 0;
-  }
-}
-
-@media screen and (max-width: 440px) {
-  #navbar.open {
-      background: var(--nav-bg);
-      position: sticky;
-      width: 100%;
-      transition: none;
-    }
-  }
-
-@media screen and (max-width: 300px) {
-  #logo {
-    display: none;
+  #nav-page-container.open {
+    max-height: 320px;
+    opacity: 1;
   }
 
   .link,
   .bigLink {
-    width: 100%;
-    max-width: 80%;
-  }
-
-  #nav-page-container.open {
-    flex-direction: column;
+    width: calc(50% - 14px);
     text-align: center;
   }
 
   #account-toggle {
-    margin-left: auto;
+    min-width: 52px;
+    min-height: 52px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .nav-content {
+    padding: 12px 14px;
+  }
+
+  .link,
+  .bigLink {
+    width: 100%;
+  }
+
+  #navbar.home {
+    position: absolute;
   }
 }

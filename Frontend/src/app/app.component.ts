@@ -6,8 +6,7 @@ import {
   ViewChild,
   ElementRef,
   effect,
-  signal,
-  WritableSignal
+  signal
 } from '@angular/core';
 import {Router, NavigationStart, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgIf, NgClass} from '@angular/common';
@@ -23,7 +22,6 @@ import {StatusModalComponent} from './modals/status-modal/status-modal.component
 import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
 import {AccountModalComponent} from './modals/account-modal/account-modal.component';
-import {FpsService} from './services/fps.service';
 
 @Component({
   selector: 'app-root',
@@ -34,13 +32,13 @@ import {FpsService} from './services/fps.service';
     OrderDrinkModalComponent,
     DrinkModalComponent,
     RouterLinkActive,
-    UserModalComponent,
-    NgIf,
-    NgClass,
-    StatusModalComponent,
-    LoadingSpinnerComponent,
-    BackgroundLeavesComponent,
-    AccountModalComponent
+  UserModalComponent,
+  NgIf,
+  NgClass,
+  StatusModalComponent,
+  LoadingSpinnerComponent,
+  BackgroundLeavesComponent,
+  AccountModalComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,

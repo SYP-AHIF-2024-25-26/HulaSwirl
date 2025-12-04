@@ -1,52 +1,56 @@
 <nav id="navbar" [ngClass]="{open: menuOpen, home: isAtHomeScreen()}" #navbar>
-  <button id="menu-toggle" (click)="toggleMenu()">☰</button>
-  <img src="assets/images/InconV2png.png" id="logo" alt="Logo" routerLink="home">
-  <div id="nav-page-container" [ngClass]="{open: menuOpen}">
-    <a class="bigLink" routerLink="home">
-      Home
+  <div class="nav-content">
+    <button id="menu-toggle" type="button" (click)="toggleMenu()" aria-label="Toggle navigation">
+      ☰
+    </button>
+    <a class="brand" routerLink="home" aria-label="Go to start page">
+      <img src="assets/images/InconV2png.png" id="logo" alt="Hula Swirl logo">
+      <span class="brand-text">Hula Swirl</span>
     </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="drinks"
-       routerLinkActive="active">
-      Drinks
-    </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="ingredients"
-       routerLinkActive="active">
-      Ingredients
-    </a>
-
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="statistics"
-       routerLinkActive="active">
-      Statistics
-    </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('operator')"
-       routerLink="orders"
-       routerLinkActive="active">
-      Orders
-    </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="users"
-       routerLinkActive="active">
-      Users
-    </a>
-  </div>
-  <div id="account-toggle" [ngClass]="{light: !menuOpen}" (click)="userInitials() ? openAccountModal() : openLoginModal()">
-  @if(userInitials()) {
-    <p class="noselect">{{userInitials()}}</p>
-  } @else {
-    <p>🦩</p>
-  }
+    <div id="nav-page-container" [ngClass]="{open: menuOpen}">
+      <a class="bigLink" routerLink="home">Home</a>
+      <a class="link" [ngClass]="{light: !menuOpen}"
+         *ngIf="userService.hasRole('admin')"
+         routerLink="drinks"
+         routerLinkActive="active">
+        Drinks
+      </a>
+      <a class="link" [ngClass]="{light: !menuOpen}"
+         *ngIf="userService.hasRole('admin')"
+         routerLink="ingredients"
+         routerLinkActive="active">
+        Ingredients
+      </a>
+      <a class="link" [ngClass]="{light: !menuOpen}"
+         *ngIf="userService.hasRole('admin')"
+         routerLink="statistics"
+         routerLinkActive="active">
+        Statistics
+      </a>
+      <a class="link" [ngClass]="{light: !menuOpen}"
+         *ngIf="userService.hasRole('operator')"
+         routerLink="orders"
+         routerLinkActive="active">
+        Orders
+      </a>
+      <a class="link" [ngClass]="{light: !menuOpen}"
+         *ngIf="userService.hasRole('admin')"
+         routerLink="users"
+         routerLinkActive="active">
+        Users
+      </a>
+    </div>
+    <button id="account-toggle" type="button" [ngClass]="{light: !menuOpen}" (click)="userInitials() ? openAccountModal() : openLoginModal()">
+      @if(userInitials()) {
+        <p class="noselect">{{userInitials()}}</p>
+      } @else {
+        <p>🦩</p>
+      }
+    </button>
   </div>
 </nav>
 
-<app-background-leaves>
+<app-background-leaves class="page-shell">
   <router-outlet></router-outlet>
   <app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != ModalType.CustomOrder"></app-order-custom-drink-modal>
   <app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != ModalType.Order"></app-order-drink-modal>
