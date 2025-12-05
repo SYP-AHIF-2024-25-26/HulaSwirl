@@ -3,11 +3,12 @@ import {FormsModule} from '@angular/forms';
 import {DrinkIngredient, Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
-import {GenericModalComponent} from '../generic-modal/generic-modal.component';
+import {ModalShellComponent} from '../../shared/modal/modal-shell.component';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
-  imports: [FormsModule, GenericModalComponent],
+  imports: [FormsModule, CommonModule, ModalShellComponent],
   templateUrl: './order-custom-drink-modal.component.html',
   standalone: true,
   styleUrl: './order-custom-drink-modal.component.css'

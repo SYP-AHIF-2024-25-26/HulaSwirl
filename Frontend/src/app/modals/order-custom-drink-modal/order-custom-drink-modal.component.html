@@ -1,14 +1,22 @@
-<app-generic-modal title="Configure your own Drink" (closed)="closeModal()">
-    <div id="ingredient-list" modal-body>
+<app-modal-shell
+  [config]="{ title: 'Configure your own Drink', size: 'large', closeOnBackdrop: true }"
+  (closed)="closeModal()"
+>
+  <ng-template #appModalBody>
+    <div id="ingredient-list">
       <div class="ai-generate">
-      <textarea id="prompt"
-                [(ngModel)]="prompt"
-                rows="3"
-                placeholder="Describe your perfect drink..."></textarea>
+        <textarea
+          id="prompt"
+          [(ngModel)]="prompt"
+          rows="3"
+          placeholder="Describe your perfect drink..."
+        ></textarea>
 
-        <button type="button"
-                (click)="aiGenerate()"
-                [disabled]="aiGenerating()">
+        <button
+          type="button"
+          (click)="aiGenerate()"
+          [disabled]="aiGenerating()"
+        >
           AI-Generate
         </button>
       </div>
@@ -30,13 +38,27 @@
         </div>
       }
     </div>
-  <div modal-footer>
+  </ng-template>
+
+  <ng-template #appModalFooter>
     @if(globalError()) {
       <p class="error global-error">{{ globalError() }}</p>
     }
-  </div>
-  <div modal-buttons class="order-buttons">
-    <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
-    <button class="button submit-btn" (click)="submitOrder()">Order</button>
-  </div>
-</app-generic-modal>
+  </ng-template>
+
+  <ng-template #appModalHeader>
+    <div class="header-row">
+      <div>
+        <p class="subtitle">Customize to your taste</p>
+        <h2>Configure your own Drink</h2>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #appModalButtons>
+    <div class="order-buttons">
+      <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
+      <button class="button submit-btn" (click)="submitOrder()">Order</button>
+    </div>
+  </ng-template>
+</app-modal-shell>

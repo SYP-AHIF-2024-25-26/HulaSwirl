@@ -1,5 +1,8 @@
-<app-generic-modal [title]="mode() === 'add' ? 'Add Drink' : 'Edit Drink'" (closed)="closeModal()">
-  <div modal-body>
+<app-modal-shell
+  [config]="{ title: mode() === 'add' ? 'Add Drink' : 'Edit Drink', size: 'large', closeOnBackdrop: true }"
+  (closed)="closeModal()"
+>
+  <ng-template #appModalBody>
     <div id="left-column">
       <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
         <span *ngIf="!imageBase64">Upload image</span>
@@ -59,22 +62,26 @@
         </div>
       </div>
     </div>
-  </div>
-  <div modal-footer>
+  </ng-template>
+
+  <ng-template #appModalFooter>
     @if(globalError()){
       <p class="error global-error">{{ globalError() }}</p>
     }
-  </div>
-  <div modal-buttons class="action-buttons">
-    @if(mode() === 'edit'){
-      <button class="button cancel-btn" (click)="deleteDrink()">Delete</button>
-      <div class="checkbox-container button" (click)="drinkAvailable.set(!drinkAvailable())">
-        <input type="checkbox" [(ngModel)]="drinkAvailable">
-        <label>
-          Available
-        </label>
-      </div>
-    }
-    <button class="button submit-btn" (click)="submitDrink()">{{ mode() === 'add' ? 'Add' : 'Update' }}</button>
-  </div>
-</app-generic-modal>
+  </ng-template>
+
+  <ng-template #appModalButtons>
+    <div class="action-buttons">
+      @if(mode() === 'edit'){
+        <button class="button cancel-btn" (click)="deleteDrink()">Delete</button>
+        <div class="checkbox-container button" (click)="drinkAvailable.set(!drinkAvailable())">
+          <input type="checkbox" [(ngModel)]="drinkAvailable">
+          <label>
+            Available
+          </label>
+        </div>
+      }
+      <button class="button submit-btn" (click)="submitDrink()">{{ mode() === 'add' ? 'Add' : 'Update' }}</button>
+    </div>
+  </ng-template>
+</app-modal-shell>

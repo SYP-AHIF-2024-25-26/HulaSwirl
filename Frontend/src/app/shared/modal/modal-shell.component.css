@@ -1,0 +1,114 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+dialog {
+  border: none;
+  padding: 0;
+  background: transparent;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+}
+
+dialog::backdrop {
+  background: transparent;
+}
+
+dialog.small { max-width: 360px; }
+dialog.medium { max-width: 640px; }
+dialog.large { max-width: 920px; }
+dialog.auto { max-width: none; }
+
+.modal-card {
+  background: var(--popup-bg);
+  color: var(--primary-font-color);
+  border-radius: 12px;
+  padding: 18px 20px 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 90vh;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.modal-title h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.modal-title .subtitle {
+  margin: 0 0 4px;
+  opacity: 0.8;
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+  color: var(--primary-font-color);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-body {
+  overflow: auto;
+  max-height: 60vh;
+}
+
+.modal-footer {
+  min-height: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.action-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+  background: var(--accent-color, #d26bff);
+}
+
+.action-btn.secondary {
+  background: #2f2f3a;
+}
+
+.action-btn.danger {
+  background: #d9534f;
+}
+
+.placeholder {
+  opacity: 0.75;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .modal-card {
+    padding: 14px;
+  }
+
+  .modal-body {
+    max-height: 65vh;
+  }
+}

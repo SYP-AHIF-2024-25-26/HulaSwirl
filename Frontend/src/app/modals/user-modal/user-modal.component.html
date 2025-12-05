@@ -1,40 +1,42 @@
-<app-generic-modal [title]="mode() === 'login' ? 'Login' : 'Register'" (closed)="closeModal()">
-  <form (ngSubmit)="onSubmit()" modal-body #authForm="ngForm">
-    <ng-container *ngIf="mode() === 'login'">
-      <div class="flex-row">
-        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="username" />
+<app-modal-shell
+  [config]="{ title: mode() === 'login' ? 'Login' : 'Register', size: 'small', closeOnBackdrop: true }"
+  (closed)="closeModal()"
+>
+  <ng-template #appModalBody>
+    <div class="tabs">
+      <button [class.active]="mode() === 'login'" (click)="switchMode('login')">Login</button>
+      <button [class.active]="mode() === 'register'" (click)="switchMode('register')">Register</button>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" name="username" [(ngModel)]="username" (input)="clearFieldError('username')">
+        <p class="error field-error">{{ fieldErrors()['username'] }}</p>
       </div>
-      <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
-      <div class="flex-row">
-        <input name="key" ngModel required [type]="showLoginPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="key" />
-        <span class="password-toggle" (click)="togglePasswordVisibility('login')">
-          <i class="fa" [class.fa-eye]="!showLoginPassword()" [class.fa-eye-slash]="showLoginPassword()"></i>
-        </span>
+      <div class="form-group">
+        <label for="key">Password</label>
+        <div class="password-input">
+          <input
+            id="key"
+            name="key"
+            [type]="(mode() === 'login' ? !showLoginPassword() : !showRegPassword()) ? 'password' : 'text'"
+            [(ngModel)]="key"
+            (input)="clearFieldError('key')"
+          >
+          <button type="button" class="toggle" (click)="togglePasswordVisibility(mode())">👁</button>
+        </div>
+        <p class="error field-error">{{ fieldErrors()['key'] }}</p>
       </div>
-      <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
-      <small>Don't have an account yet? <a (click)="switchMode('register')">Register</a></small>
-    </ng-container>
-    <ng-container *ngIf="mode() === 'register'">
-      <div class="flex-row">
-        <input name="username" ngModel required type="text" placeholder="Username" class="form-input" (input)="clearFieldError('username')" [(ngModel)]="username" />
-      </div>
-      <p class="error field-error" *ngIf="fieldErrors()['username']">{{ fieldErrors()['username'] }}</p>
-      <div class="flex-row">
-        <input name="key" ngModel required [type]="showRegPassword() ? 'text' : 'password'" placeholder="Key" class="form-input" (input)="clearFieldError('key')" [(ngModel)]="key" />
-        <span class="password-toggle" (click)="togglePasswordVisibility('register')">
-          <i class="fa" [class.fa-eye]="!showRegPassword()" [class.fa-eye-slash]="showRegPassword()"></i>
-        </span>
-      </div>
-      <p class="error field-error" *ngIf="fieldErrors()['key']">{{ fieldErrors()['key'] }}</p>
-      <small>Already have an account? <a (click)="switchMode('login')">Login</a></small>
-    </ng-container>
-    <button type="submit" [disabled]="authForm.invalid" hidden></button>
-  </form>
-  <div modal-footer>
-    <p class="error">{{globalError()}}</p>
-  </div>
-  <div modal-buttons class="buttons">
-    <button type="submit" class="button submit-btn" (click)="onSubmit()" [disabled]="authForm.invalid">{{ mode() === 'login' ? 'Login' : 'Register' }}</button>
-    <button type="button" class="button cancel-btn" (click)="closeModal()">Cancel</button>
-  </div>
-</app-generic-modal>
+
+      @if(globalError()){
+        <p class="error global-error">{{ globalError() }}</p>
+      }
+    </form>
+  </ng-template>
+
+  <ng-template #appModalButtons>
+    <button class="button cancel-btn" type="button" (click)="closeModal()">Cancel</button>
+    <button class="button submit-btn" type="button" (click)="onSubmit()">{{ mode() === 'login' ? 'Login' : 'Register' }}</button>
+  </ng-template>
+</app-modal-shell>

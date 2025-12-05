@@ -48,12 +48,12 @@
 
 <app-background-leaves>
   <router-outlet></router-outlet>
-  <app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != ModalType.CustomOrder"></app-order-custom-drink-modal>
-  <app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != ModalType.Order"></app-order-drink-modal>
-  <app-drink-modal id="drink-modal" [hidden]="displayedModal()!=ModalType.AddDrink && displayedModal()!=ModalType.EditDrink"></app-drink-modal>
-  <app-user-modal id="user-modal" [hidden]="displayedModal()!=ModalType.User"></app-user-modal>
-  <app-status-modal id="status-modal" [hidden]="displayedModal()!=ModalType.Status"></app-status-modal>
-  <app-account-modal id="account-modal" [hidden]="displayedModal()!=ModalType.Account"></app-account-modal>
+  <app-order-custom-drink-modal *ngIf="displayedModal() === ModalType.CustomOrder" id="order-custom-drink-modal"></app-order-custom-drink-modal>
+  <app-order-drink-modal *ngIf="displayedModal() === ModalType.Order" id="order-drink-modal"></app-order-drink-modal>
+  <app-drink-modal *ngIf="displayedModal()===ModalType.AddDrink || displayedModal()===ModalType.EditDrink" id="drink-modal"></app-drink-modal>
+  <app-user-modal *ngIf="displayedModal()===ModalType.User" id="user-modal"></app-user-modal>
+  <app-status-modal *ngIf="displayedModal()===ModalType.Status" id="status-modal"></app-status-modal>
+  <app-account-modal *ngIf="displayedModal()===ModalType.Account" id="account-modal"></app-account-modal>
 </app-background-leaves>
 
 <app-loading-spinner></app-loading-spinner>

@@ -4,13 +4,13 @@ import {DatePipe, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 import {ModalService} from '../../services/modal.service';
 import {AccountInfo, UserService} from '../../services/user.service';
-import {GenericModalComponent} from '../generic-modal/generic-modal.component';
+import {ModalShellComponent} from '../../shared/modal/modal-shell.component';
 
 @Component({
   selector: 'app-account-modal',
   standalone: true,
   imports: [
-    GenericModalComponent,
+    ModalShellComponent,
     DatePipe
   ],
   templateUrl: './account-modal.component.html',

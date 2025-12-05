@@ -2,10 +2,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
 import { ErrorHandlingComponent } from '../../services/error-handling';
+import {ModalShellComponent} from '../../shared/modal/modal-shell.component';
 
 /**
  * Modal für Login & Registrierung.
@@ -14,7 +14,7 @@ import { ErrorHandlingComponent } from '../../services/error-handling';
 @Component({
   selector: 'app-user-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, GenericModalComponent],
+  imports: [CommonModule, FormsModule, ModalShellComponent],
   templateUrl: './user-modal.component.html',
   styleUrls: ['./user-modal.component.css']
 })

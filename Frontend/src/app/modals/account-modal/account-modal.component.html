@@ -1,44 +1,16 @@
-@if(userInfo()) {
-  <app-generic-modal title="My Account" (closed)="close()">
-    <div modal-body class="account-content">
-      <div class="user-info">
-          <div class="row identity">
-            <h3>{{userInfo()!.username}}</h3>
-            <h5 class="badge {{badge()}}">
-              {{badge().toUpperCase()}}
-            </h5>
-          </div>
-          <div class="row">
-            <b>Account created on: </b>
-            <p>{{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
-          </div>
-          <div class="row">
-            <b>Last logged in on: </b>
-            @if(userInfo()!.lastLogin) {
-              <p>{{userInfo()!.lastLogin | date:'MMM d, y, HH:mm'}}</p>
-            } @else {
-              <p>Never</p>
-            }
-          </div>
-      </div>
+<app-modal-shell
+  [config]="{ title: 'My Account', size: 'small', closeOnBackdrop: true }"
+  (closed)="close()"
+>
+  <ng-template #appModalBody>
+    <div class="account-info" *ngIf="userInfo() as info">
+      <p><strong>Account created on:</strong> {{ info.createdAt | date:'medium' }}</p>
+      <p><strong>Last logged in on:</strong> {{ info.lastLogin | date:'medium' }}</p>
+      <p><strong>Role:</strong> {{ badge() }}</p>
     </div>
+  </ng-template>
 
-    <div modal-buttons class="action-buttons">
-      <button class="button" (click)="userService.logout()">
-        Log Out
-      </button>
-    </div>
-  </app-generic-modal>
-} @else {
-  <app-generic-modal title="Error" (closed)="close()">
-    <div modal-body class="account-content">
-      <p>You are not logged in.</p>
-    </div>
-
-    <div modal-buttons class="action-buttons">
-      <button class="button secondary-btn" (click)="userService.logout()">
-        Close
-      </button>
-    </div>
-  </app-generic-modal>
-}
+  <ng-template #appModalButtons>
+    <button class="button submit-btn" (click)="userService.logout()">Log Out</button>
+  </ng-template>
+</app-modal-shell>

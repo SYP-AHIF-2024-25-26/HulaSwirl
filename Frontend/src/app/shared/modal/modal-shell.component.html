@@ -1,0 +1,52 @@
+<div class="modal-overlay" (click)="onDialogClick($event)">
+  <dialog #dialogRef [attr.aria-label]="config.ariaLabel ?? config.title" [class]="sizeClass" (cancel)="$event.preventDefault()">
+    <div class="modal-card">
+      <header class="modal-header">
+        <div class="modal-title">
+          <span class="modal-icon" *ngIf="config.icon && config.icon !== 'custom'">{{ config.icon }}</span>
+          <ng-container *ngIf="projectedHeader; else defaultHeader" [ngTemplateOutlet]="projectedHeader"></ng-container>
+          <ng-template #defaultHeader>
+            <p class="subtitle" *ngIf="config.subtitle">{{ config.subtitle }}</p>
+            <h2>{{ config.title }}</h2>
+          </ng-template>
+        </div>
+        <button type="button" class="close-btn" aria-label="Close" (click)="close()">×</button>
+      </header>
+
+      <section class="modal-body">
+        <ng-container *ngIf="bodyTemplate || projectedBody; else defaultBody"></ng-container>
+        <ng-template [ngIf]="bodyTemplate" [ngTemplateOutlet]="bodyTemplate" [ngTemplateOutletContext]="bodyContext"></ng-template>
+        <ng-template [ngIf]="projectedBody && !bodyTemplate" [ngTemplateOutlet]="projectedBody" [ngTemplateOutletContext]="bodyContext"></ng-template>
+        <ng-template #defaultBody>
+          <p class="placeholder">Provide a body template to render modal content.</p>
+        </ng-template>
+      </section>
+
+      <footer class="modal-footer">
+        <ng-container *ngIf="footerTemplate || projectedFooter; else defaultFooter"></ng-container>
+        <ng-template [ngIf]="footerTemplate" [ngTemplateOutlet]="footerTemplate" [ngTemplateOutletContext]="footerContext"></ng-template>
+        <ng-template [ngIf]="projectedFooter && !footerTemplate" [ngTemplateOutlet]="projectedFooter" [ngTemplateOutletContext]="footerContext"></ng-template>
+        <ng-template #defaultFooter></ng-template>
+      </footer>
+
+      <div class="modal-actions" *ngIf="projectedButtons; else defaultButtons">
+        <ng-container [ngTemplateOutlet]="projectedButtons"></ng-container>
+      </div>
+      <ng-template #defaultButtons>
+        <div class="modal-actions" *ngIf="(buttons && buttons.length) || config.footerButtons?.length">
+          <button
+            *ngFor="let btn of (config.footerButtons?.length ? config.footerButtons : buttons)"
+            type="{{ btn.type ?? 'button' }}"
+            class="action-btn"
+            [class.primary]="btn.variant === 'primary' || !btn.variant"
+            [class.secondary]="btn.variant === 'secondary'"
+            [class.danger]="btn.variant === 'danger'"
+            [disabled]="btn.disabled"
+            (click)="triggerAction(btn)">
+            {{ btn.label }}
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </dialog>
+</div>

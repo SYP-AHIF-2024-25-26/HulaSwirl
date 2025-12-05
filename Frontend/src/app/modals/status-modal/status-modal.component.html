@@ -1,11 +1,15 @@
-<app-generic-modal title="Status" (closed)="closeModal()">
-  <div modal-body>
-    <div *ngIf="progressVisible" class="progress-container">
+<app-modal-shell
+  [config]="{ title: 'Status', size: 'small', closeOnBackdrop: true }"
+  (closed)="closeModal()"
+>
+  <ng-template #appModalBody>
+    <p class="status-message">{{ statusMessage() }}</p>
+    <div class="progress" *ngIf="progressVisible">
       <div class="progress-bar" [style.width.%]="progress"></div>
     </div>
-    <p id="statusMessage">{{statusMessage()}}</p>
-  </div>
-  <div modal-buttons>
-    <div class="button submit-btn" (click)="closeModal()">OK</div>
-  </div>
-</app-generic-modal>
+  </ng-template>
+
+  <ng-template #appModalButtons>
+    <button class="button submit-btn" (click)="closeModal()">OK</button>
+  </ng-template>
+</app-modal-shell>

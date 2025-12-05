@@ -1,17 +1,17 @@
 import {Component, inject, signal, Signal, WritableSignal} from '@angular/core';
 import {NgForOf} from "@angular/common";
-import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import {Drink, DrinkService} from '../../services/drink.service';
 import {ModalService, ModalType} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {FormsModule} from '@angular/forms';
+import {ModalShellComponent} from '../../shared/modal/modal-shell.component';
 
 @Component({
   selector: 'app-order-drink-modal',
   imports: [
     NgForOf,
-    GenericModalComponent,
-    FormsModule
+    FormsModule,
+    ModalShellComponent
   ],
   templateUrl: './order-drink-modal.component.html',
   standalone: true,

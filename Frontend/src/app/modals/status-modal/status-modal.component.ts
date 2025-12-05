@@ -1,13 +1,13 @@
 import {Component, effect, inject, signal, Signal} from '@angular/core';
 import {ModalService, ModalType} from '../../services/modal.service';
 import { NgIf } from '@angular/common';
-import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import {FpsService} from '../../services/fps.service';
+import {ModalShellComponent} from '../../shared/modal/modal-shell.component';
 
 @Component({
   selector: 'app-status-modal',
   standalone: true,
-  imports: [NgIf, GenericModalComponent],
+  imports: [NgIf, ModalShellComponent],
   templateUrl: './status-modal.component.html',
   styleUrl: './status-modal.component.css'
 })
