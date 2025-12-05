@@ -1,4 +1,4 @@
-<app-generic-modal [title]="mode() === 'login' ? 'Login' : 'Register'" (closed)="closeModal()">
+<app-generic-modal [title]="mode() === 'login' ? 'Login' : 'Register'" [size]="'medium'" (closed)="closeModal()">
   <form (ngSubmit)="onSubmit()" modal-body #authForm="ngForm">
     <ng-container *ngIf="mode() === 'login'">
       <div class="flex-row">

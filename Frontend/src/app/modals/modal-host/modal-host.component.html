@@ -1,0 +1,18 @@
+@for (modal of modals(); track modal.id) {
+  <app-generic-modal
+    [title]="modal.config.title || 'Modal'"
+    [subtitle]="modal.config.subtitle"
+    [icon]="modal.config.icon"
+    [size]="modal.config.size || 'medium'"
+    [bodyTemplate]="modal.config.bodyTemplate"
+    [footerTemplate]="modal.config.footerTemplate"
+    [data]="modal.config.data ?? null"
+    [footerButtons]="modal.config.footerButtons ?? (modal.config.message ? [{ label: 'OK', variant: 'primary' }]: [])"
+    [closeOnEsc]="modal.config.closeOnEsc ?? true"
+    [closeOnBackdrop]="modal.config.closeOnBackdrop ?? true"
+    (closed)="modalService.closeDynamic(modal.id)">
+    <div modal-body *ngIf="!modal.config.bodyTemplate && modal.config.message" class="modal-message">
+      {{ modal.config.message }}
+    </div>
+  </app-generic-modal>
+}

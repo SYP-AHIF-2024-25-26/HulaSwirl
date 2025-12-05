@@ -1,0 +1,15 @@
+:host {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+app-generic-modal {
+  pointer-events: auto;
+}
+
+.modal-message {
+  margin: 0;
+  line-height: 1.5;
+}

@@ -1,4 +1,6 @@
-import {effect, computed, Injectable, signal, WritableSignal} from '@angular/core';
+import { Injectable, WritableSignal, computed, effect, signal, TemplateRef } from '@angular/core';
+import { GenericModalTemplateContext } from '../modals/generic-modal/generic-modal.component';
+
 export enum ModalType{
   CustomOrder,
   Order,
@@ -8,6 +10,37 @@ export enum ModalType{
   User,
   Account
 }
+
+export type ModalButtonVariant = 'primary' | 'secondary' | 'danger';
+
+export interface ModalButtonConfig {
+  label: string;
+  variant?: ModalButtonVariant;
+  closeOnClick?: boolean;
+  action?: () => void;
+}
+
+export interface ModalConfig<TData = unknown> {
+  id?: string;
+  title?: string;
+  subtitle?: string;
+  icon?: 'info' | 'success' | 'warning' | 'error';
+  size?: 'small' | 'medium' | 'large' | 'full' | string;
+  message?: string;
+  data?: TData | null;
+  bodyTemplate?: TemplateRef<GenericModalTemplateContext<TData>>;
+  footerTemplate?: TemplateRef<GenericModalTemplateContext<TData>>;
+  footerButtons?: ModalButtonConfig[];
+  closeOnEsc?: boolean;
+  closeOnBackdrop?: boolean;
+}
+
+interface ActiveModal<TData = unknown> {
+  id: string;
+  config: ModalConfig<TData>;
+  restoreFocus?: HTMLElement | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,12 +48,15 @@ export class ModalService {
 
   constructor() {
     effect(() => {
-      document.body.style.overflow = this.modalStack().length > 0 ? 'hidden' : '';
+      const hasModal = this.modalStack().length > 0 || this.dynamicModals().length > 0;
+      document.body.style.overflow = hasModal ? 'hidden' : '';
     });
   }
 
   private modalStack: WritableSignal<{type: ModalType; data: any; persist: boolean;}[]> = signal([]);
   private persistedData: Record<ModalType, any> = {} as Record<ModalType, any>;
+
+  private dynamicModals: WritableSignal<ActiveModal[]> = signal([]);
 
   closeModal(keepData: boolean = false) {
     const stack = [...this.modalStack()];
@@ -38,6 +74,7 @@ export class ModalService {
   closeAll() {
     this.modalStack.set([]);
     this.persistedData = {} as Record<ModalType, any>;
+    this.dynamicModals.set([]);
   }
 
   openModal(modal: ModalType, data: any = null, persist: boolean = false) {
@@ -68,5 +105,40 @@ export class ModalService {
       const stack = this.modalStack();
       return stack.length > 0 ? stack[stack.length - 1].data : null;
     });
+  }
+
+  // Template-driven modal API
+  open<TData = unknown>(config: ModalConfig<TData>) {
+    const fallbackId = `modal-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const id = config.id ?? (globalThis.crypto?.randomUUID?.() ?? fallbackId);
+    const modal: ActiveModal<TData> = {
+      id,
+      config: {
+        size: 'medium',
+        closeOnBackdrop: true,
+        closeOnEsc: true,
+        ...config,
+      },
+      restoreFocus: document.activeElement as HTMLElement | null,
+    };
+    this.dynamicModals.set([...this.dynamicModals(), modal]);
+    return {
+      id,
+      close: () => this.closeDynamic(id),
+    };
+  }
+
+  closeDynamic(id: string) {
+    const current = this.dynamicModals();
+    const modal = current.find(m => m.id === id);
+    const stack = current.filter(m => m.id !== id);
+    this.dynamicModals.set(stack);
+    if (modal?.restoreFocus && document.body.contains(modal.restoreFocus)) {
+      modal.restoreFocus.focus({ preventScroll: true });
+    }
+  }
+
+  getDynamicModals() {
+    return this.dynamicModals.asReadonly();
   }
 }

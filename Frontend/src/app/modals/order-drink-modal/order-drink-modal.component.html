@@ -1,4 +1,4 @@
-<app-generic-modal title="{{selectedDrink()?.name}}" (closed)="closeModal()">
+<app-generic-modal title="{{selectedDrink()?.name}}" [size]="'medium'" (closed)="closeModal()">
   <div modal-body>
     <div id="drink-overview">
       @if (selectedDrink()?.imgUrl) {

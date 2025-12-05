@@ -1,4 +1,4 @@
-<app-generic-modal title="Status" (closed)="closeModal()">
+<app-generic-modal title="Status" [size]="'small'" (closed)="closeModal()">
   <div modal-body>
     <div *ngIf="progressVisible" class="progress-container">
       <div class="progress-bar" [style.width.%]="progress"></div>
