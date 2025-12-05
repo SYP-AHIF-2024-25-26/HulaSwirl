@@ -24,6 +24,7 @@ import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.compone
 import {BackgroundLeavesComponent} from './background-leaves/background-leaves.component';
 import {AccountModalComponent} from './modals/account-modal/account-modal.component';
 import {FpsService} from './services/fps.service';
+import {OrderQueueWidgetComponent} from './order-queue-widget/order-queue-widget.component';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +41,8 @@ import {FpsService} from './services/fps.service';
     StatusModalComponent,
     LoadingSpinnerComponent,
     BackgroundLeavesComponent,
-    AccountModalComponent
+    AccountModalComponent,
+    OrderQueueWidgetComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,

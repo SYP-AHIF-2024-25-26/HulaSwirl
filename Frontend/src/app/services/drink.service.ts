@@ -1,9 +1,9 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
-import {firstValueFrom, Observable} from 'rxjs';
-import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {ErrorService} from './error.service';
+import {firstValueFrom} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 import {UserService} from './user.service';
 import {BASE_URL} from '../app.config';
+import {IncomingOrder} from './orders.service';
 
 export interface DrinkBase {
   name: string;
@@ -46,15 +46,17 @@ export class DrinkService {
     this.drinks.update(drinks => [...drinks, this.transformDrink(drink)]);
   }
 
-  async orderDrink(ID: number, containsIce: boolean = false) {
+  async orderDrink(ID: number, containsIce: boolean = false): Promise<IncomingOrder | null> {
     const jwt = this.userService.getTokenFromStorage();
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    await firstValueFrom(this.httpClient.post(this.apiBaseUrl + `/orders/drink/${ID}?containsIce=${containsIce}`, {}, {
+    const response = await firstValueFrom(this.httpClient.post<IncomingOrder>(this.apiBaseUrl + `/orders/drink/${ID}?containsIce=${containsIce}`, {}, {
       headers,
       observe: 'response'
     }));
+
+    return response.body ?? null;
   }
 
   async deleteDrink(ID: number) {

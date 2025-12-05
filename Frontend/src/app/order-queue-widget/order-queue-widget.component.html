@@ -1,0 +1,33 @@
+@if (shouldShowBubble()) {
+  <div
+    class="order-queue-wrapper"
+    [class.open]="timelineOpen()"
+    [style.transform]="'translate(' + position().x + 'px,' + position().y + 'px)'"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp()"
+    (pointercancel)="onPointerUp()"
+  >
+    <div class="bubble" [class.locked]="isLocked()" (click)="toggleTimeline($event)">
+      <div class="bubble-halo"></div>
+      <p>{{ getBubbleText() }}</p>
+    </div>
+
+    @if (timelineOpen()) {
+      <div class="timeline">
+        <div class="timeline-label">Live queue</div>
+        <div class="timeline-track">
+          <div class="timeline-line"></div>
+          <div class="timeline-nodes">
+            @for (entry of timelineEntries; track trackByOrderId) {
+              <div class="timeline-node" [class.user-node]="entry.isUser">
+                <div class="node-circle">{{ entry.position }}</div>
+                <div class="node-label">{{ entry.isUser ? 'You' : entry.order.user }}</div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

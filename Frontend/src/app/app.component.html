@@ -48,6 +48,7 @@
 
 <app-background-leaves>
   <router-outlet></router-outlet>
+  <app-order-queue-widget *ngIf="isAtHomeScreen()"></app-order-queue-widget>
   <app-order-custom-drink-modal id="order-custom-drink-modal" [hidden]="displayedModal() != ModalType.CustomOrder"></app-order-custom-drink-modal>
   <app-order-drink-modal id="order-drink-modal" [hidden]="displayedModal() != ModalType.Order"></app-order-drink-modal>
   <app-drink-modal id="drink-modal" [hidden]="displayedModal()!=ModalType.AddDrink && displayedModal()!=ModalType.EditDrink"></app-drink-modal>

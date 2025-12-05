@@ -4,6 +4,7 @@ import {DrinkIngredient, Ingredient, IngredientsService, OrderPreparation} from 
 import {ModalService} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
+import {OrderQueueService} from '../../services/order-queue.service';
 
 @Component({
   selector: 'app-order-custom-drink-modal',
@@ -15,6 +16,7 @@ import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
+  private readonly orderQueueService = inject(OrderQueueService);
 
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
@@ -92,10 +94,11 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
     this.clearFieldError();
     try {
       if (this.orderIngredients().every(ing => ing.status === '')) {
-        await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
+        const order = await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
           ingredientName: ing.ingredientName,
           amount: ing.amount
         })));
+        this.orderQueueService.trackOrder(order);
         this.closeModal();
       }
     } catch (e: unknown) {

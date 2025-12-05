@@ -1,10 +1,10 @@
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {firstValueFrom} from 'rxjs';
-import {ErrorService} from './error.service';
 import {UserService} from './user.service';
 import {BASE_URL} from '../app.config';
 import {DrinkBase} from './drink.service';
+import {IncomingOrder} from './orders.service';
 
 export interface DrinkIngredient {
   ingredientName: string;
@@ -49,12 +49,17 @@ export class IngredientsService {
     }
   }
 
-  async postOrder(ingredients: DrinkIngredient[]) {
+  async postOrder(ingredients: DrinkIngredient[]): Promise<IncomingOrder | null> {
     const jwt = this.userService.getTokenFromStorage();
     const headers = {
       Authorization: `Bearer ${jwt}`
     };
-    await firstValueFrom(this.httpClient.post<number>(this.apiBaseUrl + "/orders/custom-drink", ingredients, {headers}));
+    const response = await firstValueFrom(this.httpClient.post<IncomingOrder>(this.apiBaseUrl + "/orders/custom-drink", ingredients, {
+      headers,
+      observe: 'response'
+    }));
+
+    return response.body ?? null;
   }
 
   async generateOrder(prompt: string): Promise<DrinkIngredient[]> {

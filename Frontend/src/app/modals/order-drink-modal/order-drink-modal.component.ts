@@ -5,6 +5,7 @@ import {Drink, DrinkService} from '../../services/drink.service';
 import {ModalService, ModalType} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {FormsModule} from '@angular/forms';
+import {OrderQueueService} from '../../services/order-queue.service';
 
 @Component({
   selector: 'app-order-drink-modal',
@@ -20,6 +21,7 @@ import {FormsModule} from '@angular/forms';
 export class OrderDrinkModalComponent extends ErrorHandlingComponent {
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
+  private readonly orderQueueService = inject(OrderQueueService);
   selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
   containsIce = signal(false);
 
@@ -33,7 +35,8 @@ export class OrderDrinkModalComponent extends ErrorHandlingComponent {
     this.clearGlobalError();
     try {
       if (this.selectedDrink()) {
-        await this.drinkService.orderDrink(this.selectedDrink()!.id, this.containsIce());
+        const order = await this.drinkService.orderDrink(this.selectedDrink()!.id, this.containsIce());
+        this.orderQueueService.trackOrder(order);
         this.closeModal();
       }
     } catch (e) {
