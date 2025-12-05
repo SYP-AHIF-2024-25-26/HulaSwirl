@@ -63,5 +63,4 @@ export class OrdersService {
     };
     return this.http.put<void>(this.apiBaseUrl+`/orders/cancel/${orderId}`, {},{headers});
   }
-
 }

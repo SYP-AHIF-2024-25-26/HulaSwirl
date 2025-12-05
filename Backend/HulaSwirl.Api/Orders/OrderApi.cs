@@ -1,3 +1,4 @@
+using HulaSwirl.Api.Drinks;
 using HulaSwirl.Services.Dtos;
 
 namespace HulaSwirl.Api.Orders;
@@ -57,6 +58,16 @@ public static class OrderApi
             .WithTags("Orders")
             .RequireAuthorization()
             .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
+        
+        app.MapPost($"{baseUrl}/generate", GenerateOrder.HandleGenerateOrder)
+            .WithName(nameof(GenerateOrder.HandleGenerateOrder))
+            .WithDescription("Generate a new order using available ingredients and AI")
+            .RequireAuthorization()
+            .WithTags("Orders")
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status500InternalServerError)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
         

@@ -1,6 +1,6 @@
 import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
+import {DrinkIngredient, Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
@@ -19,6 +19,9 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   ingredientAmounts: WritableSignal<Record<string, number>> = signal({});
+
+  prompt = signal<string>('');
+  aiGenerating = signal<boolean>(false);
 
   constructor() {
     super();
@@ -97,6 +100,47 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
       }
     } catch (e: unknown) {
       this.handleError(e);
+    }
+  }
+
+  async aiGenerate() {
+    this.clearGlobalError();
+    this.clearFieldError();
+    this.aiGenerating.set(true);
+    try {
+      const result = await this.ingredientsService.generateOrder(this.prompt());
+
+      const required = new Map<string, number>();
+      for (const di of result) {
+        required.set(di.ingredientName, di.amount);
+      }
+
+      const available = this.availableIngredients();
+      const currentSelected = new Set(this.orderIngredients().map(i => i.ingredientName));
+      const nextSelected: OrderPreparation[] = [];
+
+      for (const ing of available) {
+        const name = ing.ingredientName;
+        if (required.has(name)) {
+          const amount = required.get(name)!;
+          this.ingredientAmounts.set({
+            ...this.ingredientAmounts(),
+            [name]: amount
+          });
+          nextSelected.push({ingredientName: name, amount, status: ''});
+        } else if (currentSelected.has(name)) {
+          this.ingredientAmounts.set({
+            ...this.ingredientAmounts(),
+            [name]: 0
+          });
+        }
+      }
+
+      this.orderIngredients.set(nextSelected);
+    } catch (e) {
+      this.handleError(e);
+    } finally {
+      this.aiGenerating.set(false);
     }
   }
 

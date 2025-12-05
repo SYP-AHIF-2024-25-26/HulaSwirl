@@ -1,23 +1,35 @@
 <app-generic-modal title="Configure your own Drink" (closed)="closeModal()">
-  <div modal-body id="ingredient-list">
-    @for(ingredient of availableIngredients(); track $index){
-      <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)" (click)="toggleIngredient(ingredient, $event.target!)">
-        <input type="checkbox" class="ingredient-check" tabindex="0" [checked]="isSelected(ingredient.ingredientName)">
-        <div class="order-ingredient-details">
-          <div class="ingredient-properties">
-            <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
-            <input min="1" max="500" type="number" class="order-ingredient-amount form-input" (input)="toggleIngredient(ingredient, $event.target!)" (click)="toggleIngredient(ingredient, $event.target!, true)" [attr.tabindex]="$index + 1" [ngModel]="getAmount(ingredient.ingredientName)" (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
-            <span class="order-ingredient-unit">ml</span>
+    <div id="ingredient-list" modal-body>
+      <div class="ai-generate">
+      <textarea id="prompt"
+                [(ngModel)]="prompt"
+                rows="3"
+                placeholder="Describe your perfect drink..."></textarea>
+
+        <button type="button"
+                (click)="aiGenerate()"
+                [disabled]="aiGenerating()">
+          AI-Generate
+        </button>
+      </div>
+      @for(ingredient of availableIngredients(); track $index){
+        <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)" (click)="toggleIngredient(ingredient, $event.target!)">
+          <input type="checkbox" class="ingredient-check" tabindex="0" [checked]="isSelected(ingredient.ingredientName)">
+          <div class="order-ingredient-details">
+            <div class="ingredient-properties">
+              <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
+              <input min="1" max="500" type="number" class="order-ingredient-amount form-input" (input)="toggleIngredient(ingredient, $event.target!)" (click)="toggleIngredient(ingredient, $event.target!, true)" [attr.tabindex]="$index + 1" [ngModel]="getAmount(ingredient.ingredientName)" (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
+              <span class="order-ingredient-unit">ml</span>
+            </div>
+            <p class="error field-error">{{ getStatus(ingredient.ingredientName) }}</p>
           </div>
-          <p class="error field-error">{{ getStatus(ingredient.ingredientName) }}</p>
         </div>
-      </div>
-    } @empty {
-      <div id="no-ingredients">
-        <span class="order-ingredient-name">No ingredients available</span>
-      </div>
-    }
-  </div>
+      } @empty {
+        <div id="no-ingredients">
+          <span class="order-ingredient-name">No ingredients available</span>
+        </div>
+      }
+    </div>
   <div modal-footer>
     @if(globalError()) {
       <p class="error global-error">{{ globalError() }}</p>
