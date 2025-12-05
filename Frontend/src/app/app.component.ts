@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {Router, NavigationStart, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgIf, NgClass} from '@angular/common';
+import {ModalHostComponent} from './shared/modal/modal-host.component';
 import {ModalService, ModalType} from './services/modal.service';
 import {OrderCustomDrinkModalComponent} from './modals/order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from './modals/order-drink-modal/order-drink-modal.component';
@@ -40,7 +41,8 @@ import {FpsService} from './services/fps.service';
     StatusModalComponent,
     LoadingSpinnerComponent,
     BackgroundLeavesComponent,
-    AccountModalComponent
+    AccountModalComponent,
+    ModalHostComponent
   ],
   templateUrl: './app.component.html',
   standalone: true,

@@ -1,0 +1,11 @@
+<ng-container *ngFor="let modal of stack(); trackBy: trackById">
+  <app-modal
+    [config]="modal.config"
+    [bodyTemplate]="modal.config.bodyTemplate"
+    [footerTemplate]="modal.config.footerTemplate"
+    [headerTemplate]="modal.config.headerTemplate"
+    [context]="{ data: modal.config.data, close: () => close(modal.id) }"
+    (closed)="close(modal.id)"
+    (action)="onAction(modal, $event)">
+  </app-modal>
+</ng-container>

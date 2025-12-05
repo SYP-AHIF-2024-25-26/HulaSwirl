@@ -1,0 +1,9 @@
+:host {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+app-modal {
+  pointer-events: auto;
+}

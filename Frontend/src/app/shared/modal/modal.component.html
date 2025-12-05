@@ -1,0 +1,41 @@
+<dialog
+  #dialog
+  class="modal"
+  [class.small]="config.size === 'small'"
+  [class.large]="config.size === 'large'"
+  [class.medium]="!config.size || config.size === 'medium'"
+  [style.width]="config.width || null"
+  (click)="onBackdropClick($event)">
+  <div class="modal-surface">
+    <header class="modal-header">
+      <div class="modal-title-group">
+        <span *ngIf="config.icon" class="modal-icon" [attr.data-type]="config.icon">{{ config.icon }}</span>
+        <div>
+          <h2 class="modal-title">{{ config.title }}</h2>
+          <p *ngIf="config.subtitle" class="modal-subtitle">{{ config.subtitle }}</p>
+        </div>
+      </div>
+      <button class="modal-close" type="button" aria-label="Close" (click)="close()">✖</button>
+    </header>
+
+    <section class="modal-body">
+      <ng-container *ngIf="headerTemplate" [ngTemplateOutlet]="headerTemplate" [ngTemplateOutletContext]="context"></ng-container>
+      <p *ngIf="config.message" class="modal-message">{{ config.message }}</p>
+      <ng-container *ngIf="bodyTemplate" [ngTemplateOutlet]="bodyTemplate" [ngTemplateOutletContext]="context"></ng-container>
+    </section>
+
+    <footer class="modal-footer">
+      <ng-container *ngIf="footerTemplate" [ngTemplateOutlet]="footerTemplate" [ngTemplateOutletContext]="context"></ng-container>
+      <div class="modal-buttons" *ngIf="config.buttons?.length">
+        <button
+          *ngFor="let btn of config.buttons; trackBy: trackByLabel"
+          type="button"
+          class="button"
+          [ngClass]="btn.appearance || 'secondary'"
+          (click)="trigger(btn)">
+          {{ btn.label }}
+        </button>
+      </div>
+    </footer>
+  </div>
+</dialog>
