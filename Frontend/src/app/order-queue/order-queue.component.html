@@ -1,0 +1,33 @@
+<div
+  class="order-queue-wrapper"
+  *ngIf="bubbleHasContent()"
+  [ngClass]="{open: isTimelineOpen(), dragging: isDragging()}"
+  [style.left.px]="bubblePosition().x"
+  [style.top.px]="bubblePosition().y"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerUp($event)"
+>
+  <div class="queue-bubble" [ngClass]="{locked: lockInteraction()}" (click)="toggleTimeline($event)">
+    <div class="bubble-text">
+      @if(statusMessage()) {
+        <span>{{ statusMessage() }}</span>
+      } @else {
+        <span>Your drink is at position</span>
+        <span class="bubble-number">{{ lowestUserPosition() }}</span>
+      }
+    </div>
+  </div>
+
+  @if(isTimelineOpen()) {
+    <div class="queue-timeline">
+      <div class="timeline-column">
+        <div class="timeline-node" *ngFor="let order of orderedPending(); index as idx" [ngClass]="{self: isUserOrder(order)}">
+          <div class="node-circle">{{ idx + 1 }}</div>
+          <div class="node-label">{{ isUserOrder(order) ? 'You' : order.user }}</div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

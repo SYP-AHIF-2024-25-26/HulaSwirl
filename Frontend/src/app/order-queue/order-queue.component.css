@@ -1,0 +1,135 @@
+.order-queue-wrapper {
+  position: fixed;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.order-queue-wrapper.dragging {
+  cursor: grabbing;
+}
+
+.queue-bubble {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffffff 0%, #f7f7ff 50%, #d7d8ff 100%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16), inset 0 0 10px rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  text-align: center;
+  font-weight: 600;
+  color: #2b2b2b;
+  animation: float 6s ease-in-out infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.queue-bubble.locked {
+  background: linear-gradient(145deg, #f0f0f0 0%, #dcdcdc 100%);
+  color: #777;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.queue-bubble:hover {
+  transform: scale(1.03);
+}
+
+.bubble-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.2;
+}
+
+.bubble-number {
+  font-size: 30px;
+  color: #5a3bff;
+  font-weight: 800;
+}
+
+.queue-timeline {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14);
+  padding: 16px 18px;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  animation: slideDown 0.25s ease;
+}
+
+.timeline-column {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  position: relative;
+  padding-left: 28px;
+}
+
+.timeline-column::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #c4c7ff 0%, #7a7eff 100%);
+  border-radius: 4px;
+}
+
+.timeline-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #2b2b2b;
+  transition: transform 0.2s ease;
+}
+
+.timeline-node.self {
+  transform: scale(1.05);
+  font-weight: 700;
+}
+
+.node-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #7a7eff;
+  color: #7a7eff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.timeline-node.self .node-circle {
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(145deg, #7a7eff 0%, #a27cff 100%);
+  color: white;
+  border-color: transparent;
+}
+
+.node-label {
+  font-size: 14px;
+  color: #555;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
