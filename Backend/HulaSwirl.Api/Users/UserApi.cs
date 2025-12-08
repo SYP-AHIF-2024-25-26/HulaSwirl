@@ -20,7 +20,18 @@ public static class UserApi
             .WithName(nameof(DeleteUser.HandleDelete))
             .WithDescription("Delete an existing user by Id")
             .WithTags("Users")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound);
+
+        app.MapPost($"{baseUrl}/{{username}}/reset-password", ResetPassword.HandleReset)
+            .WithName(nameof(ResetPassword.HandleReset))
+            .WithDescription("Reset user password (admin only)")
+            .WithTags("Users")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
 
         app.MapGet(baseUrl, GetAllUsers.HandleGetAll)

@@ -1,30 +1,99 @@
-@if(userInfo()) {
-  <app-generic-modal title="My Account" (closed)="close()">
+@if(profile()) {
+  <app-generic-modal title="Profile" (closed)="close()">
     <div modal-body class="account-content">
-      <div class="user-info">
+      <div class="profile-header">
+        <div class="avatar">{{profileInitials()}}</div>
+        <div class="user-info">
           <div class="row identity">
-            <h3>{{userInfo()!.username}}</h3>
+            <h3>{{profile()!.username}}</h3>
             <h5 class="badge {{badge()}}">
               {{badge().toUpperCase()}}
             </h5>
           </div>
-          <div class="row">
-            <b>Account created on: </b>
-            <p>{{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
+          <p class="muted">Created: {{profile()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
+          <p class="muted">Last login: {{profile()!.lastLogin ? (profile()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never'}}</p>
+        </div>
+        <div class="role-editor" *ngIf="canManageRoles()">
+          <label class="muted">Role</label>
+          <select class="form-input" [value]="profile()!.role" (change)="updateRole($event.target.value)">
+            <option value="admin" *ngIf="userService.role() === 'system'">Admin</option>
+            <option value="operator">Operator</option>
+            <option value="user">User</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="status success" *ngIf="statusMessage()">{{statusMessage()}}</p>
+      <p class="status error" *ngIf="globalError()">{{globalError()}}</p>
+      <p class="status error" *ngIf="profileError()">{{profileError()}}</p>
+
+      <div class="tabs">
+        <button type="button" [class.active]="activeTab() === 'info'" (click)="switchTab('info')">Info</button>
+        <button type="button" [class.active]="activeTab() === 'orders'" (click)="switchTab('orders')">Order History</button>
+      </div>
+
+      <div class="tab-content" *ngIf="activeTab() === 'info'">
+        <div class="info-grid">
+          <div class="info-block">
+            <h4>Account</h4>
+            <p><b>Role:</b> {{profile()!.role | titlecase}}</p>
+            <p><b>Created:</b> {{profile()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
+            <p><b>Last login:</b> {{profile()!.lastLogin ? (profile()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never'}}</p>
           </div>
-          <div class="row">
-            <b>Last logged in on: </b>
-            @if(userInfo()!.lastLogin) {
-              <p>{{userInfo()!.lastLogin | date:'MMM d, y, HH:mm'}}</p>
-            } @else {
-              <p>Never</p>
-            }
+          <div class="info-block" *ngIf="canResetPassword()">
+            <h4>Admin tools</h4>
+            <p class="muted">Reset the password for this user. Share the generated key with them.</p>
+            <button class="button neutral-btn" (click)="resetPassword()" [disabled]="loadingAction()">Reset password</button>
+            <div class="new-key" *ngIf="generatedKey()">
+              <span>New key:</span>
+              <code>{{generatedKey()}}</code>
+            </div>
           </div>
+        </div>
+
+        <div class="danger-zone" *ngIf="canDelete()">
+          <div class="danger-header">
+            <div>
+              <h4>Account deletion</h4>
+              <p class="muted">Deleting this account will log the user out and remove their access.</p>
+            </div>
+            <button *ngIf="!confirmingDelete()" class="button cancel-btn ghost" (click)="startDelete()">Delete account</button>
+          </div>
+          <div class="confirm" *ngIf="confirmingDelete()">
+            <p>Confirm deletion for {{profile()!.username}}.</p>
+            <div class="confirm-actions">
+              <button class="button secondary-btn" (click)="confirmingDelete.set(false)">Keep account</button>
+              <button class="button cancel-btn" (click)="deleteProfile()" [disabled]="loadingAction()">Confirm delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" *ngIf="activeTab() === 'orders'">
+        <div *ngIf="orderHistory().length > 0; else emptyOrders" class="order-list">
+          <div class="order-card" *ngFor="let order of orderHistory()">
+            <div class="order-main">
+              <div class="title-row">
+                <h4>{{order.drinkName}}</h4>
+                <span class="status-pill" [ngClass]="statusClass(order.status)">{{statusLabel(order.status)}}</span>
+              </div>
+              <p class="muted">Ordered on {{order.orderDate | date:'MMM d, y, HH:mm'}}</p>
+              <p class="muted">Contains ice: {{order.containsIce ? 'Yes' : 'No'}} · {{order.totalAmount || 0}} ml</p>
+              <p class="ingredients" *ngIf="order.orderIngredients?.length">{{formatIngredients(order.orderIngredients)}}</p>
+            </div>
+          </div>
+        </div>
+        <ng-template #emptyOrders>
+          <p class="muted">No orders yet. New orders will appear here live.</p>
+        </ng-template>
       </div>
     </div>
 
     <div modal-buttons class="action-buttons">
-      <button class="button" (click)="userService.logout()">
+      <button class="button secondary-btn" (click)="close()">
+        Close
+      </button>
+      <button class="button" *ngIf="isSelf()" (click)="logout()">
         Log Out
       </button>
     </div>
@@ -36,7 +105,7 @@
     </div>
 
     <div modal-buttons class="action-buttons">
-      <button class="button secondary-btn" (click)="userService.logout()">
+      <button class="button secondary-btn" (click)="close()">
         Close
       </button>
     </div>

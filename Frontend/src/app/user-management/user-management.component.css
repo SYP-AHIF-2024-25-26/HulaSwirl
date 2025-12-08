@@ -1,63 +1,67 @@
 .users {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.user-entry {
-  background: #f1e3cc;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-}
-
-.user-details {
+.user-card {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
   align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #f7ead8;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  flex-wrap: wrap;
 }
 
-.field-error {
-  margin-top: 0.5rem;
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--sunrise-gradient);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.name-date {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+.user-meta {
+  flex: 1;
+  min-width: 240px;
 }
 
-.name-date > * {
+.user-meta h3 {
   margin: 0;
 }
 
-.actions {
+.user-meta p {
+  margin: 2px 0;
+}
+
+.user-actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.cancel-btn {
-  padding: 0.4rem 0.8rem;
+.status {
+  margin-top: 0.35rem;
 }
 
-@media (max-width: 520px) {
-  .user-details {
-    flex-direction: column;
+.muted {
+  color: #666;
+}
+
+@media (max-width: 640px) {
+  .user-card {
     align-items: flex-start;
   }
 
-  .actions {
+  .user-actions {
     width: 100%;
-    justify-content: space-between;
-  }
-
-  .form-input {
-    flex: 2;
-  }
-
-  .cancel-btn {
-    flex: 1;
+    justify-content: flex-end;
   }
 }

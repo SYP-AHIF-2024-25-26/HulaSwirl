@@ -1,27 +1,17 @@
 <div class="users container">
-  <div class="user-entry" *ngFor="let user of users()">
-    <div class="user-details">
-      <div class="name-date">
-        <div class="row identity">
-          <h3>{{user.username}}</h3>
-          <h5 class="badge {{user.role}}">
-            {{user.role.toUpperCase()}}
-          </h5>
-        </div>
-        <p>Created: {{user.createdAt | date:'MMM d, y, HH:mm'}}</p>
+  <div class="user-card" *ngFor="let user of users()">
+    <div class="avatar">{{initials(user.username)}}</div>
+    <div class="user-meta">
+      <div class="row identity">
+        <h3>{{user.username}}</h3>
+        <h5 class="badge {{user.role}}">{{user.role.toUpperCase()}}</h5>
       </div>
-      <div *ngIf="user.role !== 'system' && !(userService.role() === 'admin' && user.role === 'admin')" class="actions">
-        <select
-          class="form-input"
-          (change)="changeRole(user, $event)"
-          [ngModel]="user.role">
-          <option *ngIf="userService.role() === 'system'" value="admin">Admin</option>
-          <option value="operator">Operator</option>
-          <option value="user">User</option>
-        </select>
-        <button class="button cancel-btn" (click)="deleteUser(user.username)">Delete</button>
-      </div>
+      <p class="muted">Created: {{user.createdAt | date:'MMM d, y, HH:mm'}}</p>
+      <p class="muted">Last login: {{user.lastLogin ? (user.lastLogin | date:'MMM d, y, HH:mm') : 'Never'}}</p>
+      <p *ngIf="user.status" class="status error">{{user.status}}</p>
     </div>
-    <p *ngIf="user.status" class="error field-error">{{user.status}}</p>
+    <div class="user-actions">
+      <button class="button secondary-btn" (click)="openProfile(user)">View Profile</button>
+    </div>
   </div>
 </div>

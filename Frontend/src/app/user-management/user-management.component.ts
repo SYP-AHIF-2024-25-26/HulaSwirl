@@ -1,19 +1,20 @@
 import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf, DatePipe} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {UserService, AccountInfo, ManagedUser} from '../services/user.service';
+import {UserService, ManagedUser} from '../services/user.service';
 import {ErrorHandlingComponent} from '../services/error-handling';
 import {ErrorService} from '../services/error.service';
+import {ModalService, ModalType} from '../services/modal.service';
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [NgForOf, FormsModule, DatePipe, NgIf],
+  imports: [NgForOf, DatePipe, NgIf],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css'
 })
 export class UserManagementComponent extends ErrorHandlingComponent {
   protected readonly userService = inject(UserService);
+  private readonly modalService = inject(ModalService);
   private readonly statusService = inject(ErrorService);
   protected users: WritableSignal<ManagedUser[]> = signal([]);
 
@@ -25,27 +26,23 @@ export class UserManagementComponent extends ErrorHandlingComponent {
   }
 
   async loadUsers() {
-    this.users.set(await this.userService.getAllUsers());
-  }
-
-  async changeRole(user: ManagedUser, ev: Event) {
-    const target = ev.target as HTMLSelectElement;
     try {
-      await this.userService.updateRole(user.username, target.value);
-      await this.loadUsers();
+      this.users.set(await this.userService.getAllUsers());
     } catch (e) {
-      target.value = user.role
       this.handleError(e);
     }
   }
 
-  async deleteUser(username: string) {
-    try {
-      await this.userService.deleteUser(username);
-      this.users.update(u => u.filter(us => us.username !== username));
-    } catch (e) {
-      this.handleError(e);
-    }
+  openProfile(user: ManagedUser) {
+    this.modalService.openModal(ModalType.Account, {
+      profile: user,
+      origin: 'admin',
+      refreshUsers: () => this.loadUsers()
+    });
+  }
+
+  initials(username: string) {
+    return username.split(" ").slice(0, 2).map(n => n[0]?.toUpperCase() ?? '').join('');
   }
 
   override setFieldError(target: string, message: string) {

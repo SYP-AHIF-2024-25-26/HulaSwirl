@@ -24,13 +24,14 @@ export interface AccountInfo {
   username: string;
   role: string;
   createdAt: Date;
-  lastLogin: Date;
+  lastLogin: Date | null;
 }
 
 export interface ManagedUser {
   username: string;
   role: string;
   createdAt: Date;
+  lastLogin: Date | null;
   status: string;
 }
 
@@ -190,5 +191,14 @@ export class UserService {
       "Authorization": `Bearer ${token}`
     };
     await firstValueFrom(this.http.delete(`${this.apiBaseUrl}/users/${username}`, {headers}));
+  }
+
+  async resetPassword(username: string) {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    return await firstValueFrom(this.http.post<{ newKey: string }>(`${this.apiBaseUrl}/users/${username}/reset-password`, null, {headers}));
   }
 }
