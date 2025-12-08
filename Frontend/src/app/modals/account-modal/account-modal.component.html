@@ -63,7 +63,7 @@
               <h4>Danger Zone</h4>
               <p class="helper">Deleting this account is irreversible. Active sessions will be signed out.</p>
             </div>
-            <button class="button cancel-btn" (click)="confirmationOpen.update(v => !v)">
+            <button class="button cancel-btn" (click)="updateConfirmation()">
               {{ confirmationOpen() ? 'Cancel' : (isSelf() ? 'Delete My Account' : 'Delete User') }}
             </button>
           </div>

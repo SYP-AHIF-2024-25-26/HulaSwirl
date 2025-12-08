@@ -20,9 +20,6 @@ public static class GenerateOrder
         IConfiguration config, 
         [FromBody] PromptRequest pr)
     {
-        if (!httpContext.IsAdmin()) 
-            return ErrorResults.Forbidden();
-
         var existingIngredients = await db.Ingredient
             .Select(i => i.IngredientName)
             .ToListAsync();

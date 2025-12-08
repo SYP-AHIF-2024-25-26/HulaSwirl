@@ -45,6 +45,10 @@ export class AccountModalComponent {
     return !!current && !!target && current === target;
   });
 
+  protected updateConfirmation(){
+    this.confirmationOpen.update(v => !v)
+  }
+
   protected canEditRole = computed(() => {
     const info = this.userInfo();
     if (!info) return false;
