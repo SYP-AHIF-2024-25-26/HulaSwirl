@@ -30,8 +30,12 @@ export class OrdersService {
   private readonly userService =inject(UserService);
   private ws?: WebSocket;
   public orders = signal<IncomingOrder[]>([]);
+  public allOrders = signal<IncomingOrder[]>([]);
 
   connectWebSocket(): void {
+    if (this.ws && (this.ws.readyState === WebSocket.OPEN || this.ws.readyState === WebSocket.CONNECTING)) {
+      return;
+    }
     this.ws = new WebSocket(this.wsUrl);
     this.ws.onmessage = evt => {
       const all: IncomingOrder[] = JSON.parse(evt.data);
@@ -39,7 +43,8 @@ export class OrdersService {
         order.totalAmount = order.orderIngredients.reduce((sum, ingredient) => {
           return sum + (ingredient.amount || 0);
         }, 0);
-      })
+      });
+      this.allOrders.set(all);
       this.orders.set(all.filter(o => o.status === 0));
     };
     this.ws.onerror = () => console.error('WS-Error OrderTerminal');
