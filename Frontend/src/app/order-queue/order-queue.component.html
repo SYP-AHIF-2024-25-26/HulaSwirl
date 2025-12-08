@@ -26,7 +26,8 @@
       <div class="timeline-column">
         <div class="timeline-node" *ngFor="let order of orderedPending(); index as idx" [ngClass]="{self: isUserOrder(order)}">
           <div class="node-circle">{{ idx + 1 }}</div>
-          <div class="node-label">{{ isUserOrder(order) ? 'You' : order.user }}</div>
+          <div class="node-label">{{shrinkName(order.drinkName)}}</div>
+          <small class="node-foot">({{ isUserOrder(order) ? 'You' : shrinkName(order.user, 10) }})</small>
         </div>
       </div>
     </div>

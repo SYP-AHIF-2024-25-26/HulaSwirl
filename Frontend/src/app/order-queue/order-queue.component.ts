@@ -54,7 +54,6 @@ export class OrderQueueComponent {
   protected readonly lockInteraction = signal(false);
   protected readonly trackedOrderIds = signal<number[]>([]);
 
-  // Startposition etwas angepasst
   protected readonly bubblePosition = signal<Position>({x: 20, y: 80});
 
   private dragStart?: Position;
@@ -193,5 +192,13 @@ export class OrderQueueComponent {
       this.statusMessage.set(null);
       this.lockInteraction.set(false);
     }, 5000);
+  }
+
+  protected shrinkName(name: string, length: number = 12): string {
+    const maxLength = length;
+    if (name.length <= maxLength) {
+      return name;
+    }
+    return name.slice(0, maxLength - 3) + '...';
   }
 }
