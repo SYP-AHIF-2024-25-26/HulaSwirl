@@ -1,20 +1,21 @@
 import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {NgForOf, NgIf, DatePipe} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {UserService, AccountInfo, ManagedUser} from '../services/user.service';
+import {UserService, ManagedUser} from '../services/user.service';
 import {ErrorHandlingComponent} from '../services/error-handling';
 import {ErrorService} from '../services/error.service';
+import {ModalService, ModalType} from '../services/modal.service';
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [NgForOf, FormsModule, DatePipe, NgIf],
+  imports: [NgForOf, DatePipe, NgIf],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css'
 })
 export class UserManagementComponent extends ErrorHandlingComponent {
   protected readonly userService = inject(UserService);
   private readonly statusService = inject(ErrorService);
+  private readonly modalService = inject(ModalService);
   protected users: WritableSignal<ManagedUser[]> = signal([]);
 
   constructor() {
@@ -28,24 +29,16 @@ export class UserManagementComponent extends ErrorHandlingComponent {
     this.users.set(await this.userService.getAllUsers());
   }
 
-  async changeRole(user: ManagedUser, ev: Event) {
-    const target = ev.target as HTMLSelectElement;
-    try {
-      await this.userService.updateRole(user.username, target.value);
-      await this.loadUsers();
-    } catch (e) {
-      target.value = user.role
-      this.handleError(e);
-    }
+  viewProfile(user: ManagedUser) {
+    this.modalService.openModal(ModalType.Account, {
+      user,
+      context: 'admin',
+      onUpdated: async () => await this.loadUsers()
+    });
   }
 
-  async deleteUser(username: string) {
-    try {
-      await this.userService.deleteUser(username);
-      this.users.update(u => u.filter(us => us.username !== username));
-    } catch (e) {
-      this.handleError(e);
-    }
+  initials(user: ManagedUser) {
+    return user.username.split(' ').slice(0, 2).map(sub => sub.charAt(0).toUpperCase()).join('');
   }
 
   override setFieldError(target: string, message: string) {

@@ -24,14 +24,21 @@ export interface AccountInfo {
   username: string;
   role: string;
   createdAt: Date;
-  lastLogin: Date;
+  lastLogin: Date | null;
 }
 
 export interface ManagedUser {
   username: string;
   role: string;
   createdAt: Date;
+  lastLogin: Date | null;
   status: string;
+}
+
+export interface AccountModalData {
+  user: AccountInfo;
+  context?: 'self' | 'admin';
+  onUpdated?: () => Promise<void> | void;
 }
 
 @Injectable({
@@ -162,7 +169,12 @@ export class UserService {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     };
-    return await firstValueFrom(this.http.get<AccountInfo>(this.apiBaseUrl + "/users/info", {headers}));
+    const res = await firstValueFrom(this.http.get<AccountInfo>(this.apiBaseUrl + "/users/info", {headers}));
+    return {
+      ...res,
+      createdAt: new Date(res.createdAt),
+      lastLogin: res.lastLogin ? new Date(res.lastLogin) : null
+    };
   }
 
   async getAllUsers() {
@@ -171,7 +183,13 @@ export class UserService {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
     };
-    return await firstValueFrom(this.http.get<ManagedUser[]>(`${this.apiBaseUrl}/users`, {headers}));
+    const res = await firstValueFrom(this.http.get<ManagedUser[]>(`${this.apiBaseUrl}/users`, {headers}));
+    return res.map(user => ({
+      ...user,
+      createdAt: new Date(user.createdAt),
+      lastLogin: user.lastLogin ? new Date(user.lastLogin) : null,
+      status: ''
+    }));
   }
 
   async updateRole(username: string, role: string) {
@@ -190,5 +208,18 @@ export class UserService {
       "Authorization": `Bearer ${token}`
     };
     await firstValueFrom(this.http.delete(`${this.apiBaseUrl}/users/${username}`, {headers}));
+  }
+
+  async resetUserKey(username: string, newKey: string) {
+    const token = this.getTokenFromStorage();
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    };
+    const res = await firstValueFrom(this.http.post<string | null>(`${this.apiBaseUrl}/users/${username}/reset-key`, { newKey }, {headers}));
+    if (res) {
+      // If backend returns a refreshed token, update the local session
+      this.setUser(res);
+    }
   }
 }

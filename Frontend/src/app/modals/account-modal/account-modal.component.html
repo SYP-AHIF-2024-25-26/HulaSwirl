@@ -1,32 +1,108 @@
 @if(userInfo()) {
-  <app-generic-modal title="My Account" (closed)="close()">
+  <app-generic-modal [title]="isAdminView() ? 'User Profile' : 'My Account'" (closed)="close()">
     <div modal-body class="account-content">
-      <div class="user-info">
-          <div class="row identity">
+      <div class="profile-header">
+        <div class="avatar">{{ initials() }}</div>
+        <div class="identity">
+          <div class="row identity-row">
             <h3>{{userInfo()!.username}}</h3>
-            <h5 class="badge {{badge()}}">
-              {{badge().toUpperCase()}}
-            </h5>
+            <h5 class="badge {{userInfo()!.role}}">{{userInfo()!.role.toUpperCase()}}</h5>
           </div>
-          <div class="row">
-            <b>Account created on: </b>
-            <p>{{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
-          </div>
-          <div class="row">
-            <b>Last logged in on: </b>
-            @if(userInfo()!.lastLogin) {
-              <p>{{userInfo()!.lastLogin | date:'MMM d, y, HH:mm'}}</p>
-            } @else {
-              <p>Never</p>
-            }
-          </div>
+          <p class="meta">Member since {{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
+          <p class="meta">Last active: {{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never' }}</p>
+        </div>
       </div>
+
+      <div class="tab-list">
+        <button type="button" class="tab" [class.active]="activeTab() === 'info'" (click)="selectTab('info')">Info</button>
+        <button type="button" class="tab" [class.active]="activeTab() === 'orders'" (click)="selectTab('orders')">Order History</button>
+      </div>
+
+      <div class="tab-panel" *ngIf="activeTab() === 'info'">
+        <div class="info-grid">
+          <div class="info-block">
+            <span class="label">Username</span>
+            <p class="value">{{userInfo()!.username}}</p>
+          </div>
+          <div class="info-block">
+            <span class="label">Role</span>
+            <div class="role-row" *ngIf="canEditRole(); else readonlyRole">
+              <select class="form-input" [ngModel]="userInfo()!.role" (change)="changeRole($event)" [disabled]="roleUpdating()">
+                <option value="admin" *ngIf="userService.hasRole('system')">Admin</option>
+                <option value="operator">Operator</option>
+                <option value="user">User</option>
+              </select>
+              <span class="hint" *ngIf="roleUpdating()">Updating…</span>
+            </div>
+            <ng-template #readonlyRole>
+              <p class="value pill">{{userInfo()!.role | uppercase}}</p>
+            </ng-template>
+          </div>
+          <div class="info-block">
+            <span class="label">Created</span>
+            <p class="value">{{userInfo()!.createdAt | date:'medium'}}</p>
+          </div>
+          <div class="info-block">
+            <span class="label">Last Login</span>
+            <p class="value">{{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'medium') : 'Never' }}</p>
+          </div>
+        </div>
+
+        <div class="admin-actions" *ngIf="canResetKey()">
+          <h4>Security</h4>
+          <div class="form-row">
+            <input class="form-input" type="password" placeholder="Set new password" [ngModel]="newKey()" (ngModelChange)="newKey.set($event)" />
+            <button class="button" [disabled]="savingKey()" (click)="resetKey()">{{ savingKey() ? 'Saving…' : 'Reset Password' }}</button>
+          </div>
+          <p class="helper">Only admins can reset user passwords.</p>
+        </div>
+
+        <div class="danger-zone" *ngIf="canDelete()">
+          <div class="danger-header">
+            <div>
+              <h4>Danger Zone</h4>
+              <p class="helper">Deleting this account is irreversible. Active sessions will be signed out.</p>
+            </div>
+            <button class="button cancel-btn" (click)="confirmationOpen.update(v => !v)">
+              {{ confirmationOpen() ? 'Cancel' : (isSelf() ? 'Delete My Account' : 'Delete User') }}
+            </button>
+          </div>
+          <div class="confirmation" *ngIf="confirmationOpen()">
+            <p>Are you sure you want to delete <b>{{userInfo()!.username}}</b>?</p>
+            <button class="button danger" (click)="deleteAccount()">Confirm deletion</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" *ngIf="activeTab() === 'orders'">
+        <div class="orders" *ngIf="orderHistory().length > 0; else noOrders">
+          <div class="order-card" *ngFor="let order of orderHistory()">
+            <div class="order-row">
+              <div>
+                <p class="order-title">{{order.drinkName}}</p>
+                <p class="order-date">Submitted {{order.orderDate | date:'MMM d, y, HH:mm'}}</p>
+              </div>
+              <span [class]="statusClass(order)">{{ statusLabel(order) }}</span>
+            </div>
+            <div class="order-meta">
+              <p>{{order.orderIngredients.length}} ingredients • {{order.totalAmount || 0}} ml {{order.containsIce ? '• Ice' : ''}}</p>
+            </div>
+          </div>
+        </div>
+        <ng-template #noOrders>
+          <div class="empty">
+            <p>No orders yet. New orders will appear here instantly.</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <p class="feedback" *ngIf="feedback()">{{feedback()}}</p>
+      <p class="error" *ngIf="error()">{{error()}}</p>
     </div>
 
     <div modal-buttons class="action-buttons">
-      <button class="button" (click)="userService.logout()">
-        Log Out
-      </button>
+      <button class="button secondary-btn" (click)="close()">Close</button>
+      <button class="button" *ngIf="canLogout()" (click)="logout()">Log Out</button>
     </div>
   </app-generic-modal>
 } @else {
@@ -36,7 +112,7 @@
     </div>
 
     <div modal-buttons class="action-buttons">
-      <button class="button secondary-btn" (click)="userService.logout()">
+      <button class="button secondary-btn" (click)="close()">
         Close
       </button>
     </div>

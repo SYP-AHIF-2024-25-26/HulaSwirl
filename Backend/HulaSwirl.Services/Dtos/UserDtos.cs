@@ -18,3 +18,8 @@ public record UserInfoDto
     
     public required DateTime? LastLogin { get; init; } = DateTime.UtcNow;
 }
+
+public record ResetUserKeyDto
+{
+    public required string NewKey { get; init; }
+}
