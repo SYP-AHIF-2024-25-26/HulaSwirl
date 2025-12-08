@@ -54,15 +54,18 @@ export class OrderQueueComponent {
   protected readonly lockInteraction = signal(false);
   protected readonly trackedOrderIds = signal<number[]>([]);
 
-  protected readonly bubblePosition = signal<Position>({x: 24, y: 24});
+  // Startposition etwas angepasst
+  protected readonly bubblePosition = signal<Position>({x: 20, y: 80});
 
   private dragStart?: Position;
   private elementStart?: Position;
   private dragPointerId?: number;
-  private longPressTimeout?: number;
+  // Threshold in Pixeln, ab wann eine Bewegung als Drag gilt
+  private readonly DRAG_THRESHOLD = 5;
+  private hasMovedBeyondThreshold = false;
+
   private trackedStatuses = new Map<number, number>();
   private statusTimeout?: number;
-  private dragMoved = false;
 
   constructor() {
     this.ordersService.connectWebSocket();
@@ -71,16 +74,13 @@ export class OrderQueueComponent {
     });
   }
 
-  protected toggleTimeline(event: MouseEvent) {
-    event.stopPropagation();
-    if (this.lockInteraction() || this.isDragging()) {
+  // Diese Methode wird jetzt programmgesteuert aufgerufen, nicht mehr direkt im HTML click
+  protected toggleTimeline() {
+    if (this.lockInteraction()) {
       return;
     }
-    if (this.dragMoved) {
-      this.dragMoved = false;
-      return;
-    }
-    this.isTimelineOpen.set(!this.isTimelineOpen());
+
+    this.isTimelineOpen.update(v => !v);
   }
 
   protected isUserOrder(order: IncomingOrder): boolean {
@@ -88,44 +88,65 @@ export class OrderQueueComponent {
   }
 
   protected onPointerDown(event: PointerEvent) {
+    // Verhindert Standard-Drag-Verhalten von Browsern (z.B. bei Bildern)
+    event.preventDefault();
     this.dragPointerId = event.pointerId;
     this.dragStart = {x: event.clientX, y: event.clientY};
     this.elementStart = {...this.bubblePosition()};
-    this.dragMoved = false;
-    this.longPressTimeout = window.setTimeout(() => {
-      this.isDragging.set(true);
-      const target = event.currentTarget as HTMLElement;
-      target.setPointerCapture(this.dragPointerId!);
-    }, 200);
+    this.hasMovedBeyondThreshold = false;
+
+    const target = event.currentTarget as HTMLElement;
+    target.setPointerCapture(this.dragPointerId);
   }
 
   protected onPointerMove(event: PointerEvent) {
-    if (!this.isDragging() || this.dragPointerId !== event.pointerId || !this.dragStart || !this.elementStart) {
+    if (this.dragPointerId !== event.pointerId || !this.dragStart || !this.elementStart) {
       return;
     }
+
     const deltaX = event.clientX - this.dragStart.x;
-    const deltaY = event.clientY - this.dragStart.y;
-    this.dragMoved = true;
-    this.bubblePosition.set({x: this.elementStart.x + deltaX, y: this.elementStart.y + deltaY});
+    const deltaY = Math.max(event.clientY, 160) - this.dragStart.y;
+
+    // Prüfen, ob wir die Schwelle überschritten haben
+    if (!this.hasMovedBeyondThreshold) {
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      if (distance > this.DRAG_THRESHOLD) {
+        this.hasMovedBeyondThreshold = true;
+        this.isDragging.set(true);
+      }
+    }
+
+    // Position nur aktualisieren, wenn wir wirklich draggen
+    if (this.hasMovedBeyondThreshold) {
+      this.bubblePosition.set({
+        x: this.elementStart.x + deltaX,
+        y: this.elementStart.y + deltaY
+      });
+    }
   }
 
   protected onPointerUp(event: PointerEvent) {
     if (this.dragPointerId !== event.pointerId) {
       return;
     }
-    if (this.longPressTimeout) {
-      window.clearTimeout(this.longPressTimeout);
-      this.longPressTimeout = undefined;
+
+    const target = event.currentTarget as HTMLElement;
+    target.releasePointerCapture(event.pointerId);
+
+    // Wenn wir nicht gedragged haben (also nur kurz gedrückt), ist es ein Klick
+    if (!this.hasMovedBeyondThreshold && !this.isDragging()) {
+      this.toggleTimeline();
     }
-    if (this.isDragging()) {
-      this.isDragging.set(false);
-    }
+
+    this.isDragging.set(false);
     this.dragPointerId = undefined;
     this.dragStart = undefined;
     this.elementStart = undefined;
+    this.hasMovedBeyondThreshold = false;
   }
 
   private handleStatusUpdates(allOrders: IncomingOrder[]) {
+    // ... Logik bleibt identisch ...
     const username = this.username();
     if (!username) {
       this.trackedStatuses.clear();
@@ -163,7 +184,7 @@ export class OrderQueueComponent {
     if (this.statusTimeout) {
       window.clearTimeout(this.statusTimeout);
     }
-    const text = status === 1 ? 'Your drink is being mixed' : 'Your order has been canceled';
+    const text = status === 1 ? '✔' : '❌';
     this.statusMessage.set(text);
     this.lockInteraction.set(true);
     this.isTimelineOpen.set(false);

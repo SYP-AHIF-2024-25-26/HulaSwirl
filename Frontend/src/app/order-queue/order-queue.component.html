@@ -9,19 +9,20 @@
   (pointerup)="onPointerUp($event)"
   (pointercancel)="onPointerUp($event)"
 >
-  <div class="queue-bubble" [ngClass]="{locked: lockInteraction()}" (click)="toggleTimeline($event)">
+  <div class="queue-bubble" [ngClass]="{locked: lockInteraction()}">
     <div class="bubble-text">
       @if(statusMessage()) {
         <span>{{ statusMessage() }}</span>
       } @else {
-        <span>Your drink is at position</span>
+        <span>Queue position</span>
         <span class="bubble-number">{{ lowestUserPosition() }}</span>
       }
     </div>
   </div>
 
-  @if(isTimelineOpen()) {
-    <div class="queue-timeline">
+    <div class="queue-timeline"
+         [class.queue-timeline-open]="isTimelineOpen()"
+         (click)="$event.stopPropagation()">
       <div class="timeline-column">
         <div class="timeline-node" *ngFor="let order of orderedPending(); index as idx" [ngClass]="{self: isUserOrder(order)}">
           <div class="node-circle">{{ idx + 1 }}</div>
@@ -29,5 +30,4 @@
         </div>
       </div>
     </div>
-  }
 </div>
