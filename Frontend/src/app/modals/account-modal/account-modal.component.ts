@@ -15,7 +15,6 @@ import {ErrorService} from '../../services/error.service';
     DatePipe,
     NgIf,
     NgForOf,
-    NgClass,
     FormsModule,
     CommonModule
   ],

@@ -5,11 +5,9 @@
         <div class="avatar">
             <p>{{initials()}}</p>
         </div>
-        <div class="identity">
           <div class="row identity-row">
             <h3>{{userInfo()!.username}}</h3>
             <h5 class="badge {{userInfo()!.role}}">{{userInfo()!.role.toUpperCase()}}</h5>
-          </div>
           </div>
       </div>
 
@@ -35,16 +33,16 @@
               <span class="hint" *ngIf="roleUpdating()">Updating…</span>
             </div>
             <ng-template #readonlyRole>
-              <p class="value pill">{{userInfo()!.role | uppercase}}</p>
+              <p class="value">{{userInfo()!.role | uppercase}}</p>
             </ng-template>
           </div>
           <div class="info-block">
             <span class="label">Created</span>
-            <p class="value">{{userInfo()!.createdAt | date:'medium'}}</p>
+            <p class="value">{{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
           </div>
           <div class="info-block">
             <span class="label">Last Login</span>
-            <p class="value">{{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'medium') : 'Never' }}</p>
+            <p class="value">{{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never' }}</p>
           </div>
         </div>
 
@@ -100,8 +98,7 @@
     </div>
 
     <div modal-buttons class="action-buttons">
-      <button class="button cancel-btn" (click)="close()">Close</button>
-      <button class="button" *ngIf="canLogout()" (click)="logout()">Log Out</button>
+      <button class="button cancel-btn" *ngIf="canLogout()" (click)="logout()">Log Out</button>
     </div>
   </app-generic-modal>
 } @else {
