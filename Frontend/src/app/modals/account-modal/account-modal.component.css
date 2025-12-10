@@ -20,9 +20,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 1.2rem;
+
 }
+
+.avatar p {
+  font-weight: 700;
+  font-size: 1.4rem;
+  padding-top:4px;
+}
+
 
 .identity {
   display: flex;
@@ -33,6 +39,7 @@
 .identity-row {
   gap: 0.5rem;
   align-items: center;
+  margin:auto;
 }
 
 .identity h3 {
@@ -81,6 +88,7 @@
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-auto-rows: 1fr;
   gap: 0.8rem;
 }
 
@@ -92,6 +100,7 @@
   flex-direction: column;
   gap: 0.35rem;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+
 }
 
 .label {
@@ -207,6 +216,7 @@
 .order-title {
   margin: 0;
   font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
 .order-date {
@@ -281,4 +291,24 @@
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+h4{
+  margin:0;
+  margin-bottom: 0.5rem;
+}
+
+.form-input{
+  height:100%;
+  margin:0;
+  padding:10px;
+}
+
+ul{
+  padding-left:1.1rem;
+  margin:0;
+}
+
+.order-meta-info{
+  margin: 0.3rem 0;
 }
