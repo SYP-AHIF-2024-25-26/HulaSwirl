@@ -20,6 +20,7 @@ public static class UserApi
             .WithName(nameof(DeleteUser.HandleDelete))
             .WithDescription("Delete an existing user by Id")
             .WithTags("Users")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
 
@@ -36,6 +37,17 @@ public static class UserApi
             .WithDescription("Update role of user")
             .WithTags("Users")
             .RequireAuthorization()
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
+        app.MapPost($"{baseUrl}/{{username}}/reset-key", ResetUserKey.HandleReset)
+            .WithName(nameof(ResetUserKey.HandleReset))
+            .WithDescription("Reset the key of an existing user")
+            .WithTags("Users")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)

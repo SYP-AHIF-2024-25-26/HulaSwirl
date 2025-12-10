@@ -7,12 +7,14 @@ import {ErrorService} from '../services/error.service';
 import {NgForOf} from '@angular/common';
 import {FpsService} from '../services/fps.service';
 import {StatisticsService} from '../services/statistics.service';
+import {OrderQueueComponent} from '../order-queue/order-queue.component';
 
 @Component({
   selector: 'app-home',
   imports: [
     FormsModule,
-    NgForOf
+    NgForOf,
+    OrderQueueComponent
   ],
   templateUrl: './home.component.html',
   standalone: true,

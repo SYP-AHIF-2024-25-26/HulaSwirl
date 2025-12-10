@@ -1,63 +1,89 @@
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  flex-direction: column;
+}
+
+.search-wrapper h2 {
+  margin: 1rem 0;
+}
+
+#user-search {
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
 .users {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.user-card {
+  background: linear-gradient(145deg, #fff8ee, #f3e4cb);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid #ead7bc;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f2c96c, #f28177);
+  color: #3b1d1d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.details {
+  display: flex;
   flex-direction: column;
+  gap: 0.2rem;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 
-.user-entry {
-  background: #f1e3cc;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-}
-
-.user-details {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-}
-
-.field-error {
-  margin-top: 0.5rem;
-}
-
-.name-date {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.name-date > * {
+.name-row h3 {
   margin: 0;
+}
+
+.meta {
+  margin: 0;
+  color: #75593b;
+  font-size: 0.95rem;
 }
 
 .actions {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  justify-content: flex-end;
 }
 
-.cancel-btn {
-  padding: 0.4rem 0.8rem;
+.button {
+  background: var(--primary-color, #f28177);
+  color: #fff;
 }
 
-@media (max-width: 520px) {
-  .user-details {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.field-error {
+  margin: 0;
+}
 
-  .actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .form-input {
-    flex: 2;
-  }
-
-  .cancel-btn {
-    flex: 1;
+@media (max-width: 540px) {
+  .users {
+    grid-template-columns: 1fr;
   }
 }

@@ -15,14 +15,17 @@ public static class DeleteUser
         JwtService jwtService,
         ObservableUserService userService)
     {
-        if (!http.IsAdmin()) return ErrorResults.Forbidden();
+        var isSelf = http.IsSelf(jwtService, username);
+        var isAdmin = http.IsAdmin();
+
+        if (!isSelf && !isAdmin) return ErrorResults.Forbidden();
         var user = await db.User.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
-        
+
         if (user == null) return ErrorResults.NotFound("User not found.");
-        if (http.IsSelf(jwtService, username)) return ErrorResults.BadRequest(new ErrorDto { Message = "Cannot delete your own account", Target = username });
-        if(user.Role == "system") return ErrorResults.Forbidden("Cannot delete system user");
-        if (!http.IsSystem() && user.Role == "admin") return ErrorResults.Forbidden("Cannot delete admin user unless you are a system user");
-        
+        if (user.Role == "system") return ErrorResults.Forbidden("Cannot delete system user");
+        if (!isSelf && user.Role == "admin" && !http.IsSystem())
+            return ErrorResults.Forbidden("Cannot delete admin user unless you are a system user");
+
         db.User.Remove(user);
         await db.SaveChangesAsync();
         await userService.BroadcastAsync(username, new UserEvent { EventType = "deleted" });

@@ -4,6 +4,7 @@ import {firstValueFrom} from 'rxjs';
 import {ErrorService} from './error.service';
 import {UserService} from './user.service';
 import {BASE_URL} from '../app.config';
+import {DrinkBase} from './drink.service';
 
 export interface DrinkIngredient {
   ingredientName: string;
@@ -54,6 +55,16 @@ export class IngredientsService {
       Authorization: `Bearer ${jwt}`
     };
     await firstValueFrom(this.httpClient.post<number>(this.apiBaseUrl + "/orders/custom-drink", ingredients, {headers}));
+  }
+
+  async generateOrder(prompt: string): Promise<DrinkIngredient[]> {
+    const jwt = this.userService.getTokenFromStorage();
+    const headers = {
+      Authorization: `Bearer ${jwt}`
+    };
+    return await firstValueFrom(
+      this.httpClient.post<DrinkIngredient[]>(this.apiBaseUrl + "/orders/generate", {prompt}, {headers})
+    );
   }
 
   async saveIngredients(ingredients:Ingredient[]) {

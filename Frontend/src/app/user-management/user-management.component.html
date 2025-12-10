@@ -1,27 +1,34 @@
+<div class="search-wrapper">
+  <h2>Search for users</h2>
+  <input
+    id="user-search"
+    class="form-input"
+    type="text"
+    [(ngModel)]="searchTerm"
+    placeholder="Type to filter by name or role"
+    autocomplete="off"
+  />
+</div>
 <div class="users container">
-  <div class="user-entry" *ngFor="let user of users()">
-    <div class="user-details">
-      <div class="name-date">
-        <div class="row identity">
-          <h3>{{user.username}}</h3>
-          <h5 class="badge {{user.role}}">
-            {{user.role.toUpperCase()}}
-          </h5>
+  @if (filteredUsers().length === 0) {
+    <p>Couldn't find any user</p>
+  } @else {
+    @for (user of filteredUsers(); track $index){
+      <div class="user-card" (click)="viewProfile(user)">
+        <div class="avatar">{{initials(user)}}</div>
+        <div class="details">
+          <div class="name-row">
+            <h3>{{user.username}}</h3>
+            <h5 class="badge {{user.role}}">{{user.role.toUpperCase()}}</h5>
+          </div>
+          <p class="meta">
+            Last seen: {{ getLastSeenText(user.lastLogin) }}
+          </p>
         </div>
-        <p>Created: {{user.createdAt | date:'MMM d, y, HH:mm'}}</p>
+        @if (user.status){
+          <p class="error field-error">{{user.status}}</p>
+        }
       </div>
-      <div *ngIf="user.role !== 'system' && !(userService.role() === 'admin' && user.role === 'admin')" class="actions">
-        <select
-          class="form-input"
-          (change)="changeRole(user, $event)"
-          [ngModel]="user.role">
-          <option *ngIf="userService.role() === 'system'" value="admin">Admin</option>
-          <option value="operator">Operator</option>
-          <option value="user">User</option>
-        </select>
-        <button class="button cancel-btn" (click)="deleteUser(user.username)">Delete</button>
-      </div>
-    </div>
-    <p *ngIf="user.status" class="error field-error">{{user.status}}</p>
-  </div>
+    }
+  }
 </div>
