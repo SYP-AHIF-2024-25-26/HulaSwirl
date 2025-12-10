@@ -99,7 +99,7 @@ export class AppComponent {
 
   async openAccountModal() {
     try {
-      this.modalService.openModal(ModalType.Account, await this.userService.getUserInfo());
+      this.modalService.openModal(ModalType.Account, { user: await this.userService.getUserInfo(), context: 'self' });
     } catch (error) {
       await this.userService.logout();
     }

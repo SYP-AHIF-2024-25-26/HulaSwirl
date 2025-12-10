@@ -323,7 +323,6 @@ html{
 
 .identity {
   display: flex;
-  margin-bottom: 20px;
 }
 
 .identity > * {
@@ -341,7 +340,8 @@ html{
 .badge {
   border-radius: 3px;
   padding: 8px 5px 5px;
-  margin-top: 4px !important;
+  margin: 0;
+  width: fit-content;
 }
 
 .system {
