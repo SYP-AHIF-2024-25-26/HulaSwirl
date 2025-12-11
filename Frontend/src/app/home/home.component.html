@@ -34,31 +34,31 @@
     </div>
   </div>
   <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
-  </div>
+</div>
 
 <div class="container" id="recommendations" #targetElement>
   <h2>Our recommendations</h2>
   <div id="slide-container">
-      <button class="slide-track-arrow" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
-      <div id="slide-track">
-        @for (drink of recommendedDrinks(); track $index) {
-          <div class="drink-card"
-               (click)="openModal(ModalType.Order, drink)"
-               [class.slide-focus]="getSlideState($index) === 'focus'"
-               [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
-               [class.hidden]="getSlideState($index) === 'hidden'">
-            <div class="drink-card-image-container">
+    <button class="slide-track-arrow" id="arrow-left" (click)="prevSlide()" [disabled]="isPrevDisabled()" [class.disabled]="isPrevDisabled()">&#8249;</button>
+    <div id="slide-track">
+      @for (drink of recommendedDrinks(); track $index) {
+        <div class="drink-card"
+          (click)="openModal(ModalType.Order, drink)"
+          [class.slide-focus]="getSlideState($index) === 'focus'"
+          [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
+          [class.hidden]="getSlideState($index) === 'hidden'">
+          <div class="drink-card-image-container">
             @if(drink.imgUrl) {
               <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
             } @else {
               <p>No image available</p>
             }
-            </div>
-            <p>{{ drink.name }}</p>
           </div>
-        }
-      </div>
-      <button class="slide-track-arrow" id="arrow-right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
+          <p>{{ drink.name }}</p>
+        </div>
+      }
+    </div>
+    <button class="slide-track-arrow" id="arrow-right" (click)="nextSlide()" [disabled]="isNextDisabled()" [class.disabled]="isNextDisabled()">&#8250;</button>
   </div>
 </div>
 <div class="container" id="all-drinks">
@@ -70,25 +70,27 @@
       [(ngModel)]="searchQuery"
       (input)="filterDrinksByQuery()"
       class="form-input"
-    />
-    <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input">
-      <option value="">All Ingredients</option>
-      <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">{{ ingredient }}</option>
-    </select>
-    <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
-  </div>
-  <div id="filtered-drinks">
-    @for(drink of filteredDrinks(); track $index) {
-      <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
-        <div class="drink-card-image-container">
-          @if(drink.imgUrl) {
-            <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
-          } @else {
-            <p>No image available</p>
-          }
+      />
+      <select [(ngModel)]="selectedIngredient" (change)="filterDrinksByIngredients()" class="form-input">
+        <option value="">All Ingredients</option>
+        @for (ingredient of getUniqueIngredients(); track ingredient) {
+          <option [value]="ingredient">{{ ingredient }}</option>
+        }
+      </select>
+      <button class="button submit-btn" (click)="openModal(ModalType.CustomOrder)">Mix your own</button>
+    </div>
+    <div id="filtered-drinks">
+      @for(drink of filteredDrinks(); track $index) {
+        <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
+          <div class="drink-card-image-container">
+            @if(drink.imgUrl) {
+              <img src="{{drink.imgUrl}}" alt="{{drink.name}}">
+            } @else {
+              <p>No image available</p>
+            }
+          </div>
+          <p>{{ drink.name }}</p>
         </div>
-        <p>{{ drink.name }}</p>
-      </div>
-    }
+      }
+    </div>
   </div>
-</div>

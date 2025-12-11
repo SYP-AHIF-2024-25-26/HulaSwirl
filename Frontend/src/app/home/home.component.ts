@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../services/drink.service';
 import {ModalService, ModalType} from '../services/modal.service';
 import {ErrorService} from '../services/error.service';
-import {NgForOf} from '@angular/common';
+
 import {FpsService} from '../services/fps.service';
 import {StatisticsService} from '../services/statistics.service';
 import {OrderQueueComponent} from '../order-queue/order-queue.component';
@@ -13,9 +13,8 @@ import {OrderQueueComponent} from '../order-queue/order-queue.component';
   selector: 'app-home',
   imports: [
     FormsModule,
-    NgForOf,
     OrderQueueComponent
-  ],
+],
   templateUrl: './home.component.html',
   standalone: true,
   styleUrl: './home.component.css'

@@ -2,8 +2,12 @@
   <div modal-body>
     <div id="left-column">
       <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-        <span *ngIf="!imageBase64">Upload image</span>
-        <img *ngIf="imageBase64" [src]="imageBase64" alt="Drink image" class="preview-image"/>
+        @if (!imageBase64) {
+          <span>Upload image</span>
+        }
+        @if (imageBase64) {
+          <img [src]="imageBase64" alt="Drink image" class="preview-image"/>
+        }
       </div>
       <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)"/>
       <div>
@@ -36,7 +40,7 @@
               </div>
               <p class="error field-error">{{ingredient.status}}</p>
             </div>
-          } @empty {
+            } @empty {
             <div class="order-ingredient">
               <div class="order-ingredient-details">
                 <div class="ingredient-properties">

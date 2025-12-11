@@ -12,7 +12,9 @@
     </div>
     <div class="modal-buttons">
       <ng-content select="[modal-buttons]"></ng-content>
-      <button *ngFor="let btn of buttons" class="button" (click)="btn.action()">{{ btn.label }}</button>
+      @for (btn of buttons; track btn) {
+        <button class="button" (click)="btn.action()">{{ btn.label }}</button>
+      }
     </div>
   </div>
 </div>

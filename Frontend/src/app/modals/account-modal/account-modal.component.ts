@@ -1,4 +1,4 @@
-import {CommonModule, DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import { CommonModule, DatePipe, NgClass } from '@angular/common';
 import {Component, computed, effect, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ModalService} from '../../services/modal.service';
@@ -13,11 +13,9 @@ import {ErrorService} from '../../services/error.service';
   imports: [
     GenericModalComponent,
     DatePipe,
-    NgIf,
-    NgForOf,
     FormsModule,
     CommonModule
-  ],
+],
   templateUrl: './account-modal.component.html',
   styleUrl: './account-modal.component.css'
 })

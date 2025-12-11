@@ -40,12 +40,16 @@
   <h2>Orders per User</h2>
   <div class="users-stats">
     @if(users().length){
-    <div class="stat-card" *ngFor="let u of users()">
-      <h3>{{ u.user }} ({{ u.totalOrders }})</h3>
-      <ul>
-        <li *ngFor="let d of u.drinks">{{ d.count }} {{ d.drinkName }}</li>
-      </ul>
-    </div>
+      @for (u of users(); track u) {
+        <div class="stat-card">
+          <h3>{{ u.user }} ({{ u.totalOrders }})</h3>
+          <ul>
+            @for (d of u.drinks; track d) {
+              <li>{{ d.count }} {{ d.drinkName }}</li>
+            }
+          </ul>
+        </div>
+      }
     } @else {
       <p>No data available for the selected period.</p>
     }

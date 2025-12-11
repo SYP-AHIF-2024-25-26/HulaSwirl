@@ -1,6 +1,6 @@
 // user-modal.component.ts
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import { UserService } from '../../services/user.service';
@@ -14,7 +14,7 @@ import { ErrorHandlingComponent } from '../../services/error-handling';
 @Component({
   selector: 'app-user-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, GenericModalComponent],
+  imports: [FormsModule, GenericModalComponent],
   templateUrl: './user-modal.component.html',
   styleUrls: ['./user-modal.component.css']
 })

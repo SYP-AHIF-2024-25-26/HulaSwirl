@@ -1,16 +1,14 @@
 import {ChangeDetectionStrategy, Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgForOf, NgIf } from '@angular/common';
+
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {ErrorHandlingComponent} from '../services/error-handling';
 
 @Component({
   selector: 'app-ingredients',
   imports: [
-    FormsModule,
-    NgForOf,
-    NgIf
-  ],
+    FormsModule
+],
   templateUrl: './ingredients.component.html',
   standalone: true,
   styleUrls: ['./ingredients.component.css'],

@@ -3,12 +3,12 @@
     <div modal-body class="account-content">
       <div class="profile-header">
         <div class="avatar">
-            <p>{{initials()}}</p>
+          <p>{{initials()}}</p>
         </div>
-          <div class="row identity-row">
-            <h3>{{userInfo()!.username}}</h3>
-            <h5 class="badge {{userInfo()!.role}}">{{userInfo()!.role.toUpperCase()}}</h5>
-          </div>
+        <div class="row identity-row">
+          <h3>{{userInfo()!.username}}</h3>
+          <h5 class="badge {{userInfo()!.role}}">{{userInfo()!.role.toUpperCase()}}</h5>
+        </div>
       </div>
 
       <div class="tab-list">
@@ -16,89 +16,110 @@
         <button type="button" class="tab" [class.active]="activeTab() === 'orders'" (click)="selectTab('orders')">Order History</button>
       </div>
 
-      <div class="tab-panel" *ngIf="activeTab() === 'info'">
-        <div class="info-grid">
-          <div class="info-block">
-            <span class="label">Username</span>
-            <p class="value">{{userInfo()!.username}}</p>
-          </div>
-          <div class="info-block">
-            <span class="label">Role</span>
-            <div class="role-row" *ngIf="canEditRole(); else readonlyRole">
-              <select class="form-input" [ngModel]="userInfo()!.role" (change)="changeRole($event)" [disabled]="roleUpdating()">
-                <option value="admin" *ngIf="userService.hasRole('system')">Admin</option>
-                <option value="operator">Operator</option>
-                <option value="user">User</option>
-              </select>
-              <span class="hint" *ngIf="roleUpdating()">Updating…</span>
+      @if (activeTab() === 'info') {
+        <div class="tab-panel">
+          <div class="info-grid">
+            <div class="info-block">
+              <span class="label">Username</span>
+              <p class="value">{{userInfo()!.username}}</p>
             </div>
-            <ng-template #readonlyRole>
-              <p class="value">{{userInfo()!.role | uppercase}}</p>
-            </ng-template>
+            <div class="info-block">
+              <span class="label">Role</span>
+              @if (canEditRole()) {
+                <div class="role-row">
+                  <select class="form-input" [ngModel]="userInfo()!.role" (change)="changeRole($event)" [disabled]="roleUpdating()">
+                    @if (userService.hasRole('system')) {
+                      <option value="admin">Admin</option>
+                    }
+                    <option value="operator">Operator</option>
+                    <option value="user">User</option>
+                  </select>
+                  @if (roleUpdating()) {
+                    <span class="hint">Updating…</span>
+                  }
+                </div>
+              } @else {
+                <p class="value">{{userInfo()!.role | uppercase}}</p>
+              }
+            </div>
+            <div class="info-block">
+              <span class="label">Created</span>
+              <p class="value">{{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
+            </div>
+            <div class="info-block">
+              <span class="label">Last Login</span>
+              <p class="value">{{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never' }}</p>
+            </div>
           </div>
-          <div class="info-block">
-            <span class="label">Created</span>
-            <p class="value">{{userInfo()!.createdAt | date:'MMM d, y, HH:mm'}}</p>
-          </div>
-          <div class="info-block">
-            <span class="label">Last Login</span>
-            <p class="value">{{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never' }}</p>
-          </div>
-        </div>
-
-        <div class="admin-actions" *ngIf="canResetKey()">
-          <h4>Security</h4>
-            <p class="helper">Only admins can reset user passwords.</p>
-          <div class="form-row">
-            <input class="form-input" type="password" placeholder="Set new password" [ngModel]="newKey()" (ngModelChange)="newKey.set($event)" />
-            <button class="button cancel-btn" [disabled]="savingKey()" (click)="resetKey()">{{ savingKey() ? 'Saving…' : 'Reset Password' }}</button>
-          </div>
-
-        </div>
-
-        <div class="danger-zone" *ngIf="canDelete()">
-          <div class="danger-header">
-              <h4>Danger Zone</h4>
-              <p class="helper">Deleting this account is irreversible. Active sessions will be signed out.</p>
-            <button class="button cancel-btn" (click)="updateConfirmation()">
-              {{ confirmationOpen() ? 'Cancel' : (isSelf() ? 'Delete My Account' : 'Delete User') }}
-            </button>
-          </div>
-          <div class="confirmation" *ngIf="confirmationOpen()">
-            <p>Are you sure you want to delete <b>{{userInfo()!.username}}</b>?</p>
-            <button class="button danger" (click)="deleteAccount()">Confirm deletion</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-panel" *ngIf="activeTab() === 'orders'">
-        <div class="orders" *ngIf="orderHistory().length > 0; else noOrders">
-          <div class="order-card" *ngFor="let order of orderHistory()">
-            <div class="order-row">
-              <div>
-                <h4 class="order-title">{{order.drinkName}}</h4>
-                <p class="order-date">Submitted {{order.orderDate | date:'MMM d, y, HH:mm'}}</p>
+          @if (canResetKey()) {
+            <div class="admin-actions">
+              <h4>Security</h4>
+              <p class="helper">Only admins can reset user passwords.</p>
+              <div class="form-row">
+                <input class="form-input" type="password" placeholder="Set new password" [ngModel]="newKey()" (ngModelChange)="newKey.set($event)" />
+                <button class="button cancel-btn" [disabled]="savingKey()" (click)="resetKey()">{{ savingKey() ? 'Saving…' : 'Reset Password' }}</button>
               </div>
-              <span [class]="statusClass(order)">{{ statusLabel(order) }}</span>
             </div>
-            <div class="order-meta">
-              <p class="order-meta-info">{{order.orderIngredients.length}} ingredients • {{order.totalAmount || 0}} ml {{order.containsIce ? '• Ice' : ''}}</p>
+          }
+          @if (canDelete()) {
+            <div class="danger-zone">
+              <div class="danger-header">
+                <h4>Danger Zone</h4>
+                <p class="helper">Deleting this account is irreversible. Active sessions will be signed out.</p>
+                <button class="button cancel-btn" (click)="updateConfirmation()">
+                  {{ confirmationOpen() ? 'Cancel' : (isSelf() ? 'Delete My Account' : 'Delete User') }}
+                </button>
+              </div>
+              @if (confirmationOpen()) {
+                <div class="confirmation">
+                  <p>Are you sure you want to delete <b>{{userInfo()!.username}}</b>?</p>
+                  <button class="button danger" (click)="deleteAccount()">Confirm deletion</button>
+                </div>
+              }
             </div>
-          </div>
+          }
         </div>
-        <ng-template #noOrders>
-          <div class="empty">
-            <p>No orders yet. New orders will appear here instantly.</p>
-          </div>
-        </ng-template>
-      </div>
+      }
 
-      <p class="feedback" *ngIf="feedback()">{{feedback()}}</p>
-      <p class="error" *ngIf="error()">{{error()}}</p>
+      @if (activeTab() === 'orders') {
+        <div class="tab-panel">
+          @if (orderHistory().length > 0) {
+            <div class="orders">
+              @for (order of orderHistory(); track order) {
+                <div class="order-card">
+                  <div class="order-row">
+                    <div>
+                      <h4 class="order-title">{{order.drinkName}}</h4>
+                      <p class="order-date">Submitted {{order.orderDate | date:'MMM d, y, HH:mm'}}</p>
+                    </div>
+                    <span [class]="statusClass(order)">{{ statusLabel(order) }}</span>
+                  </div>
+                  <div class="order-meta">
+                    <p class="order-meta-info">{{order.orderIngredients.length}} ingredients • {{order.totalAmount || 0}} ml {{order.containsIce ? '• Ice' : ''}}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="empty">
+              <p>No orders yet. New orders will appear here instantly.</p>
+            </div>
+          }
+        </div>
+      }
+
+      @if (feedback()) {
+        <p class="feedback">{{feedback()}}</p>
+      }
+      @if (error()) {
+        <p class="error">{{error()}}</p>
+      }
     </div>
 
     <div modal-buttons class="action-buttons">
-      <button class="button cancel-btn" *ngIf="canLogout()" (click)="logout()">Log Out</button>
+      @if (canLogout()) {
+        <button class="button cancel-btn" (click)="logout()">Log Out</button>
+      }
     </div>
   </app-generic-modal>
 } @else {
