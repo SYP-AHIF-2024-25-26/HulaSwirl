@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, NgClass } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import {Component, computed, effect, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ModalService} from '../../services/modal.service';
@@ -70,8 +70,8 @@ export class AccountModalComponent {
     if (info.role === 'system') return false;
     if (this.isSelf()) return true;
     if (!this.userService.hasRole('admin')) return false;
-    if (info.role === 'admin' && !this.userService.hasRole('system')) return false;
-    return true;
+    return !(info.role === 'admin' && !this.userService.hasRole('system'));
+
   });
 
   protected canLogout = computed(() => !this.isAdminView());

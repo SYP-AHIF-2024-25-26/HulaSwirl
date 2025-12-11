@@ -1,8 +1,8 @@
-import {Component, inject, signal, Signal, WritableSignal} from '@angular/core';
+import {Component, inject, signal, Signal} from '@angular/core';
 
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import {Drink, DrinkService} from '../../services/drink.service';
-import {ModalService, ModalType} from '../../services/modal.service';
+import {ModalService} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {FormsModule} from '@angular/forms';
 

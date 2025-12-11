@@ -2,7 +2,7 @@ import {Component, effect, inject, OnInit, signal, WritableSignal} from '@angula
 import { DatePipe } from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {BaseChartDirective} from 'ng2-charts';
-import {ChartConfiguration, ChartData, ChartOptions, ChartType} from 'chart.js';
+import {ChartData, ChartOptions} from 'chart.js';
 import {StatisticsService} from '../services/statistics.service';
 
 @Component({

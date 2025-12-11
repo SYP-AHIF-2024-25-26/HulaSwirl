@@ -3,24 +3,13 @@
 <app-order-queue></app-order-queue>
 
 <div id="landing">
-  <img alt="Leaves" src="assets/images/sideLeafsLeft.png" class="leaves">
-  <img alt="Leaves" src="assets/images/sideLeafs.png" class="leaves">
+  <img alt="Leaves" ngSrc="assets/images/sideLeafsLeft.png" class="leaves" height="1024" width="360">
+  <img alt="Leaves" ngSrc="assets/images/sideLeafs.png" class="leaves" height="1024" width="360">
   @if(!lowEndDetected()) {
     <video autoplay loop muted playsinline class="bgVideo"  style=" transform:  scaleY(1) rotate(180deg)">
       <source src="assets/images/stargif/stars.webm" type="video/webm" />
     </video>
   }
-  <!--
-  <div class="stars-wrapper">
-    <video autoplay loop muted playsinline class="bgVideo normal">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-    <video autoplay loop muted playsinline class="bgVideo mirrored">
-      <source src="assets/images/stargif/stars.webm" type="video/webm" />
-    </video>
-  </div>-->
-
-
   <div id="landing-text">
     <div id="landing-title">
       Make your perfect<br>summer drinks<br> with Hula Swirl!
@@ -33,7 +22,7 @@
       <button (click)="openModal(ModalType.CustomOrder)" class="button" id="order-custom-button">MIX YOUR OWN</button>
     </div>
   </div>
-  <img alt="Drink" src="assets/images/DrinkImage.png" id="drink-showcase">
+  <img alt="Drink" ngSrc="assets/images/DrinkImage.png" id="drink-showcase" height="517" width="470">
 </div>
 
 <div class="container" id="recommendations" #targetElement>

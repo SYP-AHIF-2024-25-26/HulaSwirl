@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {Drink, DrinkService} from '../services/drink.service';
 import {FormsModule} from '@angular/forms';
 
@@ -19,7 +19,6 @@ export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
   protected readonly ModalType = ModalType;
 
   filteredDrinks = signal<Drink[]>([]);

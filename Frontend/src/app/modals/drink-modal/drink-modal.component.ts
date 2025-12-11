@@ -240,7 +240,7 @@ export class DrinkModalComponent extends ErrorHandlingComponent {
     this.isDragging = true;
   }
 
-  onDragLeave(event: DragEvent): void {
+  onDragLeave(): void {
     this.isDragging = false;
   }
 
