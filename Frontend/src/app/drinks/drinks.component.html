@@ -38,22 +38,6 @@
             }
           }
         </div>
-
-        <!-- Hidden Drinks
-        <h2>Hidden Drinks</h2>
-        <div id="D_HiddenDrinks" class="D_DrinksContainer">
-          @for (drink of filteredDrinks(); track $index){
-            <div class="D_Drink" (click)="openModal(ModalType.ED,drink)">
-              <div class="D_imgContainer">
-                <img class="D_img" [src]="drink.imgUrl" [alt]="drink.name">
-              </div>
-              <p class="D_DrinkText">{{ drink.name }}</p>
-            </div>
-          }
-        </div>
-        -->
-
-        <!-- Not Available Drinks -->
         <h2>Hidden Drinks</h2>
         <div id="unavailable-drinks" class="drink-grid">
           @for (drink of filteredDrinks(); track $index){
