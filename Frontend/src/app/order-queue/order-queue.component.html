@@ -1,34 +1,39 @@
-<div
-  class="order-queue-wrapper"
-  *ngIf="bubbleHasContent()"
-  [ngClass]="{open: isTimelineOpen(), dragging: isDragging()}"
-  [style.left.px]="bubblePosition().x"
-  [style.top.px]="bubblePosition().y"
-  (pointerdown)="onPointerDown($event)"
-  (pointermove)="onPointerMove($event)"
-  (pointerup)="onPointerUp($event)"
-  (pointercancel)="onPointerUp($event)"
->
-  <div class="queue-bubble" [ngClass]="{locked: lockInteraction()}">
-    <div class="bubble-text">
-      @if(statusMessage()) {
-        <span>{{ statusMessage() }}</span>
-      } @else {
-        <span>Queue position</span>
-        <span class="bubble-number">{{ lowestUserPosition() }}</span>
-      }
-    </div>
-  </div>
-
-    <div class="queue-timeline"
-         [class.queue-timeline-open]="isTimelineOpen()"
-         (click)="$event.stopPropagation()">
-      <div class="timeline-column">
-        <div class="timeline-node" *ngFor="let order of orderedPending(); index as idx" [ngClass]="{self: isUserOrder(order)}">
-          <div class="node-circle">{{ idx + 1 }}</div>
-          <div class="node-label">{{shrinkName(order.drinkName)}}</div>
-          <small class="node-foot">({{ isUserOrder(order) ? 'You' : shrinkName(order.user, 10) }})</small>
-        </div>
+@if (bubbleHasContent()) {
+  <div
+    class="order-queue-wrapper"
+    [class.open]="isTimelineOpen()"
+    [class.dragging]="isDragging()"
+    [style.left.px]="bubblePosition().x"
+    [style.top.px]="bubblePosition().y"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)"
+  >
+    <div class="queue-bubble" [class.locked]="lockInteraction()">
+      <div class="bubble-text">
+        @if(statusMessage()) {
+          <span>{{ statusMessage() }}</span>
+        } @else {
+          <span>Queue position</span>
+          <span class="bubble-number">{{ lowestUserPosition() }}</span>
+        }
       </div>
     </div>
-</div>
+
+    <div
+      class="queue-timeline"
+      [class.queue-timeline-open]="isTimelineOpen()"
+      (click)="$event.stopPropagation()">
+      <div class="timeline-column">
+        @for (order of orderedPending(); track order.id; let idx = $index) {
+          <div class="timeline-node" [class.self]="isUserOrder(order)">
+            <div class="node-circle">{{ idx + 1 }}</div>
+            <div class="node-label">{{shrinkName(order.drinkName)}}</div>
+            <small class="node-foot">({{ isUserOrder(order) ? 'You' : shrinkName(order.user, 10) }})</small>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

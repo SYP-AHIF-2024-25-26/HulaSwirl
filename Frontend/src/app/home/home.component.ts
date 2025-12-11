@@ -3,18 +3,18 @@ import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {FormsModule} from '@angular/forms';
 import {Drink, DrinkService} from '../services/drink.service';
 import {ModalService, ModalType} from '../services/modal.service';
-import {ErrorService} from '../services/error.service';
-import {NgForOf} from '@angular/common';
+
 import {FpsService} from '../services/fps.service';
 import {StatisticsService} from '../services/statistics.service';
 import {OrderQueueComponent} from '../order-queue/order-queue.component';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-home',
   imports: [
     FormsModule,
-    NgForOf,
-    OrderQueueComponent
+    OrderQueueComponent,
+    NgOptimizedImage
   ],
   templateUrl: './home.component.html',
   standalone: true,

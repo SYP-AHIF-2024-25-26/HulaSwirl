@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ModalService } from '../../services/modal.service';
 
 export interface GenericModalButton {
@@ -10,7 +10,7 @@ export interface GenericModalButton {
 @Component({
   selector: 'app-generic-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './generic-modal.component.html',
   styleUrls: ['./generic-modal.component.css']
 })

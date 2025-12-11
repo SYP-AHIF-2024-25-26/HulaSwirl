@@ -1,72 +1,62 @@
 <div id="drinks-page">
-    <div class="filter-container">
-      <input
-        type="text"
-        placeholder="🔍 Search for a drink..."
-        [(ngModel)]="searchQuery"
-        (input)="filterDrinks()"
-        class="form-input"
+  <div class="filter-container">
+    <input
+      type="text"
+      placeholder="🔍 Search for a drink..."
+      [(ngModel)]="searchQuery"
+      (input)="filterDrinks()"
+      class="form-input"
       />
       <select [(ngModel)]="selectedIngredient" (change)="filterDrinks()" class="form-input">
         <option value="">All Ingredients</option>
-        <option *ngFor="let ingredient of getUniqueIngredients()" [value]="ingredient">
-          {{ ingredient }}
-        </option>
+        @for (ingredient of getUniqueIngredients(); track ingredient) {
+          <option [value]="ingredient">
+            {{ ingredient }}
+          </option>
+        }
       </select>
       <button class="button submit-btn" (click)="openModal(ModalType.AddDrink)">Add Drink</button>
-  </div>
+    </div>
 
-  <div id="drinks-section">
-    @if(filteredDrinks().length > 0) {
-    <!-- Available Drinks -->
-    <h2>Available Drinks</h2>
-    <div id="available-drinks" class="drink-grid">
-      @for (drink of filteredDrinks(); track $index){
-        <div *ngIf="drink.available" class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
-          <div class="drink-card-image-container">
-            @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
-            } @else {
-              <p>No image available</p>
+    <div id="drinks-section">
+      @if(filteredDrinks().length > 0) {
+        <!-- Available Drinks -->
+        <h2>Available Drinks</h2>
+        <div id="available-drinks" class="drink-grid">
+          @for (drink of filteredDrinks(); track $index){
+            @if (drink.available) {
+              <div class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
+                <div class="drink-card-image-container">
+                  @if (drink.imgUrl) {
+                    <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+                  } @else {
+                    <p>No image available</p>
+                  }
+                </div>
+                <p class="drink-name">{{ drink.name }}</p>
+              </div>
             }
-          </div>
-          <p class="drink-name">{{ drink.name }}</p>
+          }
         </div>
-      }
-    </div>
-
-    <!-- Hidden Drinks
-    <h2>Hidden Drinks</h2>
-    <div id="D_HiddenDrinks" class="D_DrinksContainer">
-      @for (drink of filteredDrinks(); track $index){
-        <div class="D_Drink" (click)="openModal(ModalType.ED,drink)">
-          <div class="D_imgContainer">
-            <img class="D_img" [src]="drink.imgUrl" [alt]="drink.name">
-          </div>
-          <p class="D_DrinkText">{{ drink.name }}</p>
-        </div>
-      }
-    </div>
-    -->
-
-    <!-- Not Available Drinks -->
-    <h2>Hidden Drinks</h2>
-    <div id="unavailable-drinks" class="drink-grid">
-      @for (drink of filteredDrinks(); track $index){
-        <div *ngIf="!drink.available" class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
-          <div class="drink-card-image-container">
-            @if (drink.imgUrl) {
-              <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
-            } @else {
-              <p>No image available</p>
+        <h2>Hidden Drinks</h2>
+        <div id="unavailable-drinks" class="drink-grid">
+          @for (drink of filteredDrinks(); track $index){
+            @if (!drink.available) {
+              <div class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
+                <div class="drink-card-image-container">
+                  @if (drink.imgUrl) {
+                    <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
+                  } @else {
+                    <p>No image available</p>
+                  }
+                </div>
+                <p class="drink-name">{{ drink.name }}</p>
+              </div>
             }
-          </div>
-          <p class="drink-name">{{ drink.name }}</p>
+          }
         </div>
+      } @else {
+        <h3>There aren't any drinks yet</h3>
       }
     </div>
-    } @else {
-      <h3>There aren't any drinks yet</h3>
-    }
   </div>
-</div>

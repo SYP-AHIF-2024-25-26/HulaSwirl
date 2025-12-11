@@ -1,43 +1,56 @@
-<nav id="navbar" [ngClass]="{open: menuOpen, home: isAtHomeScreen()}" #navbar>
+<nav id="navbar" #navbar [class.open]="menuOpen" [class.home]="isAtHomeScreen()">
   <button id="menu-toggle" (click)="toggleMenu()">☰</button>
   <img src="assets/images/InconV2png.png" id="logo" alt="Logo" routerLink="home">
-  <div id="nav-page-container" [ngClass]="{open: menuOpen}">
-    <a class="bigLink" routerLink="home">
-      Home
-    </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="drinks"
-       routerLinkActive="active">
-      Drinks
-    </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="ingredients"
-       routerLinkActive="active">
-      Ingredients
-    </a>
+  <div id="nav-page-container" [class.open]="menuOpen">
+    <a class="bigLink" routerLink="home">Home</a>
+    @if (userService.hasRole('admin')) {
+      <a
+        class="link"
+        [class.light]="!menuOpen"
+        routerLink="drinks"
+        routerLinkActive="active">
+        Drinks
+      </a>
+    }
+    @if (userService.hasRole('admin')) {
+      <a
+        class="link"
+        [class.light]="!menuOpen"
+        routerLink="ingredients"
+        routerLinkActive="active">
+        Ingredients
+      </a>
+    }
 
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="statistics"
-       routerLinkActive="active">
-      Statistics
-    </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('operator')"
-       routerLink="orders"
-       routerLinkActive="active">
-      Orders
-    </a>
-    <a class="link" [ngClass]="{light: !menuOpen}"
-       *ngIf="userService.hasRole('admin')"
-       routerLink="users"
-       routerLinkActive="active">
-      Users
-    </a>
+    @if (userService.hasRole('admin')) {
+      <a
+        class="link"
+        [class.light]="!menuOpen"
+        routerLink="statistics"
+        routerLinkActive="active">
+        Statistics
+      </a>
+    }
+    @if (userService.hasRole('operator')) {
+      <a
+        class="link"
+        [class.light]="!menuOpen"
+        routerLink="orders"
+        routerLinkActive="active">
+        Orders
+      </a>
+    }
+    @if (userService.hasRole('admin')) {
+      <a
+        class="link"
+        [class.light]="!menuOpen"
+        routerLink="users"
+        routerLinkActive="active">
+        Users
+      </a>
+    }
   </div>
-  <div id="account-toggle" [ngClass]="{light: !menuOpen}" (click)="userInitials() ? openAccountModal() : openLoginModal()">
+  <div id="account-toggle" [class.light]="!menuOpen" (click)="userInitials() ? openAccountModal() : openLoginModal()">
   @if(userInitials()) {
     <p class="noselect">{{userInitials()}}</p>
   } @else {

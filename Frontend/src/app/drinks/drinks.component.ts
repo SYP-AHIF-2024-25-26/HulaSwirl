@@ -1,7 +1,7 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
+import {Component, effect, inject, signal} from '@angular/core';
 import {Drink, DrinkService} from '../services/drink.service';
 import {FormsModule} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {ModalService, ModalType} from '../services/modal.service';
 import {ErrorService} from '../services/error.service';
@@ -9,9 +9,8 @@ import {ErrorService} from '../services/error.service';
 @Component({
   selector: 'app-drinks',
   imports: [
-    FormsModule,
-    NgForOf,
-    NgIf],
+    FormsModule
+],
   templateUrl: './drinks.component.html',
   standalone: true,
   styleUrl: './drinks.component.css'
@@ -20,7 +19,6 @@ export class DrinksComponent {
   private readonly ingredientService = inject(IngredientsService);
   private readonly drinkService = inject(DrinkService);
   private readonly modalService = inject(ModalService);
-  private readonly errorService = inject(ErrorService);
   protected readonly ModalType = ModalType;
 
   filteredDrinks = signal<Drink[]>([]);

@@ -1,8 +1,10 @@
 <app-generic-modal title="Status" (closed)="closeModal()">
   <div modal-body>
-    <div *ngIf="progressVisible" class="progress-container">
-      <div class="progress-bar" [style.width.%]="progress"></div>
-    </div>
+    @if (progressVisible) {
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="progress"></div>
+      </div>
+    }
     <p id="statusMessage">{{statusMessage()}}</p>
   </div>
   <div modal-buttons>

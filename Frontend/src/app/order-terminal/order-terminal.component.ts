@@ -1,19 +1,15 @@
-import {Component, inject, Input, WritableSignal} from '@angular/core';
-import {IncomingOrder, OrderIngredient, OrdersService} from '../services/orders.service';
+import {Component, inject, WritableSignal} from '@angular/core';
+import {IncomingOrder, OrdersService} from '../services/orders.service';
 import { firstValueFrom } from 'rxjs';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {ErrorService} from '../services/error.service';
 import {ErrorHandlingComponent} from '../services/error-handling';
-
-
 
 @Component({
   selector: 'app-order-terminal',
   imports: [
-    DatePipe,
-    NgIf,
-    NgForOf
-  ],
+    DatePipe
+],
   templateUrl: './order-terminal.component.html',
   standalone: true,
   styleUrl: './order-terminal.component.css'

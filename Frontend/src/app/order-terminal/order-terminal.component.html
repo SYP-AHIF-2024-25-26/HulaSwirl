@@ -1,34 +1,39 @@
-<div class="orders" *ngIf="orders().length; else noOrders">
-  <div class="order-card" *ngFor="let o of orders()">
-    @if(o.containsIce) {
-      <h2>{{ o.drinkName }} <span class="ice">(❄️)</span></h2>
-    } @else {
-      <h2>{{ o.drinkName }}</h2>
+@if (orders().length) {
+  <div class="orders">
+    @for (o of orders(); track o) {
+      <div class="order-card">
+        @if(o.containsIce) {
+          <h2>{{ o.drinkName }} <span class="ice">(❄️)</span></h2>
+        } @else {
+          <h2>{{ o.drinkName }}</h2>
+        }
+        <p class="meta">
+          By <strong>{{ o.user }}</strong> –
+          <small>{{ o.orderDate | date:'short' }}</small>
+        </p>
+        <div class="order-content">
+          <ul class="ingredient-list">
+            @for (i of o.orderIngredients; track i) {
+              <li class="ingredient-list-item">
+                <p>{{ i.ingredientName }}</p>
+                <p>{{ i.amount }} ml</p>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="line-full-w"></div>
+        <div class="ingredient-list-item total">
+          <p>Total:</p>
+          <p>{{ o.totalAmount }} ml</p>
+        </div>
+        <div class="actions">
+          <button class="button cancel-btn" (click)="cancel(o.id)">Discard</button>
+          <button class="button submit-btn" (click)="confirm(o.id)">Mix</button>
+        </div>
+      </div>
     }
-    <p class="meta">
-      By <strong>{{ o.user }}</strong> –
-      <small>{{ o.orderDate | date:'short' }}</small>
-    </p>
-    <div class="order-content">
-      <ul class="ingredient-list">
-        <li class="ingredient-list-item" *ngFor="let i of o.orderIngredients">
-          <p>{{ i.ingredientName }}</p>
-          <p>{{ i.amount }} ml</p>
-        </li>
-      </ul>
-    </div>
-    <div class="line-full-w"></div>
-    <div class="ingredient-list-item total">
-      <p>Total:</p>
-      <p>{{ o.totalAmount }} ml</p>
-    </div>
-    <div class="actions">
-      <button class="button cancel-btn" (click)="cancel(o.id)">Discard</button>
-      <button class="button submit-btn" (click)="confirm(o.id)">Mix</button>
-    </div>
   </div>
-</div>
-
-<ng-template #noOrders>
+} @else {
   <h3>There aren't any orders yet</h3>
-</ng-template>
+}
+
