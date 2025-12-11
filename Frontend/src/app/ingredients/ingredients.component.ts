@@ -1,4 +1,4 @@
-import {Component, effect, HostListener, inject, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgForOf, NgIf } from '@angular/common';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
@@ -13,7 +13,11 @@ import {ErrorHandlingComponent} from '../services/error-handling';
   ],
   templateUrl: './ingredients.component.html',
   standalone: true,
-  styleUrls: ['./ingredients.component.css']
+  styleUrls: ['./ingredients.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:dragover)': 'followMouse($event)'
+  }
 })
 export class IngredientsComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService)
@@ -79,7 +83,6 @@ export class IngredientsComponent extends ErrorHandlingComponent {
     }
   }
 
-  @HostListener('document:dragover', ['$event'])
   followMouse = (event: MouseEvent) => {
     if (this.draggedElement) {
       const rect = this.draggedElement.getBoundingClientRect();

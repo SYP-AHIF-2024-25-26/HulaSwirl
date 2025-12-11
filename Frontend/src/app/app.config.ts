@@ -1,6 +1,5 @@
 import {ApplicationConfig, InjectionToken, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
-import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
 
 import { routes } from './app.routes';
 import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
@@ -20,6 +19,5 @@ export const appConfig: ApplicationConfig = {
     { provide: BASE_URL, useValue: `http://${IP}/api/v1` },
     { provide: WS_URL, useValue: `ws://${IP}/ws/orders` },
     { provide: USER_WS_URL, useValue: `ws://${IP}/ws/users` },
-    provideCharts(withDefaultRegisterables()),
   ]
 };

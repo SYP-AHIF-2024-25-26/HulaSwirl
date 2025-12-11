@@ -1,15 +1,13 @@
-import {Component, inject} from '@angular/core';
-import {NgClass} from '@angular/common';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {FpsService} from '../services/fps.service';
 
 @Component({
     selector: 'app-background-leaves',
-  imports: [
-    NgClass
-  ],
+  imports: [],
     templateUrl: './background-leaves.component.html',
     standalone: true,
-    styleUrl: './background-leaves.component.css'
+    styleUrl: './background-leaves.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BackgroundLeavesComponent {
   private readonly fpsService = inject(FpsService);

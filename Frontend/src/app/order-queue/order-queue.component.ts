@@ -1,5 +1,4 @@
-import {Component, computed, effect, inject, signal} from '@angular/core';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {ChangeDetectionStrategy, Component, computed, effect, inject, signal} from '@angular/core';
 import {IncomingOrder, OrdersService} from '../services/orders.service';
 import {UserService} from '../services/user.service';
 
@@ -11,9 +10,10 @@ interface Position {
 @Component({
   selector: 'app-order-queue',
   standalone: true,
-  imports: [NgIf, NgForOf, NgClass],
+  imports: [],
   templateUrl: './order-queue.component.html',
-  styleUrl: './order-queue.component.css'
+  styleUrl: './order-queue.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrderQueueComponent {
   private readonly ordersService = inject(OrdersService);

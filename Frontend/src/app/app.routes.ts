@@ -1,17 +1,16 @@
 import { Routes } from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {DrinksComponent} from './drinks/drinks.component';
-import {IngredientsComponent} from './ingredients/ingredients.component';
-import {StatisticsComponent} from './statistics/statistics.component';
-import {OrderTerminalComponent} from './order-terminal/order-terminal.component';
-import {UserManagementComponent} from './user-management/user-management.component';
+import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
 
 export const routes: Routes = [
   {path: '', pathMatch:'full',redirectTo: 'home'},
-  {path: 'home', component: HomeComponent},
-  {path: 'drinks',component: DrinksComponent},
-  {path: 'ingredients',component: IngredientsComponent},
-  {path: 'statistics',component: StatisticsComponent},
-  {path: 'orders',component: OrderTerminalComponent},
-  {path: 'users', component: UserManagementComponent},
+  {path: 'home', loadComponent: () => import('./home/home.component').then(m => m.HomeComponent)},
+  {path: 'drinks', loadComponent: () => import('./drinks/drinks.component').then(m => m.DrinksComponent)},
+  {path: 'ingredients', loadComponent: () => import('./ingredients/ingredients.component').then(m => m.IngredientsComponent)},
+  {
+    path: 'statistics',
+    loadComponent: () => import('./statistics/statistics.component').then(m => m.StatisticsComponent),
+    providers: [provideCharts(withDefaultRegisterables())]
+  },
+  {path: 'orders', loadComponent: () => import('./order-terminal/order-terminal.component').then(m => m.OrderTerminalComponent)},
+  {path: 'users', loadComponent: () => import('./user-management/user-management.component').then(m => m.UserManagementComponent)},
 ];

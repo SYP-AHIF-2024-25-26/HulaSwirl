@@ -1,16 +1,15 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  inject,
-  Signal,
-  HostListener,
-  ViewChild,
   ElementRef,
   effect,
+  inject,
+  Signal,
   signal,
+  ViewChild,
   WritableSignal
 } from '@angular/core';
-import {Router, NavigationStart, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {NgIf, NgClass} from '@angular/common';
+import {NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {ModalService, ModalType} from './services/modal.service';
 import {OrderCustomDrinkModalComponent} from './modals/order-custom-drink-modal/order-custom-drink-modal.component';
 import {OrderDrinkModalComponent} from './modals/order-drink-modal/order-drink-modal.component';
@@ -35,8 +34,6 @@ import {FpsService} from './services/fps.service';
     DrinkModalComponent,
     RouterLinkActive,
     UserModalComponent,
-    NgIf,
-    NgClass,
     StatusModalComponent,
     LoadingSpinnerComponent,
     BackgroundLeavesComponent,
@@ -44,7 +41,11 @@ import {FpsService} from './services/fps.service';
   ],
   templateUrl: './app.component.html',
   standalone: true,
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:click)': 'onDocumentClick($event)'
+  }
 })
 export class AppComponent {
   private readonly modalService = inject(ModalService);
@@ -110,9 +111,9 @@ export class AppComponent {
     this.accountMenuOpen = false;
   }
 
-  @HostListener('document:click', ['$event.target'])
-  onDocumentClick(target: HTMLElement) {
-    if (this.menuOpen && this.navbar && !this.navbar.nativeElement.contains(target)) {
+  onDocumentClick(event: Event) {
+    const target = event.target as HTMLElement;
+    if (this.menuOpen && this.navbar && target && !this.navbar.nativeElement.contains(target)) {
       this.closeMenus();
     }
     this.isAtHome();

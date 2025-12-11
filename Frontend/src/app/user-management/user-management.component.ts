@@ -1,5 +1,4 @@
-import {Component, effect, inject, signal, WritableSignal, computed} from '@angular/core';
-import {NgForOf, NgIf, DatePipe} from '@angular/common';
+import {ChangeDetectionStrategy, Component, effect, inject, signal, WritableSignal, computed} from '@angular/core';
 import {UserService, ManagedUser} from '../services/user.service';
 import {ErrorHandlingComponent} from '../services/error-handling';
 import {ErrorService} from '../services/error.service';
@@ -9,9 +8,10 @@ import {FormsModule} from '@angular/forms';
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [NgForOf, DatePipe, NgIf, FormsModule],
+  imports: [FormsModule],
   templateUrl: './user-management.component.html',
-  styleUrl: './user-management.component.css'
+  styleUrl: './user-management.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserManagementComponent extends ErrorHandlingComponent {
   protected readonly userService = inject(UserService);
