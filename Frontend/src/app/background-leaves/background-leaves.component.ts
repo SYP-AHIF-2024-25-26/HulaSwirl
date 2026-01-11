@@ -13,4 +13,6 @@ export class BackgroundLeavesComponent {
   private readonly fpsService = inject(FpsService);
 
   lowEndDetected = this.fpsService.lowEndDetected;
+
+  year = new Date().getFullYear();
 }
