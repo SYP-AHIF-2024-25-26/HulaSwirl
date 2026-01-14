@@ -1,10 +1,14 @@
-<app-generic-modal title="Configure your own Drink" (closed)="closeModal()">
+<app-generic-modal title="Configure your own Drink" size="large" (closed)="closeModal()">
     <div id="ingredient-list" modal-body>
       <div class="ai-generate">
-      <textarea id="prompt"
-                [(ngModel)]="prompt"
-                rows="3"
-                placeholder="Describe your perfect drink..."></textarea>
+        <div class="ai-copy">
+          <h3>AI suggestions</h3>
+          <p>Describe the taste, vibe, or ingredients you want.</p>
+        </div>
+        <textarea id="prompt"
+                  [(ngModel)]="prompt"
+                  rows="3"
+                  placeholder="Describe your perfect drink..."></textarea>
 
         <button type="button"
                 (click)="aiGenerate()"

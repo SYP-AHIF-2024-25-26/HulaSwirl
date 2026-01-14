@@ -1,6 +1,6 @@
-<app-generic-modal [title]="mode() === 'add' ? 'Add Drink' : 'Edit Drink'" (closed)="closeModal()">
-  <div modal-body>
-    <div id="left-column">
+<app-generic-modal [title]="mode() === 'add' ? 'Add Drink' : 'Edit Drink'" size="large" (closed)="closeModal()">
+  <div modal-body class="drink-modal-body">
+    <div id="left-column" class="modal-panel">
       <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
         @if (!imageBase64) {
           <span>Upload image</span>
@@ -10,18 +10,22 @@
         }
       </div>
       <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)"/>
-      <div>
-        <h2 id="toppings-header">Toppings:</h2>
-        <textarea id="drink-toppings" placeholder="No toppings" [(ngModel)]="drinkToppings"></textarea>
+      <div class="panel-section">
+        <h2 id="toppings-header">Toppings</h2>
+        <textarea id="drink-toppings" placeholder="Add toppings or garnishes..." [(ngModel)]="drinkToppings"></textarea>
       </div>
     </div>
-    <div id="right-column">
-      <div class="form-property">
+    <div id="right-column" class="modal-panel">
+      <div class="form-property panel-section">
+        <label class="field-label" for="drink-title">Drink name</label>
         <input id="drink-title" placeholder="Title" [(ngModel)]="drinkTitle" (input)="clearFieldError('name')">
         <p class="error field-error">{{drinkTitleError()}}</p>
       </div>
-      <div class="form-property">
-        <h2>Ingredients:</h2>
+      <div class="form-property panel-section">
+        <div class="section-header">
+          <h2>Ingredients</h2>
+          <p class="section-subtitle">Add ingredients and adjust amounts.</p>
+        </div>
         <p class="error field-error">{{drinkIngredientsError()}}</p>
         <div id="drink-ingredients">
           @for(ingredient of drinkIngredients(); track $index){
@@ -71,7 +75,7 @@
   </div>
   <div modal-buttons class="action-buttons">
     @if(mode() === 'edit'){
-      <button class="button cancel-btn" (click)="deleteDrink()">Delete</button>
+      <button class="button cancel-btn" type="button" (click)="deleteDrink()">Delete</button>
       <div class="checkbox-container button" (click)="drinkAvailable.set(!drinkAvailable())">
         <input type="checkbox" [(ngModel)]="drinkAvailable">
         <label>
@@ -79,6 +83,6 @@
         </label>
       </div>
     }
-    <button class="button submit-btn" (click)="submitDrink()">{{ mode() === 'add' ? 'Add' : 'Update' }}</button>
+    <button class="button submit-btn" type="button" (click)="submitDrink()">{{ mode() === 'add' ? 'Add' : 'Update' }}</button>
   </div>
 </app-generic-modal>

@@ -1,13 +1,14 @@
-<app-generic-modal title="Status" (closed)="closeModal()">
-  <div modal-body>
+<app-generic-modal title="Status" size="small" (closed)="closeModal()">
+  <div modal-body class="status-content">
+    <div class="status-icon" aria-hidden="true">✅</div>
+    <p id="statusMessage">{{statusMessage()}}</p>
     @if (progressVisible) {
-      <div class="progress-container">
+      <div class="progress-container" aria-hidden="true">
         <div class="progress-bar" [style.width.%]="progress"></div>
       </div>
     }
-    <p id="statusMessage">{{statusMessage()}}</p>
   </div>
-  <div modal-buttons>
-    <div class="button submit-btn" (click)="closeModal()">OK</div>
+  <div modal-buttons class="status-actions">
+    <button class="button submit-btn" type="button" (click)="closeModal()">OK</button>
   </div>
 </app-generic-modal>
