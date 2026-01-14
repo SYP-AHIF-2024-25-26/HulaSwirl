@@ -1,6 +1,12 @@
 
+.custom-order-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 #ingredient-list {
-  max-height: 220px;
+  max-height: 420px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -24,7 +30,7 @@
   display: flex;
   justify-content: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .order-ingredient:not(.order-ingredient-amount, #no-ingredients) {
@@ -77,6 +83,7 @@
 .order-ingredient-details {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
 .ingredient-properties {
@@ -108,17 +115,35 @@
 
 /* Container für AI-Generate */
 .ai-generate {
-  display: flex;
-  gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(0, 1.2fr);
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
   background-color: var(--ingredient-bg-color);
   color: var(--primary-font-color);
 }
 
-.ai-generate textarea {
+.ai-copy h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+
+.ai-copy p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.ai-input {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.ai-input textarea {
   flex: 1;
-  height: 1.15rem;
+  height: 2.4rem;
   min-height: 1.2rem;
   max-height: 9rem;
   resize: vertical;
@@ -131,7 +156,7 @@
 }
 
 /* AI-Button */
-.ai-generate button {
+.ai-input button {
   align-self: center;
   padding: 0.45rem 0.7rem;
   border-radius: 5px;
@@ -156,23 +181,27 @@
 }
 
 /* optional kleines Icon vorne dran */
-.ai-generate button::before {
+.ai-input button::before {
   content: "✨";
   font-size: 1rem;
   font-weight: 700;
 }
 
 /* Hover / Active */
-.ai-generate button:hover:not(:disabled) {
+.ai-input button:hover:not(:disabled) {
   background: linear-gradient(135deg, #6366f1, #4f46e5);
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
 }
 
 @media (max-width: 600px) {
   .ai-generate {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
-  .ai-generate button {
+  .ai-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ai-input button {
     justify-content: center;
   }
 }

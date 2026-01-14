@@ -1,30 +1,33 @@
-<app-generic-modal title="{{selectedDrink()?.name}}" (closed)="closeModal()">
-  <div modal-body>
-    <div id="drink-overview">
+<app-generic-modal title="{{selectedDrink()?.name}}" size="medium" (closed)="closeModal()">
+  <div modal-body class="order-drink-body">
+    <div class="drink-overview">
       @if (selectedDrink()?.imgUrl) {
         <div class="modal-image">
           <img [src]="selectedDrink()!.imgUrl" alt="Drink Image" class="drink-image" />
         </div>
       }
-      <div id="modal-ingredient-list">
-        <h3>Ingredients:</h3>
-        <ul>
+      <div class="drink-details">
+        <div class="detail-card">
+          <h3>Ingredients</h3>
+          <p class="section-description">Customize your drink by adding ice if you like it chilled.</p>
+          <ul class="ingredient-list">
           @for (drink of selectedDrink()?.drinkIngredients; track drink) {
             <li>{{drink.amount}}ml {{drink.ingredientName}}</li>
           }
-          <li class="checkbox-container" (click)="containsIce.set(!containsIce())">
-            <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
+            <li class="checkbox-container" (click)="containsIce.set(!containsIce())">
+              <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
             <label for="containsIce">Ice</label>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+        @if(selectedDrink()?.toppings) {
+          <div class="detail-card toppings-card">
+            <h4>Toppings</h4>
+            <p>{{selectedDrink()!.toppings}}</p>
+          </div>
+        }
       </div>
     </div>
-    @if(selectedDrink()?.toppings) {
-      <div id="toppings">
-        <h4>Toppings:</h4>
-        <p>{{selectedDrink()!.toppings}}</p>
-      </div>
-    }
   </div>
   <div modal-footer>
     <p class="error global-error">{{ globalError() }}</p>

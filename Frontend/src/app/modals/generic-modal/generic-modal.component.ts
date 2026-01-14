@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  input,
+  output
+} from '@angular/core';
 
 import { ModalService } from '../../services/modal.service';
 
@@ -7,20 +14,22 @@ export interface GenericModalButton {
   action: () => void;
 }
 
+export type GenericModalSize = 'small' | 'medium' | 'large';
+
 @Component({
   selector: 'app-generic-modal',
-  standalone: true,
   imports: [],
   templateUrl: './generic-modal.component.html',
-  styleUrls: ['./generic-modal.component.css']
+  styleUrls: ['./generic-modal.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenericModalComponent {
-  @Input() title: string = '';
-  //@Input() imageUrl: string | null = null;
-  @Input() buttons: GenericModalButton[] = [];
-  @Output() closed = new EventEmitter<void>();
+  readonly title = input('');
+  readonly buttons = input<GenericModalButton[]>([]);
+  readonly size = input<GenericModalSize>('medium');
+  readonly closed = output<void>();
 
-  constructor(private modalService: ModalService) {}
+  private readonly modalService = inject(ModalService);
 
   close() {
     this.closed.emit();

@@ -1,16 +1,22 @@
-<app-generic-modal title="Configure your own Drink" (closed)="closeModal()">
-    <div id="ingredient-list" modal-body>
+<app-generic-modal title="Configure your own Drink" size="large" (closed)="closeModal()">
+    <div id="ingredient-list" modal-body class="custom-order-body">
       <div class="ai-generate">
-      <textarea id="prompt"
-                [(ngModel)]="prompt"
-                rows="3"
-                placeholder="Describe your perfect drink..."></textarea>
+        <div class="ai-copy">
+          <h3>Create a drink that's uniquely yours</h3>
+          <p>Describe your idea and let the AI suggest a fitting ingredient mix.</p>
+        </div>
+        <div class="ai-input">
+          <textarea id="prompt"
+                    [(ngModel)]="prompt"
+                    rows="3"
+                    placeholder="Describe your perfect drink..."></textarea>
 
-        <button type="button"
-                (click)="aiGenerate()"
-                [disabled]="aiGenerating()">
-          AI-Generate
-        </button>
+          <button type="button"
+                  (click)="aiGenerate()"
+                  [disabled]="aiGenerating()">
+            AI-Generate
+          </button>
+        </div>
       </div>
       @for(ingredient of availableIngredients(); track $index){
         <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)" (click)="toggleIngredient(ingredient, $event.target!)">

@@ -1,8 +1,13 @@
 <div class="modal-frame">
-  <div class="modal-form">
+  <div
+    class="modal-form"
+    [class.modal-form--small]="size() === 'small'"
+    [class.modal-form--medium]="size() === 'medium'"
+    [class.modal-form--large]="size() === 'large'"
+  >
     <div class="modal-head">
-      <h1>{{ title }}</h1>
-      <span class="close-modal-button" (click)="close()"></span>
+      <h1>{{ title() }}</h1>
+      <button type="button" class="close-modal-button" (click)="close()" aria-label="Close modal"></button>
     </div>
     <div class="modal-body">
       <ng-content select="[modal-body]"></ng-content>
@@ -12,7 +17,7 @@
     </div>
     <div class="modal-buttons">
       <ng-content select="[modal-buttons]"></ng-content>
-      @for (btn of buttons; track btn) {
+      @for (btn of buttons(); track btn.label) {
         <button class="button" (click)="btn.action()">{{ btn.label }}</button>
       }
     </div>

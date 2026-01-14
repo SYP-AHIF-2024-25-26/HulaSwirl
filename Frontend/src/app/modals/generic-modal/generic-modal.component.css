@@ -11,15 +11,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 24px;
 }
 
 .modal-form {
   background-color: var(--popup-bg);
   border-radius: 10px;
-  padding: 20px;
-  max-width: 550px;
-  width: 80%;
+  padding: 24px;
+  max-width: min(92vw, 560px);
+  width: min(92vw, 560px);
   box-shadow: 0 0 10px 3px rgb(64, 64, 64);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-form--small {
+  max-width: min(90vw, 380px);
+  width: min(90vw, 380px);
+}
+
+.modal-form--medium {
+  max-width: min(92vw, 560px);
+  width: min(92vw, 560px);
+}
+
+.modal-form--large {
+  max-width: min(94vw, 920px);
+  width: min(94vw, 920px);
 }
 
 .modal-head {
@@ -27,21 +46,27 @@
   justify-content: space-between;
   gap: 20px;
   color: var(--primary-font-color);
+  align-items: center;
 }
 
 .modal-head h1 {
   margin: 0;
+  font-size: 1.6rem;
 }
 
 .close-modal-button {
-  font-size: 24px;
+  font-size: 1.2rem;
   font-weight: bold;
-  height: 20px;
-  width: 20px;
-  text-align: center;
-  line-height: 24px;
-  transition: 0.3s transform ease;
-  margin: -7px -7px 0 0;
+  height: 32px;
+  width: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--primary-font-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s transform ease, 0.2s background-color ease;
 }
 .close-modal-button:after{
   content: '✖';
@@ -49,11 +74,17 @@
 .close-modal-button:hover {
   cursor: pointer;
   transform: rotate(10deg);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.close-modal-button:focus-visible {
+  outline: 2px solid var(--primary-font-color);
+  outline-offset: 2px;
 }
 
 .modal-body {
-  margin: 15px 0;
-  max-height: 310px;
+  margin: 0;
+  max-height: min(70vh, 520px);
   overflow-y: auto;
 }
 
@@ -64,9 +95,17 @@
   gap: 20px;
 }
 
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 @media screen and (max-width: 650px) {
   .modal-body {
-    max-height: 400px;
+    max-height: min(72vh, 520px);
   }
 }
 

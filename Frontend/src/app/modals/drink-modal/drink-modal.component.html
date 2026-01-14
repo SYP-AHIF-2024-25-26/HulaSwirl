@@ -1,64 +1,70 @@
-<app-generic-modal [title]="mode() === 'add' ? 'Add Drink' : 'Edit Drink'" (closed)="closeModal()">
-  <div modal-body>
-    <div id="left-column">
-      <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
-        @if (!imageBase64) {
-          <span>Upload image</span>
-        }
-        @if (imageBase64) {
-          <img [src]="imageBase64" alt="Drink image" class="preview-image"/>
-        }
+<app-generic-modal [title]="mode() === 'add' ? 'Add Drink' : 'Edit Drink'" size="large" (closed)="closeModal()">
+  <div modal-body class="drink-modal-body">
+    <div id="left-column" class="drink-modal-column">
+      <div class="section-card">
+        <h2>Drink Image</h2>
+        <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
+          @if (!imageBase64) {
+            <span>Upload image</span>
+          }
+          @if (imageBase64) {
+            <img [src]="imageBase64" alt="Drink image" class="preview-image"/>
+          }
+        </div>
+        <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)"/>
       </div>
-      <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)"/>
-      <div>
-        <h2 id="toppings-header">Toppings:</h2>
+      <div class="section-card">
+        <h2 id="toppings-header">Toppings</h2>
         <textarea id="drink-toppings" placeholder="No toppings" [(ngModel)]="drinkToppings"></textarea>
       </div>
     </div>
-    <div id="right-column">
-      <div class="form-property">
-        <input id="drink-title" placeholder="Title" [(ngModel)]="drinkTitle" (input)="clearFieldError('name')">
-        <p class="error field-error">{{drinkTitleError()}}</p>
-      </div>
-      <div class="form-property">
-        <h2>Ingredients:</h2>
-        <p class="error field-error">{{drinkIngredientsError()}}</p>
-        <div id="drink-ingredients">
-          @for(ingredient of drinkIngredients(); track $index){
-            <div class="order-ingredient">
-              <div class="order-ingredient-details">
-                <div class="ingredient-properties">
-                  @if(ingredient.type=='new'){
-                    <input class="order-new-ingredient-name" [(ngModel)]="ingredient.ingredientName">
-                  } @else {
-                    <span class="order-new-ingredient">{{ ingredient.ingredientName }}</span>
-                  }
-                  <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.amount" (input)="clearFieldError(ingredient.ingredientName)">
-                  <span class="order-ingredient-unit">ml</span>
+    <div id="right-column" class="drink-modal-column">
+      <div class="section-card">
+        <div class="form-property">
+          <h2>Drink Details</h2>
+          <input id="drink-title" placeholder="Title" [(ngModel)]="drinkTitle" (input)="clearFieldError('name')">
+          <p class="error field-error">{{drinkTitleError()}}</p>
+        </div>
+        <div class="form-property">
+          <h2>Ingredients</h2>
+          <p class="error field-error">{{drinkIngredientsError()}}</p>
+          <div id="drink-ingredients">
+            @for(ingredient of drinkIngredients(); track $index){
+              <div class="order-ingredient">
+                <div class="order-ingredient-details">
+                  <div class="ingredient-properties">
+                    @if(ingredient.type=='new'){
+                      <input class="order-new-ingredient-name" [(ngModel)]="ingredient.ingredientName">
+                    } @else {
+                      <span class="order-new-ingredient">{{ ingredient.ingredientName }}</span>
+                    }
+                    <input min="1" max="100" type="number" class="order-ingredient-amount form-input" [(ngModel)]="ingredient.amount" (input)="clearFieldError(ingredient.ingredientName)">
+                    <span class="order-ingredient-unit">ml</span>
+                  </div>
+                  <span class="order-ingredient-delete" (click)="deleteIngredient($index)">❌</span>
                 </div>
-                <span class="order-ingredient-delete" (click)="deleteIngredient($index)">❌</span>
+                <p class="error field-error">{{ingredient.status}}</p>
               </div>
-              <p class="error field-error">{{ingredient.status}}</p>
-            </div>
-            } @empty {
-            <div class="order-ingredient">
-              <div class="order-ingredient-details">
-                <div class="ingredient-properties">
-                  <span class="order-ingredient-name">No ingredients added</span>
+              } @empty {
+              <div class="order-ingredient">
+                <div class="order-ingredient-details">
+                  <div class="ingredient-properties">
+                    <span class="order-ingredient-name">No ingredients added</span>
+                  </div>
                 </div>
               </div>
+            }
+            <div id="add-new-ingredient">
+              <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
+                <option value="newIngredient">New Ingredient</option>
+                @for(ingredient of availableIngredients(); track $index){
+                  <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
+                }
+              </select>
+              <input type="number" class="order-ingredient-amount form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="500">
+              <span id="order-ingredient-unit">ml</span>
+              <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
             </div>
-          }
-          <div id="add-new-ingredient">
-            <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
-              <option value="newIngredient">New Ingredient</option>
-              @for(ingredient of availableIngredients(); track $index){
-                <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
-              }
-            </select>
-            <input type="number" class="order-ingredient-amount form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="500">
-            <span id="order-ingredient-unit">ml</span>
-            <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
           </div>
         </div>
       </div>

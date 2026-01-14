@@ -29,6 +29,27 @@
   margin-top: 5px;
 }
 
+.drink-modal-body {
+  display: flex;
+  gap: 20px;
+}
+
+.drink-modal-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-card {
+  background: color-mix(in srgb, var(--popup-bg), #ffffff 12%);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .checkbox-container {
   padding: 9px 16px;
 }
@@ -93,7 +114,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 10px 0 0;
+  padding: 0;
 }
 
 #left-column{
@@ -142,6 +163,10 @@ h2 {
   width: 97%;
   height:30px;
   resize: vertical;
+}
+
+#drink-title::placeholder {
+  color: color-mix(in srgb, #575757, #ffffff 45%);
 }
 
 #drink-title:focus {
@@ -206,7 +231,8 @@ h2 {
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.18);
   overflow: hidden;
   height: 250px;
-  width: 250px;
+  width: 100%;
+  max-width: 320px;
   align-self: center;
 }
 .upload-box .preview-image {
@@ -217,22 +243,20 @@ h2 {
   border-radius: 9px;  /* beibehaltung der runden Ecken, falls gewünscht */
 }
 
-
 .upload-box.drag-over {
   background-color: #f5f5f5;
 }
 
 #drink-toppings{
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   outline: none;
   background-color: #fdfded;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 18px;
-  font-weight: bold;
-  box-shadow: 0 0 7px rgba(0, 0, 0, 0.24);
-  height: 30px;
-  min-height: 30px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.16);
+  min-height: 90px;
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
