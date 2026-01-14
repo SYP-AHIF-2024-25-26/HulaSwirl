@@ -1,5 +1,5 @@
 <app-generic-modal [title]="mode() === 'add' ? 'Add Drink' : 'Edit Drink'" (closed)="closeModal()">
-  <div modal-body>
+  <div modal-body id="manage-drink-modal">
     <div id="left-column">
       <div class="upload-box" [class.drag-over]="isDragging" (click)="fileInput.click()" (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
         @if (!imageBase64) {
@@ -49,17 +49,17 @@
               </div>
             </div>
           }
-          <div id="add-new-ingredient">
-            <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
-              <option value="newIngredient">New Ingredient</option>
-              @for(ingredient of availableIngredients(); track $index){
-                <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
-              }
-            </select>
-            <input type="number" class="order-ingredient-amount form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="500">
-            <span id="order-ingredient-unit">ml</span>
-            <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
-          </div>
+        </div>
+        <div id="add-new-ingredient">
+          <select id="order-ingredient-select" class="form-input" [(ngModel)]="selectedIngredient">
+            <option value="newIngredient">New Ingredient</option>
+            @for(ingredient of availableIngredients(); track $index){
+              <option value="{{ ingredient.ingredientName }}">{{ ingredient.ingredientName }}</option>
+            }
+          </select>
+          <input type="number" class="order-ingredient-amount form-input" [(ngModel)]="selectedAmount" min="1" step="1" max="500">
+          <span id="order-ingredient-unit">ml</span>
+          <span id="order-ingredient-add" class="button" (click)="addIngredient()">+</span>
         </div>
       </div>
     </div>

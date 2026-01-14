@@ -1,17 +1,18 @@
 <app-generic-modal title="Configure your own Drink" (closed)="closeModal()">
-    <div id="ingredient-list" modal-body>
-      <div class="ai-generate">
+  <div modal-body id="custom-drink-modal">
+  <div class="ai-generate">
       <textarea id="prompt"
                 [(ngModel)]="prompt"
                 rows="3"
                 placeholder="Describe your perfect drink..."></textarea>
 
-        <button type="button"
-                (click)="aiGenerate()"
-                [disabled]="aiGenerating()">
-          AI-Generate
-        </button>
-      </div>
+    <button type="button"
+            (click)="aiGenerate()"
+            [disabled]="aiGenerating()">
+      AI-Generate
+    </button>
+  </div>
+    <div id="ingredient-list">
       @for(ingredient of availableIngredients(); track $index){
         <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)" (click)="toggleIngredient(ingredient, $event.target!)">
           <input type="checkbox" class="ingredient-check" tabindex="0" [checked]="isSelected(ingredient.ingredientName)">
@@ -38,5 +39,6 @@
   <div modal-buttons class="order-buttons">
     <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
     <button class="button submit-btn" (click)="submitOrder()">Order</button>
+  </div>
   </div>
 </app-generic-modal>

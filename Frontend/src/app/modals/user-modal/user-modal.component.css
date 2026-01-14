@@ -17,6 +17,8 @@ input.form-input {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-width: 400px;
+  width: 400px;
 }
 
 a {

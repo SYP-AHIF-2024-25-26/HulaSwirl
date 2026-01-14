@@ -1,22 +1,22 @@
+#custom-drink-modal {
+  max-width: 600px;
+}
 
 #ingredient-list {
-  max-height: 220px;
   overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
 }
 
 #ingredient-list .order-ingredient {
   display: flex;
   align-items: center;
-  justify-content: start;
-  margin: 5px 0;
-  padding: 5px 15px;
-  border-radius: 5px;
-  background-color: var(--ingredient-bg-color);
   color: var(--primary-font-color);
-}
-
-.order-ingredient {
+  background-color: var(--body-bg);
+  border: 1px solid #ead7bc;
+  border-radius: 10px;
+  padding: 10px;
   transition: background-color 0.5s ease-in-out;
 }
 
@@ -114,6 +114,7 @@
   border-radius: 5px;
   background-color: var(--ingredient-bg-color);
   color: var(--primary-font-color);
+  margin-bottom: 10px;
 }
 
 .ai-generate textarea {

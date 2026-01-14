@@ -1,6 +1,19 @@
+#manage-drink-modal {
+  display: flex;
+  gap: 1rem;
+  max-width: 750px;
+}
+
+#drink-ingredients {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
 .order-ingredient-delete {
   transition: 0.3s transform ease;
-  margin-left: auto;
+  margin-left: 5px;
 }
 
 .order-ingredient-delete:hover {
@@ -38,17 +51,16 @@
 }
 
 .order-ingredient {
-  margin: 5px 0;
   padding: 5px 15px;
-  border-radius: 5px;
-  background-color: #fdfded;
+  background-color: var(--body-bg);
+  border: 1px solid #ead7bc;
+  border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.11);
 }
 
 .order-ingredient-details {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .ingredient-properties {
@@ -62,7 +74,7 @@
   display: flex;
   align-items: center;
   gap: 1px;
-  padding: 2px 0;
+  padding: 10px 0 0;
 }
 
 #order-ingredient-select {
@@ -82,7 +94,7 @@
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  margin: 0 0 0 auto;
+  margin: 0 0 0 5px;
 }
 
 #order-ingredient-add:hover {
@@ -98,7 +110,6 @@
 
 #left-column{
   height: 100%;
-  width: 48%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -106,15 +117,9 @@
 
 #right-column{
   height: 100%;
-  width: 48%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.modal-body {
-  display: flex;
-  margin-top:0;
 }
 
 h2 {
@@ -250,9 +255,11 @@ h2 {
   width: 55px;
 }
 
-.order-ingredient-name, .order-new-ingredient-name{
+.order-new-ingredient-name{
   outline: none;
   border: none;
+  border-radius: 5px;
+  padding: 5px;
   background-color: #fdfded;
 }
 
