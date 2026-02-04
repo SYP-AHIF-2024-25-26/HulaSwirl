@@ -6,6 +6,8 @@ import {AccountInfo, AccountModalData, UserService} from '../../services/user.se
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import {IncomingOrder, OrdersService} from '../../services/orders.service';
 import {ErrorService} from '../../services/error.service';
+import {Drink, DrinkService} from '../../services/drink.service';
+import {ModalType} from '../../services/modal.service';
 
 @Component({
   selector: 'app-account-modal',
@@ -24,6 +26,7 @@ export class AccountModalComponent {
   private readonly modalService = inject(ModalService);
   private readonly ordersService = inject(OrdersService);
   private readonly errorService = inject(ErrorService);
+  private readonly drinkService = inject(DrinkService);
 
   protected modalData = signal<AccountModalData | null>(null);
   protected activeTab = signal<'info' | 'orders'>('info');
@@ -46,32 +49,15 @@ export class AccountModalComponent {
     this.confirmationOpen.update(v => !v)
   }
 
-  protected canEditRole = computed(() => {
+  protected isAdmin = computed(() => {
     const info = this.userInfo();
     if (!info) return false;
     if (!this.isAdminView()) return false;
-    if (info.role === 'system') return false;
-    if (info.role === 'admin' && !this.userService.hasRole('system')) return false;
-    return this.userService.hasRole('admin');
-  });
-
-  protected canResetKey = computed(() => {
-    const info = this.userInfo();
-    if (!info) return false;
-    if (!this.isAdminView()) return false;
-    if (info.role === 'system') return false;
-    if (info.role === 'admin' && !this.userService.hasRole('system')) return false;
-    return this.userService.hasRole('admin');
+    return info.role === 'system' || info.role === 'admin';
   });
 
   protected canDelete = computed(() => {
-    const info = this.userInfo();
-    if (!info) return false;
-    if (info.role === 'system') return false;
-    if (this.isSelf()) return true;
-    if (!this.userService.hasRole('admin')) return false;
-    return !(info.role === 'admin' && !this.userService.hasRole('system'));
-
+    return this.isSelf() || this.isAdmin();
   });
 
   protected canLogout = computed(() => !this.isAdminView());
@@ -135,6 +121,10 @@ export class AccountModalComponent {
     }
   }
 
+  getIngredientsFromOrder(order: IncomingOrder): string {
+    return order.orderIngredients.map(oi => `${oi.ingredientName} (${oi.amount} ml)`).join(', ');
+  }
+
   async logout() {
     await this.userService.logout();
     this.modalService.closeModal();
@@ -166,7 +156,7 @@ export class AccountModalComponent {
     const target = ev.target as HTMLSelectElement;
     const role = target.value;
     const user = this.userInfo();
-    if (!user || !this.canEditRole()) return;
+    if (!user || !this.isAdmin()) return;
     if (role === user.role) return;
 
     this.roleUpdating.set(true);
@@ -193,7 +183,7 @@ export class AccountModalComponent {
   async resetKey() {
     const user = this.userInfo();
     const key = this.newKey().trim();
-    if (!user || !this.canResetKey()) return;
+    if (!user || !this.isAdmin()) return;
     if (!key) {
       this.error.set('Please enter a new password.');
       return;
@@ -216,5 +206,39 @@ export class AccountModalComponent {
     } finally {
       this.savingKey.set(false);
     }
+  }
+
+  private normalizeName(name: string): string {
+    return (name ?? '').trim().toLowerCase();
+  }
+
+  private findMatchingDrink(order: IncomingOrder): Drink | null {
+    const orderName = this.normalizeName(order.drinkName);
+    if (!orderName) return null;
+
+    const drinks = this.drinkService.drinks();
+    const byName = drinks.find(d => this.normalizeName(d.name) === orderName);
+    return byName ?? null;
+  }
+
+  protected reorder(order: IncomingOrder) {
+    // Open the "existing drink" order modal if we can still find the drink.
+    const matched = this.findMatchingDrink(order);
+    if (matched) {
+      this.modalService.openModal(ModalType.Order, matched);
+      return;
+    }
+
+    // Fallback: open custom order modal prefilled from the order history.
+    // No image, and only what was stored on the order.
+    this.modalService.openModal(ModalType.CustomOrder, {
+      mode: 'reorder',
+      drinkName: order.drinkName,
+      containsIce: order.containsIce,
+      ingredients: order.orderIngredients.map(i => ({
+        ingredientName: i.ingredientName,
+        amount: i.amount
+      }))
+    });
   }
 }

@@ -25,7 +25,7 @@
             </div>
             <div class="info-block">
               <span class="label">Role</span>
-              @if (canEditRole()) {
+              @if (isAdmin()) {
                 <div class="role-row">
                   <select class="form-input" [ngModel]="userInfo()!.role" (change)="changeRole($event)" [disabled]="roleUpdating()">
                     @if (userService.hasRole('system')) {
@@ -51,7 +51,7 @@
               <p class="value">{{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never' }}</p>
             </div>
           </div>
-          @if (canResetKey()) {
+          @if (isAdmin()) {
             <div class="admin-actions">
               <h4>Security</h4>
               <p class="helper">Only admins can reset user passwords.</p>
@@ -86,7 +86,7 @@
           @if (orderHistory().length > 0) {
             <div class="orders">
               @for (order of orderHistory(); track order) {
-                <div class="order-card">
+                <div class="order-card" role="button" tabindex="0" (click)="reorder(order)" (keydown.enter)="reorder(order)" (keydown.space)="$event.preventDefault(); reorder(order)">
                   <div class="order-row">
                     <div>
                       <h4 class="order-title">{{order.drinkName}}</h4>
@@ -95,7 +95,7 @@
                     <span [class]="statusClass(order)">{{ statusLabel(order) }}</span>
                   </div>
                   <div class="order-meta">
-                    <p class="order-meta-info">{{order.orderIngredients.length}} ingredients • {{order.totalAmount || 0}} ml {{order.containsIce ? '• Ice' : ''}}</p>
+                    <p class="order-meta-info">{{order.orderIngredients.length}} Ingredients • {{order.totalAmount || 0}} ml {{order.containsIce ? '• Ice' : ''}}</p>
                   </div>
                 </div>
               }

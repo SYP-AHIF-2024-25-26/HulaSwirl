@@ -16,7 +16,7 @@ import {OrderDrinkModalComponent} from './modals/order-drink-modal/order-drink-m
 import {DrinkModalComponent} from './modals/drink-modal/drink-modal.component';
 import {IngredientsService} from './services/ingredients.service';
 import {DrinkService} from './services/drink.service';
-import {UserModalComponent} from './modals/user-modal/user-modal.component';
+import {LoginModalComponent} from './modals/login-modal/login-modal.component';
 import {UserService} from './services/user.service';
 import {StatusModalComponent} from './modals/status-modal/status-modal.component';
 import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
@@ -33,7 +33,7 @@ import {FpsService} from './services/fps.service';
     OrderDrinkModalComponent,
     DrinkModalComponent,
     RouterLinkActive,
-    UserModalComponent,
+    LoginModalComponent,
     StatusModalComponent,
     LoadingSpinnerComponent,
     BackgroundLeavesComponent,

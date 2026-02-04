@@ -202,11 +202,12 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+  cursor: pointer;
 }
 
 .order-row {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   gap: 1rem;
 }
@@ -223,7 +224,7 @@ h4 {
 }
 
 .status {
-  padding: 0.35rem 0.65rem;
+  padding: 0.6rem 0.65rem 0.4rem;
   border-radius: 999px;
   font-weight: 700;
   font-size: 0.9rem;

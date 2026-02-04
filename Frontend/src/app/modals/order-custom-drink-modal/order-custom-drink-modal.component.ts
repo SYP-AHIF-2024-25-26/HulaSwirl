@@ -1,9 +1,18 @@
-import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
+import {Component, effect, inject, signal, untracked, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DrinkIngredient, Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
+import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService} from '../../services/modal.service';
 import {ErrorHandlingComponent} from '../../services/error-handling';
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
+
+export type CustomOrderModalData =
+  | null
+  | {
+      mode?: 'reorder';
+      drinkName?: string;
+      containsIce?: boolean;
+      ingredients?: { ingredientName: string; amount: number }[];
+    };
 
 @Component({
   selector: 'app-order-custom-drink-modal',
@@ -16,23 +25,83 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   private readonly ingredientsService = inject(IngredientsService);
   private readonly modalService = inject(ModalService);
 
+  protected readonly modalData = this.modalService.getModalData();
+
   availableIngredients: WritableSignal<Ingredient[]> = signal([]);
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   ingredientAmounts: WritableSignal<Record<string, number>> = signal({});
 
+  protected title = signal<string>('Configure your own Drink');
+
   prompt = signal<string>('');
   aiGenerating = signal<boolean>(false);
+
+  /** Prevents re-applying the same reorder payload repeatedly (which can cause reactive loops). */
+  private lastAppliedReorderKey = '';
 
   constructor() {
     super();
     effect(() => {
       const all = this.ingredientsService.ingredients().filter(i => i.pumpSlot !== null);
       this.availableIngredients.set(all);
+
+      // Avoid tracking ingredientAmounts() inside this effect.
+      const currentAmounts = untracked(() => this.ingredientAmounts());
+      const next: Record<string, number> = { ...currentAmounts };
+      let changed = false;
       for (const ing of all) {
-        if (!(ing.ingredientName in this.ingredientAmounts())) {
-          this.ingredientAmounts()[ing.ingredientName] = 0;
+        if (!(ing.ingredientName in next)) {
+          next[ing.ingredientName] = 0;
+          changed = true;
         }
       }
+      if (changed) this.ingredientAmounts.set(next);
+    });
+
+    // Prefill from modal data when opened for reorder.
+    effect(() => {
+      const data = this.modalData() as CustomOrderModalData;
+      const isReorder = !!data && data.mode === 'reorder';
+
+      if (!isReorder) {
+        // If we were previously in reorder mode, reset idempotency so the next reorder applies.
+        this.lastAppliedReorderKey = '';
+        this.title.set('Configure your own Drink');
+        return;
+      }
+
+      // Build a stable key for this reorder payload.
+      const items = (data.ingredients ?? [])
+        .filter(i => !!i.ingredientName)
+        .map(i => ({ ingredientName: i.ingredientName, amount: i.amount }))
+        .sort((a, b) => a.ingredientName.localeCompare(b.ingredientName));
+
+      const key = JSON.stringify({
+        drinkName: data.drinkName ?? '',
+        items
+      });
+
+      if (key === this.lastAppliedReorderKey) {
+        return; // already applied
+      }
+      this.lastAppliedReorderKey = key;
+
+      this.title.set(data.drinkName?.trim() ? `Reorder: ${data.drinkName}` : 'Reorder');
+      this.prompt.set('');
+
+      // Start from current amounts without tracking to avoid feedback loops.
+      const baseAmounts = untracked(() => this.ingredientAmounts());
+      const nextAmounts: Record<string, number> = { ...baseAmounts };
+      const nextSelected: OrderPreparation[] = [];
+
+      for (const i of items) {
+        const amt = i.amount && i.amount > 0 ? i.amount : 0;
+        nextAmounts[i.ingredientName] = amt;
+        nextSelected.push({ ingredientName: i.ingredientName, amount: amt, status: '' });
+      }
+
+      this.ingredientAmounts.set(nextAmounts);
+      this.orderIngredients.set(nextSelected);
     });
   }
 
@@ -58,7 +127,7 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   }
 
   getAmount(name: string): number {
-    return this.ingredientAmounts()[name] ?? 1;
+    return this.ingredientAmounts()[name] ?? 0;
   }
 
   updateAmount(name: string, value: number) {
@@ -160,6 +229,9 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
     this.clearFieldError();
     this.orderIngredients.set([]);
     this.ingredientAmounts.set({});
+    this.prompt.set('');
+    this.title.set('Configure your own Drink');
+    this.lastAppliedReorderKey = '';
     this.modalService.closeModal();
   }
 }

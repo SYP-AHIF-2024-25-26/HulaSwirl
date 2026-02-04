@@ -1,17 +1,17 @@
-<app-generic-modal title="Configure your own Drink" (closed)="closeModal()">
+<app-generic-modal [title]="title()" (closed)="closeModal()">
   <div modal-body id="custom-drink-modal">
-  <div class="ai-generate">
+    <div class="ai-generate">
       <textarea id="prompt"
                 [(ngModel)]="prompt"
                 rows="3"
                 placeholder="Describe your perfect drink..."></textarea>
 
-    <button type="button"
-            (click)="aiGenerate()"
-            [disabled]="aiGenerating()">
-      AI-Generate
-    </button>
-  </div>
+      <button type="button"
+              (click)="aiGenerate()"
+              [disabled]="aiGenerating()">
+        AI-Generate
+      </button>
+    </div>
     <div id="ingredient-list">
       @for(ingredient of availableIngredients(); track $index){
         <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)" (click)="toggleIngredient(ingredient, $event.target!)">
@@ -31,14 +31,12 @@
         </div>
       }
     </div>
-  <div modal-footer>
-    @if(globalError()) {
-      <p class="error global-error">{{ globalError() }}</p>
-    }
-  </div>
-  <div modal-buttons class="order-buttons">
-    <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
-    <button class="button submit-btn" (click)="submitOrder()">Order</button>
-  </div>
+      @if(globalError()) {
+        <p class="error global-error">{{ globalError() }}</p>
+      }
+    <div modal-buttons class="order-buttons">
+      <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
+      <button class="button submit-btn" (click)="submitOrder()">Order</button>
+    </div>
   </div>
 </app-generic-modal>

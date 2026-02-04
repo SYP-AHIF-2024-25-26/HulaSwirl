@@ -1,4 +1,4 @@
-// user-modal.component.ts
+// login-modal.component.ts
 import { Component, inject, signal } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -12,13 +12,13 @@ import { ErrorHandlingComponent } from '../../services/error-handling';
  * Zeigt zwei Tabs (login | register). Speichert JWT via UserService.
  */
 @Component({
-  selector: 'app-user-modal',
+  selector: 'app-login-modal',
   standalone: true,
   imports: [FormsModule, GenericModalComponent],
-  templateUrl: './user-modal.component.html',
-  styleUrls: ['./user-modal.component.css']
+  templateUrl: './login-modal.component.html',
+  styleUrls: ['./login-modal.component.css']
 })
-export class UserModalComponent extends ErrorHandlingComponent {
+export class LoginModalComponent extends ErrorHandlingComponent {
   private readonly userService = inject(UserService);
   private readonly modalService = inject(ModalService);
 
