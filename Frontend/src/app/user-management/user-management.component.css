@@ -12,7 +12,7 @@
 #user-search {
   text-align: center;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
 .users {
@@ -23,15 +23,21 @@
 }
 
 .user-card {
-  background: linear-gradient(145deg, #fff8ee, #f3e4cb);
-  border-radius: 12px;
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
   padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-1);
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  border: 1px solid #ead7bc;
+  border: 1px solid var(--card-border);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
 }
 
 .avatar {
@@ -64,7 +70,7 @@
 
 .meta {
   margin: 0;
-  color: #75593b;
+  color: var(--text-muted);
   font-size: 0.95rem;
 }
 

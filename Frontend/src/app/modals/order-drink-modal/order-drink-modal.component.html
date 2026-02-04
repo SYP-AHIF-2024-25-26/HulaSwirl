@@ -12,7 +12,7 @@
           @for (drink of selectedDrink()?.drinkIngredients; track drink) {
             <li>{{drink.amount}}ml {{drink.ingredientName}}</li>
           }
-          <li class="checkbox-container" (click)="containsIce.set(!containsIce())">
+          <li class="checkbox-container ice-toggle" (click)="containsIce.set(!containsIce())">
             <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
             <label for="containsIce">Ice?</label>
           </li>

@@ -7,9 +7,9 @@
 input.form-input {
   flex: 1;
   padding: 10px 12px;
-  font-size: 20px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  font-size: 1rem;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--surface-outline);
   font-family: 'JosefinSans', sans-serif;
 }
 
@@ -17,8 +17,8 @@ input.form-input {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-width: 400px;
-  width: 400px;
+  max-width: 420px;
+  width: min(92vw, 420px);
 }
 
 a {
@@ -45,7 +45,7 @@ a {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #666;
+  color: #6b5b4a;
   z-index: 2;
 }
 

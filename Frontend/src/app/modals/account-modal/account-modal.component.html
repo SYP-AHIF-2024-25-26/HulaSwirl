@@ -96,13 +96,14 @@
                   </div>
                   <div class="order-meta">
                     <p class="order-meta-info">{{order.orderIngredients.length}} Ingredients • {{order.totalAmount || 0}} ml {{order.containsIce ? '• Ice' : ''}}</p>
+                    <span class="reorder-hint">↻ Tap to reorder</span>
                   </div>
                 </div>
               }
             </div>
           } @else {
             <div class="empty">
-              <p>No orders yet. New orders will appear here instantly.</p>
+              <p>No orders yet. Create your first drink or order a classic.</p>
             </div>
           }
         </div>

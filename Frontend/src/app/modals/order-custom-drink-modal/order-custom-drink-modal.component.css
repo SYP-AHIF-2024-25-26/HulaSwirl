@@ -1,30 +1,30 @@
 #custom-drink-modal {
-  max-width: 600px;
+  max-width: 700px;
 }
 
 #ingredient-list {
   overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.6rem;
 }
 
 #ingredient-list .order-ingredient {
   display: flex;
   align-items: center;
   color: var(--primary-font-color);
-  background-color: var(--body-bg);
-  border: 1px solid #ead7bc;
-  border-radius: 10px;
-  padding: 10px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  padding: 12px;
   transition: background-color 0.5s ease-in-out;
 }
 
 .order-buttons {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .order-ingredient:not(.order-ingredient-amount, #no-ingredients) {
@@ -41,14 +41,15 @@
 
 #ingredient-list .order-ingredient.selected {
   background-color: var(--ingredient-selected-bg-color);
+  border-color: rgba(70, 132, 84, 0.35);
 }
 
 .ingredient-check {
   appearance: none;
-  min-width: 18px;
-  min-height: 18px;
-  border: 1px solid var(--primary-font-color);
-  border-radius: 4px;
+  min-width: 20px;
+  min-height: 20px;
+  border: 1px solid var(--surface-outline);
+  border-radius: 6px;
   background: #fff;
   margin-right: 10px;
   position: relative;
@@ -82,13 +83,13 @@
 .ingredient-properties {
   display: flex;
   align-items: center;
-  margin: 7px 0 5px;
-  gap: 5px;
+  margin: 6px 0 5px;
+  gap: 6px;
 }
 
 .order-ingredient-amount {
   box-sizing: border-box;
-  width: 55px;
+  width: 70px;
   text-align: end;
 }
 
@@ -108,40 +109,53 @@
 
 /* Container für AI-Generate */
 .ai-generate {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
-  background-color: var(--ingredient-bg-color);
+  padding: 0.75rem;
+  border-radius: 12px;
+  background-color: var(--popup-surface);
   color: var(--primary-font-color);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--card-border);
+  align-items: center;
 }
 
 .ai-generate textarea {
-  flex: 1;
-  height: 1.15rem;
-  min-height: 1.2rem;
-  max-height: 9rem;
+  grid-column: 1 / -1;
+  height: 2.2rem;
+  min-height: 2.2rem;
+  max-height: 10rem;
   resize: vertical;
   padding: 0.5rem 0.75rem;
-  border-radius: 5px;
-  border: 1px solid #b1b1b1;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--surface-outline);
   font-size: 0.9rem;
   line-height: 1.35;
   outline: none;
 }
 
+.ai-copy h4 {
+  margin: 0 0 4px;
+}
+
+.ai-copy .helper {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 /* AI-Button */
 .ai-generate button {
   align-self: center;
-  padding: 0.45rem 0.7rem;
-  border-radius: 5px;
-  border: 1px solid #4f46e5;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  color: #f9fafb;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--sunset-gradient);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
@@ -152,8 +166,7 @@
   transition:
     background-color 0.16s ease-out,
     box-shadow 0.16s ease-out,
-    transform 0.08s ease-out,
-    border-color 0.16s ease-out;
+    transform 0.08s ease-out;
 }
 
 /* optional kleines Icon vorne dran */
@@ -165,15 +178,15 @@
 
 /* Hover / Active */
 .ai-generate button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  box-shadow: var(--shadow-1);
 }
 
 @media (max-width: 600px) {
   .ai-generate {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
   .ai-generate button {
     justify-content: center;
+    width: 100%;
   }
 }

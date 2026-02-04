@@ -17,7 +17,7 @@
 
 h1, h3, h4, p:not(.error) {
   margin: 0;
-  color: var(--heavy-font-color);
+  color: var(--text-strong);
 }
 
 h1 {
@@ -44,11 +44,12 @@ p:not(.error) {
   height: 250px;
   box-sizing: border-box;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--radius-card);
   background-color: var(--body-bg);
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: var(--shadow-1);
 }
 
 .modal-image img {
@@ -62,28 +63,31 @@ p:not(.error) {
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .checkbox-container label {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
 }
 
 ul {
-  margin: 10px 0;
+  margin: 0;
   padding: 0;
   list-style-type: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
+  display: grid;
+  gap: 0.4rem;
 }
 
 ul li {
-  background-color: var(--body-bg);
-  border: 1px solid #ead7bc;
-  border-radius: 10px;
-  padding: 10px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-control);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 ul li::before {
@@ -114,8 +118,17 @@ ul li:nth-child(6n+6)::before {
   content: "🦩";
 }
 
+.ice-toggle {
+  background: rgba(255, 255, 255, 0.6);
+  border-style: dashed;
+}
+
 #toppings {
   margin-top: 15px;
+  background: var(--popup-surface);
+  padding: 12px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--card-border);
 }
 
 [modal-buttons] {

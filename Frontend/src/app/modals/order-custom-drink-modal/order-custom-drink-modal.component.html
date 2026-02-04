@@ -1,6 +1,10 @@
 <app-generic-modal [title]="title()" (closed)="closeModal()">
   <div modal-body id="custom-drink-modal">
     <div class="ai-generate">
+      <div class="ai-copy">
+        <h4>AI Mix Assistant</h4>
+        <p class="helper">Describe a vibe or ingredients. Example: “tropical, not too sweet, pineapple + mint”.</p>
+      </div>
       <textarea id="prompt"
                 [(ngModel)]="prompt"
                 rows="3"

@@ -1,11 +1,12 @@
 .modal {
-  background: white;
+  background: var(--card-bg);
   padding: 1.5rem;
-  border-radius: 8px;
-  max-width: 400px;
+  border-radius: var(--radius-card);
+  max-width: 420px;
   margin: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-2);
   text-align: center;
+  border: 1px solid var(--card-border);
 }
 button {
   margin-top: 1rem;
@@ -18,7 +19,7 @@ button {
 .progress-container {
   width: 100%;
   height: 20px;
-  background-color: #ddd;
+  background-color: #e4d3bb;
   border-radius: 10px;
   overflow: hidden;
   margin-top: 10px;
