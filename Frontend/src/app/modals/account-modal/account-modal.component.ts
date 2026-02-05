@@ -31,11 +31,13 @@ export class AccountModalComponent {
   protected modalData = signal<AccountModalData | null>(null);
   protected activeTab = signal<'info' | 'orders'>('info');
   protected confirmationOpen = signal(false);
+  protected confirmationText = signal('');
   protected newKey = signal('');
   protected roleUpdating = signal(false);
   protected feedback = signal('');
   protected error = signal('');
   protected savingKey = signal(false);
+  protected canConfirmDelete = computed(() => this.confirmationText().trim().toUpperCase() === 'DELETE');
 
   protected userInfo = computed<AccountInfo | null>(() => this.modalData()?.user ?? null);
   protected isAdminView = computed(() => this.modalData()?.context === 'admin');
@@ -46,7 +48,8 @@ export class AccountModalComponent {
   });
 
   protected updateConfirmation(){
-    this.confirmationOpen.update(v => !v)
+    this.confirmationOpen.update(v => !v);
+    this.confirmationText.set('');
   }
 
   protected isAdmin = computed(() => {
@@ -82,6 +85,7 @@ export class AccountModalComponent {
         this.feedback.set('');
         this.error.set('');
         this.confirmationOpen.set(false);
+        this.confirmationText.set('');
         this.activeTab.set('info');
       }
     });

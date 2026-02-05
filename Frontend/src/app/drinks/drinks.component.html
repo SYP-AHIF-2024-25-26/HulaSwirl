@@ -25,7 +25,12 @@
         <div id="available-drinks" class="drink-grid">
           @for (drink of filteredDrinks(); track $index){
             @if (drink.available) {
-              <div class="drink-card" (click)="openModal(ModalType.EditDrink,drink)">
+              <div class="drink-card"
+                   role="button"
+                   tabindex="0"
+                   (click)="openModal(ModalType.EditDrink,drink)"
+                   (keydown.enter)="openModal(ModalType.EditDrink,drink)"
+                   (keydown.space)="$event.preventDefault(); openModal(ModalType.EditDrink,drink)">
                 <div class="drink-card-image-container">
                   @if (drink.imgUrl) {
                     <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">
@@ -42,7 +47,12 @@
         <div id="unavailable-drinks" class="drink-grid">
           @for (drink of filteredDrinks(); track $index){
             @if (!drink.available) {
-              <div class="drink-card manage" (click)="openModal(ModalType.EditDrink,drink)">
+              <div class="drink-card manage"
+                   role="button"
+                   tabindex="0"
+                   (click)="openModal(ModalType.EditDrink,drink)"
+                   (keydown.enter)="openModal(ModalType.EditDrink,drink)"
+                   (keydown.space)="$event.preventDefault(); openModal(ModalType.EditDrink,drink)">
                 <div class="drink-card-image-container">
                   @if (drink.imgUrl) {
                     <img class="drink-image" [src]="drink.imgUrl" [alt]="drink.name">

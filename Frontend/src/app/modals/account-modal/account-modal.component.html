@@ -73,7 +73,9 @@
               @if (confirmationOpen()) {
                 <div class="confirmation">
                   <p>Are you sure you want to delete <b>{{userInfo()!.username}}</b>?</p>
-                  <button class="button danger" (click)="deleteAccount()">Confirm deletion</button>
+                  <label class="delete-confirm-label" for="deleteConfirm">Type DELETE to confirm.</label>
+                  <input id="deleteConfirm" class="form-input" type="text" [ngModel]="confirmationText()" (ngModelChange)="confirmationText.set($event)" placeholder="DELETE" />
+                  <button class="button danger" [disabled]="!canConfirmDelete()" (click)="deleteAccount()">Confirm deletion</button>
                 </div>
               }
             </div>
@@ -96,6 +98,7 @@
                   </div>
                   <div class="order-meta">
                     <p class="order-meta-info">{{order.orderIngredients.length}} Ingredients • {{order.totalAmount || 0}} ml {{order.containsIce ? '• Ice' : ''}}</p>
+                    <p class="reorder-hint">↻ Tap to reorder this drink</p>
                   </div>
                 </div>
               }

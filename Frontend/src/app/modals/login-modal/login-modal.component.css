@@ -7,18 +7,18 @@
 input.form-input {
   flex: 1;
   padding: 10px 12px;
-  font-size: 20px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  font-size: 16px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border-subtle);
   font-family: 'JosefinSans', sans-serif;
 }
 
 [modal-body]{
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-width: 400px;
-  width: 400px;
+  gap: var(--space-3);
+  max-width: 420px;
+  width: 100%;
 }
 
 a {
@@ -30,7 +30,7 @@ a {
 .buttons {
   justify-content: center;
   display: flex;
-  gap: 10px;
+  gap: var(--space-2);
 
 }
 

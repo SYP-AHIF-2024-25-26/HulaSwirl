@@ -6,9 +6,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  padding-top: 50px;
-  backdrop-filter: blur(1px);
-  background: rgba(0, 0, 0, 0.5);
+  padding: 50px 16px;
+  backdrop-filter: blur(3px);
+  background: rgba(14, 45, 62, 0.55);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,66 +16,104 @@
 
 .modal-form {
   background-color: var(--popup-bg);
-  border-radius: 10px;
-  padding: 25px;
-  max-width: 80%;
-  box-shadow: 0 0 10px 3px rgb(64, 64, 64);
+  border-radius: var(--radius-card);
+  padding: 0;
+  max-width: min(920px, 92vw);
+  width: 100%;
+  max-height: calc(100vh - 80px);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .modal-head {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: var(--space-4);
   color: var(--primary-font-color);
+  padding: var(--space-4) var(--space-5) var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
 }
 
 .modal-head h1 {
   margin: 0;
+  font-size: 1.8rem;
 }
 
 .close-modal-button {
-  font-size: 24px;
-  font-weight: bold;
-  height: 20px;
-  width: 20px;
+  font-size: 20px;
+  font-weight: 700;
+  height: 32px;
+  width: 32px;
   text-align: center;
   line-height: 24px;
-  transition: 0.3s transform ease;
-  margin: -7px -7px 0 0;
+  transition: 0.2s transform ease;
+  margin: -4px -4px 0 0;
+  border-radius: 50%;
+  border: 1px solid transparent;
 }
 .close-modal-button:after{
   content: '✖';
 }
 .close-modal-button:hover {
   cursor: pointer;
-  transform: rotate(10deg);
+  transform: scale(1.05);
+  border-color: rgba(14, 45, 62, 0.2);
 }
 
 .modal-body {
-  margin: 15px 0;
+  padding: var(--space-4) var(--space-5);
   max-height: 550px;
   overflow-y: auto;
   display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1;
 }
 
 .modal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.4);
+  position: sticky;
+  bottom: 0;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5) var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.75);
+  position: sticky;
+  bottom: 0;
 }
 
 @media screen and (max-width: 650px) {
   .modal-body {
-    max-height: 500px;
+    max-height: 60vh;
+    padding: var(--space-4);
+  }
+
+  .modal-head {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .modal-footer,
+  .modal-buttons {
+    padding: var(--space-3) var(--space-4);
   }
 }
 
 @media (max-width: 350px) {
   .modal-form {
     width: 85%;
-    padding: 15px;
   }
 }

@@ -5,16 +5,17 @@
 .users-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: var(--space-3);
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .stat-card {
-  background: var(--popup-bg);
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background: #fff7ea;
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-subtle);
   min-width: 200px;
   text-align: start;
   height: fit-content;
@@ -32,7 +33,7 @@
 
 .date-picker {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -47,7 +48,7 @@
 .pie-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: var(--space-4);
   justify-content: center;
 }
 
@@ -59,4 +60,3 @@
 canvas {
   max-width: 100%;
 }
-

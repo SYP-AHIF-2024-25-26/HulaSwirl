@@ -2,60 +2,62 @@
   <button id="menu-toggle" (click)="toggleMenu()">☰</button>
   <img src="assets/images/InconV2png.png" id="logo" alt="Logo" routerLink="home">
   <div id="nav-page-container" [class.open]="menuOpen">
-    <a class="bigLink" routerLink="home">Home</a>
-    @if (userService.hasRole('admin')) {
-      <a
-        class="link"
-        [class.light]="!menuOpen"
-        routerLink="drinks"
-        routerLinkActive="active">
-        Drinks
-      </a>
-    }
-    @if (userService.hasRole('admin')) {
-      <a
-        class="link"
-        [class.light]="!menuOpen"
-        routerLink="ingredients"
-        routerLinkActive="active">
-        Ingredients
-      </a>
-    }
-
-    @if (userService.hasRole('admin')) {
-      <a
-        class="link"
-        [class.light]="!menuOpen"
-        routerLink="statistics"
-        routerLinkActive="active">
-        Statistics
-      </a>
-    }
+    <div class="nav-group">
+      <span class="nav-group-label">Main</span>
+      <a class="bigLink" routerLink="home" routerLinkActive="active">Home</a>
+    </div>
     @if (userService.hasRole('operator')) {
-      <a
-        class="link"
-        [class.light]="!menuOpen"
-        routerLink="orders"
-        routerLinkActive="active">
-        Orders
-      </a>
+      <div class="nav-group">
+        <span class="nav-group-label">Operator</span>
+        <a
+          class="link"
+          [class.light]="!menuOpen"
+          routerLink="orders"
+          routerLinkActive="active">
+          Orders
+        </a>
+      </div>
     }
     @if (userService.hasRole('admin')) {
-      <a
-        class="link"
-        [class.light]="!menuOpen"
-        routerLink="users"
-        routerLinkActive="active">
-        Users
-      </a>
+      <div class="nav-group">
+        <span class="nav-group-label">Admin</span>
+        <a
+          class="link"
+          [class.light]="!menuOpen"
+          routerLink="drinks"
+          routerLinkActive="active">
+          Drinks
+        </a>
+        <a
+          class="link"
+          [class.light]="!menuOpen"
+          routerLink="ingredients"
+          routerLinkActive="active">
+          Ingredients
+        </a>
+        <a
+          class="link"
+          [class.light]="!menuOpen"
+          routerLink="statistics"
+          routerLinkActive="active">
+          Statistics
+        </a>
+        <a
+          class="link"
+          [class.light]="!menuOpen"
+          routerLink="users"
+          routerLinkActive="active">
+          Users
+        </a>
+      </div>
     }
   </div>
-  <div id="account-toggle" [class.light]="!menuOpen" (click)="userInitials() ? openAccountModal() : openLoginModal()">
-  @if(userInitials()) {
-    <p class="noselect">{{userInitials()}}</p>
-  } @else {
-    <p>🦩</p>
-  }
+  <div id="account-toggle" [class.light]="!menuOpen" [attr.aria-label]="userInitials() ? 'Open account' : 'Sign in'" (click)="userInitials() ? openAccountModal() : openLoginModal()">
+    @if(userInitials()) {
+      <p class="noselect">{{userInitials()}}</p>
+    } @else {
+      <p>🦩</p>
+    }
   </div>
 </nav>
 

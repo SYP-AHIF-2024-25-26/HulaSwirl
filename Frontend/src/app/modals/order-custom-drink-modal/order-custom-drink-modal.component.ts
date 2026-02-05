@@ -1,4 +1,4 @@
-import {Component, effect, inject, signal, untracked, WritableSignal} from '@angular/core';
+import {Component, computed, effect, inject, signal, untracked, WritableSignal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Ingredient, IngredientsService, OrderPreparation} from '../../services/ingredients.service';
 import {ModalService} from '../../services/modal.service';
@@ -35,6 +35,7 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
 
   prompt = signal<string>('');
   aiGenerating = signal<boolean>(false);
+  protected canSubmit = computed(() => this.orderIngredients().length > 0 && !this.globalError());
 
   /** Prevents re-applying the same reorder payload repeatedly (which can cause reactive loops). */
   private lastAppliedReorderKey = '';
@@ -109,14 +110,10 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
     return this.orderIngredients().some(i => i.ingredientName === name);
   }
 
-  toggleIngredient(ingredient: Ingredient, e: EventTarget, select: boolean = false) {
+  toggleIngredient(ingredient: Ingredient) {
     this.clearGlobalError();
     this.clearFieldError(ingredient.ingredientName);
-    const checked = this.isSelected(ingredient.ingredientName)
-    if(e instanceof HTMLInputElement) {
-      if(select) e.select()
-      if(checked) return;
-    }
+    const checked = this.isSelected(ingredient.ingredientName);
     const name = ingredient.ingredientName;
     const amount = this.getAmount(name);
     if (!checked) {
@@ -132,9 +129,19 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
 
   updateAmount(name: string, value: number) {
     this.clearFieldError(name);
-    this.ingredientAmounts.set({...this.ingredientAmounts(), [name]: value && value > 0 ? value < 500 ? value : 500 : 1});
+    const nextValue = value && value > 0 ? value < 500 ? value : 500 : 1;
+    this.ingredientAmounts.set({...this.ingredientAmounts(), [name]: nextValue});
     if (this.isSelected(name)) {
-      this.orderIngredients.set(this.orderIngredients().map(i => i.ingredientName === name ? {...i, amount: value} : i));
+      this.orderIngredients.set(this.orderIngredients().map(i => i.ingredientName === name ? {...i, amount: nextValue} : i));
+    }
+  }
+
+  adjustAmount(name: string, delta: number) {
+    const current = this.getAmount(name) || 1;
+    const next = Math.min(500, Math.max(1, current + delta));
+    this.updateAmount(name, next);
+    if (!this.isSelected(name)) {
+      this.orderIngredients.set([...this.orderIngredients(), {ingredientName: name, amount: next, status: ''}]);
     }
   }
 

@@ -4,13 +4,13 @@
   align-items: center;
   background: var(--nav-bg);
   color: white;
-  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
+  box-shadow: var(--shadow-md);
   z-index: 3;
   position: sticky;
-  padding: 10px 30px 10px 20px;
-  gap: 20px;
+  padding: 10px 24px 10px 16px;
+  gap: 16px;
   box-sizing: border-box;
-  transition: all 0.5s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 #logo {
@@ -19,30 +19,32 @@
 }
 
 .link{
-  font-size: 32px;
+  font-size: 22px;
   font-family: JosefinSans,sans-serif;
   text-decoration: none;
   color: var(--body-bg);
-  font-weight: lighter;
+  font-weight: 600;
 }
 
 .bigLink{
-  font-size: 32px;
+  font-size: 24px;
   font-weight: bold;
   color: var(--order-btn-bg);
 }
 
 #nav-page-container{
   display: flex;
-  gap: 20px;
+  gap: 24px;
   width: 100%;
   align-items: center;
   transition: max-height 0.3s ease;
+  flex-wrap: wrap;
 }
 
 .active {
   text-decoration: underline;
   text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
 }
 
 #account-toggle {
@@ -51,17 +53,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--nav-overlay-bg);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 #account-toggle {
-  min-width: 60px;
-  min-height: 60px;
+  min-width: 52px;
+  min-height: 52px;
   border-radius: 50% !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #account-toggle p {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--body-bg);
   letter-spacing: 2px;
   font-weight: 1000;
@@ -77,19 +80,33 @@
   cursor: pointer;
 }
 
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-group-label {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 700;
+}
+
 @media screen and (max-width: 1000px) {
   #logo {
     height: 80px;
   }
 
   .link, .bigLink {
-    font-size: 28px;
+    font-size: 22px;
   }
 }
 
 @media screen and (max-width: 800px) {
   .link, .bigLink {
-    font-size: 26px;
+    font-size: 20px;
   }
 }
 
@@ -98,25 +115,29 @@
     display: none;
     flex-direction: column;
     width: 100%;
-    gap: 5px;
+    gap: 16px;
     overflow: hidden;
     max-height: 0;
   }
   #nav-page-container.open {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-height: 500px;
+    position: fixed;
+    inset: 0;
+    padding: 90px 24px 24px;
+    background: rgba(14, 45, 62, 0.92);
+    backdrop-filter: blur(12px);
+    justify-content: flex-start;
+    max-height: none;
+    overflow-y: auto;
   }
   .link,
   .bigLink {
-    background: var(--nav-overlay-bg);
-    padding: 8px 20px;
-    max-width: 120px;
-    border-radius: 5px;
-    text-align: start;
-    font-size: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 12px 18px;
+    min-width: 200px;
+    border-radius: var(--radius-control);
+    text-align: center;
+    font-size: 20px;
   }
 
   #menu-toggle {
@@ -124,12 +145,12 @@
     width: 60px;
   }
   #navbar.home {
-    background: transparent;
+    background: linear-gradient(180deg, rgba(14, 45, 62, 0.85), rgba(14, 45, 62, 0));
     position: absolute;
   }
   #navbar {
     width: 100%;
-    padding: 15px 20px;
+    padding: 12px 16px;
     height: auto;
     flex-wrap: wrap;
     gap: 15px;
@@ -140,8 +161,20 @@
   }
 
   #account-toggle {
-    background: var(--nav-overlay-bg);
+    background: rgba(255, 255, 255, 0.18);
     margin: 0;
+  }
+
+  .nav-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .nav-group-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.75);
   }
 }
 

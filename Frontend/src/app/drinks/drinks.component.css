@@ -1,11 +1,11 @@
 #drinks-page {
-  width: 90%;
+  width: min(1200px, 92%);
   margin: 0 auto;
 }
 
 .filter-container {
-  width: 95%;
-  margin: 30px auto;
+  width: 100%;
+  margin: var(--space-5) auto;
 }
 
 #drinks-section {
@@ -16,7 +16,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.9rem;
+  gap: var(--space-3);
   justify-items: start;
 }
 

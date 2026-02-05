@@ -32,7 +32,11 @@
     <div id="slide-track">
       @for (drink of recommendedDrinks(); track $index) {
         <div class="drink-card"
+          role="button"
+          tabindex="0"
           (click)="openModal(ModalType.Order, drink)"
+          (keydown.enter)="openModal(ModalType.Order, drink)"
+          (keydown.space)="$event.preventDefault(); openModal(ModalType.Order, drink)"
           [class.slide-focus]="getSlideState($index) === 'focus'"
           [class.slide-neighbour]="getSlideState($index) === 'neighbour'"
           [class.hidden]="getSlideState($index) === 'hidden'">
@@ -70,7 +74,12 @@
     </div>
     <div id="filtered-drinks">
       @for(drink of filteredDrinks(); track $index) {
-        <div class="drink-card" (click)="openModal(ModalType.Order, drink)">
+        <div class="drink-card"
+             role="button"
+             tabindex="0"
+             (click)="openModal(ModalType.Order, drink)"
+             (keydown.enter)="openModal(ModalType.Order, drink)"
+             (keydown.space)="$event.preventDefault(); openModal(ModalType.Order, drink)">
           <div class="drink-card-image-container">
             @if(drink.imgUrl) {
               <img src="{{drink.imgUrl}}" alt="{{drink.name}}">

@@ -7,16 +7,22 @@
         </div>
       }
       <div id="modal-ingredient-list">
-        <h3>Ingredients:</h3>
-        <ul>
+        <div class="ingredient-header">
+          <h3>Ingredients</h3>
+          <span>{{selectedDrink()?.drinkIngredients?.length ?? 0}} items</span>
+        </div>
+        <ul class="ingredient-list">
           @for (drink of selectedDrink()?.drinkIngredients; track drink) {
-            <li>{{drink.amount}}ml {{drink.ingredientName}}</li>
+            <li>
+              <span>{{drink.ingredientName}}</span>
+              <span class="ingredient-amount">{{drink.amount}} ml</span>
+            </li>
           }
-          <li class="checkbox-container" (click)="containsIce.set(!containsIce())">
-            <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
-            <label for="containsIce">Ice?</label>
-          </li>
         </ul>
+        <div class="ice-toggle checkbox-container" (click)="containsIce.set(!containsIce())">
+          <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
+          <label for="containsIce">Add ice</label>
+        </div>
       </div>
     </div>
     @if(selectedDrink()?.toppings) {

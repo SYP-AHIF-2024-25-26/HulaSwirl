@@ -1,32 +1,32 @@
 .modal {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  max-width: 400px;
+  background: #fffaf4;
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  max-width: 420px;
   margin: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-md);
   text-align: center;
+  border: 1px solid var(--border-subtle);
 }
 button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
+  margin-top: var(--space-3);
 }
 #statusMessage {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   white-space: pre-line;
 }
 .progress-container {
   width: 100%;
   height: 20px;
-  background-color: #ddd;
-  border-radius: 10px;
+  background-color: #f1e3cc;
+  border-radius: var(--radius-pill);
   overflow: hidden;
   margin-top: 10px;
 }
 
 .progress-bar {
   height: 100%;
-  background-color: var(--cancel-btn-bg);
+  background-color: var(--order-btn-bg);
   width: 0%;
   transition: width 0.2s linear;
 }

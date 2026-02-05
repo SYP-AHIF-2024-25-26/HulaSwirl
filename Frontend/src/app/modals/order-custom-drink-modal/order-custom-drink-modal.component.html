@@ -1,29 +1,41 @@
 <app-generic-modal [title]="title()" (closed)="closeModal()">
   <div modal-body id="custom-drink-modal">
     <div class="ai-generate">
-      <textarea id="prompt"
-                [(ngModel)]="prompt"
-                rows="3"
-                placeholder="Describe your perfect drink..."></textarea>
-
+      <div class="ai-copy">
+        <h4>AI Drink Generator</h4>
+        <p>Describe the vibe, sweetness, and ingredients you love. We'll build a balanced mix.</p>
+      </div>
+      <div class="ai-input">
+        <textarea id="prompt"
+                  [(ngModel)]="prompt"
+                  rows="3"
+                  placeholder="e.g. tropical, not too sweet, pineapple + mint"></textarea>
+        <p class="ai-hint">Tip: mention flavor, mood, and 2–3 ingredients.</p>
+      </div>
       <button type="button"
               (click)="aiGenerate()"
               [disabled]="aiGenerating()">
-        AI-Generate
+        {{ aiGenerating() ? 'Working…' : 'AI Generate' }}
       </button>
     </div>
     <div id="ingredient-list">
       @for(ingredient of availableIngredients(); track $index){
-        <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)" (click)="toggleIngredient(ingredient, $event.target!)">
-          <input type="checkbox" class="ingredient-check" tabindex="0" [checked]="isSelected(ingredient.ingredientName)">
-          <div class="order-ingredient-details">
+        <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)">
+          <label class="ingredient-toggle">
+            <input type="checkbox" class="ingredient-check" tabindex="0" [checked]="isSelected(ingredient.ingredientName)" (change)="toggleIngredient(ingredient)">
+            <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
+          </label>
+          @if (isSelected(ingredient.ingredientName)) {
             <div class="ingredient-properties">
-              <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
-              <input min="1" max="500" type="number" class="order-ingredient-amount form-input" (input)="toggleIngredient(ingredient, $event.target!)" (click)="toggleIngredient(ingredient, $event.target!, true)" [attr.tabindex]="$index + 1" [ngModel]="getAmount(ingredient.ingredientName)" (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
+              <button type="button" class="stepper-btn" (click)="adjustAmount(ingredient.ingredientName, -10)">−</button>
+              <input min="1" max="500" step="10" type="number" class="order-ingredient-amount form-input" [attr.tabindex]="$index + 1" [ngModel]="getAmount(ingredient.ingredientName)" (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
+              <button type="button" class="stepper-btn" (click)="adjustAmount(ingredient.ingredientName, 10)">+</button>
               <span class="order-ingredient-unit">ml</span>
             </div>
             <p class="error field-error">{{ getStatus(ingredient.ingredientName) }}</p>
-          </div>
+          } @else {
+            <p class="ingredient-hint">Tap to add this ingredient</p>
+          }
         </div>
       } @empty {
         <div id="no-ingredients">
@@ -36,7 +48,7 @@
       }
     <div modal-buttons class="order-buttons">
       <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
-      <button class="button submit-btn" (click)="submitOrder()">Order</button>
+      <button class="button submit-btn" [disabled]="!canSubmit()" (click)="submitOrder()">Order</button>
     </div>
   </div>
 </app-generic-modal>

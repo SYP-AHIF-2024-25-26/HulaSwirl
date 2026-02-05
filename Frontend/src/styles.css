@@ -3,6 +3,7 @@
   --nav-bg: #0e2d3e;
   --nav-overlay-bg: rgba(21, 60, 81, 0.65);
   --popup-bg: #f4e3cd;
+  --card-bg: #fff6ea;
   --link-color: #6091af;
   --ingredient-bg-color: #f4f3f2;
   --ingredient-quantity-bg-color: #f1e1c3;
@@ -17,6 +18,28 @@
   --primary-font-color: #575757;
   --heavy-font-color: #3f3f3f;
   --form-input-bg-yellow: #fdfded;
+  --text-muted: #7a5b3c;
+  --border-subtle: #ead7bc;
+  --focus-ring: rgba(243, 136, 96, 0.5);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius-card: 12px;
+  --radius-control: 10px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 4px 10px rgba(68, 47, 36, 0.12);
+  --shadow-md: 0 12px 24px rgba(68, 47, 36, 0.18);
+
+  --status-pending-bg: #ffe6b0;
+  --status-pending-text: #8a4c00;
+  --status-accepted-bg: #cdeed9;
+  --status-accepted-text: #0f6a39;
+  --status-canceled-bg: #ffd1d1;
+  --status-canceled-text: #9c2626;
 
   --default-font: 'JosefinSans';
   --primary-font: 'AdlamDisplay';
@@ -27,18 +50,23 @@ body{
   font-family: var(--default-font), serif;
   background: var(--body-bg);
   color: var(--primary-font-color);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--primary-font), serif;
+  margin: 0;
 }
 
 h1 {
   font-size: 2.5rem;
+  line-height: 1.2;
 }
 
 h2 {
   font-size: 2rem;
+  line-height: 1.25;
 }
 
 h3 {
@@ -55,19 +83,16 @@ p, span, label, input, textarea, select {
   font-size: 1rem;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently */
-}
-
-body::-webkit-scrollbar {
-  display: none;
-}
-html::-webkit-scrollbar {
-  display: none;
 }
 
 html{
@@ -96,40 +121,54 @@ html{
 }
 
 .container {
-  padding: 20px 12%;
+  padding: var(--space-6) 12%;
 }
 
 .button {
-  background-color: #fdfded;
-  border: none;
-  color: white;
+  background-color: #fffaf1;
+  border: 1px solid var(--border-subtle);
+  color: var(--heavy-font-color);
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 10px;
-  transition: 0.3s;
-  filter:saturate(200%);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-control);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  box-shadow: var(--shadow-sm);
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .button:disabled {
   cursor: not-allowed;
-  filter: saturate(100%);
+  opacity: 0.6;
+  box-shadow: none;
 }
 
 .button:hover:not(:disabled) {
-  scale: 1.05;
+  transform: translateY(-1px);
+  background-color: #fff0da;
+  border-color: #e6c9a6;
 }
 
 .cancel-btn {
   background-color: var(--cancel-btn-bg);
+  border-color: #d15b5b;
+  color: #fff;
 }
 
 .submit-btn {
   background: var(--sunset-gradient);
+  border-color: rgba(255, 145, 114, 0.7);
+  color: #3b1d1d;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px dashed #d9c3a7;
+  color: var(--heavy-font-color);
 }
 
 .checkbox-container {
@@ -145,10 +184,10 @@ html{
 
 .checkbox-container input {
   appearance: none;
-  min-width: 20px;
-  min-height: 20px;
+  min-width: 22px;
+  min-height: 22px;
   border: 1px solid var(--element-primary-outline);
-  border-radius: 4px;
+  border-radius: 6px;
   background: #fff;
   margin: 0 8px 0 0;
   position: relative;
@@ -172,12 +211,12 @@ html{
 .form-input {
   box-sizing: border-box;
   background-color: var(--form-input-bg-yellow);
-  border: 1px solid var(--element-primary-outline);
-  border-radius: 5px;
-  padding: 5px 10px;
-  height: 100%;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  padding: 10px 12px;
+  min-height: 44px;
   outline: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .form-input::-webkit-outer-spin-button,
@@ -193,8 +232,8 @@ html{
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -219,13 +258,13 @@ html{
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
 }
 
 .filter-container > * {
   box-sizing: border-box;
-  height: 45px;
+  min-height: 44px;
 }
 
 .filter-container button {
@@ -236,20 +275,20 @@ html{
 
 .filter-container input {
   flex: 1;
-  padding: 10px;
+  padding: 10px 12px;
   font-size: 1rem;
   background: linear-gradient(#F6F6F6, #F6F6F6) padding-box, var(--sunrise-gradient) border-box;
-  border-radius: 15px;
+  border-radius: var(--radius-control);
   border: 3px solid transparent;
 }
 
 .filter-container select {
-  padding: 10px;
+  padding: 10px 12px;
   font-size: 1rem;
   cursor: pointer;
   background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
   var(--sunrise-gradient) border-box;
-  border-radius: 15px;
+  border-radius: var(--radius-control);
   border: 3px solid transparent;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -260,16 +299,16 @@ html{
 .drink-card {
   text-align: center;
   margin: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
   background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
   linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 4px solid transparent;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.25)) saturate(110%);
+  border-radius: var(--radius-card);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-sm);
   padding: 0;
   cursor: pointer;
 }
@@ -293,7 +332,7 @@ html{
   display: none;
 }
 .drink-card:hover{
-  transform: scale(103%);
+  transform: translateY(-2px);
 }
 
 .drink-card p:not(.drink-card-image-container > p) {
@@ -333,15 +372,19 @@ html{
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 5px;
-  padding: 4px 0;
+  gap: var(--space-1);
+  padding: var(--space-1) 0;
 }
 
 .badge {
-  border-radius: 3px;
-  padding: 8px 5px 5px;
+  border-radius: var(--radius-pill);
+  padding: 6px 10px 5px;
   margin: 0;
   width: fit-content;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
 }
 
 .system {
@@ -366,7 +409,7 @@ html{
 
 @media screen and (max-width: 550px) {
   .container {
-    padding: 20px 5%;
+    padding: var(--space-5) 5%;
   }
 
   .drink-card-image-container {
@@ -376,5 +419,23 @@ html{
 
   .drink-card p:not(.drink-card-image-container > p) {
     font-size: 16px;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

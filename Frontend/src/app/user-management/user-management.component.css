@@ -1,8 +1,9 @@
 .search-wrapper {
   display: flex;
   align-items: center;
-  margin: 1.5rem 0;
+  margin: var(--space-5) 0;
   flex-direction: column;
+  gap: var(--space-2);
 }
 
 .search-wrapper h2 {
@@ -19,18 +20,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.8rem;
+  gap: var(--space-3);
 }
 
 .user-card {
-  background: linear-gradient(145deg, #fff8ee, #f3e4cb);
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: #fff7ea;
+  border-radius: var(--radius-card);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  border: 1px solid #ead7bc;
+  gap: var(--space-3);
+  border: 1px solid var(--border-subtle);
   cursor: pointer;
 }
 
@@ -64,7 +65,7 @@
 
 .meta {
   margin: 0;
-  color: #75593b;
+  color: var(--text-muted);
   font-size: 0.95rem;
 }
 
@@ -74,8 +75,8 @@
 }
 
 .button {
-  background: var(--primary-color, #f28177);
-  color: #fff;
+  background: var(--sunset-gradient);
+  color: #3b1d1d;
 }
 
 .field-error {

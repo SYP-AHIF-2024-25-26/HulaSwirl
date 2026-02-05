@@ -57,6 +57,28 @@ export class OrderTerminalComponent extends ErrorHandlingComponent {
     }
   }
 
+  statusLabel(order: IncomingOrder) {
+    switch (order.status) {
+      case 1:
+        return 'Mixing';
+      case 2:
+        return 'Canceled';
+      default:
+        return 'New';
+    }
+  }
+
+  statusClass(order: IncomingOrder) {
+    switch (order.status) {
+      case 1:
+        return 'status accepted';
+      case 2:
+        return 'status canceled';
+      default:
+        return 'status pending';
+    }
+  }
+
   override setGlobalError(message: string) {
     this.statusService.showMessage(message);
   }
