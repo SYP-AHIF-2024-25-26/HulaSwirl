@@ -1,15 +1,20 @@
 <app-generic-modal [title]="title()" (closed)="closeModal()">
   <div modal-body id="custom-drink-modal">
     <div class="ai-generate">
+      <div class="ai-copy">
+        <h4>AI Mix Ideas</h4>
+        <p>Describe the vibe (sweetness, notes, ingredients). Example: “tropical, not too sweet, pineapple + mint”.</p>
+      </div>
       <textarea id="prompt"
                 [(ngModel)]="prompt"
                 rows="3"
-                placeholder="Describe your perfect drink..."></textarea>
+                placeholder="e.g. tropical, not too sweet, pineapple + mint"></textarea>
 
       <button type="button"
+              class="button small submit-btn"
               (click)="aiGenerate()"
               [disabled]="aiGenerating()">
-        AI-Generate
+        {{ aiGenerating() ? 'Generating…' : 'AI Generate' }}
       </button>
     </div>
     <div id="ingredient-list">

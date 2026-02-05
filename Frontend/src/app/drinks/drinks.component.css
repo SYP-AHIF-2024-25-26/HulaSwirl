@@ -16,10 +16,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.9rem;
+  gap: 1rem;
   justify-items: start;
 }
 
 .drink-name {
-  font-weight: bold;
+  font-weight: 700;
 }

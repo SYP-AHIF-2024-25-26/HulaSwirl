@@ -1,19 +1,20 @@
 .orders {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1.2rem;
+  padding: 1.5rem;
   justify-content: center;
 }
 
 .order-card {
-  background: #f1e3cc;
-  border-radius: 10px;
-  padding: 1rem;
+  background: var(--surface-strong);
+  border-radius: var(--radius-card);
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  min-width: 300px;
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid var(--border-soft);
+  min-width: 320px;
   width: 400px;
   box-sizing: border-box;
   flex: -1;
@@ -31,7 +32,7 @@
 
 .meta {
   font-size: 1rem;
-  color: #555;
+  color: #6f5338;
   margin-bottom: 0.75rem;
   text-align: center;
   margin-top: 3px;
@@ -52,14 +53,14 @@
 
 .ingredient-list-item p {
   margin: 0.1rem 0;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
 }
 
 .line-full-w {
   margin-top: auto;
   width: 100%;
   height: 1px;
-  background: #ccc;
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 50%;
 }
 
@@ -67,7 +68,7 @@
 .actions {
   display: flex;
   gap: 10px;
-  transition: transform .5s ease;
+  transition: transform 0.2s ease;
 }
 
 .actions button {

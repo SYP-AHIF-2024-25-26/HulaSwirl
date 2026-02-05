@@ -5,11 +5,11 @@
 #landing {
   width: 100%;
   background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
-  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
+  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.35)) saturate(110%);
   display:flex;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 40px;
   overflow: hidden;
   height: 70vh;
 }
@@ -23,7 +23,7 @@
   height: 100%;
   z-index: 0;
   right: 0;
-  filter: drop-shadow(0px 15px 4px rgba(0, 0, 0, 0.42));
+  filter: drop-shadow(0px 15px 4px rgba(0, 0, 0, 0.28));
 }
 
 .bgVideo {
@@ -51,24 +51,25 @@ video {
 }
 
 #landing-text {
-  margin-top: 10px
+  margin-top: 10px;
+  max-width: 520px;
 }
 
 #landing-text > * {
   color:#fefde6;
-  filter: drop-shadow(0px 0px 5px rgba(10, 17, 47, 0.75));
+  filter: drop-shadow(0px 0px 4px rgba(10, 17, 47, 0.5));
   line-height: 1.2;
 }
 
 #landing-title {
-  font-size: 50px;
+  font-size: 52px;
   margin-left: 10px;
   font-weight: bold;
 }
 
 #landing-subtitle {
-  font-size: 25px;
-  margin-top: 24px;
+  font-size: 22px;
+  margin-top: 20px;
   font-weight: lighter;
 }
 
@@ -78,15 +79,16 @@ video {
 
 #button-container {
   display: flex;
-  gap: 20px;
-  margin-top: 40px;
+  gap: 16px;
+  margin-top: 32px;
+  flex-wrap: wrap;
 }
 
 #button-container .button{
-  border-radius: 100px;
-  border: 3px solid var(--order-btn-bg);
-  padding: 15px;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.01));
+  border-radius: 999px;
+  border: 2px solid var(--order-btn-bg);
+  padding: 0 28px;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.06));
 }
 
 #order-button {
@@ -95,6 +97,7 @@ video {
 
 #order-custom-button {
   color:var(--order-btn-bg);
+  background: rgba(255, 255, 255, 0.92);
 }
 
 @media screen and (max-width: 830px) {
@@ -183,7 +186,7 @@ video {
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
+  filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.22));
   font-weight: bold;
 }
 .drink-card.slide-neighbour {

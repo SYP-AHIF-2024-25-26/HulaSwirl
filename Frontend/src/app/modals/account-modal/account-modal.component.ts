@@ -31,6 +31,7 @@ export class AccountModalComponent {
   protected modalData = signal<AccountModalData | null>(null);
   protected activeTab = signal<'info' | 'orders'>('info');
   protected confirmationOpen = signal(false);
+  protected deleteConfirmationText = signal('');
   protected newKey = signal('');
   protected roleUpdating = signal(false);
   protected feedback = signal('');
@@ -46,7 +47,8 @@ export class AccountModalComponent {
   });
 
   protected updateConfirmation(){
-    this.confirmationOpen.update(v => !v)
+    this.confirmationOpen.update(v => !v);
+    this.deleteConfirmationText.set('');
   }
 
   protected isAdmin = computed(() => {
@@ -59,6 +61,8 @@ export class AccountModalComponent {
   protected canDelete = computed(() => {
     return this.isSelf() || this.isAdmin();
   });
+
+  protected canConfirmDelete = computed(() => this.deleteConfirmationText().trim().toUpperCase() === 'DELETE');
 
   protected canLogout = computed(() => !this.isAdminView());
 
@@ -82,6 +86,7 @@ export class AccountModalComponent {
         this.feedback.set('');
         this.error.set('');
         this.confirmationOpen.set(false);
+        this.deleteConfirmationText.set('');
         this.activeTab.set('info');
       }
     });
@@ -133,6 +138,10 @@ export class AccountModalComponent {
   async deleteAccount() {
     const user = this.userInfo();
     if (!user || !this.canDelete()) return;
+    if (!this.canConfirmDelete()) {
+      this.error.set('Type DELETE to confirm account removal.');
+      return;
+    }
     try {
       await this.userService.deleteUser(user.username);
       this.feedback.set('Account deleted successfully.');

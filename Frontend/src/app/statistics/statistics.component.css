@@ -13,8 +13,9 @@
 .stat-card {
   background: var(--popup-bg);
   padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid var(--border-soft);
   min-width: 200px;
   text-align: start;
   height: fit-content;
@@ -59,4 +60,3 @@
 canvas {
   max-width: 100%;
 }
-

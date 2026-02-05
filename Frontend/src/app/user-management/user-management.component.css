@@ -24,19 +24,20 @@
 
 .user-card {
   background: linear-gradient(145deg, #fff8ee, #f3e4cb);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-subtle);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  border: 1px solid #ead7bc;
+  gap: 0.8rem;
+  border: 1px solid var(--border-soft);
   cursor: pointer;
+  min-height: 72px;
 }
 
 .avatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, #f2c96c, #f28177);
   color: #3b1d1d;
