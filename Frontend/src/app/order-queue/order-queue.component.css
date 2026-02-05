@@ -94,21 +94,17 @@
 
   /* Styling passend zur App */
   background: var(--popup-bg, #f4e3cd);
-  border: 4px solid #fff;
-  border-radius: 25px;
-  box-shadow: 0 10px 25px rgba(68, 47, 36, 0.2);
+  border: 2px solid #fff;
+  border-radius: 20px;
+  box-shadow: var(--shadow-soft);
 
   min-width: 225px;
-  max-height: 250px;
+  max-height: 260px;
   overflow-y: auto;
 
   /* Animation Origin oben (bei der Nuss) */
   transform-origin: top center;
   animation: fold 0.2s ease forwards;
-}
-
-.queue-timeline::-webkit-scrollbar{
-  display: none;
 }
 
 .queue-timeline-open {
@@ -215,5 +211,16 @@
   to {
     opacity: 0;
     transform: scaleY(0) translateY(-50px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-queue-wrapper:not(.dragging) {
+    animation: none;
+  }
+
+  .queue-timeline-open,
+  .queue-timeline {
+    animation: none;
   }
 }

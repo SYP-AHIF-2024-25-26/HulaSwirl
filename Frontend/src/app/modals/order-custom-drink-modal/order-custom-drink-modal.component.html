@@ -1,16 +1,24 @@
 <app-generic-modal [title]="title()" (closed)="closeModal()">
   <div modal-body id="custom-drink-modal">
     <div class="ai-generate">
-      <textarea id="prompt"
-                [(ngModel)]="prompt"
-                rows="3"
-                placeholder="Describe your perfect drink..."></textarea>
+      <div class="ai-header">
+        <h4>AI Mix Assistant</h4>
+        <p class="helper">Describe your vibe and ingredients. Example: “tropical, not too sweet, pineapple + mint”.</p>
+      </div>
+      <div class="ai-controls">
+        <textarea id="prompt"
+                  class="form-input"
+                  [(ngModel)]="prompt"
+                  rows="3"
+                  placeholder="Describe your perfect drink..."></textarea>
 
-      <button type="button"
-              (click)="aiGenerate()"
-              [disabled]="aiGenerating()">
-        AI-Generate
-      </button>
+        <button type="button"
+                class="button secondary-btn"
+                (click)="aiGenerate()"
+                [disabled]="aiGenerating()">
+          {{ aiGenerating() ? 'Working…' : 'AI Generate' }}
+        </button>
+      </div>
     </div>
     <div id="ingredient-list">
       @for(ingredient of availableIngredients(); track $index){

@@ -20,33 +20,72 @@
 
   --default-font: 'JosefinSans';
   --primary-font: 'AdlamDisplay';
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+
+  --radius-card: 12px;
+  --radius-input: 10px;
+  --radius-pill: 999px;
+
+  --border-warm: rgba(142, 108, 75, 0.2);
+  --border-light: rgba(255, 255, 255, 0.6);
+
+  --shadow-soft: 0 6px 18px rgba(68, 47, 36, 0.12);
+  --shadow-subtle: 0 2px 8px rgba(68, 47, 36, 0.08);
+
+  --status-pending-bg: #ffe3b3;
+  --status-pending-text: #8a4b00;
+  --status-accepted-bg: #d3f4db;
+  --status-accepted-text: #1f6b36;
+  --status-canceled-bg: #ffd7d7;
+  --status-canceled-text: #a12c2c;
+  --status-info-bg: #dcecff;
+  --status-info-text: #2c4c7a;
+
+  --focus-ring: 0 0 0 3px rgba(252, 93, 91, 0.35);
+  --card-bg: #fff8ef;
 }
 
-body{
-  margin:0;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
   font-family: var(--default-font), serif;
   background: var(--body-bg);
   color: var(--primary-font-color);
+  line-height: 1.5;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--primary-font), serif;
+  letter-spacing: 0.01em;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 2.8vw, 2.5rem);
+  line-height: 1.2;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  line-height: 1.25;
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 2vw, 1.5rem);
 }
 
 h4 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 
 p, span, label, input, textarea, select {
@@ -61,13 +100,6 @@ p, span, label, input, textarea, select {
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently */
-}
-
-body::-webkit-scrollbar {
-  display: none;
-}
-html::-webkit-scrollbar {
-  display: none;
 }
 
 html{
@@ -96,74 +128,93 @@ html{
 }
 
 .container {
-  padding: 20px 12%;
+  padding: var(--spacing-5) 12%;
 }
 
 .button {
   background-color: #fdfded;
-  border: none;
-  color: white;
-  padding: 10px 20px;
+  border: 1px solid transparent;
+  color: var(--heavy-font-color);
+  padding: 12px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 10px;
-  transition: 0.3s;
-  filter:saturate(200%);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-input);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  box-shadow: var(--shadow-subtle);
+  min-height: 44px;
+  min-width: 120px;
+  font-weight: 600;
 }
 
 .button:disabled {
   cursor: not-allowed;
-  filter: saturate(100%);
+  opacity: 0.6;
+  box-shadow: none;
 }
 
 .button:hover:not(:disabled) {
-  scale: 1.05;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 .cancel-btn {
   background-color: var(--cancel-btn-bg);
+  color: #fff;
 }
 
 .submit-btn {
   background: var(--sunset-gradient);
+  color: #3b1d1d;
+  border: 1px solid rgba(247, 151, 122, 0.4);
+}
+
+.secondary-btn {
+  background: #fffaf4;
+  border: 1px solid var(--border-warm);
+  color: var(--heavy-font-color);
 }
 
 .checkbox-container {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .checkbox-container label {
-  padding-top: 4px;
+  padding-top: 2px;
   cursor: pointer;
 }
 
 .checkbox-container input {
   appearance: none;
-  min-width: 20px;
-  min-height: 20px;
-  border: 1px solid var(--element-primary-outline);
-  border-radius: 4px;
+  min-width: 22px;
+  min-height: 22px;
+  border: 1px solid var(--border-warm);
+  border-radius: 6px;
   background: #fff;
   margin: 0 8px 0 0;
   position: relative;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
   cursor: pointer;
 }
 
 .checkbox-container input:checked:after {
   content: '';
   position: absolute;
-  left: 5px;
-  top: 0;
+  left: 6px;
+  top: 1px;
   width: 6px;
   height: 12px;
-  border: solid var(--primary-font-color);
+  border: solid var(--heavy-font-color);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
   display: block;
@@ -172,12 +223,19 @@ html{
 .form-input {
   box-sizing: border-box;
   background-color: var(--form-input-bg-yellow);
-  border: 1px solid var(--element-primary-outline);
-  border-radius: 5px;
-  padding: 5px 10px;
+  border: 1px solid var(--border-warm);
+  border-radius: var(--radius-input);
+  padding: 10px 12px;
   height: 100%;
   outline: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 44px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus-visible {
+  border-color: rgba(252, 93, 91, 0.6);
+  box-shadow: var(--focus-ring);
 }
 
 .form-input::-webkit-outer-spin-button,
@@ -193,8 +251,8 @@ html{
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -219,38 +277,35 @@ html{
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-5);
 }
 
 .filter-container > * {
   box-sizing: border-box;
-  height: 45px;
+  min-height: 44px;
 }
 
 .filter-container button {
   font-weight: bold;
   border: none !important;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
 }
 
 .filter-container input {
   flex: 1;
-  padding: 10px;
   font-size: 1rem;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box, var(--sunrise-gradient) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
+  background: #fffdf8;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-warm);
 }
 
 .filter-container select {
-  padding: 10px;
   font-size: 1rem;
   cursor: pointer;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  var(--sunrise-gradient) border-box;
-  border-radius: 15px;
-  border: 3px solid transparent;
+  background: #fffdf8;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-warm);
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -260,16 +315,15 @@ html{
 .drink-card {
   text-align: center;
   margin: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(#F6F6F6, #F6F6F6) padding-box,
-  linear-gradient(to bottom right, #ea6b52 , #f5d273) border-box;
-  border-radius: 15px;
-  border: 4px solid transparent;
-  filter: drop-shadow(0px 0px 10px rgba(68, 47, 36, 0.25)) saturate(110%);
+  background: #fff9f0;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-warm);
+  box-shadow: var(--shadow-subtle);
   padding: 0;
   cursor: pointer;
 }
@@ -293,7 +347,8 @@ html{
   display: none;
 }
 .drink-card:hover{
-  transform: scale(103%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
 }
 
 .drink-card p:not(.drink-card-image-container > p) {
@@ -338,10 +393,12 @@ html{
 }
 
 .badge {
-  border-radius: 3px;
-  padding: 8px 5px 5px;
+  border-radius: 6px;
+  padding: 6px 8px;
   margin: 0;
   width: fit-content;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .system {
@@ -366,7 +423,7 @@ html{
 
 @media screen and (max-width: 550px) {
   .container {
-    padding: 20px 5%;
+    padding: var(--spacing-5) 5%;
   }
 
   .drink-card-image-container {
@@ -376,5 +433,14 @@ html{
 
   .drink-card p:not(.drink-card-image-container > p) {
     font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

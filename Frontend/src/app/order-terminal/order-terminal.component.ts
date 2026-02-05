@@ -19,6 +19,28 @@ export class OrderTerminalComponent extends ErrorHandlingComponent {
   private readonly statusService = inject(ErrorService);
   public orders: WritableSignal<IncomingOrder[]> = this.ordersService.orders;
 
+  statusLabel(order: IncomingOrder) {
+    switch (order.status) {
+      case 1:
+        return 'Mixing';
+      case 2:
+        return 'Canceled';
+      default:
+        return 'New';
+    }
+  }
+
+  statusClass(order: IncomingOrder) {
+    switch (order.status) {
+      case 1:
+        return 'status accepted';
+      case 2:
+        return 'status canceled';
+      default:
+        return 'status pending';
+    }
+  }
+
   ngOnInit(): void {
     this.connectWebSocket();
   }

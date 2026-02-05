@@ -2,15 +2,20 @@
   <div class="orders">
     @for (o of orders(); track o) {
       <div class="order-card">
-        @if(o.containsIce) {
-          <h2>{{ o.drinkName }} <span class="ice">(❄️)</span></h2>
-        } @else {
-          <h2>{{ o.drinkName }}</h2>
-        }
-        <p class="meta">
-          By <strong>{{ o.user }}</strong> –
-          <small>{{ o.orderDate | date:'short' }}</small>
-        </p>
+        <div class="order-header">
+          <div>
+            @if(o.containsIce) {
+              <h2>{{ o.drinkName }} <span class="ice">(❄️)</span></h2>
+            } @else {
+              <h2>{{ o.drinkName }}</h2>
+            }
+            <p class="meta">
+              By <strong>{{ o.user }}</strong> •
+              <small>{{ o.orderDate | date:'short' }}</small>
+            </p>
+          </div>
+          <span [class]="statusClass(o)">{{ statusLabel(o) }}</span>
+        </div>
         <div class="order-content">
           <ul class="ingredient-list">
             @for (i of o.orderIngredients; track i) {
@@ -27,13 +32,12 @@
           <p>{{ o.totalAmount }} ml</p>
         </div>
         <div class="actions">
-          <button class="button cancel-btn" (click)="cancel(o.id)">Discard</button>
-          <button class="button submit-btn" (click)="confirm(o.id)">Mix</button>
+          <button class="button secondary-btn" (click)="cancel(o.id)">Cancel</button>
+          <button class="button submit-btn" (click)="confirm(o.id)">Start mixing</button>
         </div>
       </div>
     }
   </div>
 } @else {
-  <h3>There aren't any orders yet</h3>
+  <h3>No orders. The humans are calm. Suspicious.</h3>
 }
-

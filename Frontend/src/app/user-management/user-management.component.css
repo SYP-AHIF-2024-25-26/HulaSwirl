@@ -3,6 +3,7 @@
   align-items: center;
   margin: 1.5rem 0;
   flex-direction: column;
+  gap: 8px;
 }
 
 .search-wrapper h2 {
@@ -23,15 +24,22 @@
 }
 
 .user-card {
-  background: linear-gradient(145deg, #fff8ee, #f3e4cb);
+  background: #fff8ee;
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-subtle);
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  border: 1px solid #ead7bc;
+  border: 1px solid var(--border-warm);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 260px;
+}
+
+.user-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
 }
 
 .avatar {
@@ -44,6 +52,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
+  box-shadow: var(--shadow-subtle);
 }
 
 .details {

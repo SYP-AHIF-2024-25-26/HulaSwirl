@@ -11,13 +11,14 @@
 }
 
 .stat-card {
-  background: var(--popup-bg);
+  background: #fff8ee;
   padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  box-shadow: var(--shadow-subtle);
   min-width: 200px;
   text-align: start;
   height: fit-content;
+  border: 1px solid var(--border-warm);
 }
 
 .stat-card > h3 {
@@ -54,9 +55,13 @@
 .pie-chart {
   flex: 1 1 300px;
   max-width: 400px;
+  background: #fff8ee;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid var(--border-warm);
+  box-shadow: var(--shadow-subtle);
 }
 
 canvas {
   max-width: 100%;
 }
-

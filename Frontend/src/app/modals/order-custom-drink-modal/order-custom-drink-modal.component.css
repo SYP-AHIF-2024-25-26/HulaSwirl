@@ -1,23 +1,23 @@
 #custom-drink-modal {
-  max-width: 600px;
+  max-width: 680px;
 }
 
 #ingredient-list {
   overflow-y: auto;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 #ingredient-list .order-ingredient {
   display: flex;
   align-items: center;
   color: var(--primary-font-color);
-  background-color: var(--body-bg);
-  border: 1px solid #ead7bc;
-  border-radius: 10px;
-  padding: 10px;
-  transition: background-color 0.5s ease-in-out;
+  background-color: #fffaf3;
+  border: 1px solid var(--border-warm);
+  border-radius: 12px;
+  padding: 12px;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease;
 }
 
 .order-buttons {
@@ -41,14 +41,19 @@
 
 #ingredient-list .order-ingredient.selected {
   background-color: var(--ingredient-selected-bg-color);
+  border-color: rgba(100, 164, 93, 0.4);
+}
+
+#ingredient-list .order-ingredient:focus-within {
+  box-shadow: var(--focus-ring);
 }
 
 .ingredient-check {
   appearance: none;
-  min-width: 18px;
-  min-height: 18px;
-  border: 1px solid var(--primary-font-color);
-  border-radius: 4px;
+  min-width: 20px;
+  min-height: 20px;
+  border: 1px solid var(--border-warm);
+  border-radius: 6px;
   background: #fff;
   margin-right: 10px;
   position: relative;
@@ -84,11 +89,17 @@
   align-items: center;
   margin: 7px 0 5px;
   gap: 5px;
+  flex-wrap: wrap;
+}
+
+.order-ingredient:not(.selected) .order-ingredient-amount,
+.order-ingredient:not(.selected) .order-ingredient-unit {
+  display: none;
 }
 
 .order-ingredient-amount {
   box-sizing: border-box;
-  width: 55px;
+  width: 70px;
   text-align: end;
 }
 
@@ -109,71 +120,54 @@
 /* Container für AI-Generate */
 .ai-generate {
   display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
-  background-color: var(--ingredient-bg-color);
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background-color: #fff3e2;
   color: var(--primary-font-color);
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-warm);
 }
 
-.ai-generate textarea {
+.ai-header h4 {
+  margin: 0;
+}
+
+.ai-header .helper {
+  margin: 0.2rem 0 0;
+}
+
+.helper {
+  color: #7f5e3f;
+  font-size: 0.85rem;
+}
+
+.ai-controls {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.ai-controls textarea {
   flex: 1;
-  height: 1.15rem;
-  min-height: 1.2rem;
-  max-height: 9rem;
+  min-height: 120px;
+  max-height: 200px;
   resize: vertical;
-  padding: 0.5rem 0.75rem;
-  border-radius: 5px;
-  border: 1px solid #b1b1b1;
-  font-size: 0.9rem;
-  line-height: 1.35;
-  outline: none;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
-/* AI-Button */
-.ai-generate button {
-  align-self: center;
-  padding: 0.45rem 0.7rem;
-  border-radius: 5px;
-  border: 1px solid #4f46e5;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  color: #f9fafb;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  transition:
-    background-color 0.16s ease-out,
-    box-shadow 0.16s ease-out,
-    transform 0.08s ease-out,
-    border-color 0.16s ease-out;
-}
-
-/* optional kleines Icon vorne dran */
-.ai-generate button::before {
-  content: "✨";
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-/* Hover / Active */
-.ai-generate button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+.ai-controls .button {
+  min-width: 140px;
 }
 
 @media (max-width: 600px) {
-  .ai-generate {
+  .ai-controls {
     flex-direction: column;
   }
-  .ai-generate button {
-    justify-content: center;
+
+  .ai-controls .button {
+    width: 100%;
   }
 }

@@ -2,7 +2,9 @@
   background-color: var(--popup-bg);
   margin: 5px;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-subtle);
 }
 
 #ingredient-manager {
@@ -49,7 +51,7 @@
   align-items: center;
   font-weight: bold;
   font-size: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 40px;
   height: 40px;
   cursor: pointer;
@@ -59,17 +61,17 @@
 
 .slot-ingredient {
   flex: 1;
-  border: 2px solid var(--element-primary-outline);
-  border-radius: 8px;
+  border: 1px solid var(--border-warm);
+  border-radius: 12px;
   overflow: hidden;
   min-height: 47px;
   transition: height 1s ease;
 }
 
 .ingredient {
-  background-color: var(--ingredient-bg-color);
+  background-color: #fff9f0;
   padding: 15px;
-  border-radius: 4px;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,6 +80,7 @@
   position: relative;
   transition: transform 0.3s ease;
   overflow: hidden;
+  border: 1px solid var(--border-warm);
 }
 
 .dragging {
@@ -103,7 +106,7 @@
   position: absolute;
   bottom: 0;
   left: -2px;
-  height: 7px;
+  height: 6px;
   background: var(--sunrise-gradient);
   transition: width 0.3s ease;
   border-radius: 4px;
@@ -117,10 +120,11 @@
 
 .ingredient-quantity input {
   text-align: right;
-  border: none;
-  border-radius: 3px;
-  width: 35px;
+  border: 1px solid var(--border-warm);
+  border-radius: 6px;
+  width: 44px;
   background-color: var(--ingredient-quantity-bg-color);
+  min-height: 32px;
 }
 
 /* Chrome, Safari, Edge, Opera */

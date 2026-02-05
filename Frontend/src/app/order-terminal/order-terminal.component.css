@@ -7,22 +7,23 @@
 }
 
 .order-card {
-  background: #f1e3cc;
-  border-radius: 10px;
+  background: #fff8ee;
+  border-radius: 12px;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-subtle);
   min-width: 300px;
   width: 400px;
   box-sizing: border-box;
   flex: -1;
+  border: 1px solid var(--border-warm);
+  gap: 0.6rem;
 }
 
 /* Titel und Meta */
 .order-card h2 {
   margin: 0 0 0.5rem;
-  text-align: center;
 }
 
 .ice {
@@ -32,8 +33,7 @@
 .meta {
   font-size: 1rem;
   color: #555;
-  margin-bottom: 0.75rem;
-  text-align: center;
+  margin-bottom: 0.25rem;
   margin-top: 3px;
 }
 
@@ -52,14 +52,14 @@
 
 .ingredient-list-item p {
   margin: 0.1rem 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .line-full-w {
   margin-top: auto;
   width: 100%;
   height: 1px;
-  background: #ccc;
+  background: rgba(91, 66, 46, 0.2);
   border-radius: 50%;
 }
 
@@ -67,7 +67,7 @@
 .actions {
   display: flex;
   gap: 10px;
-  transition: transform .5s ease;
+  transition: transform .2s ease;
 }
 
 .actions button {
@@ -102,4 +102,37 @@
   margin-top: 0.25rem;
   font-size: 0.9rem;
   font-weight: bold;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.status {
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status.pending {
+  background: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.status.accepted {
+  background: var(--status-accepted-bg);
+  color: var(--status-accepted-text);
+}
+
+.status.canceled {
+  background: var(--status-canceled-bg);
+  color: var(--status-canceled-text);
 }

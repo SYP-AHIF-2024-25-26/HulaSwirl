@@ -7,21 +7,27 @@
         </div>
       }
       <div id="modal-ingredient-list">
-        <h3>Ingredients:</h3>
-        <ul>
+        <div class="section-header">
+          <h3>Ingredients</h3>
+          <span class="pill">Measured in ml</span>
+        </div>
+        <ul class="ingredient-list">
           @for (drink of selectedDrink()?.drinkIngredients; track drink) {
-            <li>{{drink.amount}}ml {{drink.ingredientName}}</li>
+            <li class="ingredient-item">
+              <span class="ingredient-amount">{{drink.amount}} ml</span>
+              <span class="ingredient-name">{{drink.ingredientName}}</span>
+            </li>
           }
-          <li class="checkbox-container" (click)="containsIce.set(!containsIce())">
-            <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
-            <label for="containsIce">Ice?</label>
-          </li>
         </ul>
+        <div class="ice-toggle checkbox-container" (click)="containsIce.set(!containsIce())">
+          <input type="checkbox" [(ngModel)]="containsIce" id="containsIce">
+          <label for="containsIce">Add ice</label>
+        </div>
       </div>
     </div>
     @if(selectedDrink()?.toppings) {
       <div id="toppings">
-        <h4>Toppings:</h4>
+        <h4>Toppings</h4>
         <p>{{selectedDrink()!.toppings}}</p>
       </div>
     }
@@ -30,6 +36,7 @@
     <p class="error global-error">{{ globalError() }}</p>
   </div>
   <div modal-buttons>
-    <button class="button submit-btn" (click)="submitOrder()">Order</button>
+    <button class="button secondary-btn" (click)="closeModal()">Cancel</button>
+    <button class="button submit-btn" (click)="submitOrder()">Order Drink</button>
   </div>
 </app-generic-modal>
