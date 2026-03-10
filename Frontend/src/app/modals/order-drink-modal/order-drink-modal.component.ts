@@ -1,4 +1,4 @@
-import {Component, inject, signal, Signal} from '@angular/core';
+import {Component, effect, inject, signal, Signal} from '@angular/core';
 
 import {GenericModalComponent} from '../generic-modal/generic-modal.component';
 import {Drink, DrinkService} from '../../services/drink.service';
@@ -21,6 +21,18 @@ export class OrderDrinkModalComponent extends ErrorHandlingComponent {
   private readonly modalService = inject(ModalService);
   selectedDrink: Signal<Drink | null> = this.modalService.getModalData();
   containsIce = signal(false);
+  totalAmount = signal(0);
+
+  constructor() {
+    super();
+    effect(() => {
+      const drink = this.selectedDrink();
+      if (drink && drink.drinkIngredients) {
+        const total = drink.drinkIngredients.reduce((sum, ingredient) => sum + (ingredient.amount || 0), 0);
+        this.totalAmount.set(total);
+      }
+    });
+  }
 
   closeModal() {
     this.clearGlobalError();

@@ -25,17 +25,15 @@
             </div>
             <div class="info-block">
               <span class="label">Role</span>
-              @if (isAdmin()) {
+              @if (canManageRole()) {
                 <div class="role-row">
                   <select class="form-input" [ngModel]="userInfo()!.role" (change)="changeRole($event)" [disabled]="roleUpdating()">
-                    @if (userService.hasRole('system')) {
-                      <option value="admin">Admin</option>
+                    @for (role of availableRoles(); track role) {
+                      <option [value]="role">{{role | titlecase}}</option>
                     }
-                    <option value="operator">Operator</option>
-                    <option value="user">User</option>
                   </select>
                   @if (roleUpdating()) {
-                    <span class="hint">Updating…</span>
+                    <span class="hint">Updating...</span>
                   }
                 </div>
               } @else {
@@ -51,13 +49,13 @@
               <p class="value">{{ userInfo()!.lastLogin ? (userInfo()!.lastLogin | date:'MMM d, y, HH:mm') : 'Never' }}</p>
             </div>
           </div>
-          @if (isAdmin()) {
+          @if (canResetPassword()) {
             <div class="admin-actions">
               <h4>Security</h4>
-              <p class="helper">Only admins can reset user passwords.</p>
+              <p class="helper">Reset the password for {{userInfo()!.username}}.</p>
               <div class="form-row">
-                <input class="form-input" type="password" placeholder="Set new password" [ngModel]="newKey()" (ngModelChange)="newKey.set($event)" />
-                <button class="button cancel-btn" [disabled]="savingKey()" (click)="resetKey()">{{ savingKey() ? 'Saving…' : 'Reset Password' }}</button>
+                <input class="form-input" type="text" placeholder="Set new password" [ngModel]="newKey()" (ngModelChange)="newKey.set($event)" />
+                <button class="button cancel-btn" [disabled]="savingKey()" (click)="resetKey()">{{ savingKey() ? 'Saving...' : 'Reset Password' }}</button>
               </div>
             </div>
           }
@@ -67,7 +65,7 @@
                 <h4>Danger Zone</h4>
                 <p class="helper">Deleting this account is irreversible. Active sessions will be signed out.</p>
                 <button class="button cancel-btn" (click)="updateConfirmation()">
-                  {{ confirmationOpen() ? 'Cancel' : (isSelf() ? 'Delete My Account' : 'Delete User') }}
+                  {{ confirmationOpen() ? 'Cancel' : (isSelf() ? 'Delete My Account' : 'Delete ' + userInfo()!.username) }}
                 </button>
               </div>
               @if (confirmationOpen()) {

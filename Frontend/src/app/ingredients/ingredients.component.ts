@@ -1,14 +1,17 @@
 import {ChangeDetectionStrategy, Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 
+import {DrinkService} from '../services/drink.service';
 import {Ingredient, IngredientsService} from '../services/ingredients.service';
 import {ErrorHandlingComponent} from '../services/error-handling';
 
 @Component({
   selector: 'app-ingredients',
   imports: [
-    FormsModule
-],
+    FormsModule,
+    DecimalPipe
+  ],
   templateUrl: './ingredients.component.html',
   standalone: true,
   styleUrls: ['./ingredients.component.css'],
@@ -18,66 +21,54 @@ import {ErrorHandlingComponent} from '../services/error-handling';
   }
 })
 export class IngredientsComponent extends ErrorHandlingComponent {
-  private readonly ingredientsService = inject(IngredientsService)
+  private readonly ingredientsService = inject(IngredientsService);
+  private readonly drinkService = inject(DrinkService);
+
   readonly ingredientSlots = this.ingredientsService.ingredientSlots;
-  activeSlots: boolean[] = new Array(this.ingredientSlots).fill(true);
   avIngredients: WritableSignal<Ingredient[]> = signal([]);
   unIngredients: WritableSignal<Ingredient[]> = signal([]);
   private draggedIngredient: Ingredient | null = null;
   private sourceContainer: 'available' | 'unavailable' | null = null;
-  private sourceIndex: number | null = null;
-  private dropSuccessful: boolean = false;
+  private dropSuccessful = false;
   private draggedElement: HTMLElement | null = null;
 
   constructor() {
     super();
-    effect(async () => {
-      await this.ingredientsService.loadIngredients();
-      this.updateIngredientLists();
+
+    effect(() => {
+      const allIngredients = this.ingredientsService.ingredients();
+      this.avIngredients.set(
+        allIngredients
+          .filter(ing => ing.pumpSlot !== null)
+          .sort((a, b) => (a.pumpSlot ?? 0) - (b.pumpSlot ?? 0) || a.ingredientName.localeCompare(b.ingredientName))
+      );
+      this.unIngredients.set(
+        allIngredients
+          .filter(ing => ing.pumpSlot === null)
+          .sort((a, b) => a.ingredientName.localeCompare(b.ingredientName))
+      );
     });
   }
 
-  private updateIngredientLists(): void {
-    const allIngredients = this.ingredientsService.ingredients();
-    this.avIngredients.set(allIngredients.filter(ing => ing.pumpSlot !== null));
-    this.unIngredients.set(allIngredients.filter(ing => ing.pumpSlot === null));
-  }
-
-  dragStart(event: DragEvent, index: number, available: boolean = true) {
-    const ingredient = available ? this.getIngredientByIndex(index) : this.unIngredients()[index];
-    if (!ingredient) return;
-
+  dragStart(event: DragEvent, ingredient: Ingredient, available: boolean): void {
     this.draggedIngredient = ingredient;
     this.sourceContainer = available ? 'available' : 'unavailable';
-    this.sourceIndex = index;
     this.dropSuccessful = false;
 
-    // Remove from source list
-    if(available) {
-      this.avIngredients.update(ings =>
-        ings.filter(ing => ing?.pumpSlot !== ingredient.pumpSlot)
-      );
-    } else {
-      this.unIngredients.update(ings => {
-        const newArr = [...ings];
-        newArr.splice(index, 1);
-        return newArr;
-      });
-    }
-
-    // Setup visual drag element
-    const targetEl = (event.target as HTMLElement);
+    const targetEl = (event.currentTarget as HTMLElement) ?? (event.target as HTMLElement);
     this.draggedElement = targetEl.cloneNode(true) as HTMLElement;
     targetEl.style.opacity = '0';
     this.draggedElement.classList.add('dragging');
     document.body.appendChild(this.draggedElement);
     this.followMouse(event);
 
-    event.target?.addEventListener('dragend', (e: Event) => {
-      this.dragEnd(e as DragEvent).catch(err => console.error('Error in dragEnd:', err));
-    });
+    targetEl.addEventListener('dragend', (e: Event) => {
+      this.dragEnd(e as DragEvent, targetEl).catch(err => console.error('Error in dragEnd:', err));
+    }, { once: true });
+
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', ingredient.ingredientName);
     }
   }
 
@@ -89,142 +80,163 @@ export class IngredientsComponent extends ErrorHandlingComponent {
     }
   }
 
-  async dragEnd(event: DragEvent): Promise<void> {
-    if (!this.dropSuccessful && this.draggedIngredient) {
-      if (this.sourceContainer === 'available' && this.sourceIndex !== null) {
-        this.avIngredients.update(ings => [...ings, this.draggedIngredient!]);
-      } else if (this.sourceContainer === 'unavailable') {
-        this.unIngredients.update(ings => [...ings, this.draggedIngredient!]);
-      }
+  async dragEnd(_event: DragEvent, sourceElement?: HTMLElement): Promise<void> {
+    if (sourceElement) {
+      sourceElement.style.opacity = '1';
     }
 
-    if (this.draggedElement) {
+    if (this.draggedElement?.parentNode) {
       this.draggedElement.classList.remove('dragging');
-      document.body.removeChild(this.draggedElement);
+      this.draggedElement.parentNode.removeChild(this.draggedElement);
     }
 
     this.clearDragState();
-    await this.saveIngredients();
   }
 
-  clearDragState() {
+  clearDragState(): void {
     this.draggedIngredient = null;
     this.sourceContainer = null;
-    this.sourceIndex = null;
     this.dropSuccessful = false;
     this.draggedElement = null;
   }
 
-  dragOver(event: DragEvent) {
+  dragOver(event: DragEvent): void {
     event.preventDefault();
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move';
     }
   }
 
-  availableDrop(event: DragEvent, slotIndex: number) {
-    if (!this.draggedIngredient) return;
-
-    this.avIngredients.update(ings => {
-      let newArr = [...ings];
-      const existingIngredient = this.getIngredientByIndex(slotIndex);
-
-      if (existingIngredient) {
-        this.draggedIngredient!.pumpSlot = existingIngredient.pumpSlot;
-
-        if (this.sourceContainer === 'available' && this.sourceIndex !== null) {
-          existingIngredient.pumpSlot = this.sourceIndex + 1;
-        } else if (this.sourceContainer === 'unavailable') {
-          newArr = newArr.filter(ing => ing.pumpSlot !== existingIngredient.pumpSlot);
-          this.moveIngredient(existingIngredient, false);
-        }
-      } else {
-        this.draggedIngredient!.pumpSlot = slotIndex + 1;
-      }
-
-      newArr.push(this.draggedIngredient!);
-      return newArr;
-    });
-
-    this.dropSuccessful = true;
-  }
-
-  async moveToUnavailable(ingredient: Ingredient) {
-    await this.moveIngredient(ingredient, false);
-  }
-
-  async moveToAvailable(ingredient: Ingredient) {
-    await this.moveIngredient(ingredient, true);
-  }
-
-  // Consolidated function for moving ingredients between available/unavailable
-  private async moveIngredient(ingredient: Ingredient, toAvailable: boolean): Promise<void> {
-    if (!ingredient) return;
-
-    if (toAvailable) {
-      // Check if we can move to available
-      if (ingredient.pumpSlot !== null || this.avIngredients().length == this.ingredientSlots) return;
-
-      // Find first available slot
-      for(let i = 0; i < this.ingredientSlots; i++) {
-        if (!this.avIngredients().some(ing => ing.pumpSlot === i + 1)) {
-          ingredient.pumpSlot = i + 1;
-          break;
-        }
-      }
-
-      this.avIngredients.update(ings => [...ings, ingredient]);
-      this.unIngredients.update(ings => ings.filter(ing => ing.ingredientName !== ingredient.ingredientName));
-    } else {
-      // Move to unavailable
-      this.unIngredients.update(ings => [...ings, ingredient]);
-      this.avIngredients.update(ings => ings.filter(ing => ing.pumpSlot !== ingredient.pumpSlot));
-      ingredient.pumpSlot = null;
-    }
-
-    ingredient.maxAmount = ingredient.remainingAmount;
-    await this.saveIngredients();
-  }
-
-  unavailableDrop(event: DragEvent) {
-    if (!this.draggedIngredient) return;
-    this.moveIngredient(this.draggedIngredient, false);
-    this.dropSuccessful = true;
-  }
-
-  async updateRemaining(event: FocusEvent, index: number) {
-    const target = event.target as HTMLInputElement;
-    const newValue = parseInt(target.value);
-
-    if (newValue < 0 || newValue > 9999 || isNaN(newValue)) {
-      const ing = this.getIngredientByIndex(index);
-      if (ing) target.value = ing.remainingAmount.toString();
+  async availableDrop(event: DragEvent): Promise<void> {
+    event.preventDefault();
+    if (!this.draggedIngredient || this.draggedIngredient.pumpSlot !== null) {
       return;
     }
 
-    this.avIngredients.update(ings => {
-      const ingByIndex = this.getIngredientByIndex(index);
-      if (ingByIndex) {
-        if (newValue > ingByIndex.maxAmount) {
-          ingByIndex.maxAmount = newValue;
-        }
-        ingByIndex.remainingAmount = newValue;
-      }
-      return [...ings];
-    });
+    await this.moveIngredient(this.draggedIngredient, true);
+    this.dropSuccessful = true;
+  }
 
+  async unavailableDrop(event: DragEvent): Promise<void> {
+    event.preventDefault();
+    if (!this.draggedIngredient || this.draggedIngredient.pumpSlot === null) {
+      return;
+    }
+
+    await this.moveIngredient(this.draggedIngredient, false);
+    this.dropSuccessful = true;
+  }
+
+  async moveToUnavailable(ingredient: Ingredient): Promise<void> {
+    await this.moveIngredient(ingredient, false);
+  }
+
+  async moveToAvailable(ingredient: Ingredient): Promise<void> {
+    await this.moveIngredient(ingredient, true);
+  }
+
+  private async moveIngredient(ingredient: Ingredient, toAvailable: boolean): Promise<void> {
+    if (!ingredient) {
+      return;
+    }
+
+    if (toAvailable) {
+      if (ingredient.pumpSlot !== null) {
+        return;
+      }
+
+      const nextSlot = this.getNextAvailableSlot();
+      if (nextSlot === null) {
+        this.setGlobalError('No free machine slot is available for this ingredient.');
+        return;
+      }
+
+      ingredient.pumpSlot = nextSlot;
+    } else {
+      if (ingredient.pumpSlot === null) {
+        return;
+      }
+      ingredient.pumpSlot = null;
+    }
+
+    await this.saveIngredients();
+  }
+
+  async updateRemaining(ingredient: Ingredient, event: FocusEvent): Promise<void> {
+    const target = event.target as HTMLInputElement;
+    const newValue = Number.parseInt(target.value, 10);
+
+    if (!this.isValidAmount(newValue)) {
+      target.value = ingredient.remainingAmount.toString();
+      return;
+    }
+
+    ingredient.remainingAmount = Math.min(newValue, ingredient.maxAmount);
+    target.value = ingredient.remainingAmount.toString();
+    await this.saveIngredients();
+  }
+
+  async updateMaxAmount(ingredient: Ingredient, event: FocusEvent): Promise<void> {
+    const target = event.target as HTMLInputElement;
+    const newValue = Number.parseInt(target.value, 10);
+
+    if (!this.isValidAmount(newValue, 1)) {
+      target.value = ingredient.maxAmount.toString();
+      return;
+    }
+
+    ingredient.maxAmount = newValue;
+    if (ingredient.remainingAmount > ingredient.maxAmount) {
+      ingredient.remainingAmount = ingredient.maxAmount;
+    }
+
+    target.value = ingredient.maxAmount.toString();
     await this.saveIngredients();
   }
 
   getLiquidPercentage(ingredient: Ingredient): number {
-    return ingredient.maxAmount ? (ingredient.remainingAmount / ingredient.maxAmount) * 100 + 0.5 : 0;
+    if (!ingredient.maxAmount || ingredient.maxAmount <= 0) {
+      return 0;
+    }
+
+    return Math.max(0, Math.min(100, (ingredient.remainingAmount / ingredient.maxAmount) * 100));
   }
 
-  getIngredientByIndex(idx: number): Ingredient | null {
-    return this.avIngredients().find(ing => ing.pumpSlot === idx + 1) || null;
+  getUsageCount(ingredient: Ingredient): number {
+    return this.drinkService.drinks().filter(drink =>
+      drink.drinkIngredients.some(drinkIngredient => drinkIngredient.ingredientName === ingredient.ingredientName)
+    ).length;
   }
 
-  async saveIngredients() {
+  isAvailable(ingredient: Ingredient): boolean {
+    return ingredient.pumpSlot !== null;
+  }
+
+  trackByIngredient(_index: number, ingredient: Ingredient): string {
+    return ingredient.ingredientName;
+  }
+
+  private getNextAvailableSlot(): number | null {
+    const usedSlots = new Set(
+      this.ingredientsService.ingredients()
+        .map(ingredient => ingredient.pumpSlot)
+        .filter((slot): slot is number => slot !== null)
+    );
+
+    for (let slot = 1; slot <= this.ingredientSlots; slot++) {
+      if (!usedSlots.has(slot)) {
+        return slot;
+      }
+    }
+
+    return null;
+  }
+
+  private isValidAmount(value: number, min = 0): boolean {
+    return Number.isInteger(value) && value >= min && value <= 9999;
+  }
+
+  async saveIngredients(): Promise<void> {
     this.clearGlobalError();
     try {
       await this.ingredientsService.saveIngredients([...this.avIngredients(), ...this.unIngredients()]);

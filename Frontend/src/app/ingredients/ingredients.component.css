@@ -1,126 +1,358 @@
 .container {
-  background-color: var(--popup-bg);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--popup-bg) 94%, white 6%), var(--popup-bg));
   margin: 5px;
-  padding: 20px;
-  border-radius: 5px;
+  padding: 24px;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--element-primary-outline) 30%, transparent);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
-#ingredient-manager {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin: 20px 10%;
-}
-
-#available-ingredients {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  min-width: 350px;
-}
-
-#unavailable-ingredients {
-  flex: 1.3;
-  min-width: 350px;
-}
-
-#ingredient-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+#error,
+.error {
   width: 100%;
 }
 
-.slot {
+#ingredient-manager {
+  display: grid;
+  gap: 20px;
+  align-items: start;
+  margin: 20px 6%;
+}
+
+.ingredient-section {
   display: flex;
-  gap: 10px;
-  align-items: center;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.slot.inactive .slot-num {
-  background-color: var(--inactive-bg);
-}
-
-.slot-num {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 20px;
-  border-radius: 5px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  background-color: var(--active-bg);
-  transition: background-color 0.2s ease;
-}
-
-.slot-ingredient {
-  flex: 1;
-  border: 2px solid var(--element-primary-outline);
-  border-radius: 8px;
-  overflow: hidden;
-  min-height: 47px;
-  transition: height 1s ease;
-}
-
-.ingredient {
-  background-color: var(--ingredient-bg-color);
-  padding: 15px;
-  border-radius: 4px;
+.section-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  min-width: 100px;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.3s ease;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.section-header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+}
+
+.section-eyebrow {
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.72;
+}
+
+.section-subtitle {
+  margin: 8px 0 0;
+  opacity: 0.82;
+  line-height: 1.4;
+  max-width: 38ch;
+}
+
+.section-badge {
+  padding: 10px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--active-bg) 55%, white 45%);
+  color: inherit;
+}
+
+.section-badge.muted {
+  background: color-mix(in srgb, var(--inactive-bg) 45%, white 55%);
+}
+
+.ingredient-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ingredient-card {
+  display: flex;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 24px;
+  cursor: grab;
   overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--element-primary-outline) 26%, transparent);
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.26), transparent 36%),
+    linear-gradient(160deg, color-mix(in srgb, var(--ingredient-bg-color) 85%, white 15%), var(--ingredient-bg-color));
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.ingredient-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.16);
+  border-color: color-mix(in srgb, var(--element-primary-outline) 55%, transparent);
+}
+
+.ingredient-card:active {
+  cursor: grabbing;
+}
+
+.ingredient-card.available {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.3), transparent 38%),
+    linear-gradient(160deg,
+      color-mix(in srgb, var(--ingredient-bg-color) 60%, var(--active-bg) 40%),
+      var(--ingredient-bg-color));
+}
+
+.ingredient-card.unavailable {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.24), transparent 38%),
+    linear-gradient(160deg,
+      color-mix(in srgb, var(--ingredient-bg-color) 70%, var(--inactive-bg) 30%),
+      var(--ingredient-bg-color));
+}
+
+.bottle-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.slot-chip {
+  min-width: 74px;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--active-bg) 75%, white 25%);
+}
+
+.slot-chip.inactive {
+  background: color-mix(in srgb, var(--inactive-bg) 62%, white 38%);
+}
+
+.bottle-shell {
+  position: relative;
+  width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bottle-neck {
+  width: 30px;
+  height: 18px;
+  border-radius: 12px 12px 6px 6px;
+  border: 3px solid rgba(255, 255, 255, 0.55);
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.bottle-body {
+  position: relative;
+  width: 90px;
+  height: 190px;
+  overflow: hidden;
+  border-radius: 26px 26px 18px 18px;
+  border: 3px solid rgba(255, 255, 255, 0.58);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.bottle-glass {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.08));
+}
+
+.bottle-liquid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 10px;
+  background:
+    linear-gradient(180deg, rgba(255, 210, 98, 0.88), rgba(255, 123, 0, 0.92)),
+    var(--sunrise-gradient);
+  box-shadow: inset 0 8px 12px rgba(255, 255, 255, 0.22);
+  transition: height 0.7s cubic-bezier(.2, .9, .3, 1.1);
+  animation: liquidPulse 3s ease-in-out infinite;
+}
+
+.unavailable-bottle .bottle-liquid {
+  background: linear-gradient(180deg, rgba(255, 193, 7, 0.6), rgba(255, 87, 34, 0.72));
+  opacity: 0.82;
+}
+
+.bottle-highlight {
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  width: 18px;
+  height: 120px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
+}
+
+.fill-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.ingredient-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.ingredient-header-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.ingredient-header-row h2 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.ingredient-subline {
+  margin: 6px 0 0;
+  opacity: 0.78;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.status-pill.in-machine {
+  background: color-mix(in srgb, var(--active-bg) 72%, white 28%);
+}
+
+.status-pill.unavailable-pill {
+  background: color-mix(in srgb, var(--inactive-bg) 62%, white 38%);
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.data-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(3px);
+}
+
+.field-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.field-value {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.input-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editable-field {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.input-value input {
+  width: 92px;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  text-align: right;
+  font: inherit;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.input-value input:focus {
+  outline: 2px solid color-mix(in srgb, var(--element-primary-outline) 55%, white 45%);
+  outline-offset: 1px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.status-button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.status-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.status-button.primary {
+  background: var(--sunrise-gradient);
+  color: white;
+}
+
+.status-button.secondary {
+  background: color-mix(in srgb, var(--inactive-bg) 60%, white 40%);
 }
 
 .dragging {
   position: absolute;
   pointer-events: none;
-  gap: 100px;
-  justify-content: center;
-  z-index: 100;
+  width: min(520px, calc(100vw - 40px));
+  z-index: 1000;
+  opacity: 0.96;
+  transform: rotate(-2deg);
 }
 
-#ingredient-pool {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
-#ingredient-pool .ingredient-name {
-  width: 100%;
+.empty-state {
+  padding: 26px;
+  border-radius: 20px;
   text-align: center;
+  border: 1px dashed color-mix(in srgb, var(--element-primary-outline) 40%, transparent);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.liquid-bar {
-  position: absolute;
-  bottom: 0;
-  left: -2px;
-  height: 7px;
-  background: var(--sunrise-gradient);
-  transition: width 0.3s ease;
-  border-radius: 4px;
+.empty-state h2 {
+  margin: 0 0 8px;
 }
 
-.ingredient-quantity {
-  display: flex;
-  align-items: end;
-  gap: 2px;
-}
-
-.ingredient-quantity input {
-  text-align: right;
-  border: none;
-  border-radius: 3px;
-  width: 35px;
-  background-color: var(--ingredient-quantity-bg-color);
+.empty-state p {
+  margin: 0;
+  opacity: 0.78;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -134,15 +366,56 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.ingredient-quantity input:focus {
-  outline: none;
+@keyframes liquidPulse {
+  0%, 100% {
+    filter: saturate(1);
+  }
+  50% {
+    filter: saturate(1.16) brightness(1.04);
+  }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1100px) {
   #ingredient-manager {
+    grid-template-columns: 1fr;
     margin: 20px;
   }
-  #available-ingredients, #unavailable-ingredients {
-    min-width: 300px;
+}
+
+@media screen and (max-width: 720px) {
+  .container {
+    padding: 18px;
+  }
+
+  .ingredient-card {
+    grid-template-columns: 1fr;
+  }
+
+  .bottle-panel {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bottle-shell {
+    transform: scale(0.82);
+    transform-origin: center;
+  }
+
+  .ingredient-header-row,
+  .section-header {
+    flex-direction: column;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card-actions {
+    justify-content: stretch;
+  }
+
+  .status-button {
+    width: 100%;
   }
 }

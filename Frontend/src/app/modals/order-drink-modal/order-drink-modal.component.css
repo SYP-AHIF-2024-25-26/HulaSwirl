@@ -114,6 +114,10 @@ ul li:nth-child(6n+6)::before {
   content: "🦩";
 }
 
+ul li:has(#containsIce)::before {
+  content: "🧊";
+}
+
 #toppings {
   margin-top: 15px;
 }
@@ -122,3 +126,6 @@ ul li:nth-child(6n+6)::before {
   display: flex;
   justify-content: end;
 }
+
+
+

@@ -49,15 +49,64 @@ export class AccountModalComponent {
     this.confirmationOpen.update(v => !v)
   }
 
-  protected isAdmin = computed(() => {
-    const info = this.userInfo();
-    if (!info) return false;
+  private readonly rolePriority: Record<string, number> = {
+    user: 0,
+    operator: 1,
+    admin: 2,
+    system: 3
+  };
+
+  private normalizeRole(role: string | null | undefined): string {
+    return (role ?? '').trim().toLowerCase();
+  }
+
+  private currentRole(): string {
+    return this.normalizeRole(this.userService.role());
+  }
+
+  private targetRole(): string {
+    return this.normalizeRole(this.userInfo()?.role);
+  }
+
+  private roleRank(role: string): number {
+    return this.rolePriority[this.normalizeRole(role)] ?? -1;
+  }
+
+  private canManageTargetUser(): boolean {
     if (!this.isAdminView()) return false;
-    return info.role === 'system' || info.role === 'admin';
-  });
+
+    const currentRole = this.currentRole();
+    const targetRole = this.targetRole();
+    const currentRank = this.roleRank(currentRole);
+    const targetRank = this.roleRank(targetRole);
+
+    if (currentRank < 0 || targetRank < 0) return false;
+    if (currentRole === 'system') return !this.isSelf();
+    if (currentRole === 'admin') return targetRank < currentRank;
+    return false;
+  }
+
+  protected canManageRole = computed(() => this.canManageTargetUser());
+  protected canResetPassword = computed(() => this.canManageTargetUser());
 
   protected canDelete = computed(() => {
-    return this.isSelf() || this.isAdmin();
+    if (this.isSelf() && this.currentRole() != "system") return true;
+    return this.canManageTargetUser();
+  });
+
+  protected availableRoles = computed(() => {
+    const currentRole = this.currentRole();
+    if (!this.canManageRole()) return [];
+
+    if (currentRole === 'system') {
+      return ['admin', 'operator', 'user'];
+    }
+
+    if (currentRole === 'admin') {
+      return ['operator', 'user'];
+    }
+
+    return [];
   });
 
   protected canLogout = computed(() => !this.isAdminView());
@@ -154,10 +203,15 @@ export class AccountModalComponent {
 
   async changeRole(ev: Event) {
     const target = ev.target as HTMLSelectElement;
-    const role = target.value;
+    const role = this.normalizeRole(target.value);
     const user = this.userInfo();
-    if (!user || !this.isAdmin()) return;
-    if (role === user.role) return;
+    if (!user || !this.canManageRole()) return;
+    if (!this.availableRoles().includes(role)) {
+      target.value = user.role;
+      this.error.set('You are not allowed to assign this role.');
+      return;
+    }
+    if (role === this.normalizeRole(user.role)) return;
 
     this.roleUpdating.set(true);
     this.feedback.set('');
@@ -183,7 +237,7 @@ export class AccountModalComponent {
   async resetKey() {
     const user = this.userInfo();
     const key = this.newKey().trim();
-    if (!user || !this.isAdmin()) return;
+    if (!user || !this.canResetPassword()) return;
     if (!key) {
       this.error.set('Please enter a new password.');
       return;

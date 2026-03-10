@@ -1,60 +1,177 @@
 <div id="ingredient-manager">
   @if (globalError().length) {
-    <div class="error">@for (err of globalError(); track err) {
-      <p>{{ err }}</p>
-    }</div>
+    <div class="error">
+      @for (err of globalError(); track err) {
+        <p>{{ err }}</p>
+      }
+    </div>
   }
-  <!-- Bereich: Available Ingredients -->
-  <div id="available-ingredients" class="container">
-    <div id="available-ingredients-header">
-      <h1>Available Ingredients</h1>
+
+  <section id="available-ingredients" class="container ingredient-section"
+    (dragover)="dragOver($event)" (drop)="availableDrop($event)">
+    <div class="section-header">
+      <div>
+        <p class="section-eyebrow">Machine</p>
+        <h1>Available Ingredients</h1>
+        <p class="section-subtitle">These ingredients are being actively used in the machine</p>
+      </div>
+      <div class="section-badge">{{ avIngredients().length }} / {{ ingredientSlots }} Slots belegt</div>
     </div>
-    <div id="ingredient-list">
-      @for (_ of [].constructor(ingredientSlots); track _; let i = $index) {
-        <div class="slot" [class.inactive]="!activeSlots[i]">
-          <div class="slot-num">
-            {{ i + 1 }}
+
+    <div class="ingredient-container">
+      @for (ingredient of avIngredients(); track trackByIngredient($index, ingredient)) {
+        <article class="ingredient-card available"
+          draggable="true"
+          (dragstart)="dragStart($event, ingredient, true)">
+          <div class="bottle-panel">
+            <div class="slot-chip">Slot {{ ingredient.pumpSlot }}</div>
+            <div class="bottle-shell">
+              <div class="bottle-neck"></div>
+              <div class="bottle-body">
+                <div class="bottle-glass"></div>
+                <div class="bottle-liquid"
+                  [style.height.%]="getLiquidPercentage(ingredient)"></div>
+                <div class="bottle-highlight"></div>
+              </div>
+            </div>
+            <div class="fill-label">{{ getLiquidPercentage(ingredient) | number:'1.0-0' }}%</div>
           </div>
-          <div class="slot-ingredient" (dragover)="dragOver($event)" (drop)="availableDrop($event, i)">
-            @if (getIngredientByIndex(i)) {
-              <div class="ingredient"
-                draggable="true"
-                (dragstart)="dragStart($event, i)"
-                (click)="moveToUnavailable(getIngredientByIndex(i)!)">
-                <div class="ingredient-name">
-                  {{ getIngredientByIndex(i)!.ingredientName }}
-                </div>
-                <div class="ingredient-quantity">
+
+          <div class="ingredient-content">
+            <div class="ingredient-header-row">
+              <div>
+                <h2>{{ ingredient.ingredientName }}</h2>
+                <p class="ingredient-subline">Used in {{ getUsageCount(ingredient) }} Drinks</p>
+              </div>
+              <span class="status-pill in-machine">In use</span>
+            </div>
+
+            <div class="stats-container">
+              <label class="data-field editable-field">
+                <span class="field-label">Current amount</span>
+                <div class="field-value input-value">
                   <input type="number"
-                    (blur)="updateRemaining($event, i)"
-                    value="{{ getIngredientByIndex(i)!.remainingAmount }}" max="9999" min="0"
+                    [value]="ingredient.remainingAmount"
+                    min="0"
+                    max="9999"
+                    (blur)="updateRemaining(ingredient, $event)"
                     (click)="$event.stopPropagation()">
-                    <span>ml</span>
-                  </div>
-                  <div class="liquid-bar"
-                    [style.width.%]="getLiquidPercentage(getIngredientByIndex(i)!)">
-                  </div>
+                  <span>ml</span>
                 </div>
-              }
+              </label>
+
+              <label class="data-field editable-field">
+                <span class="field-label">Maximum amount</span>
+                <div class="field-value input-value">
+                  <input type="number"
+                    [value]="ingredient.maxAmount"
+                    min="1"
+                    max="9999"
+                    (blur)="updateMaxAmount(ingredient, $event)"
+                    (click)="$event.stopPropagation()">
+                  <span>ml</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="card-actions">
+              <button type="button" class="status-button secondary"
+                (click)="moveToUnavailable(ingredient)">
+                Mark unavailable
+              </button>
             </div>
           </div>
-        }
-      </div>
+        </article>
+      } @empty {
+        <div class="empty-state">
+          <h2>Keine Ingredients in der Maschine</h2>
+          <p>Ziehe eine Zutat hierher oder aktiviere sie im unavailable Bereich.</p>
+        </div>
+      }
     </div>
-    <div id="unavailable-ingredients" class="container"
-      (dragover)="dragOver($event)" (drop)="unavailableDrop($event)">
-      <h1>Unavailable Ingredients</h1>
-      <div id="ingredient-pool">
-        @for (ingredient of unIngredients(); track ingredient; let j = $index) {
-          <div class="ingredient"
-            draggable="true"
-            (dragstart)="dragStart($event, j, false)"
-            (click)="moveToAvailable(ingredient)">
-            <div class="ingredient-name">
-              {{ ingredient.ingredientName }}
+  </section>
+
+  <section id="unavailable-ingredients" class="container ingredient-section"
+    (dragover)="dragOver($event)" (drop)="unavailableDrop($event)">
+    <div class="section-header">
+      <div>
+        <p class="section-eyebrow">Storage</p>
+        <h1>Unavailable Ingredients</h1>
+        <p class="section-subtitle">Nicht eingesetzte Zutaten bleiben sichtbar und behalten ihren Füllstand.</p>
+      </div>
+      <div class="section-badge muted">{{ unIngredients().length }} Zutaten nicht in Maschine</div>
+    </div>
+
+    <div class="ingredient-container">
+      @for (ingredient of unIngredients(); track trackByIngredient($index, ingredient)) {
+        <article class="ingredient-card unavailable"
+          draggable="true"
+          (dragstart)="dragStart($event, ingredient, false)">
+          <div class="bottle-panel">
+            <div class="slot-chip inactive">Offline</div>
+            <div class="bottle-shell unavailable-bottle">
+              <div class="bottle-neck"></div>
+              <div class="bottle-body">
+                <div class="bottle-glass"></div>
+                <div class="bottle-liquid"
+                  [style.height.%]="getLiquidPercentage(ingredient)"></div>
+                <div class="bottle-highlight"></div>
+              </div>
+            </div>
+            <div class="fill-label">{{ getLiquidPercentage(ingredient) | number:'1.0-0' }}%</div>
+          </div>
+
+          <div class="ingredient-content">
+            <div class="ingredient-header-row">
+              <div>
+                <h2>{{ ingredient.ingredientName }}</h2>
+                <p class="ingredient-subline">Für {{ getUsageCount(ingredient) }} Drinks verwendet</p>
+              </div>
+              <span class="status-pill unavailable-pill">Nicht in Maschine</span>
+            </div>
+
+            <div class="stats-container">
+              <label class="data-field editable-field">
+                <span class="field-label">Derzeitiger Füllstand</span>
+                <div class="field-value input-value">
+                  <input type="number"
+                    [value]="ingredient.remainingAmount"
+                    min="0"
+                    max="9999"
+                    (blur)="updateRemaining(ingredient, $event)"
+                    (click)="$event.stopPropagation()">
+                  <span>ml</span>
+                </div>
+              </label>
+
+              <label class="data-field editable-field">
+                <span class="field-label">Maximaler Füllstand</span>
+                <div class="field-value input-value">
+                  <input type="number"
+                    [value]="ingredient.maxAmount"
+                    min="1"
+                    max="9999"
+                    (blur)="updateMaxAmount(ingredient, $event)"
+                    (click)="$event.stopPropagation()">
+                  <span>ml</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="card-actions">
+              <button type="button" class="status-button primary"
+                (click)="moveToAvailable(ingredient)">
+                In Maschine setzen
+              </button>
             </div>
           </div>
-        }
-      </div>
+        </article>
+      } @empty {
+        <div class="empty-state">
+          <h2>Alle Ingredients sind verfügbar</h2>
+          <p>Aktuell liegt keine Zutat im unavailable Bereich.</p>
+        </div>
+      }
     </div>
-  </div>
+  </section>
+</div>
