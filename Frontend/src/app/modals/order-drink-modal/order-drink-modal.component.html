@@ -1,21 +1,21 @@
 @if(selectedDrink()) {
-<app-generic-modal title="{{selectedDrink()!.name}}" (closed)="closeModal()">
+<app-generic-modal title="{{selectedDrink()?.name}}" (closed)="closeModal()">
   <div modal-body>
     <div class="order-drink-modal">
       <div id="drink-overview">
-        @if (selectedDrink()!.imgUrl) {
+        @if (selectedDrink()?.imgUrl) {
           <div class="modal-image">
-            <img [src]="selectedDrink()!.imgUrl" alt="Drink Image" class="drink-image" />
+            <img [src]="selectedDrink()?.imgUrl" alt="Drink Image" class="drink-image" />
           </div>
         }
         <div id="modal-ingredient-list">
           <h3>Ingredients</h3>
           <small>
-            {{selectedDrink()!.drinkIngredients.length}} ingredients •
+            {{selectedDrink()?.drinkIngredients?.length}} ingredients •
             {{totalAmount()}} ml
           </small>
           <ul>
-            @for (drink of selectedDrink()!.drinkIngredients; track drink) {
+            @for (drink of selectedDrink()?.drinkIngredients; track drink) {
               <li>{{drink.amount}}ml {{drink.ingredientName}}</li>
             }
             <li class="checkbox-container" (click)="containsIce.set(!containsIce())">
@@ -25,10 +25,10 @@
           </ul>
         </div>
       </div>
-      @if(selectedDrink()!.toppings) {
+      @if(selectedDrink()?.toppings) {
         <div id="toppings">
           <h4>Enhance your drink with</h4>
-          <p>{{selectedDrink()!.toppings}}</p>
+          <p>{{selectedDrink()?.toppings}}</p>
         </div>
       }
     </div>

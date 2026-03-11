@@ -1,45 +1,271 @@
+/* ===== Layout ===== */
 #manage-drink-modal {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   max-width: 750px;
+  width: 100%;
+  justify-content: space-between;
+  padding: 1px;
+  overflow-y: auto;
 }
 
-#drink-ingredients {
-  margin-top: 5px;
+#left-column {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 250px;
+}
+
+#right-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ===== Drink Title Input ===== */
+#drink-title {
+  color: var(--heavy-font-color);
+  font-size: 1.15rem;
+  text-align: start;
+  font-family: var(--primary-font), serif;
+  margin: 0;
+  font-weight: lighter;
+  background: linear-gradient(var(--form-input-bg-yellow), var(--form-input-bg-yellow)) padding-box,
+    linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
+  border-radius: 10px;
+  border: 3px solid transparent;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  padding: 4px 7px;
+  width: 100%;
+  box-sizing: border-box;
+  height: auto;
+  min-height: 40px;
+  resize: none;
+  transition: box-shadow 0.25s ease;
+}
+
+#drink-title:focus {
+  outline: none;
+  box-shadow: 0 4px 14px rgba(234, 107, 82, 0.25);
+}
+
+#drink-title::placeholder {
+  color: #b5b5b5;
+  font-weight: normal;
+}
+
+/* ===== Section Headings ===== */
+h2 {
+  color: var(--heavy-font-color);
+  font-size: 1.1rem;
+  text-align: start;
+  font-family: var(--primary-font), serif;
+  margin: 0;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+/* ===== Ingredients List ===== */
+#drink-ingredients {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.order-ingredient {
+  padding: 6px 14px;
+  background-color: var(--body-bg);
+  border: 1px solid #ead7bc;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-ingredient:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-ingredient-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ingredient-properties {
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
 
 .order-ingredient-delete {
-  transition: 0.3s transform ease;
-  margin-left: 5px;
+  transition: 0.25s transform ease, 0.25s filter ease;
+  margin-left: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
 }
 
 .order-ingredient-delete:hover {
-  cursor: pointer;
-  transform: rotate(10deg);
+  transform: scale(1.2) rotate(10deg);
+  filter: brightness(1.1);
 }
 
-#order-ingredient-amount, .order-ingredient-amount {
-  width: 25px;
+/* ===== Add New Ingredient Row ===== */
+#add-new-ingredient {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 10px 10px 0;
+  flex-wrap: wrap;
+}
+
+#order-ingredient-select {
+  min-width: 145px;
+  flex-shrink: 0;
+}
+
+#order-ingredient-amount {
+  box-sizing: border-box;
+  height: 34px;
+  width: 65px;
+}
+
+.order-ingredient-amount {
+  background-color: var(--form-input-bg-yellow);
+  box-sizing: border-box;
+  width: 55px;
   text-align: end;
 }
 
 #order-ingredient-add {
+  color: #fff;
+  background: var(--sunset-gradient);
+  padding: 6px 14px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
   cursor: pointer;
-  margin-bottom: 5px;
-  box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
+  margin: 0 0 0 2px;
+  box-shadow: 0 2px 8px rgba(234, 107, 82, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  line-height: 1;
 }
 
+#order-ingredient-add:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px rgba(234, 107, 82, 0.35);
+}
+
+/* ===== Image Upload ===== */
+.upload-box {
+  border: 2px dashed #b5b5b5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  color: #aaa;
+  font-family: var(--default-font), sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  position: relative;
+  background-color: var(--form-input-bg-yellow);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  height: 250px;
+  width: 250px;
+  align-self: center;
+}
+
+.upload-box:hover {
+  border-color: #ea6b52;
+  background-color: #fef8f0;
+  transform: scale(1.01);
+}
+
+.upload-box .preview-image {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.upload-box.drag-over {
+  background-color: #fef3e8;
+  border-color: #ea6b52;
+  border-style: solid;
+}
+
+#drink-image {
+  height: 200px;
+}
+
+/* ===== Toppings ===== */
+#toppings-header {
+  margin-bottom: 6px;
+  margin-top: 8px;
+}
+
+#drink-toppings {
+  border: 1px solid var(--element-primary-outline);
+  outline: none;
+  background-color: var(--form-input-bg-yellow);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: normal;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+  resize: vertical;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  font-family: var(--default-font), serif;
+}
+
+#drink-toppings:focus {
+  border-color: #ea6b52;
+  box-shadow: 0 2px 12px rgba(234, 107, 82, 0.15);
+}
+
+#drink-toppings::placeholder {
+  color: #b5b5b5;
+  font-weight: normal;
+}
+
+/* ===== New Ingredient Name Input ===== */
+.order-new-ingredient-name {
+  outline: none;
+  border: none;
+  border-bottom: 2px dashed var(--element-primary-outline);
+  border-radius: 5px 5px 0 0;
+  padding: 5px 8px;
+  background-color: var(--form-input-bg-yellow);
+  width: 100%;
+  max-width: 120px;
+  transition: border-color 0.25s ease;
+}
+
+.order-new-ingredient-name:focus {
+  border-bottom-color: #ea6b52;
+}
+
+/* ===== Action Buttons ===== */
 .action-buttons {
   display: flex;
   align-items: center;
   justify-content: start;
   gap: 10px;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
 .checkbox-container {
@@ -50,121 +276,24 @@
   margin-left: auto;
 }
 
-.order-ingredient {
-  padding: 5px 15px;
-  background-color: var(--body-bg);
-  border: 1px solid #ead7bc;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.11);
-}
-
-.order-ingredient-details {
-  display: flex;
-  align-items: center;
-}
-
-.ingredient-properties {
-  display: flex;
-  margin: 5px 0;
-  gap: 5px;
-  align-items: center;
-}
-
-#add-new-ingredient {
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  padding: 10px 0 0;
-}
-
-#order-ingredient-select {
-  min-width: 145px;
-}
-
-#order-ingredient-amount {
-  box-sizing: border-box;
-  height: 30px;
-  width: 60px;
-}
-
-#order-ingredient-add {
-  color: var(--primary-font-color);
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  margin: 0 0 0 5px;
-}
-
-#order-ingredient-add:hover {
-  scale: 1.05;
-}
-
-[modal-body] {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 10px 0 0;
-}
-
-#left-column{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-#right-column{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-h2 {
-  color: #575757;
-  font-size: 20px;
-  text-align: start;
-  font-family: AdlamDisplay, serif;
-  margin:0;
-  font-weight: lighter;
-}
-
-#drink-title{
-  color: #575757;
-  font-size: 20px;
-  text-align: start;
-  font-family: AdlamDisplay, serif;
-  margin:0;
-  font-weight: lighter;
-  background: linear-gradient(#fdfded, #fdfded) padding-box,
-  linear-gradient(to bottom right, #ea6b52, #f5d273) border-box;
-  border-radius: 10px;
-  border: 3px solid transparent;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-height:30px;
-  width: 97%;
-  height:30px;
-  resize: vertical;
-}
-
-#drink-title:focus {
-  border-radius: 10px;
-  border: 3px solid transparent;
-  outline: none;
-}
-
+/* ===== Responsive ===== */
 @media (max-width: 650px) {
-  [modal-body] {
+  #manage-drink-modal {
     flex-direction: column-reverse;
     gap: 20px;
+    padding-right: 5px;
   }
   #left-column {
     width: 100%;
+    min-width: unset;
   }
   #right-column {
     width: 100%;
+    min-width: unset;
+  }
+  .upload-box {
+    width: 200px;
+    height: 200px;
   }
   #order-ingredient-add {
     margin-left: 3px;
@@ -178,7 +307,7 @@ h2 {
   }
 
   #drink-available-checkbox {
-    order: 1
+    order: 1;
   }
 
   .submit-btn {
@@ -190,81 +319,9 @@ h2 {
     margin-top: 10px;
     order: 3;
   }
-}
 
-#drink-image{
-  height: 200px;
-}
-
-.upload-box {
-  border: 2px dashed #767676;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #999;
-  font-family: sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  position: relative;
-  background-color: #fdfded;
-  box-shadow: 0 0 7px rgba(0, 0, 0, 0.18);
-  overflow: hidden;
-  height: 250px;
-  width: 250px;
-  align-self: center;
-}
-.upload-box .preview-image {
-  display: block;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 9px;  /* beibehaltung der runden Ecken, falls gewünscht */
-}
-
-
-.upload-box.drag-over {
-  background-color: #f5f5f5;
-}
-
-#drink-toppings{
-  border: none;
-  outline: none;
-  background-color: #fdfded;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 18px;
-  font-weight: bold;
-  box-shadow: 0 0 7px rgba(0, 0, 0, 0.24);
-  height: 30px;
-  min-height: 30px;
-  box-sizing: border-box;
-  max-width: 100%;
-  width: 100%;
-  resize: vertical;
-}
-
-#toppings-header{
-  margin-bottom: 5px;
-  margin-top:7px;
-}
-
-.order-ingredient-amount{
-  background-color: #fdfded;
-  box-sizing: border-box;
-  width: 55px;
-}
-
-.order-new-ingredient-name{
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  background-color: #fdfded;
-}
-
-.order-new-ingredient-name {
-  border-bottom: 2px dashed var(--element-primary-outline);
-  width: 100%;
-  max-width: 120px;
+  .upload-box {
+    width: 180px;
+    height: 180px;
+  }
 }
