@@ -55,7 +55,7 @@
 
 .modal-body {
   margin: 15px 0;
-  max-height: 550px;
+  max-height: 575px;
   overflow-y: auto;
   display: flex;
 }
@@ -68,14 +68,17 @@
 }
 
 @media screen and (max-width: 650px) {
+  .modal-form {
+    width: 85%;
+    padding: 20px;
+  }
   .modal-body {
-    max-height: 500px;
+    max-height: 550px;
   }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 450px) {
   .modal-form {
-    width: 85%;
-    padding: 15px;
+    width: 90%;
   }
 }

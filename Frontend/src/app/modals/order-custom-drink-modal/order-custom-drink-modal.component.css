@@ -1,5 +1,6 @@
 #custom-drink-modal {
   max-width: 600px;
+  width: 100%;
 }
 
 #ingredient-list {
@@ -16,7 +17,7 @@
   background-color: var(--body-bg);
   border: 1px solid #ead7bc;
   border-radius: 10px;
-  padding: 10px;
+  padding: 5px 10px;
   transition: background-color 0.5s ease-in-out;
 }
 
@@ -93,6 +94,9 @@
 }
 
 @media (max-width: 768px) {
+  .order-buttons {
+    padding: 5px 15px 5px 10px;
+  }
   .button {
     flex: 1;
   }
@@ -104,28 +108,38 @@
   .order-ingredient-amount{
     margin-left: auto;
   }
+
+  #ingredient-list {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  .order-ingredient {
+    flex: 1;
+    margin-right: 5px;
+  }
 }
 
 /* Container für AI-Generate */
 .ai-generate {
   display: flex;
   gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
+  margin-right: 5px;
   border-radius: 5px;
-  background-color: var(--ingredient-bg-color);
   color: var(--primary-font-color);
   margin-bottom: 10px;
 }
 
 .ai-generate textarea {
   flex: 1;
-  height: 1.15rem;
-  min-height: 1.2rem;
+  height: 1.4rem;
+  min-height: 1.4rem;
   max-height: 9rem;
   resize: vertical;
   padding: 0.5rem 0.75rem;
   border-radius: 5px;
-  border: 1px solid #b1b1b1;
+  border: 1px solid #cdcdcd;
+  background: var(--body-bg);
   font-size: 0.9rem;
   line-height: 1.35;
   outline: none;

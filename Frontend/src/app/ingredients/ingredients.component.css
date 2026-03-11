@@ -17,6 +17,7 @@
   gap: 20px;
   align-items: start;
   margin: 20px 4%;
+  grid-template-columns: 1fr 1fr;
 }
 
 .ingredient-section {
