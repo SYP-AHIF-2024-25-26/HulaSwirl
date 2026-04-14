@@ -126,6 +126,7 @@
   background-position: right 8px center;
   background-size: 10px 6px;
   transition: filter 0.15s ease, transform 0.15s ease;
+  align-self: start;
 }
 
 .slot-select:focus {
@@ -460,12 +461,14 @@
   position: fixed;
   pointer-events: none;
   z-index: 1000;
-  opacity: 0.92;
+  opacity: 0.95;
   transform: rotate(-1.5deg) scale(0.95);
   filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.25));
-  will-change: left, top;
   transition: none;
-  max-width: min(460px, calc(100vw - 32px));
+}
+
+.dragging .status-button {
+  margin-top: 20px;
 }
 
 .empty-state {
@@ -490,11 +493,6 @@
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-}
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
 }
 
 @keyframes liquidPulseGreen {

@@ -141,7 +141,7 @@
               [ngModel]="ingredient.pumpSlot"
               (ngModelChange)="onSlotChangeByValue(ingredient, $event)"
               (click)="$event.stopPropagation()">
-              <option [ngValue]="null">Offline</option>
+              <option [ngValue]="null">Inactive</option>
               @for (s of allSlotNumbers(); track s) {
                 <option [ngValue]="s">
                   {{ getSlotLabel(s) }}

@@ -31,6 +31,9 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
   orderIngredients: WritableSignal<OrderPreparation[]> = signal([]);
   ingredientAmounts: WritableSignal<Record<string, number>> = signal({});
 
+  /** Holds per-ingredient validation/status messages (kept separate to avoid reactive write loops). */
+  private readonly ingredientStatus = signal<Record<string, string>>({});
+
   protected title = signal<string>('Configure your own Drink');
 
   prompt = signal<string>('');
@@ -38,6 +41,11 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
 
   /** Prevents re-applying the same reorder payload repeatedly (which can cause reactive loops). */
   private lastAppliedReorderKey = '';
+
+  /** Step size in ml for the +/- controls and keyboard adjustments. */
+  readonly step = 10;
+  /** Maximum allowed amount per ingredient (ml). */
+  readonly maxAmount = 500;
 
   constructor() {
     super();
@@ -64,13 +72,11 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
       const isReorder = !!data && data.mode === 'reorder';
 
       if (!isReorder) {
-        // If we were previously in reorder mode, reset idempotency so the next reorder applies.
         this.lastAppliedReorderKey = '';
         this.title.set('Configure your own Drink');
         return;
       }
 
-      // Build a stable key for this reorder payload.
       const items = (data.ingredients ?? [])
         .filter(i => !!i.ingredientName)
         .map(i => ({ ingredientName: i.ingredientName, amount: i.amount }))
@@ -81,48 +87,96 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
         items
       });
 
-      if (key === this.lastAppliedReorderKey) {
-        return; // already applied
-      }
+      if (key === this.lastAppliedReorderKey) return;
       this.lastAppliedReorderKey = key;
 
       this.title.set(data.drinkName?.trim() ? `Reorder: ${data.drinkName}` : 'Reorder');
       this.prompt.set('');
 
-      // Start from current amounts without tracking to avoid feedback loops.
       const baseAmounts = untracked(() => this.ingredientAmounts());
       const nextAmounts: Record<string, number> = { ...baseAmounts };
-      const nextSelected: OrderPreparation[] = [];
+
+      // Reset all to 0 first (better mental model when reordering)
+      for (const name of Object.keys(nextAmounts)) nextAmounts[name] = 0;
 
       for (const i of items) {
-        const amt = i.amount && i.amount > 0 ? i.amount : 0;
+        const amt = this.clampToStep(i.amount ?? 0);
         nextAmounts[i.ingredientName] = amt;
-        nextSelected.push({ ingredientName: i.ingredientName, amount: amt, status: '' });
       }
 
       this.ingredientAmounts.set(nextAmounts);
-      this.orderIngredients.set(nextSelected);
     });
   }
 
-  isSelected(name: string): boolean {
-    return this.orderIngredients().some(i => i.ingredientName === name);
+  /** Derive the backend payload from current amounts (amount>0 = active). */
+  private buildOrderPayload(): OrderPreparation[] {
+    const amounts = this.ingredientAmounts();
+    const status = this.ingredientStatus();
+
+    const next: OrderPreparation[] = [];
+    for (const [ingredientName, amount] of Object.entries(amounts)) {
+      if ((amount ?? 0) > 0) {
+        next.push({ ingredientName, amount, status: status[ingredientName] ?? '' });
+      }
+    }
+
+    next.sort((a, b) => a.ingredientName.localeCompare(b.ingredientName));
+    return next;
   }
 
-  toggleIngredient(ingredient: Ingredient, e: EventTarget, select: boolean = false) {
+  isSelected(name: string): boolean {
+    return this.getAmount(name) > 0;
+  }
+
+  /** Ensure amount is between 0..max and aligned to step (10ml). */
+  private clampToStep(value: number): number {
+    const v = Number.isFinite(value) ? value : 0;
+    const clamped = Math.max(0, Math.min(this.maxAmount, v));
+    return Math.round(clamped / this.step) * this.step;
+  }
+
+  setAmount(name: string, value: number) {
     this.clearGlobalError();
-    this.clearFieldError(ingredient.ingredientName);
-    const checked = this.isSelected(ingredient.ingredientName)
-    if(e instanceof HTMLInputElement) {
-      if(select) e.select()
-      if(checked) return;
+    this.clearFieldError(name);
+
+    const nextValue = this.clampToStep(value);
+    this.ingredientAmounts.set({ ...this.ingredientAmounts(), [name]: nextValue });
+
+    // If the user sets an ingredient back to 0, clear any lingering status.
+    if (nextValue === 0) {
+      const statuses = { ...this.ingredientStatus() };
+      delete statuses[name];
+      this.ingredientStatus.set(statuses);
     }
-    const name = ingredient.ingredientName;
-    const amount = this.getAmount(name);
-    if (!checked) {
-      this.orderIngredients.set([...this.orderIngredients(), {ingredientName: name, amount, status: ''}]);
-    } else {
-      this.orderIngredients.set(this.orderIngredients().filter(i => i.ingredientName !== name));
+  }
+
+  increment(name: string) {
+    this.setAmount(name, this.getAmount(name) + this.step);
+  }
+
+  decrement(name: string) {
+    this.setAmount(name, this.getAmount(name) - this.step);
+  }
+
+  /** Keyboard: ArrowUp/ArrowDown adjust by 10ml; Home/End jump to min/max. */
+  onAmountKeyDown(name: string, ev: KeyboardEvent) {
+    switch (ev.key) {
+      case 'ArrowUp':
+        ev.preventDefault();
+        this.increment(name);
+        break;
+      case 'ArrowDown':
+        ev.preventDefault();
+        this.decrement(name);
+        break;
+      case 'Home':
+        ev.preventDefault();
+        this.setAmount(name, 0);
+        break;
+      case 'End':
+        ev.preventDefault();
+        this.setAmount(name, this.maxAmount);
+        break;
     }
   }
 
@@ -130,38 +184,27 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
     return this.ingredientAmounts()[name] ?? 0;
   }
 
+  getTotalAmount(): number {
+    return Object.values(this.ingredientAmounts()).reduce((sum, v) => sum + (v ?? 0), 0);
+  }
+
+  get canSubmit(): boolean {
+    return this.getTotalAmount() > 0;
+  }
+
+  // updateAmount stays as the single entry point from input bindings
   updateAmount(name: string, value: number) {
-    this.clearFieldError(name);
-    this.ingredientAmounts.set({...this.ingredientAmounts(), [name]: value && value > 0 ? value < 500 ? value : 500 : 1});
-    if (this.isSelected(name)) {
-      this.orderIngredients.set(this.orderIngredients().map(i => i.ingredientName === name ? {...i, amount: value} : i));
-    }
-  }
-
-  getStatus(name: string): string {
-    const item = this.orderIngredients().find(i => i.ingredientName === name);
-    return item ? item.status : '';
-  }
-
-  setFieldError(fieldName: string, message: string) {
-    if(fieldName == "ingredients") {
-      this.setGlobalError(message);
-      return;
-    }
-    const idx = this.orderIngredients().findIndex(i => i.ingredientName.toLowerCase() === fieldName.toLowerCase());
-    if (idx >= 0) {
-      const arr = [...this.orderIngredients()];
-      arr[idx] = { ...arr[idx], status: message };
-      this.orderIngredients.set(arr);
-    }
+    this.setAmount(name, value);
   }
 
   async submitOrder() {
     this.clearGlobalError();
-    this.clearFieldError();
+    // don't auto-clear field errors here; server might respond with them
+
+    const payload = this.buildOrderPayload();
     try {
-      if (this.orderIngredients().every(ing => ing.status === '')) {
-        await this.ingredientsService.postOrder(this.orderIngredients().map(ing => ({
+      if (payload.every(ing => ing.status === '')) {
+        await this.ingredientsService.postOrder(payload.map(ing => ({
           ingredientName: ing.ingredientName,
           amount: ing.amount
         })));
@@ -215,13 +258,31 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
 
   clearFieldError(fieldName: string = "") {
     if( fieldName) {
-      const updatedIngredients = this.orderIngredients().map(i =>
-        i.ingredientName === fieldName ? { ...i, status: '' } : i
-      );
-      this.orderIngredients.set(updatedIngredients);
+      const statuses = { ...this.ingredientStatus() };
+      delete statuses[fieldName];
+      this.ingredientStatus.set(statuses);
     } else {
-      this.orderIngredients.set(this.orderIngredients().map(i => ({ ...i, status: '' })));
+      this.ingredientStatus.set({});
     }
+  }
+
+  getStatus(name: string): string {
+    return this.ingredientStatus()[name] ?? '';
+  }
+
+  setFieldError(fieldName: string, message: string) {
+    if (fieldName === 'ingredients') {
+      this.setGlobalError(message);
+      return;
+    }
+
+    // Map API-provided fieldName to the actual ingredient name (case-insensitive)
+    const available = this.availableIngredients();
+    const matchedName = available.find(i => i.ingredientName.toLowerCase() === fieldName.toLowerCase())?.ingredientName;
+    const key = matchedName ?? fieldName;
+
+    const statuses = { ...this.ingredientStatus(), [key]: message };
+    this.ingredientStatus.set(statuses);
   }
 
   closeModal() {
@@ -229,6 +290,7 @@ export class OrderCustomDrinkModalComponent extends ErrorHandlingComponent {
     this.clearFieldError();
     this.orderIngredients.set([]);
     this.ingredientAmounts.set({});
+    this.ingredientStatus.set({});
     this.prompt.set('');
     this.title.set('Configure your own Drink');
     this.lastAppliedReorderKey = '';

@@ -81,7 +81,7 @@
   background-color: var(--body-bg);
   border: 1px solid #ead7bc;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 10px 10px;
   box-sizing: border-box;
 }
 
@@ -115,6 +115,9 @@
 
 .order-drink-modal #modal-ingredient-list ul li:has(#containsIce)::before {
   content: "🧊";
+}
+.order-drink-modal #modal-ingredient-list ul label {
+  font-size: 1.1rem;
 }
 
 .order-drink-modal #toppings {

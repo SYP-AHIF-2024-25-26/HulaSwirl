@@ -135,7 +135,7 @@
 .timeline-column::before {
   content: '';
   position: absolute;
-  left: 19px;
+  left: 21px;
   top: 10px;
   bottom: 10px;
   width: 2px;

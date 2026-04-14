@@ -1,5 +1,6 @@
 <app-generic-modal [title]="title()" (closed)="closeModal()">
   <div modal-body id="custom-drink-modal">
+    <!-- API Key expired :(
     <div class="ai-generate">
       <textarea id="prompt"
                 [(ngModel)]="prompt"
@@ -12,17 +13,54 @@
         AI-Generate
       </button>
     </div>
-    <div id="ingredient-list">
+    -->
+    <div id="ingredient-list" aria-label="Ingredients">
       @for(ingredient of availableIngredients(); track $index){
-        <div class="order-ingredient" [class.selected]="isSelected(ingredient.ingredientName)" (click)="toggleIngredient(ingredient, $event.target!)">
-          <input type="checkbox" class="ingredient-check" tabindex="0" [checked]="isSelected(ingredient.ingredientName)">
-          <div class="order-ingredient-details">
-            <div class="ingredient-properties">
-              <span class="order-ingredient-name">{{ ingredient.ingredientName }}</span>
-              <input min="1" max="500" type="number" class="order-ingredient-amount form-input" (input)="toggleIngredient(ingredient, $event.target!)" (click)="toggleIngredient(ingredient, $event.target!, true)" [attr.tabindex]="$index + 1" [ngModel]="getAmount(ingredient.ingredientName)" (ngModelChange)="updateAmount(ingredient.ingredientName, $event)">
-              <span class="order-ingredient-unit">ml</span>
-            </div>
-            <p class="error field-error">{{ getStatus(ingredient.ingredientName) }}</p>
+        <div
+          class="ingredient-row"
+          [class.active]="getAmount(ingredient.ingredientName) > 0"
+          [class.has-error]="!!getStatus(ingredient.ingredientName)"
+        >
+          <div class="ingredient-main">
+            <div class="ingredient-name">{{ ingredient.ingredientName }}</div>
+            @if(getStatus(ingredient.ingredientName)) {
+              <div class="ingredient-status error" [id]="'ingredient-error-' + $index">{{ getStatus(ingredient.ingredientName) }}</div>
+            }
+          </div>
+
+          <div class="stepper" role="group" [attr.aria-label]="ingredient.ingredientName + ' amount'">
+            <button
+              type="button"
+              class="stepper-btn"
+              (click)="decrement(ingredient.ingredientName)"
+              [disabled]="getAmount(ingredient.ingredientName) === 0"
+              aria-label="Decrease by 10 milliliters"
+            >
+              –
+            </button>
+
+            <input
+              type="number"
+              class="stepper-input form-input"
+              [attr.aria-describedby]="getStatus(ingredient.ingredientName) ? ('ingredient-error-' + $index) : null"
+              [min]="0"
+              [max]="maxAmount"
+              [step]="step"
+              [ngModel]="getAmount(ingredient.ingredientName)"
+              (ngModelChange)="updateAmount(ingredient.ingredientName, $event)"
+              (keydown)="onAmountKeyDown(ingredient.ingredientName, $event)"
+              inputmode="numeric"
+            />
+
+            <button
+              type="button"
+              class="stepper-btn"
+              (click)="increment(ingredient.ingredientName)"
+              [disabled]="getAmount(ingredient.ingredientName) >= maxAmount"
+              aria-label="Increase by 10 milliliters"
+            >
+              +
+            </button>
           </div>
         </div>
       } @empty {
@@ -31,12 +69,19 @@
         </div>
       }
     </div>
-      @if(globalError()) {
-        <p class="error global-error">{{ globalError() }}</p>
-      }
+
+    <div id="total-order-amount" [class.is-zero]="getTotalAmount() === 0">
+      <span class="total-label">Total</span>
+      <span class="total-value">{{ getTotalAmount() }} ml</span>
+    </div>
+
+    @if(globalError()) {
+      <p class="error global-error">{{ globalError() }}</p>
+    }
+
     <div modal-buttons class="order-buttons">
-      <button class="button cancel-btn" (click)="closeModal()">Cancel</button>
-      <button class="button submit-btn" (click)="submitOrder()">Order</button>
+      <button class="button cancel-btn" type="button" (click)="closeModal()">Cancel</button>
+      <button class="button submit-btn" type="button" (click)="submitOrder()" [disabled]="!canSubmit">Order</button>
     </div>
   </div>
 </app-generic-modal>

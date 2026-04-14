@@ -187,7 +187,7 @@ export class IngredientsComponent extends ErrorHandlingComponent {
 
     this.draggedElement = targetEl.cloneNode(true) as HTMLElement;
     // Fix clone size to match original card exactly
-    this.draggedElement.style.width = `${originalRect.width}px`;
+    this.draggedElement.style.width = `${(originalRect.width - 20) * 0.95}px`;
     this.draggedElement.classList.add('dragging');
 
     // Preserve select values in the clone (cloneNode doesn't copy dynamic select state)

@@ -3,27 +3,32 @@ using Microsoft.Extensions.Configuration;
 
 namespace HulaSwirl.Services.Pumps;
 
-public class PumpManager(GpioController gpioController, IConfiguration config)
+public class PumpManager(IConfiguration config, GpioController? controller)
 {
+    private readonly bool _virtualMode = controller is null;
     private List<VPump>? _pumps;
     public bool Running { get; private set; }
-    
+
     public async Task RunOrderAsync(IEnumerable<(int slot, int ml)> jobs)
     {
         if (Running) throw new InvalidOperationException();
         var valueTuples = jobs.ToList();
 
-        InitializePumps();
         Running = true;
-
         try
         {
-            var tasks = valueTuples.Select(j =>
+            if (!_virtualMode)
             {
-                var pump = _pumps![j.slot - 1];
-                return pump.RunAsync(j.ml);
-            });
-            await Task.WhenAll(tasks);
+
+                InitializePumps();
+
+                var tasks = valueTuples.Select(j =>
+                {
+                    var pump = _pumps![j.slot - 1];
+                    return pump.RunAsync(j.ml);
+                });
+                await Task.WhenAll(tasks);
+            }
         }
         finally
         {
@@ -33,7 +38,9 @@ public class PumpManager(GpioController gpioController, IConfiguration config)
 
     private void InitializePumps()
     {
-        if (_pumps is not null) return;
+        if (_virtualMode || _pumps is not null) return;
+
+        var gpioController = controller ?? throw new InvalidOperationException("GPIO controller is not available.");
 
         _pumps =
         [

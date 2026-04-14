@@ -5,7 +5,7 @@
 #landing {
   width: 100%;
   background: linear-gradient(180deg, rgba(22,85,111,1) 0%, rgba(60,148,148,1) 53%, rgba(85,206,180,1) 67%, rgba(248,210,127,1) 81%, rgba(248,210,127,1) 84%, rgba(242,145,99,1) 90%, rgba(239,109,89,1) 96%);
-  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69)) saturate(110%);
+  filter: drop-shadow(0px 0px 5px rgba(47, 10, 10, 0.69));
   display:flex;
   align-items: center;
   justify-content: center;
@@ -182,7 +182,6 @@ video {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
   filter: drop-shadow(5px 5px 3px rgba(68, 47, 36, 0.32));
   font-weight: bold;
 }

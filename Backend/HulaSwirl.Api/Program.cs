@@ -1,5 +1,4 @@
 using System.Device.Gpio;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using HulaSwirl.Api.Drinks;
 using HulaSwirl.Api.Ingredients;
@@ -25,6 +24,7 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
+var url = builder.Configuration["Url"];
 
 //services
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -47,9 +47,10 @@ builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddSingleton<ObservableOrderService>();
 builder.Services.AddSingleton<ObservableUserService>();
 builder.Services.AddSingleton<JwtService>();
-builder.Services.AddSingleton<PumpManager>();
-builder.Services.AddSingleton<GpioController>();
 
+builder.Services.AddSingleton(_ => new PumpManager(
+    config: builder.Configuration,
+    controller: string.IsNullOrEmpty(url) ? null : new GpioController()));
 //swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
@@ -108,7 +109,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-var url = builder.Configuration["Url"];
 if (!string.IsNullOrWhiteSpace(url))
 {
     app.Urls.Add(url);

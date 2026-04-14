@@ -1,6 +1,6 @@
 <nav id="navbar" #navbar [class.open]="menuOpen" [class.home]="isAtHomeScreen()">
   <button id="menu-toggle" (click)="toggleMenu()">☰</button>
-  <img src="assets/images/InconV2png.png" id="logo" alt="Logo" routerLink="home">
+  <img src="assets/images/hs.png" id="logo" alt="Logo" routerLink="home">
   <div id="nav-page-container" [class.open]="menuOpen">
     <a class="bigLink" routerLink="home">Home</a>
     @if (userService.hasRole('admin')) {

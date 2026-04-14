@@ -15,60 +15,88 @@ export class StatusModalComponent {
   private modalService = inject(ModalService);
   private fpsService = inject(FpsService);
 
-  currentModalData: Signal<any> = signal(null);
+  currentModalData: Signal<any> = this.modalService.getModalData();
   statusMessage = signal('');
   lowEndDetected = this.fpsService.lowEndDetected;
-  progress: number = 0;
-  progressVisible: boolean = false;
-
-  async ngOnInit() {
-    this.currentModalData = this.modalService.getModalData();
-  }
+  progress = signal(0);
+  progressVisible = signal(false);
+  private progressInterval: ReturnType<typeof setInterval> | null = null;
+  private closeTimeout: ReturnType<typeof setTimeout> | null = null;
+  private activeProgressDuration: number | null = null;
 
   constructor() {
     effect(() => {
-      if(this.modalService.getDisplayedModal()() == ModalType.Status) {
-        if (this.currentModalData() && this.currentModalData().message) {
-          this.statusMessage.set(this.currentModalData().message);
-        } else if (this.currentModalData() && this.currentModalData().progressDuration && this.currentModalData().progressDuration >= 0) {
-          this.startProgress(this.currentModalData().progressDuration);
-          this.statusMessage.set("Your drink is being prepared...");
+      if (this.modalService.getDisplayedModal()() === ModalType.Status) {
+        const modalData = this.currentModalData();
+
+        if (modalData?.message) {
+          this.clearProgressTimers();
+          this.progressVisible.set(false);
+          this.progress.set(0);
+          this.activeProgressDuration = null;
+          this.statusMessage.set(modalData.message);
+        } else if (modalData?.progressDuration != null && modalData.progressDuration >= 0) {
+          if (this.activeProgressDuration !== modalData.progressDuration || !this.progressVisible()) {
+            this.startProgress(modalData.progressDuration);
+          }
+          this.statusMessage.set('Your drink is being prepared...');
         } else {
+          this.clearProgressTimers();
+          this.progressVisible.set(false);
+          this.progress.set(0);
+          this.activeProgressDuration = null;
           this.statusMessage.set('Unbekannter Fehler');
         }
+      } else {
+        this.clearProgressTimers();
+        this.activeProgressDuration = null;
       }
     });
   }
 
   startProgress(durationInSeconds: number) {
-    this.progressVisible = true;
-    this.progress = 0;
-    const steps = durationInSeconds * (this.lowEndDetected() ? 2 : 10);
+    this.clearProgressTimers();
+    this.activeProgressDuration = durationInSeconds;
+    this.progressVisible.set(true);
+    this.progress.set(0);
+
+    const steps = Math.max(1, durationInSeconds * (this.lowEndDetected() ? 2 : 10));
+    const intervalMs = this.lowEndDetected() ? 500 : 100;
     let currentStep = 0;
 
-    const interval = setInterval(() => {
+    this.progressInterval = setInterval(() => {
       currentStep++;
-      this.progress = (currentStep / steps) * 100;
+      this.progress.set((currentStep / steps) * 100);
 
       if (currentStep >= steps) {
-        clearInterval(interval);
-
-        // 👉 Zeige "Getränk fertig!" nach dem Fortschritt
-        this.statusMessage.set("Your drink is ready!");
-
-        // Optional: Fortschrittsbalken nach kurzer Zeit ausblenden
-
-        setTimeout(() => {
-          this.closeModal()
+        this.clearProgressTimers();
+        this.progress.set(100);
+        this.statusMessage.set('Your drink is ready!');
+        this.closeTimeout = setTimeout(() => {
+          this.closeModal();
         }, 1500);
       }
-    }, this.lowEndDetected() ? 500 : 100);
+    }, intervalMs);
   }
 
   closeModal() {
-    this.progressVisible = false;
-    this.progress = 0;
+    this.clearProgressTimers();
+    this.activeProgressDuration = null;
+    this.progressVisible.set(false);
+    this.progress.set(0);
     this.statusMessage.set('');
     this.modalService.closeAll();
+  }
+
+  private clearProgressTimers() {
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+      this.progressInterval = null;
+    }
+
+    if (this.closeTimeout) {
+      clearTimeout(this.closeTimeout);
+      this.closeTimeout = null;
+    }
   }
 }

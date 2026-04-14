@@ -69,6 +69,7 @@ public static class ConfirmOrder
         {
             foreach (var di in order.OrderIngredients)
             {
+                // string.Equals throws InvalidOperationException
                 var stored = context.Ingredient
                     .First(i => i.IngredientName.ToLower() == di.IngredientName.ToLower());
                 stored.RemainingAmount -= di.Amount;

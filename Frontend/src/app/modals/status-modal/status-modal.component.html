@@ -1,8 +1,8 @@
 <app-generic-modal title="Status" (closed)="closeModal()">
   <div modal-body>
-    @if (progressVisible) {
+    @if (progressVisible()) {
       <div class="progress-container">
-        <div class="progress-bar" [style.width.%]="progress"></div>
+        <div class="progress-bar" [style.width.%]="progress()"></div>
       </div>
     }
     <p id="statusMessage">{{statusMessage()}}</p>

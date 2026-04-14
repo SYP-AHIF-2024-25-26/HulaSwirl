@@ -98,31 +98,43 @@ export class OrderQueueComponent {
     target.setPointerCapture(this.dragPointerId);
   }
 
-  protected onPointerMove(event: PointerEvent) {
-    if (this.dragPointerId !== event.pointerId || !this.dragStart || !this.elementStart) {
-      return;
-    }
+protected onPointerMove(event: PointerEvent) {
+  if (this.dragPointerId !== event.pointerId || !this.dragStart || !this.elementStart) {
+    return;
+  }
 
-    const deltaX = event.clientX - this.dragStart.x;
-    const deltaY = Math.max(event.clientY, 160) - this.dragStart.y;
+  const target = event.currentTarget as HTMLElement;
 
-    // Prüfen, ob wir die Schwelle überschritten haben
-    if (!this.hasMovedBeyondThreshold) {
-      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-      if (distance > this.DRAG_THRESHOLD) {
-        this.hasMovedBeyondThreshold = true;
-        this.isDragging.set(true);
-      }
-    }
+  // Keep the bubble strictly within the visible viewport (so it cannot be pushed out of the image/view).
+  const rect = target.getBoundingClientRect();
 
-    // Position nur aktualisieren, wenn wir wirklich draggen
-    if (this.hasMovedBeyondThreshold) {
-      this.bubblePosition.set({
-        x: this.elementStart.x + deltaX,
-        y: this.elementStart.y + deltaY
-      });
+  const minX = 0;
+  const maxX = window.innerWidth - rect.width;
+  const minY = 0;
+  const maxY = window.innerHeight - rect.height;
+
+  const deltaX = event.clientX - this.dragStart.x;
+  const deltaY = event.clientY - this.dragStart.y;
+
+  const nextX = this.elementStart.x + deltaX;
+  const nextY = this.elementStart.y + deltaY;
+
+  const clampedX = Math.min(Math.max(nextX, minX), maxX);
+  const clampedY = Math.min(Math.max(nextY, minY), maxY);
+
+  // Check drag threshold based on the real (unclamped) pointer movement.
+  if (!this.hasMovedBeyondThreshold) {
+    const distance = Math.hypot(deltaX, deltaY);
+    if (distance > this.DRAG_THRESHOLD) {
+      this.hasMovedBeyondThreshold = true;
+      this.isDragging.set(true);
     }
   }
+
+  if (this.hasMovedBeyondThreshold) {
+    this.bubblePosition.set({x: clampedX, y: clampedY});
+  }
+}
 
   protected onPointerUp(event: PointerEvent) {
     if (this.dragPointerId !== event.pointerId) {
@@ -145,7 +157,6 @@ export class OrderQueueComponent {
   }
 
   private handleStatusUpdates(allOrders: IncomingOrder[]) {
-    // ... Logik bleibt identisch ...
     const username = this.username();
     if (!username) {
       this.trackedStatuses.clear();
